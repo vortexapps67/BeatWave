@@ -60,6 +60,7 @@ import com.beatwave.music.ui.screens.Screens
 import com.beatwave.music.ui.theme.AppleTokens
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.backToMain
+import com.beatwave.music.ui.utils.safeOpenUri
 import com.beatwave.music.vivimusic.updater.getUpdateAvailableState
 
 @OptIn(ExperimentalMaterial3Api::class)
