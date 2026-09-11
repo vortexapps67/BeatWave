@@ -70,6 +70,7 @@ private val ArrangeableRows = listOf(
     HomeFeedRow("hero", R.string.home_section_hero),
     HomeFeedRow("keep_listening", R.string.recently_played),
     HomeFeedRow("quick_picks", R.string.quick_picks),
+    HomeFeedRow("last_played_recommendation", R.string.recommended_because_listened),
     HomeFeedRow("speed_dial", R.string.speed_dial),
     HomeFeedRow("from_the_community", R.string.home_section_community),
     HomeFeedRow("daily_discover", R.string.home_section_daily_discover),

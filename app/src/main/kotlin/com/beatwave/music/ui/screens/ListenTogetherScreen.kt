@@ -100,6 +100,14 @@ import com.beatwave.music.listentogether.UserInfo
 import com.beatwave.music.ui.component.IconButton
 import com.beatwave.music.ui.component.shapes.ContinuousRoundedRectangle
 import com.beatwave.music.ui.utils.backToMain
+import com.beatwave.music.LocalDatabase
+import com.beatwave.music.db.entities.PlaylistEntity
+import com.beatwave.music.db.entities.PlaylistSongMap
+import com.beatwave.music.db.entities.SongEntity
+import com.beatwave.music.listentogether.TrackInfo
+import android.content.Intent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.beatwave.music.utils.rememberPreference
 import kotlinx.coroutines.launch
 
@@ -276,12 +284,65 @@ fun ListenTogetherScreen(
         }
 
         if (isInRoom) {
+            // Top Chat button
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                        .bounceClick { navController.navigate("listen_together/chat") }
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(38.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.chat_msg),
+                                contentDescription = stringResource(R.string.chat),
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                        Column {
+                            Text(
+                                text = stringResource(R.string.chat),
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = "Real-time room chat & discussion",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                    Icon(
+                        painter = painterResource(R.drawable.chevron_right_px),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
             // Room status card
             roomState?.let { room ->
                 item {
                     RoomStatusCard(
                         roomCode = room.roomCode,
                         isHost = isHost,
+                        queue = room.queue,
                         context = context,
                         navController = navController
                     )
@@ -458,6 +519,17 @@ fun ListenTogetherScreen(
                         contentDescription = null
                     )
                 }
+            },
+            actions = {
+                if (isInRoom) {
+                    IconButton(onClick = { navController.navigate("listen_together/chat") }) {
+                        Icon(
+                            painter = painterResource(R.drawable.chat_msg),
+                            contentDescription = stringResource(R.string.chat),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             }
         )
     }
@@ -501,19 +573,16 @@ private fun NotConfiguredContent() {
 private fun HeaderSection(isInRoom: Boolean = false) {
     if (isInRoom) return
 
-    // The 80dp icon medallion is gone. A screen titled "Listen together" does
-    // not need a picture of two people next to the words "Listen together" —
-    // that space belongs to the type.
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = stringResource(R.string.listen_together),
+            text = stringResource(R.string.beatwave_sync),
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.listen_together_description),
+            text = stringResource(R.string.beatwave_sync_desc),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -521,88 +590,65 @@ private fun HeaderSection(isInRoom: Boolean = false) {
 }
 
 @Composable
-private fun ConnectionStatusCard(
-    connectionState: ConnectionState,
-    onConnect: () -> Unit,
-    onDisconnect: () -> Unit,
-    onReconnect: () -> Unit
-) {
-    // Connection is plumbing, not content. It used to be a full-width coloured
-    // panel with two buttons, which made the least interesting thing on the
-    // screen the loudest. Now it is a status line, and it only offers an action
-    // when something is actually wrong.
-    val broken = connectionState == ConnectionState.ERROR ||
-        connectionState == ConnectionState.DISCONNECTED
-    val busy = connectionState == ConnectionState.CONNECTING ||
-        connectionState == ConnectionState.RECONNECTING
-
-    val tone = when (connectionState) {
-        ConnectionState.CONNECTED -> MaterialTheme.colorScheme.primary
-        ConnectionState.CONNECTING, ConnectionState.RECONNECTING -> MaterialTheme.colorScheme.tertiary
-        ConnectionState.ERROR -> MaterialTheme.colorScheme.error
-        ConnectionState.DISCONNECTED -> MaterialTheme.colorScheme.onSurfaceVariant
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        if (busy) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(11.dp),
-                strokeWidth = 2.dp,
-                color = tone
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .size(7.dp)
-                    .clip(CircleShape)
-                    .background(tone)
-            )
-        }
-        Spacer(Modifier.width(9.dp))
-        Text(
-            text = when (connectionState) {
-                ConnectionState.CONNECTED -> stringResource(R.string.listen_together_connected)
-                ConnectionState.CONNECTING -> stringResource(R.string.listen_together_connecting)
-                ConnectionState.RECONNECTING -> stringResource(R.string.listen_together_reconnecting)
-                ConnectionState.ERROR -> stringResource(R.string.listen_together_error)
-                ConnectionState.DISCONNECTED -> stringResource(R.string.listen_together_disconnected)
-            },
-            style = MaterialTheme.typography.bodySmall,
-            color = tone,
-            modifier = Modifier.weight(1f)
-        )
-        if (broken) {
-            Text(
-                text = stringResource(R.string.connect),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .bounceClick(onClick = onConnect)
-                    .padding(horizontal = 10.dp, vertical = 6.dp)
-            )
-        }
-    }
-}
-
-@Composable
 private fun RoomStatusCard(
     roomCode: String,
     isHost: Boolean,
+    queue: List<TrackInfo>,
     context: Context,
     navController: NavController
 ) {
     val accent = MaterialTheme.colorScheme.primary
     val copiedText = stringResource(R.string.copied_to_clipboard)
+    val database = LocalDatabase.current
+    val coroutineScope = rememberCoroutineScope()
 
     fun copy(label: String, value: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
         clipboard.setPrimaryClip(android.content.ClipData.newPlainText(label, value))
         Toast.makeText(context, copiedText, Toast.LENGTH_SHORT).show()
+    }
+
+    fun shareLink() {
+        val link = "https://beatwave.de5.net/sync/$roomCode"
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Join my BeatWave Sync session! Listen together in realtime: $link")
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
+    }
+
+    fun saveQueueAsPlaylist() {
+        if (queue.isEmpty()) {
+            Toast.makeText(context, "Queue is empty", Toast.LENGTH_SHORT).show()
+            return
+        }
+        coroutineScope.launch(Dispatchers.IO) {
+            val playlistId = "sync_${System.currentTimeMillis()}"
+            val playlistName = "BeatWave Sync ($roomCode)"
+            database.insert(PlaylistEntity(id = playlistId, name = playlistName))
+            val songEntities = queue.map { track ->
+                SongEntity(
+                    id = track.id,
+                    title = track.title,
+                    duration = (track.duration / 1000).toInt(),
+                    thumbnailUrl = track.thumbnail
+                )
+            }
+            database.insert(songEntities)
+            val mapEntities = queue.mapIndexed { index, track ->
+                PlaylistSongMap(
+                    songId = track.id,
+                    playlistId = playlistId,
+                    position = index
+                )
+            }
+            database.insert(mapEntities)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, R.string.saved_to_playlists, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     Column(
@@ -675,29 +721,37 @@ private fun RoomStatusCard(
 
         Spacer(Modifier.height(18.dp))
 
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.horizontalScroll(rememberScrollState())
+        ) {
             RoomAction(
                 icon = R.drawable.chat_msg,
-                label = stringResource(R.string.comments),
+                label = stringResource(R.string.chat),
                 onClick = { navController.navigate("listen_together/chat") }
+            )
+            RoomAction(
+                icon = R.drawable.share,
+                label = stringResource(R.string.share_sync_link),
+                onClick = { shareLink() }
+            )
+            RoomAction(
+                icon = R.drawable.playlist_add,
+                label = stringResource(R.string.save_as_playlist),
+                onClick = { saveQueueAsPlaylist() }
             )
             RoomAction(
                 icon = R.drawable.content_copy,
                 label = stringResource(R.string.copy_code),
                 onClick = { copy("Room Code", roomCode) }
             )
-            if (isHost) {
-                RoomAction(
-                    icon = R.drawable.link,
-                    label = stringResource(R.string.copy_link),
-                    onClick = {
-                        // Deep link into the app, not a hardcoded web host. The
-                        // previous link pointed at the old Render server, which
-                        // is not even where the room lives any more.
-                        copy("Listen Together Link", "vivimusic://listen?code=$roomCode")
-                    }
-                )
-            }
+            RoomAction(
+                icon = R.drawable.link,
+                label = stringResource(R.string.copy_link),
+                onClick = {
+                    copy("BeatWave Sync Link", "https://beatwave.de5.net/sync/$roomCode")
+                }
+            )
         }
     }
 }

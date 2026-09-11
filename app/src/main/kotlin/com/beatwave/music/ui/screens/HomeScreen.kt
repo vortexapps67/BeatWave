@@ -254,6 +254,7 @@ sealed class HomeSection(val id: String, val baseWeight: Int) {
     data object Hero : HomeSection("hero", 110)
     data object SpeedDial : HomeSection("speed_dial", 100)
     data object QuickPicks : HomeSection("quick_picks", 90)
+    data object LastPlayedRecommendation : HomeSection("last_played_recommendation", 85)
     data object DailyDiscover : HomeSection("daily_discover", 80)
     data object KeepListening : HomeSection("keep_listening", 50)
     data object AccountPlaylists : HomeSection("account_playlists", 40)
@@ -717,6 +718,7 @@ fun HomeScreen(
     val forgottenFavorites by viewModel.forgottenFavorites.collectAsStateWithLifecycle()
     val keepListening by viewModel.keepListening.collectAsStateWithLifecycle()
     val similarRecommendations by viewModel.similarRecommendations.collectAsStateWithLifecycle()
+    val lastPlayedRecommendation by viewModel.lastPlayedRecommendation.collectAsStateWithLifecycle()
     val accountPlaylists by viewModel.accountPlaylists.collectAsStateWithLifecycle()
     val homePage by viewModel.homePage.collectAsStateWithLifecycle()
     val explorePage by viewModel.explorePage.collectAsStateWithLifecycle()
@@ -1033,6 +1035,7 @@ fun HomeScreen(
         forgottenFavorites,
         communityPlaylists,
         similarRecommendations,
+        lastPlayedRecommendation,
         homePage?.sections,
         explorePage?.moodAndGenres
     ) {
@@ -1047,6 +1050,7 @@ fun HomeScreen(
         // deleting the section's rendering code, so it is one line to bring back.
         // if (speedDialItems.isNotEmpty()) list.add(HomeSection.SpeedDial)
         if (quickPicks?.isNotEmpty() == true) list.add(HomeSection.QuickPicks)
+        if (lastPlayedRecommendation != null) list.add(HomeSection.LastPlayedRecommendation)
         if (communityPlaylists?.isNotEmpty() == true) list.add(HomeSection.FromTheCommunity)
         if (dailyDiscover?.isNotEmpty() == true) list.add(HomeSection.DailyDiscover)
         if (keepListening?.isNotEmpty() == true) list.add(HomeSection.KeepListening)
@@ -1629,6 +1633,7 @@ private fun LazyListScope.homeSectionsContent(
                 randomizeJob = randomizeJob,
             )
             HomeSection.QuickPicks -> quickPicksSection(deps, quickPicks, mediaMetadata, isPlaying, quickPicksSongMap)
+            HomeSection.LastPlayedRecommendation -> lastPlayedRecommendationSection(deps, lastPlayedRecommendation)
             HomeSection.FromTheCommunity -> communityPlaylistsSection(deps, communityPlaylists)
             HomeSection.DailyDiscover -> dailyDiscoverSection(deps, dailyDiscover)
             HomeSection.KeepListening ->
@@ -2691,6 +2696,53 @@ private fun LazyListScope.forgottenFavoritesSection(
                                 }
                             )
                     )
+                }
+            }
+        }
+    }
+}
+
+private fun LazyListScope.lastPlayedRecommendationSection(
+    deps: HomeSectionDeps,
+    recommendation: SimilarRecommendation?,
+) {
+    recommendation?.let {
+        item(key = "last_played_rec_title", contentType = "section_title") {
+            NavigationTitle(
+                label = stringResource(R.string.recommended_because_listened),
+                title = recommendation.title.title,
+                thumbnail = recommendation.title.thumbnailUrl?.let { thumbnailUrl ->
+                    {
+                        AsyncImage(
+                            model = thumbnailUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(ListThumbnailSize)
+                                .clip(RoundedCornerShape(ThumbnailCornerRadius))
+                        )
+                    }
+                },
+                onClick = {
+                    when (recommendation.title) {
+                        is Song -> recommendation.title.album?.id?.let { deps.navController.navigate("album/$it") }
+                        is Album -> deps.navController.navigate("album/${recommendation.title.id}")
+                        is Artist -> deps.navController.navigate("artist/${recommendation.title.id}")
+                        is Playlist -> {}
+                    }
+                },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "last_played_rec_list", contentType = "carousel") {
+            LazyRow(
+                contentPadding = WindowInsets.systemBars
+                    .only(WindowInsetsSides.Horizontal)
+                    .asPaddingValues().plusStart(deps.sideInset),
+                modifier = Modifier.animateItem().bleedStart(deps.sideInset)
+            ) {
+                items(items = recommendation.items, key = { it.id }) { item ->
+                    deps.ytGridItem(item)
                 }
             }
         }

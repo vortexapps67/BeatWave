@@ -586,10 +586,19 @@
     <string name="media_import_too_many_pixels">That image is too big to decode safely.</string>
     <string name="media_import_io">Could not read that file.</string>
     <string name="preset_thumbnail_failed">Could not capture a preview image. The preset will still save.</string>
-    <string name="diy_edit">Edit</string>
-    <string name="diy_done">Done</string>
-    <string name="diy_undo">Undo</string>
-    <string name="diy_redo">Redo</string>
-    <string name="diy_rotation">Rotation</string>
-    <string name="diy_size">Size</string>
+    <string name="recommended_because_listened">Because you listened to</string>
+    <string name="beatwave_sync">BeatWave Sync</string>
+    <string name="beatwave_sync_desc">Collaborative live rooms, shared playlists &amp; real-time chat with friends</string>
+    <string name="share_sync_link">Share Sync Link</string>
+    <string name="save_as_playlist">Save as Playlist</string>
+    <string name="saved_to_playlists">Saved to playlists</string>
+    <string name="chat">Chat</string>
+    <string name="send_message_hint">Type a message...</string>
+    <string name="theme_presets">Theme Presets</string>
+    <string name="theme_preset_oled">Deep Midnight OLED</string>
+    <string name="theme_preset_cyberpunk">Cyberpunk Neon</string>
+    <string name="theme_preset_emerald">Emerald Frosted Glass</string>
+    <string name="theme_preset_rose_gold">Rose Gold</string>
+    <string name="theme_preset_sunset_amber">Sunset Amber</string>
+    <string name="theme_preset_material_you">Dynamic Material You</string>
 </resources>

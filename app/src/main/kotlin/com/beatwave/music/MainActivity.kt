@@ -861,6 +861,24 @@ class MainActivity : ComponentActivity() {
                     onDispose { navController.removeOnDestinationChangedListener(listener) }
                 }
 
+                LaunchedEffect(navController, pendingIntent) {
+                    val activeIntent = intent ?: pendingIntent
+                    val uri = activeIntent?.data
+                    if (uri != null) {
+                        val isSyncLink = when {
+                            (uri.scheme == "https" || uri.scheme == "http") &&
+                                (uri.host == "beatwave.de5.net" || uri.host == "beatwave.app" || uri.host == "vivimusic-listen-together.onrender.com") &&
+                                (uri.path?.startsWith("/sync") == true || uri.path?.startsWith("/listen") == true) -> true
+                            (uri.scheme == "beatwave" || uri.scheme == "vivimusic") &&
+                                (uri.host == "sync" || uri.host == "listen") -> true
+                            else -> false
+                        }
+                        if (isSyncLink) {
+                            navController.navigate("listen_together_from_topbar")
+                        }
+                    }
+                }
+
                 val homeViewModel: HomeViewModel = hiltViewModel()
                 // Pre-warm HistoryViewModel at Activity scope so history data loads
                 // in background immediately â€” zero lag when user taps the history icon

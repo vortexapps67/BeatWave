@@ -1,39 +1,38 @@
 {
-  "description": "BeatWave 5.1.3 — fixes the search bar and results navigation, adds library playlist multi-thumbnails, introduces Google Cast integration, improves font contrast adaptation, and enhances Wrapped intervals and performance.",
+  "description": "BeatWave 6.0.0 — major release introducing Dynamic Spotify recommendations on play, BeatWave Sync collaborative playlists & realtime chat, one-tap custom Theme Presets, and SoundCloud-style Music Presets.",
   "image": "",
   "changelog": [
     {
-      "title": "Search & Navigation (Fixed)",
+      "title": "BeatWave Sync & Collaborative Rooms",
       "items": [
-        "Fixed search navigation: submitting a search query or tapping on search suggestions now properly dismisses the search panel and displays the search results screen.",
-        "Search bar keyboard handling streamlined for smooth transitions between suggestions and live search results.",
-        "Direct YouTube URL parsing and search query support directly from the search bar."
+        "BeatWave Sync: Shareable invite links (https://beatwave.de5.net/sync/{roomCode}) to listen together in real time.",
+        "Collaborative shared playlists: add and remove songs with friends and save room queues directly to your playlists with one tap.",
+        "In-room real-time chat with member badges, reply support, and timestamps."
       ]
     },
     {
-      "title": "Library & UI Enhancements",
+      "title": "Smart Discovery & Spotify Recommendations",
       "items": [
-        "Dynamic multi-artwork collage thumbnails for local and imported playlists in Library.",
-        "Adaptive font contrast improvements across liquid glass and tinted backgrounds.",
-        "Dark search interface refinements and enhanced color consistency with home themes.",
-        "Adjusted Admin Panel and bottom sheet insets for edge-to-edge screens."
+        "Dynamic Spotify recommendations: instantly calculates and suggests fresh tracks seeded by your last played song under 'Because You Listened To'.",
+        "Recommendation Engine Selector: switch between Spotify algorithmic intelligence and YouTube Music in Content & Spotify settings.",
+        "Smooth fallback to related artist & album mixes."
       ]
     },
     {
-      "title": "Cast & Wrapped",
+      "title": "Custom Glass Theme Presets",
       "items": [
-        "Google Cast device discovery and seamless media streaming support via Cast button.",
-        "BeatWave Wrapped: added customizable time window intervals (3, 7, 14, 30, 60, 90, 365 days) with test suite.",
-        "Automated What's New changelog dialog prompt on app launch after updates."
+        "One-tap Theme Presets: Deep Midnight OLED, Cyberpunk Neon, Emerald Frosted Glass, Rose Gold, Sunset Amber, and Dynamic Material You.",
+        "Live gradient preview tiles and instant whole-app theme adaptation."
       ]
     },
     {
-      "title": "Audio & Performance",
+      "title": "Music Presets & Audio Polish",
       "items": [
-        "Smoother liquid glass shader performance and reduced background re-draw overhead.",
-        "Color palette matching between Moods & Genres categories and Home feed.",
-        "Memory optimization and improved audio queue reliability."
+        "One-tap playback presets: Normal, Sped Up (1.25x), Nightcore (+3 semitones), Slowed (0.85x), Daycore (-3 semitones), and Vaporwave (-4 semitones).",
+        "Accessible from both the Player Menu and 3-dot Song Options.",
+        "First-launch login onboarding for YouTube Music and Spotify accounts."
       ]
     }
   ]
 }
+

@@ -95,7 +95,40 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
-            <!-- Listen Together invite link (HTTPS App Link - works after APK installation verification) -->
+            <!-- BeatWave Sync invite links -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="beatwave.de5.net" />
+                <data android:pathPrefix="/sync" />
+            </intent-filter>
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" />
+                <data android:host="beatwave.app" />
+                <data android:pathPrefix="/sync" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="beatwave" />
+                <data android:host="sync" />
+            </intent-filter>
+
+            <!-- Listen Together legacy invite links -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -107,7 +140,6 @@
                 <data android:pathPrefix="/listen" />
             </intent-filter>
 
-            <!-- Custom scheme for direct opens from browser (works in ALL browsers) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

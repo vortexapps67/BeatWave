@@ -112,6 +112,7 @@ class HomeViewModel @Inject constructor(
     val forgottenFavorites = MutableStateFlow<List<Song>?>(null)
     val keepListening = MutableStateFlow<List<LocalItem>?>(null)
     val similarRecommendations = MutableStateFlow<List<SimilarRecommendation>?>(null)
+    val lastPlayedRecommendation = MutableStateFlow<SimilarRecommendation?>(null)
     val accountPlaylists = MutableStateFlow<List<PlaylistItem>?>(null)
     val homePage = MutableStateFlow<HomePage?>(null)
     val explorePage = MutableStateFlow<ExplorePage?>(null)
@@ -692,6 +693,60 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    suspend fun loadDynamicRecommendationsForSong(song: Song) {
+        if (localOnlyMode.value) return
+        val hideExplicit = context.dataStore.get(HideExplicitKey, false)
+        val hideVideoSongs = context.dataStore.get(HideVideoSongsKey, false) || context.dataStore.get(DataSaverEnabledKey, false)
+        val recEngine = context.dataStore.get(RecommendationEngineKey, RecommendationEngine.SPOTIFY.name)
+
+        val items = java.util.Collections.synchronizedList(mutableListOf<YTItem>())
+
+        if (recEngine == RecommendationEngine.SPOTIFY.name) {
+            val query = "${song.song.title} ${song.artists.firstOrNull()?.name.orEmpty()}"
+            val spotifySeedId = com.music.spotify.Spotify.searchTrack(query).getOrNull()
+            val seedList = if (spotifySeedId != null) listOf(spotifySeedId) else emptyList()
+            val spotifyRecs = com.music.spotify.Spotify.getRecommendations(seedList, limit = 25).getOrNull()
+
+            if (!spotifyRecs.isNullOrEmpty()) {
+                coroutineScope {
+                    spotifyRecs.take(20).map { spTrack ->
+                        launch(Dispatchers.IO) {
+                            val trackQuery = "${spTrack.name} ${spTrack.artists.firstOrNull()?.name.orEmpty()}"
+                            val searchResult = YouTube.search(trackQuery, YouTube.SearchFilter.FILTER_SONG).getOrNull()
+                            val ytItem = searchResult?.items?.firstOrNull() as? SongItem
+                            if (ytItem != null && (!hideVideoSongs || !ytItem.isVideoSong) && !ytItem.explicit) {
+                                if (items.none { it.id == ytItem.id }) {
+                                    items.add(ytItem)
+                                }
+                            }
+                        }
+                    }.forEach { it.join() }
+                }
+            }
+        }
+
+        // Fallback to YouTube related endpoint if items is empty
+        if (items.isEmpty()) {
+            val endpoint = YouTube.next(WatchEndpoint(videoId = song.id)).getOrNull()?.relatedEndpoint
+            if (endpoint != null) {
+                YouTube.related(endpoint).onSuccess { page ->
+                    val recs = (page.songs.shuffled().take(10) + page.albums.shuffled().take(5))
+                        .distinctBy { it.id }
+                        .filterExplicit(hideExplicit)
+                        .filterVideoSongs(hideVideoSongs)
+                    items.addAll(recs)
+                }
+            }
+        }
+
+        if (items.isNotEmpty()) {
+            lastPlayedRecommendation.value = SimilarRecommendation(
+                title = song,
+                items = items.distinctBy { it.id }.shuffled()
+            )
+        }
+    }
+
     /**
      * Phase 2: Fires all network sections concurrently.
      * Because isLoading is already false, each section streams into the UI
@@ -927,6 +982,16 @@ class HomeViewModel @Inject constructor(
                     if (YouTube.cookie != null && accountPlaylists.value != null) {
                         loadAccountPlaylists()
                     }
+                }
+        }
+
+        // Dynamically recalculate recommendations when the user plays any song
+        viewModelScope.launch(Dispatchers.IO) {
+            database.events()
+                .mapNotNull { it.firstOrNull()?.song }
+                .distinctUntilChanged { old, new -> old.id == new.id }
+                .collect { lastPlayedSong ->
+                    loadDynamicRecommendationsForSong(lastPlayedSong)
                 }
         }
     }
