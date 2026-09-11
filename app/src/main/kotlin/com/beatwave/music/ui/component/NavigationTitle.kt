@@ -102,17 +102,33 @@ fun NavigationTitle(
         // the artwork tint the title next to it was already following.
         val action = onPlayAllClick ?: onClick
         if (action != null) {
-            Text(
-                text = stringResource(
-                    if (onPlayAllClick != null) R.string.play_all else R.string.see_all
-                ),
-                fontSize = AppleTokens.ItemTitle,
-                lineHeight = AppleTokens.ItemTitleLineHeight,
-                fontWeight = FontWeight.Normal,
-                color = contentColor,
-                maxLines = 1,
-                modifier = Modifier.clickable(onClick = action),
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                modifier = Modifier
+                    .clip(androidx.compose.foundation.shape.CircleShape)
+                    .background(contentColor.copy(alpha = 0.08f))
+                    .clickable(onClick = action)
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                if (onPlayAllClick != null) {
+                    androidx.compose.material3.Icon(
+                        painter = androidx.compose.ui.res.painterResource(R.drawable.play),
+                        contentDescription = null,
+                        tint = contentColor,
+                        modifier = Modifier.size(12.dp)
+                    )
+                }
+                Text(
+                    text = stringResource(
+                        if (onPlayAllClick != null) R.string.play_all else R.string.see_all
+                    ),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = contentColor,
+                    maxLines = 1,
+                )
+            }
         }
     }
 }

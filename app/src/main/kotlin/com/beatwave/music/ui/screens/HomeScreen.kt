@@ -286,7 +286,17 @@ fun CommunityPlaylistCard(
     Card(
         modifier = modifier
             .width(360.dp)
-            .height(470.dp),
+            .height(470.dp)
+            .border(
+                1.dp,
+                Brush.verticalGradient(
+                    listOf(
+                        Color.White.copy(alpha = 0.25f),
+                        Color.White.copy(alpha = 0.05f)
+                    )
+                ),
+                RoundedCornerShape(AppleTokens.CardCornerLarge)
+            ),
         colors = CardDefaults.cardColors(
             containerColor = containerColor
         ),
@@ -295,7 +305,7 @@ fun CommunityPlaylistCard(
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
-                .background(onSurface.copy(alpha = 0.05f))
+                .background(onSurface.copy(alpha = 0.06f))
         ) {
             Row(
                 modifier = Modifier
@@ -576,6 +586,52 @@ fun DailyDiscoverCard(
                 modifier = Modifier
                     .fillMaxSize()
             )
+
+            // Glass border outline
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(
+                        width = 1.dp,
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                Color.White.copy(alpha = 0.35f),
+                                Color.White.copy(alpha = 0.05f),
+                            )
+                        ),
+                        shape = RoundedCornerShape(AppleTokens.CardCornerLarge)
+                    )
+            )
+
+            // Top tag badge
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(14.dp)
+                    .clip(CircleShape)
+                    .background(Color.Black.copy(alpha = 0.45f))
+                    .border(1.dp, Color.White.copy(alpha = 0.25f), CircleShape)
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF00E676))
+                    )
+                    Text(
+                        text = "DISCOVER",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 0.08.em,
+                        color = Color.White.copy(alpha = 0.95f),
+                    )
+                }
+            }
 
             if (maxWidth > 200.dp) {
                 // Subtle vertical gradient to make text & glass pod pop beautifully
@@ -1311,15 +1367,24 @@ fun HomeScreen(
                 // app bar: the bar is transparent chrome here, and a large title that
                 // scrolls away is what gives the first screenful its weight.
                 item(key = "listen_now_title", contentType = "section_title") {
-                    Text(
-                        text = stringResource(if (localOnly) R.string.filter_local else R.string.listen_now),
-                        fontSize = AppleTokens.TitleLarge,
-                        lineHeight = AppleTokens.TitleLargeLineHeight,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = (-0.02).em,
-                        color = LocalContentColor.current,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                    val currentHour = remember { java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY) }
+                    val greetingTitle = when {
+                        localOnly -> stringResource(R.string.filter_local)
+                        currentHour in 5..11 -> stringResource(R.string.good_morning)
+                        currentHour in 12..16 -> stringResource(R.string.good_afternoon)
+                        currentHour in 17..21 -> stringResource(R.string.good_evening)
+                        else -> stringResource(R.string.good_night)
+                    }
+                    val greetingSubtitle = when {
+                        localOnly -> "Explore your offline collection"
+                        currentHour in 5..11 -> "Start your day with good music"
+                        currentHour in 12..16 -> "Keep the energy flow going"
+                        currentHour in 17..21 -> "Unwind with your favorite vibes"
+                        else -> "Late night sounds & relaxing tunes"
+                    }
+                    val globalAccent = rememberGlobalAccentColors().first
+
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .windowInsetsPadding(
@@ -1329,10 +1394,79 @@ fun HomeScreen(
                                 start = AppleTokens.Gutter,
                                 end = AppleTokens.Gutter,
                                 top = AppleTokens.ItemGap,
-                                bottom = AppleTokens.TextGap,
+                                bottom = 4.dp,
                             )
                             .animateItem(),
-                    )
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = greetingTitle,
+                                fontSize = AppleTokens.TitleLarge,
+                                lineHeight = AppleTokens.TitleLargeLineHeight,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = (-0.02).em,
+                                color = LocalContentColor.current,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                            Spacer(Modifier.height(2.dp))
+                            Text(
+                                text = greetingSubtitle,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = LocalContentColor.current.copy(alpha = 0.65f),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+
+                        // Profile / Account Quick Glass Button
+                        Box(
+                            modifier = Modifier
+                                .size(42.dp)
+                                .clip(CircleShape)
+                                .background(Color.White.copy(alpha = 0.1f))
+                                .border(
+                                    width = 1.dp,
+                                    brush = Brush.verticalGradient(
+                                        listOf(
+                                            globalAccent.copy(alpha = 0.6f),
+                                            Color.White.copy(alpha = 0.2f)
+                                        )
+                                    ),
+                                    shape = CircleShape
+                                )
+                                .combinedBounceClick(
+                                    onClick = {
+                                        navController.navigate("account")
+                                    }
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (url != null) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(url)
+                                        .diskCachePolicy(CachePolicy.ENABLED)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape)
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(R.drawable.person),
+                                    contentDescription = null,
+                                    tint = LocalContentColor.current.copy(alpha = 0.85f),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
                 }
 
                 // YouTube's own mood/genre filters (Energize, Relax, Feel good...).
