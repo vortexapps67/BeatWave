@@ -586,6 +586,12 @@
     <string name="media_import_too_many_pixels">That image is too big to decode safely.</string>
     <string name="media_import_io">Could not read that file.</string>
     <string name="preset_thumbnail_failed">Could not capture a preview image. The preset will still save.</string>
+    <string name="diy_edit">Edit</string>
+    <string name="diy_done">Done</string>
+    <string name="diy_undo">Undo</string>
+    <string name="diy_redo">Redo</string>
+    <string name="diy_rotation">Rotation</string>
+    <string name="diy_size">Size</string>
     <string name="recommended_because_listened">Because you listened to</string>
     <string name="beatwave_sync">BeatWave Sync</string>
     <string name="beatwave_sync_desc">Collaborative live rooms, shared playlists &amp; real-time chat with friends</string>

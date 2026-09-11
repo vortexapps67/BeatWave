@@ -522,7 +522,10 @@ fun ListenTogetherScreen(
             },
             actions = {
                 if (isInRoom) {
-                    IconButton(onClick = { navController.navigate("listen_together/chat") }) {
+                    IconButton(
+                        onClick = { navController.navigate("listen_together/chat") },
+                        onLongClick = {}
+                    ) {
                         Icon(
                             painter = painterResource(R.drawable.chat_msg),
                             contentDescription = stringResource(R.string.chat),
@@ -564,6 +567,71 @@ private fun NotConfiguredContent() {
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun ConnectionStatusCard(
+    connectionState: ConnectionState,
+    onConnect: () -> Unit,
+    onDisconnect: () -> Unit,
+    onReconnect: () -> Unit
+) {
+    val broken = connectionState == ConnectionState.ERROR ||
+        connectionState == ConnectionState.DISCONNECTED
+    val busy = connectionState == ConnectionState.CONNECTING ||
+        connectionState == ConnectionState.RECONNECTING
+
+    val tone = when (connectionState) {
+        ConnectionState.CONNECTED -> MaterialTheme.colorScheme.primary
+        ConnectionState.CONNECTING, ConnectionState.RECONNECTING -> MaterialTheme.colorScheme.tertiary
+        ConnectionState.ERROR -> MaterialTheme.colorScheme.error
+        ConnectionState.DISCONNECTED -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (busy) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(11.dp),
+                strokeWidth = 2.dp,
+                color = tone
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(7.dp)
+                    .clip(CircleShape)
+                    .background(tone)
+            )
+        }
+        Spacer(Modifier.width(9.dp))
+        Text(
+            text = when (connectionState) {
+                ConnectionState.CONNECTED -> stringResource(R.string.listen_together_connected)
+                ConnectionState.CONNECTING -> stringResource(R.string.listen_together_connecting)
+                ConnectionState.RECONNECTING -> stringResource(R.string.listen_together_reconnecting)
+                ConnectionState.ERROR -> stringResource(R.string.listen_together_error)
+                ConnectionState.DISCONNECTED -> stringResource(R.string.listen_together_disconnected)
+            },
+            style = MaterialTheme.typography.bodySmall,
+            color = tone,
+            modifier = Modifier.weight(1f)
+        )
+        if (broken) {
+            Text(
+                text = stringResource(R.string.connect),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .bounceClick(onClick = onConnect)
+                    .padding(horizontal = 10.dp, vertical = 6.dp)
             )
         }
     }
@@ -636,7 +704,7 @@ private fun RoomStatusCard(
                     thumbnailUrl = track.thumbnail
                 )
             }
-            database.insert(songEntities)
+            songEntities.forEach { database.insert(it) }
             val mapEntities = queue.mapIndexed { index, track ->
                 PlaylistSongMap(
                     songId = track.id,
@@ -644,7 +712,7 @@ private fun RoomStatusCard(
                     position = index
                 )
             }
-            database.insert(mapEntities)
+            mapEntities.forEach { database.insert(it) }
             withContext(Dispatchers.Main) {
                 Toast.makeText(context, R.string.saved_to_playlists, Toast.LENGTH_SHORT).show()
             }

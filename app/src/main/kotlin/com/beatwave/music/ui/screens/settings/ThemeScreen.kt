@@ -308,6 +308,8 @@ fun PortraitThemeLayout(
             onDarkModeChange = onDarkModeChange,
             pureBlack = pureBlack,
             onPureBlackChange = onPureBlackChange,
+            selectedThemeColor = selectedThemeColor,
+            onSelectedThemeColorChange = onSelectedThemeColorChange,
             onReset = onReset,
         )
 
@@ -370,6 +372,8 @@ fun LandscapeThemeLayout(
                 onDarkModeChange = onDarkModeChange,
                 pureBlack = pureBlack,
                 onPureBlackChange = onPureBlackChange,
+                selectedThemeColor = selectedThemeColor,
+                onSelectedThemeColorChange = onSelectedThemeColorChange,
                 onReset = onReset,
             )
 
@@ -389,6 +393,8 @@ fun ThemeControls(
     onDarkModeChange: (DarkMode) -> Unit,
     pureBlack: Boolean,
     onPureBlackChange: (Boolean) -> Unit,
+    selectedThemeColor: Color,
+    onSelectedThemeColorChange: (Color) -> Unit,
     onReset: () -> Unit,
 ) {
     Card(
