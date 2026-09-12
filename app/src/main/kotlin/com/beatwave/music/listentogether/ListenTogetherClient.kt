@@ -462,9 +462,9 @@ class ListenTogetherClient @Inject constructor(
 
     private fun getServerUrl(): String {
         val savedUrl = context.dataStore.get(ListenTogetherServerUrlKey, DEFAULT_SERVER_URL)
-        // Any well-formed ws/wss URL is honoured, not just the built-in list.
-        // Gating on findByUrl silently discarded every self-hosted server the
-        // settings screen let you type in, and fell back to the default.
+        if (savedUrl.contains("metroserverx.meowery.eu")) {
+            return DEFAULT_SERVER_URL
+        }
         return if (savedUrl.startsWith("ws://") || savedUrl.startsWith("wss://")) {
             savedUrl.trimEnd('/')
         } else {
