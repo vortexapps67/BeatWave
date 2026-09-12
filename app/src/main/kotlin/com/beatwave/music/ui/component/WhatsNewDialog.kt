@@ -47,7 +47,7 @@ import com.beatwave.music.utils.rememberPreference
 
 /**
  * Automatically prompts the user with a "What's New" changelog summary
- * when they update to a new version of BeatWave.
+ * when they install BeatWave or update to a new version.
  */
 @Composable
 fun WhatsNewPromptHost(
@@ -57,13 +57,7 @@ fun WhatsNewPromptHost(
     val currentVersion = BuildConfig.VERSION_NAME
 
     var visible by remember(lastSeenVersion, currentVersion) {
-        mutableStateOf(lastSeenVersion.isNotBlank() && lastSeenVersion != currentVersion)
-    }
-
-    // If it's a brand new install (empty string), stamp it so we don't spam on initial setup
-    if (lastSeenVersion.isBlank()) {
-        lastSeenVersion = currentVersion
-        return
+        mutableStateOf(lastSeenVersion != currentVersion)
     }
 
     if (!visible) return
@@ -95,12 +89,12 @@ fun WhatsNewPromptHost(
         title = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "What's New in BeatWave",
+                    text = "Welcome to BeatWave",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Version $currentVersion",
+                    text = "What's New in Version $currentVersion",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -114,45 +108,39 @@ fun WhatsNewPromptHost(
                 verticalArrangement = Arrangement.spacedBy(14.dp)
             ) {
                 ChangelogHighlightItem(
+                    emoji = "⚡",
+                    title = "Instant Playback & Fast Lyrics",
+                    description = "0ms song switching with background stream prefetching and ultra-fast parallel lyrics fetching."
+                )
+
+                ChangelogHighlightItem(
+                    emoji = "👥",
+                    title = "BeatWave Sync (Listen Together)",
+                    description = "Real-time synchronized playback with friends, instant room share links, QR codes, and live in-room chat."
+                )
+
+                ChangelogHighlightItem(
+                    emoji = "🎨",
+                    title = "Revamped Liquid Glass Home",
+                    description = "Dynamic time-of-day greeting, frosted glass cards, fluid animations, and high-density recommendation shelves."
+                )
+
+                ChangelogHighlightItem(
                     emoji = "🎵",
-                    title = "Spotify Recommendation Algorithm",
-                    description = "Smart algorithmic discovery feeds delivering real-time trending tracks, curated mixes, and personalized suggestions. (Suggested by Sandeep)"
+                    title = "Spotify Recommendation Engine",
+                    description = "Smart algorithmic discovery feeds delivering real-time trending tracks, curated mixes, and verified regional playlists."
                 )
 
                 ChangelogHighlightItem(
                     emoji = "🎛️",
-                    title = "SoundCloud-Style Music Presets",
-                    description = "Dynamic audio presets tailored for deep bass, crisp highs, electronic drops, and studio acoustics. (Suggested by Zaid)"
-                )
-
-                ChangelogHighlightItem(
-                    emoji = "✨",
-                    title = "Revamped UI & Brand Typography",
-                    description = "Elevated geometric Outfit font, two-tone BeatWave wordmark, ambient glow aura, and official About logo badge."
+                    title = "Audio Presets & Custom Themes",
+                    description = "Tailored equalizer presets (SoundCloud style, Bass Boost) and OLED / Liquid Glass theme color presets."
                 )
 
                 ChangelogHighlightItem(
                     emoji = "📡",
-                    title = "Google Cast in Player Menu",
-                    description = "One-tap Chromecast discovery and streaming directly from the player menu with live volume control."
-                )
-
-                ChangelogHighlightItem(
-                    emoji = "🖼️",
-                    title = "Library Playlist Thumbnails",
-                    description = "Playlists in Library now display dynamic cover art and thumbnails by default for intuitive visual navigation."
-                )
-
-                ChangelogHighlightItem(
-                    emoji = "👁️",
-                    title = "Adaptive Font Contrast & Dark Search UI",
-                    description = "Font colors seamlessly adapt to background luminance across all views, ensuring high readability and fixing white-on-white text in search results."
-                )
-
-                ChangelogHighlightItem(
-                    emoji = "⚡",
-                    title = "Direct 1-Tap Playback",
-                    description = "Instant playback for all Daily Discover cards and Quick Picks with liquid glass aesthetics."
+                    title = "Google Cast & Library Covers",
+                    description = "One-tap Chromecast audio streaming directly from the player and dynamic cover art across library playlists."
                 )
             }
         },
@@ -162,7 +150,7 @@ fun WhatsNewPromptHost(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Got it!")
+                Text("Let's Explore!")
             }
         },
         dismissButton = {
