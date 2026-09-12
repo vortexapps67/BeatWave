@@ -157,6 +157,7 @@ import com.beatwave.music.db.MusicDatabase
 import com.beatwave.music.db.entities.Event
 import com.beatwave.music.db.entities.FormatEntity
 import com.beatwave.music.db.entities.LyricsEntity
+import com.beatwave.music.db.entities.LyricsEntity.Companion.LYRICS_NOT_FOUND
 import com.beatwave.music.db.entities.RelatedSongMap
 import com.beatwave.music.db.entities.Song
 import com.beatwave.music.di.DownloadCache
