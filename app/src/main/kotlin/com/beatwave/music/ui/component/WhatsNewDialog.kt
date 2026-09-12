@@ -110,7 +110,7 @@ fun WhatsNewPromptHost(
                 ChangelogHighlightItem(
                     emoji = "⚡",
                     title = "Instant Playback & Fast Lyrics",
-                    description = "0ms song switching with background stream prefetching and ultra-fast parallel lyrics fetching."
+                    description = "0ms song switching with background stream prefetching and ultra-fast parallel lyrics fetching. (Suggested by Daniel)"
                 )
 
                 ChangelogHighlightItem(
