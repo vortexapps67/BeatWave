@@ -151,6 +151,7 @@ import okhttp3.Dns
 import java.net.InetAddress
 import java.net.Inet4Address
 import java.net.Inet6Address
+import java.util.concurrent.ConcurrentHashMap
 import com.beatwave.music.constants.StopMusicOnTaskClearKey
 import com.beatwave.music.db.MusicDatabase
 import com.beatwave.music.db.entities.Event
@@ -451,7 +452,7 @@ class MusicService :
     private var silenceSkipJob: Job? = null
 
     // URL cache for stream URLs - class-level so it can be invalidated on errors
-    private val songUrlCache = HashMap<String, Pair<String, Long>>()
+    private val songUrlCache = ConcurrentHashMap<String, Pair<String, Long>>()
 
     // Flag to bypass cache when quality changes - forces fresh stream fetch
     private val bypassCacheForQualityChange = mutableSetOf<String>()
@@ -1547,6 +1548,104 @@ class MusicService :
         }
     }
 
+    private var prefetchTracksJob: Job? = null
+
+    private fun prefetchUpcomingTracks() {
+        if (!playerInitialized.value) return
+        prefetchTracksJob?.cancel()
+        prefetchTracksJob = scope.launch(Dispatchers.IO) {
+            if (!::connectivityManager.isInitialized || !::audioQuality.isInitialized) return@launch
+            val (currentIndex, count, nextIndex1) = withContext(Dispatchers.Main) {
+                if (!playerInitialized.value) {
+                    Triple(C.INDEX_UNSET, 0, C.INDEX_UNSET)
+                } else {
+                    Triple(player.currentMediaItemIndex, player.mediaItemCount, player.nextMediaItemIndex)
+                }
+            }
+            if (currentIndex < 0 || count <= 1) return@launch
+
+            val nextIndices = mutableListOf<Int>()
+            if (nextIndex1 != C.INDEX_UNSET && nextIndex1 != currentIndex && nextIndex1 in 0 until count) {
+                nextIndices.add(nextIndex1)
+            }
+            if (nextIndex1 != C.INDEX_UNSET && (nextIndex1 + 1) in 0 until count && (nextIndex1 + 1) != currentIndex) {
+                nextIndices.add(nextIndex1 + 1)
+            }
+            if (nextIndices.isEmpty() && currentIndex + 1 < count) {
+                nextIndices.add(currentIndex + 1)
+            }
+
+            for (idx in nextIndices) {
+                if (!isActive) break
+                val item = withContext(Dispatchers.Main) {
+                    if (playerInitialized.value && idx < player.mediaItemCount) {
+                        runCatching { player.getMediaItemAt(idx) }.getOrNull()
+                    } else null
+                } ?: continue
+                val mediaId = item.mediaId
+                if (mediaId.isBlank()) continue
+
+                val losslessOn = dataStore.get(EnableTidalStreamingKey, false)
+                val spineEnabled = dataStore.get(EnabledModulesKey, "[]") != "[]"
+                val effKey = when {
+                    losslessOn || spineEnabled -> "$mediaId#flac"
+                    else -> mediaId
+                }
+
+                // Check if already in cache or downloaded
+                val cached = songUrlCache[effKey]?.takeIf { it.second > System.currentTimeMillis() }
+                if (cached != null) continue
+                if (downloadCache.isCached(mediaId, 0, CHUNK_LENGTH) || playerCache.isCached(effKey, 0, CHUNK_LENGTH)) continue
+
+                Timber.tag(TAG).d("PREFETCHING STREAM: Upcoming track index=$idx mediaId=$mediaId")
+                try {
+                    val playbackData = YTPlayerUtils.playerResponseForPlayback(
+                        mediaId,
+                        audioQuality = audioQuality,
+                        connectivityManager = connectivityManager,
+                        context = this@MusicService,
+                        forceStandardAudio = forceStandardAudioMediaIds.contains(mediaId),
+                    ).getOrNull()
+
+                    if (playbackData != null) {
+                        val streamUrl = playbackData.streamUrl
+                        if (playbackData.isTidalStream || playbackData.isSpineStream) {
+                            losslessStreamMediaIds.add(mediaId)
+                        } else {
+                            losslessStreamMediaIds.remove(mediaId)
+                        }
+                        songUrlCache[effKey] =
+                            streamUrl to System.currentTimeMillis() + (playbackData.streamExpiresInSeconds * 1000L)
+
+                        val format = playbackData.format
+                        val loudnessDb = playbackData.audioConfig?.loudnessDb
+                        val perceptualLoudnessDb = playbackData.audioConfig?.perceptualLoudnessDb
+                        database.query {
+                            upsert(
+                                FormatEntity(
+                                    id = mediaId,
+                                    itag = format.itag,
+                                    mimeType = format.mimeType.split(";")[0],
+                                    codecs = format.mimeType.split("codecs=").getOrNull(1)?.removeSurrounding("\"") ?: "mp3",
+                                    bitrate = format.bitrate,
+                                    sampleRate = format.audioSampleRate,
+                                    contentLength = format.contentLength ?: 0L,
+                                    loudnessDb = loudnessDb,
+                                    perceptualLoudnessDb = perceptualLoudnessDb,
+                                    playbackUrl = playbackData.playbackTracking?.videostatsPlaybackUrl?.baseUrl
+                                )
+                            )
+                        }
+                        recoverSong(mediaId, playbackData)
+                        Timber.tag(TAG).d("✓ PREFETCHED STREAM: Upcoming track index=$idx mediaId=$mediaId")
+                    }
+                } catch (e: Exception) {
+                    Timber.tag(TAG).w(e, "Failed to prefetch stream for upcoming track $mediaId")
+                }
+            }
+        }
+    }
+
     fun playQueue(
         queue: Queue,
         playWhenReady: Boolean = true,
@@ -1623,6 +1722,7 @@ class MusicService :
                 val shufflePlaylistFirst = dataStore.get(ShufflePlaylistFirstKey, false)
                 applyShuffleOrder(player.currentMediaItemIndex, player.mediaItemCount, shufflePlaylistFirst)
             }
+            prefetchUpcomingTracks()
         }
     }
 
@@ -2181,6 +2281,7 @@ class MusicService :
         if (dataStore.get(PersistentQueueKey, true)) {
             saveQueueToDisk()
         }
+        prefetchUpcomingTracks()
     }
 
     override fun onPlaybackStateChanged(
@@ -2223,6 +2324,7 @@ class MusicService :
                 Timber.tag(TAG).d("Playback successful for $mediaId, reset retry count")
             }
             scheduleCrossfade()
+            prefetchUpcomingTracks()
         }
 
         if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED) {
@@ -2276,6 +2378,9 @@ class MusicService :
         }
         if (events.containsAny(EVENT_TIMELINE_CHANGED, EVENT_POSITION_DISCONTINUITY)) {
             currentMediaMetadata.value = player.currentMetadata
+        }
+        if (events.containsAny(EVENT_TIMELINE_CHANGED, Player.EVENT_MEDIA_ITEM_TRANSITION)) {
+            prefetchUpcomingTracks()
         }
 
         // Widget and Discord RPC updates
