@@ -105,7 +105,7 @@ class App : Application(), SingletonImageLoader.Factory {
 
             // Warm the cipher WebView off the first-play critical path
             launch(Dispatchers.IO) {
-                delay(1500)
+                delay(100)
                 CipherDeobfuscator.prewarm()
             }
 

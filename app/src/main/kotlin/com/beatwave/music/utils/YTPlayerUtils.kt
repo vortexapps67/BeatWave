@@ -955,7 +955,7 @@ object YTPlayerUtils {
                     null
                 }
             }
-            mainDeferred.await() to metaDeferred.await()
+            mainDeferred.await() to kotlinx.coroutines.withTimeoutOrNull(400L) { metaDeferred.await() }
         }
 
         // Debug uploaded track response
