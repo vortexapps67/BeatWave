@@ -25,6 +25,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -117,7 +118,10 @@ fun WrappedIntro(onNext: () -> Unit) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // vivimusic Title with Layered Effect
+            // BeatWave Title with Layered Effect
+            val manager = com.beatwave.music.ui.screens.wrapped.LocalWrappedManager.current
+            val periodTitle = manager?.state?.collectAsState()?.value?.periodTitle ?: stringResource(id = R.string.wrapped_intro_title)
+
             AnimatedVisibility(
                 visible = visible,
                 enter = fadeIn(animationSpec = tween(FADE_IN_DURATION, delayMillis = TITLE_DELAY)) +
@@ -128,22 +132,22 @@ fun WrappedIntro(onNext: () -> Unit) {
                         fontFamily = bbhBartle,
                         textAlign = TextAlign.Center,
                         letterSpacing = 2.sp,
-                        fontSize = 50.sp
+                        fontSize = 44.sp
                     )
                     AutoResizingText(
-                        text = stringResource(id = R.string.wrapped_intro_title),
+                        text = periodTitle,
                         style = baseStyle.copy(color = Color.DarkGray),
                         modifier = Modifier
                             .padding(start = 2.dp, top = 2.dp)
                     )
                     AutoResizingText(
-                        text = stringResource(id = R.string.wrapped_intro_title),
+                        text = periodTitle,
                         style = baseStyle.copy(color = Color.Gray),
                         modifier = Modifier
                             .padding(start = 1.dp, top = 1.dp)
                     )
                     AutoResizingText(
-                        text = stringResource(id = R.string.wrapped_intro_title),
+                        text = periodTitle,
                         style = baseStyle.copy(color = Color.White)
                     )
                 }

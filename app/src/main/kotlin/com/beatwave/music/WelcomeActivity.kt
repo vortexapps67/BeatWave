@@ -130,14 +130,48 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.beatwave.music.constants.IsFirstRunKey
+import com.beatwave.music.constants.DataSyncIdKey
+import com.beatwave.music.constants.InnerTubeCookieKey
+import com.beatwave.music.constants.SpotifySessionKey
+import com.beatwave.music.constants.VisitorDataKey
+import com.beatwave.music.viewmodels.SpotifySession
+import com.music.innertube.YouTube
+import com.music.spotify.Spotify
+import com.music.spotify.SpotifyAuth
 import com.beatwave.music.ui.theme.vivimusicTheme
+import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.safeOpenUri
 import com.beatwave.music.utils.dataStore
 import com.beatwave.music.utils.get
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.absoluteValue
 import androidx.datastore.preferences.core.edit
+import android.graphics.Bitmap
+import android.view.ViewGroup
+import android.webkit.CookieManager
+import android.webkit.JavascriptInterface
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.compose.material.icons.rounded.MusicNote
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 
 data class OnboardingPageInfo(
     val content: @Composable (onUpdateScrollState: (Boolean) -> Unit) -> Unit
@@ -248,6 +282,15 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                 runCatching { context.packageManager.canRequestPackageInstalls() }.getOrDefault(false)
             } else true
         )
+    }
+
+    var showYtLogin by remember { mutableStateOf(false) }
+    var showSpotifyLogin by remember { mutableStateOf(false) }
+    var isYtConnected by remember {
+        mutableStateOf(context.dataStore.get(InnerTubeCookieKey, "").isNotBlank())
+    }
+    var isSpotifyConnected by remember {
+        mutableStateOf(context.dataStore.get(SpotifySessionKey, "").isNotBlank())
     }
 
     var isLastPageScrolledToEnd by remember { mutableStateOf(true) }
@@ -481,6 +524,144 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                                 }
                             )
                         }
+
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                }
+            }
+        ),
+        OnboardingPageInfo(
+            content = { _ ->
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Spacer(modifier = Modifier.height(80.dp))
+
+                    Text(
+                        text = "Connect Your",
+                        style = thinHeaderStyle,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Text(
+                        text = "Music Account",
+                        fontFamily = GoogleSansFlex,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 48.sp,
+                        color = MaterialTheme.colorScheme.primary,
+                        lineHeight = 56.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = "Sign in to YouTube Music or Spotify to sync your library, playlists, and recommendations. You can also skip and connect anytime.",
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            fontFamily = GoogleSansFlex
+                        ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                    ) {
+                        PermissionCard(
+                            icon = rememberVectorPainter(Icons.Rounded.MusicNote),
+                            iconColor = if (isYtConnected) Color(0xFF80da88) else Color(0xFFffb4ab),
+                            iconTint = if (isYtConnected) Color(0xFF00522c) else Color(0xFF93000a),
+                            title = "YouTube Music",
+                            description = if (isYtConnected) "Account connected! Playlists and history will sync automatically." else "Sync your playlists, subscriptions, history & liked songs.",
+                            shape = topCardShape,
+                            control = {
+                                if (isYtConnected) {
+                                    Surface(
+                                        shape = CircleShape,
+                                        color = Color(0xFF80da88).copy(alpha = 0.2f),
+                                        modifier = Modifier.padding(end = 4.dp)
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Check,
+                                                contentDescription = null,
+                                                tint = Color(0xFF00522c),
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text(
+                                                text = "Connected",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color(0xFF00522c)
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Rounded.ChevronRight,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            },
+                            onClick = {
+                                showYtLogin = true
+                            }
+                        )
+
+                        Spacer(modifier = Modifier.height(2.dp))
+
+                        PermissionCard(
+                            icon = painterResource(com.beatwave.music.R.drawable.spotify),
+                            iconColor = if (isSpotifyConnected) Color(0xFF80da88) else Color(0xFFb2f5ea),
+                            iconTint = if (isSpotifyConnected) Color(0xFF00522c) else Color(0xFF005448),
+                            title = "Spotify",
+                            description = if (isSpotifyConnected) "Connected! Playlists, liked tracks & algorithm active." else "Import playlists, liked tracks & Spotify recommendation engine.",
+                            shape = bottomCardShape,
+                            control = {
+                                if (isSpotifyConnected) {
+                                    Surface(
+                                        shape = CircleShape,
+                                        color = Color(0xFF80da88).copy(alpha = 0.2f),
+                                        modifier = Modifier.padding(end = 4.dp)
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Rounded.Check,
+                                                contentDescription = null,
+                                                tint = Color(0xFF00522c),
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            Text(
+                                                text = "Connected",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color(0xFF00522c)
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    Icon(
+                                        imageVector = Icons.Rounded.ChevronRight,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            },
+                            onClick = {
+                                showSpotifyLogin = true
+                            }
+                        )
 
                         Spacer(modifier = Modifier.height(100.dp))
                     }
@@ -899,6 +1080,54 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                 }
             }
         }
+
+        if (showYtLogin) {
+            WelcomeYouTubeLoginDialog(
+                onDismiss = { showYtLogin = false },
+                onLoginSuccess = { cookie, visitorData, dataSyncId ->
+                    showYtLogin = false
+                    scope.launch(Dispatchers.IO) {
+                        context.dataStore.edit { prefs ->
+                            prefs[InnerTubeCookieKey] = cookie
+                            if (visitorData.isNotBlank()) prefs[VisitorDataKey] = visitorData
+                            if (dataSyncId.isNotBlank()) prefs[DataSyncIdKey] = dataSyncId
+                        }
+                        YouTube.cookie = cookie
+                        if (visitorData.isNotBlank()) YouTube.visitorData = visitorData
+                        if (dataSyncId.isNotBlank()) YouTube.dataSyncId = dataSyncId.ifBlank { null }
+                        isYtConnected = true
+                    }
+                }
+            )
+        }
+
+        if (showSpotifyLogin) {
+            WelcomeSpotifyLoginDialog(
+                onDismiss = { showSpotifyLogin = false },
+                onCookiesCaptured = { spDc, spKey ->
+                    showSpotifyLogin = false
+                    scope.launch(Dispatchers.IO) {
+                        runCatching {
+                            val token = SpotifyAuth.fetchAccessToken(spDc, spKey).getOrThrow()
+                            Spotify.accessToken = token.accessToken
+                            val profile = Spotify.me().getOrNull()
+                            val newSession = SpotifySession(
+                                spDc = spDc,
+                                spKey = spKey,
+                                accessToken = token.accessToken,
+                                expiresAt = token.accessTokenExpirationTimestampMs,
+                                accountName = profile?.displayName,
+                                accountAvatarUrl = profile?.images?.firstOrNull()?.url
+                            )
+                            context.dataStore.edit { prefs ->
+                                prefs[SpotifySessionKey] = Json { ignoreUnknownKeys = true }.encodeToString(newSession)
+                            }
+                            isSpotifyConnected = true
+                        }
+                    }
+                }
+            )
+        }
     }
 }
 
@@ -1137,5 +1366,339 @@ fun WelcomeExpressiveButton(
                 fontSize = 18.sp
             )
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WelcomeYouTubeLoginDialog(
+    onDismiss: () -> Unit,
+    onLoginSuccess: (cookie: String, visitorData: String, dataSyncId: String) -> Unit,
+) {
+    val context = LocalContext.current
+    var webView by remember { mutableStateOf<WebView?>(null) }
+    var pageProgress by remember { mutableStateOf(0) }
+    var isLoading by remember { mutableStateOf(true) }
+    var hasCompletedLogin by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    val liveVisitorData = remember { AtomicReference("") }
+    val liveDataSyncId = remember { AtomicReference("") }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            webView?.stopLoading()
+            webView?.loadUrl("about:blank")
+            webView?.destroy()
+            webView = null
+        }
+    }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false
+        )
+    ) {
+        Scaffold(
+            topBar = {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    TopAppBar(
+                        title = { Text("Log in to YouTube Music") },
+                        navigationIcon = {
+                            IconButton(onClick = onDismiss) {
+                                Icon(
+                                    painterResource(com.beatwave.music.R.drawable.close),
+                                    contentDescription = "Close"
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = { webView?.reload() }) {
+                                Icon(
+                                    painterResource(com.beatwave.music.R.drawable.sync),
+                                    contentDescription = "Reload"
+                                )
+                            }
+                        },
+                        windowInsets = appTopBarWindowInsets()
+                    )
+                    if (isLoading || pageProgress in 1..99) {
+                        LinearProgressIndicator(
+                            progress = { pageProgress / 100f },
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.primary,
+                            trackColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    }
+                }
+            }
+        ) { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                AndroidView(
+                    modifier = Modifier.fillMaxSize(),
+                    factory = { webViewContext ->
+                        WebView(webViewContext).apply {
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            )
+                            settings.apply {
+                                javaScriptEnabled = true
+                                domStorageEnabled = true
+                                databaseEnabled = true
+                                setSupportZoom(true)
+                                builtInZoomControls = true
+                                displayZoomControls = false
+                                userAgentString = userAgentString.replace("; wv", "")
+                            }
+                            if (WebViewFeature.isFeatureSupported(WebViewFeature.REQUESTED_WITH_HEADER_ALLOW_LIST)) {
+                                WebSettingsCompat.setRequestedWithHeaderOriginAllowList(settings, emptySet())
+                            }
+                            addJavascriptInterface(object {
+                                @JavascriptInterface
+                                fun onRetrieveVisitorData(newVisitorData: String?) {
+                                    if (!newVisitorData.isNullOrBlank() && newVisitorData != "null") {
+                                        val decoded = android.net.Uri.decode(newVisitorData)
+                                        liveVisitorData.set(decoded)
+                                    }
+                                }
+                                @JavascriptInterface
+                                fun onRetrieveDataSyncId(newDataSyncId: String?) {
+                                    if (!newDataSyncId.isNullOrBlank() && newDataSyncId != "null") {
+                                        liveDataSyncId.set(newDataSyncId)
+                                    }
+                                }
+                            }, "Android")
+
+                            webChromeClient = object : WebChromeClient() {
+                                override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                                    pageProgress = newProgress
+                                    if (newProgress >= 100) isLoading = false
+                                }
+                            }
+
+                            webViewClient = object : WebViewClient() {
+                                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                                    isLoading = true
+                                }
+                                override fun onPageFinished(view: WebView, url: String?) {
+                                    isLoading = false
+                                    loadUrl("javascript:Android.onRetrieveVisitorData(window.yt.config_.VISITOR_DATA)")
+                                    loadUrl("javascript:Android.onRetrieveDataSyncId(window.yt.config_.DATASYNC_ID)")
+
+                                    if (url?.startsWith("https://music.youtube.com") == true && !hasCompletedLogin) {
+                                        val cookie = CookieManager.getInstance().getCookie(url)
+                                        if (cookie.isNullOrBlank()) return
+                                        hasCompletedLogin = true
+                                        coroutineScope.launch {
+                                            var waitedMs = 0
+                                            while (liveVisitorData.get().isBlank() && waitedMs < 5000) {
+                                                delay(100)
+                                                waitedMs += 100
+                                            }
+                                            val newVisitorData = liveVisitorData.get()
+                                            val syncId = liveDataSyncId.get()
+                                            onLoginSuccess(cookie, newVisitorData, syncId)
+                                        }
+                                    }
+                                }
+                            }
+                            webView = this
+                            loadUrl("https://accounts.google.com/ServiceLogin?continue=https%3A%2F%2Fmusic.youtube.com")
+                        }
+                    },
+                    update = { view -> webView = view }
+                )
+            }
+        }
+    }
+
+    BackHandler(enabled = webView?.canGoBack() == true) {
+        webView?.goBack()
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WelcomeSpotifyLoginDialog(
+    onDismiss: () -> Unit,
+    onCookiesCaptured: (spDc: String, spKey: String) -> Unit,
+) {
+    var webView by remember { mutableStateOf<WebView?>(null) }
+    var captured by remember { mutableStateOf(false) }
+    var pageProgress by remember { mutableStateOf(0) }
+    var isLoading by remember { mutableStateOf(true) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            webView?.stopLoading()
+            webView?.loadUrl("about:blank")
+            webView?.destroy()
+            webView = null
+        }
+    }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false
+        )
+    ) {
+        Scaffold(
+            topBar = {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    TopAppBar(
+                        title = { Text(stringResource(com.beatwave.music.R.string.spotify_login_title)) },
+                        navigationIcon = {
+                            IconButton(onClick = onDismiss) {
+                                Icon(
+                                    painterResource(com.beatwave.music.R.drawable.close),
+                                    contentDescription = "Close"
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = { webView?.reload() }) {
+                                Icon(
+                                    painterResource(com.beatwave.music.R.drawable.sync),
+                                    contentDescription = "Reload"
+                                )
+                            }
+                        },
+                        windowInsets = appTopBarWindowInsets()
+                    )
+                    if (isLoading || pageProgress in 1..99) {
+                        LinearProgressIndicator(
+                            progress = { pageProgress / 100f },
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.primary,
+                            trackColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    }
+                }
+            }
+        ) { paddingValues ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                AndroidView(
+                    modifier = Modifier.fillMaxSize(),
+                    factory = { context ->
+                        WebView(context).apply {
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            )
+                            setBackgroundColor(android.graphics.Color.TRANSPARENT)
+
+                            val cookieManager = CookieManager.getInstance()
+                            cookieManager.setAcceptCookie(true)
+                            cookieManager.setAcceptThirdPartyCookies(this, true)
+
+                            settings.apply {
+                                javaScriptEnabled = true
+                                domStorageEnabled = true
+                                databaseEnabled = true
+                                allowFileAccess = true
+                                allowContentAccess = true
+                                loadWithOverviewMode = true
+                                useWideViewPort = true
+                                mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                                setSupportZoom(true)
+                                builtInZoomControls = true
+                                displayZoomControls = false
+
+                                val rawUa = userAgentString.orEmpty()
+                                userAgentString = if (rawUa.contains("; wv")) {
+                                    rawUa.replace("; wv", "")
+                                } else if (rawUa.isNotBlank()) {
+                                    rawUa
+                                } else {
+                                    "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36"
+                                }
+                            }
+
+                            webChromeClient = object : WebChromeClient() {
+                                override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                                    pageProgress = newProgress
+                                    if (newProgress >= 100) {
+                                        isLoading = false
+                                    }
+                                }
+                            }
+
+                            webViewClient = object : WebViewClient() {
+                                private fun captureCookies(url: String?): Boolean {
+                                    if (captured) return true
+                                    cookieManager.flush()
+                                    val allCookies = buildString {
+                                        append(cookieManager.getCookie("https://open.spotify.com") ?: "")
+                                        append(";")
+                                        append(cookieManager.getCookie("https://accounts.spotify.com") ?: "")
+                                        append(";")
+                                        append(cookieManager.getCookie("https://spotify.com") ?: "")
+                                        if (url != null) {
+                                            append(";")
+                                            append(cookieManager.getCookie(url) ?: "")
+                                        }
+                                    }
+                                    val cookies = allCookies.split(";").associate {
+                                        val parts = it.split("=")
+                                        val key = parts.firstOrNull()?.trim().orEmpty()
+                                        val valStr = parts.drop(1).joinToString("=").trim()
+                                        key to valStr
+                                    }
+                                    val spDc = cookies["sp_dc"].orEmpty()
+                                    if (spDc.isBlank()) return false
+                                    captured = true
+                                    val spKey = cookies["sp_key"].orEmpty()
+                                    onCookiesCaptured(spDc, spKey)
+                                    return true
+                                }
+
+                                override fun shouldOverrideUrlLoading(
+                                    view: WebView,
+                                    request: WebResourceRequest,
+                                ): Boolean = captureCookies(request.url?.toString())
+
+                                override fun onPageStarted(
+                                    view: WebView,
+                                    url: String?,
+                                    favicon: Bitmap?,
+                                ) {
+                                    isLoading = true
+                                    captureCookies(url)
+                                }
+
+                                override fun onPageFinished(view: WebView, url: String?) {
+                                    isLoading = false
+                                    captureCookies(url)
+                                }
+                            }
+
+                            webView = this
+                            cookieManager.removeAllCookies(null)
+                            cookieManager.flush()
+                            loadUrl(SpotifyAuth.LOGIN_URL)
+                        }
+                    },
+                    update = { view ->
+                        webView = view
+                    }
+                )
+            }
+        }
+    }
+
+    BackHandler(enabled = webView?.canGoBack() == true) {
+        webView?.goBack()
     }
 }

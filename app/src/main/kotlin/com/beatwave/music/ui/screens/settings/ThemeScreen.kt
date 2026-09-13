@@ -308,6 +308,8 @@ fun PortraitThemeLayout(
             onDarkModeChange = onDarkModeChange,
             pureBlack = pureBlack,
             onPureBlackChange = onPureBlackChange,
+            selectedThemeColor = selectedThemeColor,
+            onSelectedThemeColorChange = onSelectedThemeColorChange,
             onReset = onReset,
         )
 
@@ -370,6 +372,8 @@ fun LandscapeThemeLayout(
                 onDarkModeChange = onDarkModeChange,
                 pureBlack = pureBlack,
                 onPureBlackChange = onPureBlackChange,
+                selectedThemeColor = selectedThemeColor,
+                onSelectedThemeColorChange = onSelectedThemeColorChange,
                 onReset = onReset,
             )
 
@@ -389,6 +393,8 @@ fun ThemeControls(
     onDarkModeChange: (DarkMode) -> Unit,
     pureBlack: Boolean,
     onPureBlackChange: (Boolean) -> Unit,
+    selectedThemeColor: Color,
+    onSelectedThemeColorChange: (Color) -> Unit,
     onReset: () -> Unit,
 ) {
     Card(
@@ -405,6 +411,18 @@ fun ThemeControls(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
+            ThemePresetsSection(
+                onApplyPreset = { preset ->
+                    onDarkModeChange(preset.darkMode)
+                    onPureBlackChange(preset.pureBlack)
+                    onSelectedThemeColorChange(preset.themeColor)
+                    onReset() // Reset custom overrides if needed
+                    onDarkModeChange(preset.darkMode)
+                    onPureBlackChange(preset.pureBlack)
+                    onSelectedThemeColorChange(preset.themeColor)
+                }
+            )
+
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = stringResource(R.string.theme_mode),
@@ -483,6 +501,144 @@ fun ThemeControls(
                 modifier = Modifier.align(Alignment.End),
             ) {
                 Text(stringResource(R.string.reset))
+            }
+        }
+    }
+}
+
+data class ThemePresetItem(
+    val nameRes: Int,
+    val darkMode: DarkMode,
+    val pureBlack: Boolean,
+    val themeColor: Color,
+    val backgroundColor: Color?,
+    val textColor: Color?,
+    val dynamicTheme: Boolean,
+    val previewGradient: List<Color>
+)
+
+private val BuiltinThemePresets = listOf(
+    ThemePresetItem(
+        nameRes = R.string.theme_preset_oled,
+        darkMode = DarkMode.ON,
+        pureBlack = true,
+        themeColor = Color(0xFF38BDF8),
+        backgroundColor = Color.Black,
+        textColor = Color(0xFFE0F2FE),
+        dynamicTheme = false,
+        previewGradient = listOf(Color(0xFF000000), Color(0xFF0F172A), Color(0xFF38BDF8))
+    ),
+    ThemePresetItem(
+        nameRes = R.string.theme_preset_cyberpunk,
+        darkMode = DarkMode.ON,
+        pureBlack = false,
+        themeColor = Color(0xFFFF007F),
+        backgroundColor = Color(0xFF090514),
+        textColor = Color(0xFF00F0FF),
+        dynamicTheme = false,
+        previewGradient = listOf(Color(0xFF090514), Color(0xFFFF007F), Color(0xFF00F0FF))
+    ),
+    ThemePresetItem(
+        nameRes = R.string.theme_preset_emerald,
+        darkMode = DarkMode.ON,
+        pureBlack = false,
+        themeColor = Color(0xFF10B981),
+        backgroundColor = Color(0xFF061712),
+        textColor = Color(0xFFD1FAE5),
+        dynamicTheme = false,
+        previewGradient = listOf(Color(0xFF061712), Color(0xFF064E3B), Color(0xFF10B981))
+    ),
+    ThemePresetItem(
+        nameRes = R.string.theme_preset_rose_gold,
+        darkMode = DarkMode.ON,
+        pureBlack = false,
+        themeColor = Color(0xFFF472B6),
+        backgroundColor = Color(0xFF160F14),
+        textColor = Color(0xFFFCE7F3),
+        dynamicTheme = false,
+        previewGradient = listOf(Color(0xFF160F14), Color(0xFF831843), Color(0xFFF472B6))
+    ),
+    ThemePresetItem(
+        nameRes = R.string.theme_preset_sunset_amber,
+        darkMode = DarkMode.ON,
+        pureBlack = false,
+        themeColor = Color(0xFFF59E0B),
+        backgroundColor = Color(0xFF170E08),
+        textColor = Color(0xFFFEF3C7),
+        dynamicTheme = false,
+        previewGradient = listOf(Color(0xFF170E08), Color(0xFF78350F), Color(0xFFF59E0B))
+    ),
+    ThemePresetItem(
+        nameRes = R.string.theme_preset_material_you,
+        darkMode = DarkMode.AUTO,
+        pureBlack = false,
+        themeColor = DefaultThemeColor,
+        backgroundColor = null,
+        textColor = null,
+        dynamicTheme = true,
+        previewGradient = listOf(Color(0xFF1E293B), Color(0xFF64748B), Color(0xFF94A3B8))
+    )
+)
+
+@Composable
+private fun ThemePresetsSection(
+    onApplyPreset: (ThemePresetItem) -> Unit
+) {
+    val (_, onBackgroundColorChange) = rememberPreference(AppBackgroundColorKey, defaultValue = 0)
+    val (_, onTextColorChange) = rememberPreference(AppTextColorKey, defaultValue = 0)
+
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(
+            text = stringResource(R.string.theme_presets),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            items(BuiltinThemePresets) { preset ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .width(96.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .bounceClick {
+                            onApplyPreset(preset)
+                            onBackgroundColorChange(preset.backgroundColor?.toArgb() ?: 0)
+                            onTextColorChange(preset.textColor?.toArgb() ?: 0)
+                        }
+                        .padding(4.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(68.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(androidx.compose.ui.graphics.Brush.linearGradient(preset.previewGradient))
+                            .border(
+                                width = 1.5.dp,
+                                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(22.dp)
+                                .clip(CircleShape)
+                                .background(preset.themeColor)
+                        )
+                    }
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(preset.nameRes),
+                        style = MaterialTheme.typography.labelSmall,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        maxLines = 2,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
         }
     }

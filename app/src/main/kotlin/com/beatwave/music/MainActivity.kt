@@ -278,6 +278,7 @@ import com.beatwave.music.ui.component.NavBarSearchInputBar
 import com.beatwave.music.ui.component.NavSearchState
 import com.beatwave.music.ui.component.OverlayMenu
 import com.beatwave.music.ui.component.SideBarAccountRow
+import com.music.innertube.utils.YouTubeUrlParser
 import com.beatwave.music.ui.component.SideBarCollapsedWidth
 import com.beatwave.music.ui.component.SideBarContentInset
 import com.beatwave.music.ui.component.SideBarLink
@@ -860,6 +861,24 @@ class MainActivity : ComponentActivity() {
                     onDispose { navController.removeOnDestinationChangedListener(listener) }
                 }
 
+                LaunchedEffect(navController, pendingIntent) {
+                    val activeIntent = intent ?: pendingIntent
+                    val uri = activeIntent?.data
+                    if (uri != null) {
+                        val isSyncLink = when {
+                            (uri.scheme == "https" || uri.scheme == "http") &&
+                                (uri.host == "beatwave.de5.net" || uri.host == "beatwave.app" || uri.host == "vivimusic-listen-together.onrender.com") &&
+                                (uri.path?.startsWith("/sync") == true || uri.path?.startsWith("/listen") == true) -> true
+                            (uri.scheme == "beatwave" || uri.scheme == "vivimusic") &&
+                                (uri.host == "sync" || uri.host == "listen") -> true
+                            else -> false
+                        }
+                        if (isSyncLink) {
+                            navController.navigate("listen_together_from_topbar")
+                        }
+                    }
+                }
+
                 val homeViewModel: HomeViewModel = hiltViewModel()
                 // Pre-warm HistoryViewModel at Activity scope so history data loads
                 // in background immediately â€” zero lag when user taps the history icon
@@ -1081,22 +1100,51 @@ class MainActivity : ComponentActivity() {
                 // actual navigation call lands (see enterSearch/exitSearch below).
                 var searchVisualOverride by remember { mutableStateOf<Boolean?>(null) }
 
-                val onSearch: (String) -> Unit = remember(localOnlyMode, navController, onQueryChange) {
+                /**
+                 * Search is an overlay drawn above the pager, not one of its pages.
+                 *
+                 * It was a page, at index 1 -- between Home and Library -- while the bar
+                 * has always drawn it as the standalone circle on the far right. Opening
+                 * search therefore slid the pager sideways past a tab, and every real tab
+                 * switch slid past search. Neither matched what the bar showed. Making it
+                 * a page at the END instead would have cost two intervening pages'
+                 * composition on the way there, so it is not a page at all: the pager is
+                 * exactly the three tabs the bar draws, and search opens in place over
+                 * them for zero page travel.
+                 */
+                var searchOverlayOpen by rememberSaveable { mutableStateOf(openSearchOnLaunch) }
+
+                val onSearch: (String) -> Unit = remember(localOnlyMode, navController, onQueryChange, playerConnection) {
                     { searchQuery ->
                         if (searchQuery == "admin00") {
+                            searchKeyboardActive = false
+                            searchOverlayOpen = false
                             onQueryChange(TextFieldValue())
                             navController.navigate("admin_panel")
                         } else if (searchQuery.isNotEmpty()) {
-                            // search/{query} is the YouTube results screen. In local-only
-                            // mode the results are already on screen (search_input renders
-                            // LocalSearchScreen live), so submitting just records history.
-                            if (!localOnlyMode) navController.navigate("search/${URLEncoder.encode(searchQuery, "UTF-8")}") {
-                                // No launchSingleTop: it compares destination id, not
-                                // resolved args, so re-submitting a new query while
-                                // already on search/{oldQuery} could get silently
-                                // treated as "already there" and dropped. popUpTo
-                                // below still prevents stacking a new entry per edit.
-                                popUpTo("search/{query}") { inclusive = true }
+                            searchKeyboardActive = false
+                            searchOverlayOpen = false
+                            when (val parsedUrl = YouTubeUrlParser.parse(searchQuery)) {
+                                is YouTubeUrlParser.ParsedUrl.Video -> {
+                                    playerConnection?.playQueue(
+                                        YouTubeQueue(WatchEndpoint(videoId = parsedUrl.id)),
+                                    )
+                                }
+                                is YouTubeUrlParser.ParsedUrl.Artist -> {
+                                    navController.navigate("artist/${parsedUrl.id}")
+                                }
+                                null -> {
+                                    if (!localOnlyMode) {
+                                        navController.navigate("search/${URLEncoder.encode(searchQuery, "UTF-8")}") {
+                                            // No launchSingleTop: it compares destination id, not
+                                            // resolved args, so re-submitting a new query while
+                                            // already on search/{oldQuery} could get silently
+                                            // treated as "already there" and dropped. popUpTo
+                                            // below still prevents stacking a new entry per edit.
+                                            popUpTo("search/{query}") { inclusive = true }
+                                        }
+                                    }
+                                }
                             }
 
                             if (dataStore[PauseSearchHistoryKey] != true) {
@@ -1116,21 +1164,10 @@ class MainActivity : ComponentActivity() {
                 }
                 LaunchedEffect(currentRoute) {
                     Timber.tag("Navigation").d("route -> $currentRoute")
+                    if (currentRoute != null && currentRoute !in TabRootRoutes) {
+                        searchOverlayOpen = false
+                    }
                 }
-
-                /**
-                 * Search is an overlay drawn above the pager, not one of its pages.
-                 *
-                 * It was a page, at index 1 -- between Home and Library -- while the bar
-                 * has always drawn it as the standalone circle on the far right. Opening
-                 * search therefore slid the pager sideways past a tab, and every real tab
-                 * switch slid past search. Neither matched what the bar showed. Making it
-                 * a page at the END instead would have cost two intervening pages'
-                 * composition on the way there, so it is not a page at all: the pager is
-                 * exactly the three tabs the bar draws, and search opens in place over
-                 * them for zero page travel.
-                 */
-                var searchOverlayOpen by rememberSaveable { mutableStateOf(openSearchOnLaunch) }
 
                 // Home/Library/Settings are real NavHost destinations again, so
                 // currentRoute already IS the tab route -- no pager-page lookup needed.
@@ -1624,14 +1661,6 @@ class MainActivity : ComponentActivity() {
                     canToggleSource = !localOnlyMode,
                     onTapSearchIcon = enterSearch,
                     onTapBar = {
-                        if (inSearchScreen && !inSearchInputScreen) {
-                            // Tapping the bar again from a results screen (search/{query})
-                            // pops that screen and reopens the search overlay's keyboard
-                            // instead of trying to resubmit in place.
-                            if (navController.currentDestination?.route !in TabRootRoutes) {
-                                navController.popBackStack(navController.graph.startDestinationId, inclusive = false)
-                            }
-                        }
                         searchKeyboardActive = true
                     },
                     onExit = exitSearch,
@@ -1746,30 +1775,45 @@ class MainActivity : ComponentActivity() {
                                         }
                                         TopAppBar(
                                         title = {
-                                            // Home shows the wordmark; every other tab keeps
-                                            // its own title.
-                                            val isHome = effectiveRoute == Screens.Home.route
-                                            Text(
-                                                text = if (isHome) {
-                                                    BrandName
-                                                } else {
-                                                    currentTitleRes?.let { stringResource(it) } ?: ""
-                                                },
-                                                style = MaterialTheme.typography.titleLarge.copy(
-                                                    // Display face is for the wordmark only;
-                                                    // other tab titles keep the app typeface.
-                                                    fontFamily = if (isHome) rememberBrandFontFamily() else null,
-                                                    fontWeight = if (isHome) FontWeight.SemiBold else FontWeight.Bold,
-                                                    fontSize = 24.sp,
-                                                    letterSpacing = if (isHome) 1.5.sp else 0.sp,
-                                                ),
-                                                // The bar is a Scaffold slot outside the screen
-                                                // content, so this is the app-wide accent text
-                                                // colour, not any screen's hero tint.
-                                                color = LocalAccentTextColor.current,
-                                                modifier = Modifier.padding(start = 4.dp),
-                                            )
-                                        },
+                                             val isHome = effectiveRoute == Screens.Home.route
+                                             if (isHome) {
+                                                 Row(
+                                                     verticalAlignment = Alignment.CenterVertically,
+                                                     modifier = Modifier.padding(start = 4.dp)
+                                                 ) {
+                                                     Text(
+                                                         text = "Beat",
+                                                         style = MaterialTheme.typography.titleLarge.copy(
+                                                             fontFamily = rememberBrandFontFamily(),
+                                                             fontWeight = FontWeight.Bold,
+                                                             fontSize = 25.sp,
+                                                             letterSpacing = (-0.3).sp,
+                                                         ),
+                                                         color = LocalAccentTextColor.current,
+                                                     )
+                                                     Text(
+                                                         text = "Wave",
+                                                         style = MaterialTheme.typography.titleLarge.copy(
+                                                             fontFamily = rememberBrandFontFamily(),
+                                                             fontWeight = FontWeight.ExtraBold,
+                                                             fontSize = 25.sp,
+                                                             letterSpacing = (-0.3).sp,
+                                                         ),
+                                                         color = MaterialTheme.colorScheme.primary,
+                                                     )
+                                                 }
+                                             } else {
+                                                 Text(
+                                                     text = currentTitleRes?.let { stringResource(it) } ?: "",
+                                                     style = MaterialTheme.typography.titleLarge.copy(
+                                                         fontWeight = FontWeight.Bold,
+                                                         fontSize = 24.sp,
+                                                     ),
+                                                     color = LocalAccentTextColor.current,
+                                                     modifier = Modifier.padding(start = 4.dp),
+                                                 )
+                                             }
+                                         },
                                         actions = {
                                             // History/Stats/Together moved to Settings (see
                                             // SettingsScreen.kt's ACTIVITY section + the
@@ -2293,6 +2337,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                             com.beatwave.music.ui.component.DonationPromptHost()
+                            com.beatwave.music.ui.component.WhatsNewPromptHost(navController)
 
                             // Both float OVER the full-width NavHost, exactly as the
                             // bottom bar does on a phone: nothing reserves layout

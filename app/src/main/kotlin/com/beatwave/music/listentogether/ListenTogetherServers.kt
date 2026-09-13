@@ -20,22 +20,16 @@ object ListenTogetherServers {
     private const val ServersJson = """
         [
           {
-            "name": "BeatWave Sync",
-            "url": "wss://metroserverx.meowery.eu/ws",
-            "location": "Global (edge)",
+            "name": "BeatWave Sync (Global)",
+            "url": "wss://devilmi-vivi-music-listen-together.hf.space",
+            "location": "Global",
             "operator": "BeatWave"
           },
           {
-            "name": "Hugging Face Sync",
-            "url": "wss://devilmi-vivi-music-listen-together.hf.space",
-            "location": "Global",
-            "operator": "VIVIDH"
-          },
-          {
-            "name": "ViviMusic Sync Server",
+            "name": "BeatWave Sync (USA)",
             "url": "wss://vivimusic-listen-together.onrender.com",
             "location": "USA",
-            "operator": "Vividh"
+            "operator": "BeatWave"
           }
         ]
     """

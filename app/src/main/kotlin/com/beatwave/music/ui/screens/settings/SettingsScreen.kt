@@ -60,6 +60,7 @@ import com.beatwave.music.ui.screens.Screens
 import com.beatwave.music.ui.theme.AppleTokens
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.backToMain
+import com.beatwave.music.ui.utils.safeOpenUri
 import com.beatwave.music.vivimusic.updater.getUpdateAvailableState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,6 +70,7 @@ fun SettingsScreen(
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
     val context = androidx.compose.ui.platform.LocalContext.current
+    val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
     val isUpdateAvailable = getUpdateAvailableState(context) &&
         com.beatwave.music.vivimusic.updater.getAutoUpdateCheckSetting(context)
 
@@ -332,6 +334,13 @@ fun SettingsScreen(
                     iconTint = Color(0xFF007AFF),
                     title = stringResource(R.string.about),
                     onClick = { navController.navigate("settings/about") },
+                )
+                SettingsDivider()
+                SettingsNavItem(
+                    icon = painterResource(R.drawable.book),
+                    iconTint = Color(0xFFFF9500),
+                    title = "Buy The Story Of BeatWave - The Book",
+                    onClick = { uriHandler.safeOpenUri(context, "https://beatwavebook.vercel.app") },
                 )
                 SettingsDivider()
                 SettingsNavItem(

@@ -22,6 +22,7 @@ val IsFirstRunKey = booleanPreferencesKey("isFirstRun")
 val FirstLaunchTimestampKey = longPreferencesKey("firstLaunchTimestamp")
 val DonationPromptLastShownKey = longPreferencesKey("donationPromptLastShown")
 val DonationPromptDismissedKey = booleanPreferencesKey("donationPromptDismissed")
+val LastSeenChangelogVersionKey = stringPreferencesKey("lastSeenChangelogVersion")
 val AppIconKey = stringPreferencesKey("appIcon")
 
 /** JSON map of player-control slot -> user-supplied glyph. See ui/player/customize/PlayerIcons.kt. */
@@ -260,6 +261,7 @@ val CachedSupabaseJwksUrlKey = stringPreferencesKey("cachedSupabaseJwksUrl")
 val DisableScreenshotKey = booleanPreferencesKey("disableScreenshot")
 val SubmittedSuggestionIdsKey = stringPreferencesKey("submittedSuggestionIds")
 val SubmittedBugReportIdsKey = stringPreferencesKey("submittedBugReportIds")
+val RecommendationEngineKey = stringPreferencesKey("recommendationEngine")
 
 val DiscordTokenKey = stringPreferencesKey("discordToken")
 val DiscordInfoDismissedKey = booleanPreferencesKey("discordInfoDismissed")
@@ -364,6 +366,7 @@ val LyricsProviderOrderKey = stringPreferencesKey("lyricsProviderOrder")
 val QueueEditLockKey = booleanPreferencesKey("queueEditLock")
 val ShowWrappedCardKey = booleanPreferencesKey("show_wrapped_card")
 val WrappedSeenKey = booleanPreferencesKey("wrapped_seen")
+val WrappedIntervalDaysKey = intPreferencesKey("wrapped_interval_days")
 val RandomizeHomeOrderKey = booleanPreferencesKey("randomizeHomeOrder")
 val AlbumCanvasEnabledKey = booleanPreferencesKey("albumCanvasEnabled")
 
@@ -427,6 +430,11 @@ enum class PlaylistSongSortType {
     NAME,
     ARTIST,
     PLAY_TIME,
+}
+
+enum class RecommendationEngine {
+    YOUTUBE,
+    SPOTIFY,
 }
 
 enum class AutoPlaylistSongSortType {

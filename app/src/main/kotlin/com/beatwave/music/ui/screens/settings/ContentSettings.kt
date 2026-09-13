@@ -142,10 +142,18 @@ import com.beatwave.music.constants.SYSTEM_DEFAULT
 import com.beatwave.music.constants.ShowArtistBackgroundVideoKey
 import com.beatwave.music.constants.ShowArtistDescriptionKey
 import com.beatwave.music.constants.ShowArtistSubscriberCountKey
+import com.beatwave.music.constants.RecommendationEngine
+import com.beatwave.music.constants.RecommendationEngineKey
 import com.beatwave.music.constants.ShowArtistVideoKey
 import com.beatwave.music.constants.ShowHomeMoodFiltersKey
 import com.beatwave.music.constants.ShowMonthlyListenersKey
 import com.beatwave.music.constants.ShowWrappedCardKey
+import com.beatwave.music.constants.WrappedIntervalDaysKey
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.draw.clip
+import androidx.compose.material3.RadioButton
 import com.beatwave.music.constants.SuggestionRegionKey
 import com.beatwave.music.constants.SuggestionRegionSlugToName
 import com.beatwave.music.constants.TopSize
@@ -239,7 +247,13 @@ fun ContentSettings(
     )
     val (lengthTop, onLengthTopChange) = rememberPreference(key = TopSize, defaultValue = "50")
     val (quickPicks, onQuickPicksChange) = rememberEnumPreference(key = QuickPicksKey, defaultValue = QuickPicks.QUICK_PICKS)
-    val (showWrappedCard, onShowWrappedCardChange) = rememberPreference(key = ShowWrappedCardKey, defaultValue = false)
+    val (recommendationEngine, onRecommendationEngineChange) = rememberEnumPreference(
+        key = RecommendationEngineKey,
+        defaultValue = RecommendationEngine.SPOTIFY
+    )
+    val (showWrappedCard, onShowWrappedCardChange) = rememberPreference(key = ShowWrappedCardKey, defaultValue = true)
+    val (wrappedIntervalDays, onWrappedIntervalDaysChange) = rememberPreference(key = WrappedIntervalDaysKey, defaultValue = 30)
+    var showWrappedIntervalDialog by rememberSaveable { mutableStateOf(false) }
     val (showMoodFilters, onShowMoodFiltersChange) = rememberPreference(
         key = ShowHomeMoodFiltersKey,
         defaultValue = true,
@@ -615,6 +629,29 @@ fun ContentSettings(
         )
     }
 
+    var showRecommendationEngineDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    if (showRecommendationEngineDialog) {
+        EnumDialog(
+            onDismiss = { showRecommendationEngineDialog = false },
+            onSelect = {
+                onRecommendationEngineChange(it)
+                showRecommendationEngineDialog = false
+            },
+            title = "Recommendation Engine",
+            current = recommendationEngine,
+            values = RecommendationEngine.values().toList(),
+            valueText = {
+                when (it) {
+                    RecommendationEngine.YOUTUBE -> "YouTube Music (Default)"
+                    RecommendationEngine.SPOTIFY -> "Spotify Algorithm"
+                }
+            }
+        )
+    }
+
     var showTopLengthDialog by rememberSaveable {
         mutableStateOf(false)
     }
@@ -724,6 +761,63 @@ fun ContentSettings(
                     Text(stringResource(android.R.string.cancel))
                 }
             },
+        )
+    }
+
+    if (showWrappedIntervalDialog) {
+        val intervalOptions = listOf(
+            3 to "Every 3 Days",
+            7 to "Every 7 Days (Weekly)",
+            14 to "Every 14 Days (Bi-weekly)",
+            30 to "Every 30 Days (Monthly)",
+            60 to "Every 60 Days (2 Months)",
+            90 to "Every 90 Days (Quarterly)",
+            365 to "Every 365 Days (Yearly)"
+        )
+
+        AlertDialog(
+            onDismissRequest = { showWrappedIntervalDialog = false },
+            title = { Text("Wrapped Frequency") },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    intervalOptions.forEach { (days, label) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .clickable {
+                                    onWrappedIntervalDaysChange(days)
+                                    showWrappedIntervalDialog = false
+                                }
+                                .padding(vertical = 12.dp, horizontal = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = wrappedIntervalDays == days,
+                                onClick = {
+                                    onWrappedIntervalDaysChange(days)
+                                    showWrappedIntervalDialog = false
+                                }
+                            )
+                            Spacer(Modifier.width(12.dp))
+                            Text(
+                                text = label,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showWrappedIntervalDialog = false }) {
+                    Text(stringResource(R.string.dismiss))
+                }
+            }
         )
     }
 
@@ -1253,33 +1347,57 @@ fun ContentSettings(
                 )
             )
         )
-//        Spacer(modifier = Modifier.height(27.dp))
-//
-//        Material3SettingsGroup(
-//            title = "Wrapped",
-//            items = listOf(
-//                Material3SettingsItem(
-//                    icon = painterResource(R.drawable.trending_up),
-//                    title = { Text(stringResource(R.string.show_wrapped_card)) },
-//                    trailingContent = {
-//                        Switch(
-//                            checked = showWrappedCard,
-//                            onCheckedChange = onShowWrappedCardChange,
-//                            thumbContent = {
-//                                Icon(
-//                                    painter = painterResource(
-//                                        id = if (showWrappedCard) R.drawable.check else R.drawable.close
-//                                    ),
-//                                    contentDescription = null,
-//                                    modifier = Modifier.size(SwitchDefaults.IconSize)
-//                                )
-//                            }
-//                        )
-//                    },
-//                    onClick = { onShowWrappedCardChange(!showWrappedCard) }
-//                )
-//            )
-//        )
+        Spacer(modifier = Modifier.height(27.dp))
+
+        val intervalOptions = listOf(
+            3 to "Every 3 Days",
+            7 to "Every 7 Days (Weekly)",
+            14 to "Every 14 Days (Bi-weekly)",
+            30 to "Every 30 Days (Monthly)",
+            60 to "Every 60 Days (2 Months)",
+            90 to "Every 90 Days (Quarterly)",
+            365 to "Every 365 Days (Yearly)"
+        )
+        val currentIntervalText = intervalOptions.find { it.first == wrappedIntervalDays }?.second ?: "$wrappedIntervalDays Days"
+
+        Material3SettingsGroup(
+            title = "BeatWave Wrapped",
+            items = listOf(
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.trending_up),
+                    title = { Text(stringResource(R.string.show_wrapped_card)) },
+                    description = { Text("Show Spotify-style stats & stories on your Home screen") },
+                    trailingContent = {
+                        Switch(
+                            checked = showWrappedCard,
+                            onCheckedChange = onShowWrappedCardChange,
+                            thumbContent = {
+                                Icon(
+                                    painter = painterResource(
+                                        id = if (showWrappedCard) R.drawable.check else R.drawable.close
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                                )
+                            }
+                        )
+                    },
+                    onClick = { onShowWrappedCardChange(!showWrappedCard) }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.history),
+                    title = { Text("Wrapped Frequency") },
+                    description = { Text(currentIntervalText) },
+                    onClick = { showWrappedIntervalDialog = true }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.play),
+                    title = { Text("Open My Wrapped Now") },
+                    description = { Text("View your interactive Spotify-style stats presentation") },
+                    onClick = { navController.navigate("wrapped") }
+                )
+            )
+        )
 
         Spacer(modifier = Modifier.height(27.dp))
 
@@ -1352,6 +1470,19 @@ fun ContentSettings(
                         )
                     },
                     onClick = { showQuickPicksDialog = true }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(if (recommendationEngine == RecommendationEngine.SPOTIFY) R.drawable.spotify else R.drawable.discover_tune),
+                    title = { Text("Recommendation Engine") },
+                    description = {
+                        Text(
+                            when (recommendationEngine) {
+                                RecommendationEngine.YOUTUBE -> "YouTube Music (Default)"
+                                RecommendationEngine.SPOTIFY -> "Spotify (Algorithm & taste-matching)"
+                            }
+                        )
+                    },
+                    onClick = { showRecommendationEngineDialog = true }
                 )
             )
         )

@@ -15,6 +15,10 @@ import com.music.innertube.models.Artist
 import com.music.innertube.models.PlaylistItem
 import com.music.innertube.models.SongItem
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import com.music.innertube.models.WatchEndpoint
 import com.music.innertube.models.BrowseEndpoint
 import com.music.innertube.models.YTItem
@@ -36,9 +40,12 @@ import com.beatwave.music.constants.LocalSongSortTypeKey
 import com.beatwave.music.constants.PlaylistSortType
 import com.beatwave.music.constants.QuickPicks
 import com.beatwave.music.constants.QuickPicksKey
+import com.beatwave.music.constants.RecommendationEngine
+import com.beatwave.music.constants.RecommendationEngineKey
 import com.beatwave.music.constants.ShowWrappedCardKey
 import com.beatwave.music.constants.SongSortType
 import com.beatwave.music.constants.WrappedSeenKey
+import com.beatwave.music.constants.WrappedIntervalDaysKey
 import com.beatwave.music.db.MusicDatabase
 import com.beatwave.music.db.entities.Album
 import com.beatwave.music.db.entities.LocalItem
@@ -109,6 +116,7 @@ class HomeViewModel @Inject constructor(
     val forgottenFavorites = MutableStateFlow<List<Song>?>(null)
     val keepListening = MutableStateFlow<List<LocalItem>?>(null)
     val similarRecommendations = MutableStateFlow<List<SimilarRecommendation>?>(null)
+    val lastPlayedRecommendation = MutableStateFlow<SimilarRecommendation?>(null)
     val accountPlaylists = MutableStateFlow<List<PlaylistItem>?>(null)
     val homePage = MutableStateFlow<HomePage?>(null)
     val explorePage = MutableStateFlow<ExplorePage?>(null)
@@ -314,49 +322,99 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun getDailyDiscover() {
         val hideVideoSongs = context.dataStore.get(HideVideoSongsKey, false) || context.dataStore.get(DataSaverEnabledKey, false)
-        val likedSongs = database.likedSongsByCreateDateAsc().first()
-        if (likedSongs.isEmpty()) return
+        val recEngine = context.dataStore.get(RecommendationEngineKey, RecommendationEngine.SPOTIFY.name)
+        val likedSongs: List<Song> = database.likedSongsByCreateDateAsc().first()
+        val recentSongs: List<Song> = database.events().first().mapNotNull { it.song }
+        val mostPlayed: List<Song> = database.mostPlayedSongs(0L).first()
+        val allLocal: List<Song> = database.songsByCreateDateAsc().first()
+        val candidateSeeds: List<Song> = (likedSongs + recentSongs + mostPlayed + allLocal).distinctBy { it.id }
 
-        val seeds = likedSongs.shuffled().distinctBy { it.id }.take(5)
+        val seeds: List<Song> = if (candidateSeeds.isNotEmpty()) {
+            candidateSeeds.shuffled().take(5)
+        } else emptyList()
 
-        // Use a synchronized list to collect results safely from concurrent coroutines
         val items = java.util.Collections.synchronizedList(mutableListOf<DailyDiscoverItem>())
 
-        kotlinx.coroutines.coroutineScope {
-            seeds.map { seed ->
-                launch(Dispatchers.IO) {
-                    val endpoint = YouTube.next(WatchEndpoint(videoId = seed.id)).getOrNull()?.relatedEndpoint
-                    if (endpoint != null) {
-                        YouTube.related(endpoint).onSuccess { page ->
-                            val recommendations = page.songs
-                                .filter { item ->
-                                    if (hideVideoSongs && item.isVideoSong) return@filter false
-                                    if (item.explicit) return@filter false
-                                    true
-                                }
-                                .shuffled()
+        if (recEngine == RecommendationEngine.SPOTIFY.name) {
+            // SPOTIFY ALGORITHM
+            val spotifySeedIds = java.util.Collections.synchronizedList(mutableListOf<String>())
+            if (seeds.isNotEmpty()) {
+                kotlinx.coroutines.coroutineScope {
+                    seeds.map { localSong ->
+                        launch(Dispatchers.IO) {
+                            val query = "${localSong.song.title} ${localSong.artists.firstOrNull()?.name.orEmpty()}"
+                            com.music.spotify.Spotify.searchTrack(query).getOrNull()?.let { spotifySeedIds.add(it) }
+                        }
+                    }.forEach { it.join() }
+                }
+            }
 
-                            // Simple check to avoid immediate duplicate of seed
-                            val recommendation = recommendations.firstOrNull { rec ->
-                                rec.id != seed.id
-                            }
+            val spotifyRecs = com.music.spotify.Spotify.getRecommendations(spotifySeedIds.toList(), limit = 35).getOrNull()
+            if (!spotifyRecs.isNullOrEmpty()) {
+                val defaultSeed = seeds.firstOrNull() ?: Song(
+                    song = com.beatwave.music.db.entities.SongEntity(id = "seed", title = "Spotify Discovery", duration = 0),
+                    artists = listOf(com.beatwave.music.db.entities.ArtistEntity(id = "artist", name = "Recommended for You"))
+                )
 
-                            if (recommendation != null) {
-                                items.add(
-                                    DailyDiscoverItem(
-                                        seed = seed,
-                                        recommendation = recommendation,
-                                        relatedEndpoint = endpoint
-                                    )
-                                )
+                // Suggest direct playable songs from Spotify recommendations
+                kotlinx.coroutines.coroutineScope {
+                    spotifyRecs.take(30).map { spTrack ->
+                        launch(Dispatchers.IO) {
+                            val query = "${spTrack.name} ${spTrack.artists.firstOrNull()?.name.orEmpty()}"
+                            val searchResult = YouTube.search(query, YouTube.SearchFilter.FILTER_SONG).getOrNull()
+                            val ytItem = searchResult?.items?.firstOrNull() as? SongItem
+                            if (ytItem != null && (!hideVideoSongs || !ytItem.isVideoSong) && !ytItem.explicit) {
+                                val seed = if (seeds.isNotEmpty()) seeds.random() else defaultSeed
+                                items.add(DailyDiscoverItem(seed, ytItem, null))
                             }
                         }
-                    }
+                    }.forEach { it.join() }
                 }
-            }.forEach { it.join() }
+            }
         }
 
-        // Final deduplication just in case multiple seeds recommended the same song
+        // Fallback to YOUTUBE ALGORITHM if Spotify failed or if setting is YouTube
+        if (items.isEmpty()) {
+            if (seeds.isNotEmpty()) {
+                kotlinx.coroutines.coroutineScope {
+                    seeds.map { seed ->
+                        launch(Dispatchers.IO) {
+                            val endpoint = YouTube.next(WatchEndpoint(videoId = seed.id)).getOrNull()?.relatedEndpoint
+                            if (endpoint != null) {
+                                YouTube.related(endpoint).onSuccess { page ->
+                                    val songRecs = page.songs
+                                        .filter { item ->
+                                            if (hideVideoSongs && item.isVideoSong) return@filter false
+                                            if (item.explicit) return@filter false
+                                            true
+                                        }
+                                        .shuffled()
+
+                                    songRecs.take(6).forEach { recommendation ->
+                                        if (recommendation.id != seed.id) {
+                                            items.add(DailyDiscoverItem(seed, recommendation, endpoint))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }.forEach { it.join() }
+                }
+            } else {
+                // If user is brand new with no local songs at all, fetch top trending songs
+                val defaultSeed = Song(
+                    song = com.beatwave.music.db.entities.SongEntity(id = "new", title = "Top Hits", duration = 0),
+                    artists = listOf(com.beatwave.music.db.entities.ArtistEntity(id = "artist", name = "Featured"))
+                )
+                val hits = YouTube.search("top songs", YouTube.SearchFilter.FILTER_SONG).getOrNull()
+                hits?.items?.filterIsInstance<SongItem>()?.shuffled()?.take(25)?.forEach { songItem ->
+                    if (!hideVideoSongs || !songItem.isVideoSong) {
+                        items.add(DailyDiscoverItem(defaultSeed, songItem, null))
+                    }
+                }
+            }
+        }
+
         dailyDiscover.value = items.toList().distinctBy { it.recommendation.id }.shuffled()
     }
 
@@ -366,18 +424,61 @@ class HomeViewModel @Inject constructor(
             QuickPicks.QUICK_PICKS -> {
                 val relatedSongs = database.quickPicks().first().filterVideoSongs(hideVideoSongs)
                 val forgotten = database.forgottenFavorites().first().filterVideoSongs(hideVideoSongs).take(8)
+                val recEngine = context.dataStore.get(RecommendationEngineKey, RecommendationEngine.SPOTIFY.name)
 
-                // Get similar songs from YouTube based on recent listening
-                val recentSong = database.events().first().firstOrNull()?.song
+                val recentSong: Song? = database.events().first().firstOrNull()?.song 
+                    ?: database.likedSongsByCreateDateAsc().first().firstOrNull()
+                    ?: database.songsByCreateDateAsc().first().firstOrNull()
                 val ytSimilarSongs = mutableListOf<Song>()
 
                 if (recentSong != null) {
-                    val endpoint = YouTube.next(WatchEndpoint(videoId = recentSong.id)).getOrNull()?.relatedEndpoint
-                    if (endpoint != null) {
-                        YouTube.related(endpoint).onSuccess { page ->
-                            // Convert YouTube songs to local Song format if they exist in database
-                            page.songs.take(10).forEach { ytSong ->
-                                database.song(ytSong.id).first()?.let { localSong ->
+                    if (recEngine == RecommendationEngine.SPOTIFY.name) {
+                        // SPOTIFY ALGORITHM
+                        val query = "${recentSong.title} ${recentSong.artists.firstOrNull()?.name.orEmpty()}"
+                        val spotifySeedId = com.music.spotify.Spotify.searchTrack(query).getOrNull()
+                        val seedsList = listOfNotNull(spotifySeedId)
+                        val spotifyRecs = com.music.spotify.Spotify.getRecommendations(seedsList, limit = 25).getOrNull()
+                        if (!spotifyRecs.isNullOrEmpty()) {
+                            val ytSimilarSongsSync = java.util.Collections.synchronizedList(ytSimilarSongs)
+                            kotlinx.coroutines.coroutineScope {
+                                spotifyRecs.map { spTrack ->
+                                    launch(Dispatchers.IO) {
+                                        val sQuery = "${spTrack.name} ${spTrack.artists.firstOrNull()?.name.orEmpty()}"
+                                        val searchResult = YouTube.search(sQuery, YouTube.SearchFilter.FILTER_SONG).getOrNull()
+                                        val ytItem = searchResult?.items?.firstOrNull() as? SongItem
+                                        if (ytItem != null && (!hideVideoSongs || !ytItem.isVideoSong) && !ytItem.explicit) {
+                                            val localSong = database.song(ytItem.id).first() ?: Song(
+                                                song = com.beatwave.music.db.entities.SongEntity(
+                                                    id = ytItem.id,
+                                                    title = ytItem.title,
+                                                    duration = ytItem.duration ?: 0,
+                                                    thumbnailUrl = ytItem.thumbnail
+                                                ),
+                                                artists = ytItem.artists.map { com.beatwave.music.db.entities.ArtistEntity(id = it.id.orEmpty(), name = it.name) }
+                                            )
+                                            ytSimilarSongsSync.add(localSong)
+                                        }
+                                    }
+                                }.forEach { it.join() }
+                            }
+                        }
+                    }
+
+                    // Fallback to YOUTUBE ALGORITHM if Spotify failed or if setting is YouTube
+                    if (ytSimilarSongs.isEmpty()) {
+                        val endpoint = YouTube.next(WatchEndpoint(videoId = recentSong.id)).getOrNull()?.relatedEndpoint
+                        if (endpoint != null) {
+                            YouTube.related(endpoint).onSuccess { page ->
+                                page.songs.take(20).forEach { ytSong ->
+                                    val localSong = database.song(ytSong.id).first() ?: Song(
+                                        song = com.beatwave.music.db.entities.SongEntity(
+                                            id = ytSong.id,
+                                            title = ytSong.title,
+                                            duration = ytSong.duration ?: 0,
+                                            thumbnailUrl = ytSong.thumbnail
+                                        ),
+                                        artists = ytSong.artists.map { com.beatwave.music.db.entities.ArtistEntity(id = it.id.orEmpty(), name = it.name) }
+                                    )
                                     if (!hideVideoSongs || !localSong.song.isVideo) {
                                         ytSimilarSongs.add(localSong)
                                     }
@@ -387,18 +488,17 @@ class HomeViewModel @Inject constructor(
                     }
                 }
 
-                // Combine all sources and remove duplicates
                 val combined = (relatedSongs + forgotten + ytSimilarSongs)
                     .distinctBy { it.id }
                     .shuffled()
-                    .take(20)
+                    .take(35)
 
-                quickPicks.value = combined.ifEmpty { relatedSongs.shuffled().take(20) }
+                quickPicks.value = combined.ifEmpty { relatedSongs.shuffled().take(35) }
             }
             QuickPicks.LAST_LISTEN -> {
                 val song = database.events().first().firstOrNull()?.song
                 if (song != null && database.hasRelatedSongs(song.id)) {
-                    quickPicks.value = database.getRelatedSongs(song.id).first().filterVideoSongs(hideVideoSongs).shuffled().take(20)
+                    quickPicks.value = database.getRelatedSongs(song.id).first().filterVideoSongs(hideVideoSongs).shuffled().take(30)
                 }
             }
         }
@@ -597,6 +697,60 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    suspend fun loadDynamicRecommendationsForSong(song: Song) {
+        if (localOnlyMode.value) return
+        val hideExplicit = context.dataStore.get(HideExplicitKey, false)
+        val hideVideoSongs = context.dataStore.get(HideVideoSongsKey, false) || context.dataStore.get(DataSaverEnabledKey, false)
+        val recEngine = context.dataStore.get(RecommendationEngineKey, RecommendationEngine.SPOTIFY.name)
+
+        val items = java.util.Collections.synchronizedList(mutableListOf<YTItem>())
+
+        if (recEngine == RecommendationEngine.SPOTIFY.name) {
+            val query = "${song.song.title} ${song.artists.firstOrNull()?.name.orEmpty()}"
+            val spotifySeedId = com.music.spotify.Spotify.searchTrack(query).getOrNull()
+            val seedList = if (spotifySeedId != null) listOf(spotifySeedId) else emptyList()
+            val spotifyRecs = com.music.spotify.Spotify.getRecommendations(seedList, limit = 25).getOrNull()
+
+            if (!spotifyRecs.isNullOrEmpty()) {
+                coroutineScope {
+                    spotifyRecs.take(20).map { spTrack ->
+                        launch(Dispatchers.IO) {
+                            val trackQuery = "${spTrack.name} ${spTrack.artists.firstOrNull()?.name.orEmpty()}"
+                            val searchResult = YouTube.search(trackQuery, YouTube.SearchFilter.FILTER_SONG).getOrNull()
+                            val ytItem = searchResult?.items?.firstOrNull() as? SongItem
+                            if (ytItem != null && (!hideVideoSongs || !ytItem.isVideoSong) && !ytItem.explicit) {
+                                if (items.none { it.id == ytItem.id }) {
+                                    items.add(ytItem)
+                                }
+                            }
+                        }
+                    }.forEach { it.join() }
+                }
+            }
+        }
+
+        // Fallback to YouTube related endpoint if items is empty
+        if (items.isEmpty()) {
+            val endpoint = YouTube.next(WatchEndpoint(videoId = song.id)).getOrNull()?.relatedEndpoint
+            if (endpoint != null) {
+                YouTube.related(endpoint).onSuccess { page ->
+                    val recs = (page.songs.shuffled().take(10) + page.albums.shuffled().take(5))
+                        .distinctBy { it.id }
+                        .filterExplicit(hideExplicit)
+                        .filterVideoSongs(hideVideoSongs)
+                    items.addAll(recs)
+                }
+            }
+        }
+
+        if (items.isNotEmpty()) {
+            lastPlayedRecommendation.value = SimilarRecommendation(
+                title = song,
+                items = items.distinctBy { it.id }.shuffled()
+            )
+        }
+    }
+
     /**
      * Phase 2: Fires all network sections concurrently.
      * Because isLoading is already false, each section streams into the UI
@@ -770,7 +924,8 @@ class HomeViewModel @Inject constructor(
             showWrappedCard.collect { shouldShow ->
                 if (shouldShow && !wrappedManager.state.value.isDataReady) {
                     try {
-                        wrappedManager.prepare()
+                        val intervalDays = context.dataStore.get(WrappedIntervalDaysKey, 30)
+                        wrappedManager.prepare(days = intervalDays)
                         val state = wrappedManager.state.first { it.isDataReady }
                         val trackMap = state.trackMap
                         if (trackMap.isNotEmpty()) {
@@ -831,6 +986,16 @@ class HomeViewModel @Inject constructor(
                     if (YouTube.cookie != null && accountPlaylists.value != null) {
                         loadAccountPlaylists()
                     }
+                }
+        }
+
+        // Dynamically recalculate recommendations when the user plays any song
+        viewModelScope.launch(Dispatchers.IO) {
+            database.events()
+                .mapNotNull { it.firstOrNull()?.song }
+                .distinctUntilChanged { old, new -> old.id == new.id }
+                .collect { lastPlayedSong ->
+                    loadDynamicRecommendationsForSong(lastPlayedSong)
                 }
         }
     }

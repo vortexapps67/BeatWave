@@ -37,23 +37,15 @@ jobs:
       - name: Setup FFTW for Android
         uses: ./.github/actions/setup-fftw
 
-      - name: Generate debug.keystore
+      - name: Setup persistent keystore
         run: |
           mkdir -p ~/.android
-          keytool -genkey -v \
-            -keystore ~/.android/debug.keystore \
-            -storepass android \
-            -alias androiddebugkey \
-            -keypass android \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
+          echo "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" | base64 -d > ~/.android/debug.keystore
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build Universal FOSS Release APK
+      - name: Build Universal GMS Release APK
         env:
           LASTFM_API_KEY: ${{ secrets.LASTFM_API_KEY }}
           LASTFM_SECRET: ${{ secrets.LASTFM_SECRET }}

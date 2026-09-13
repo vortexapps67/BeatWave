@@ -10,6 +10,7 @@ import com.music.innertube.YouTube
 import com.music.innertube.models.SongItem
 import com.beatwave.music.extensions.toMediaItem
 import com.beatwave.music.models.MediaMetadata
+import com.beatwave.music.models.toMediaMetadata
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -19,7 +20,7 @@ class YouTubePlaylistQueue(
     private val initialSongs: List<SongItem> = emptyList(),
     private val initialContinuation: String? = null,
     private val startIndex: Int = 0,
-    override val preloadItem: MediaMetadata? = null,
+    override val preloadItem: MediaMetadata? = initialSongs.getOrNull(startIndex)?.toMediaMetadata(),
 ) : Queue {
     private var continuation: String? = initialContinuation
     private var retryCount = 0

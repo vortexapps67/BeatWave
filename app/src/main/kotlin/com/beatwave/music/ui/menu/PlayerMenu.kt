@@ -30,6 +30,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -91,6 +97,12 @@ import com.beatwave.music.ui.component.BottomSheetState
 import com.beatwave.music.ui.component.ListDialog
 import com.beatwave.music.ui.component.Material3MenuGroup
 import com.beatwave.music.ui.component.Material3MenuItemData
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material3.LocalContentColor
+import com.beatwave.music.BuildConfig
+import com.beatwave.music.constants.EnableGoogleCastKey
+import com.beatwave.music.ui.component.LocalMenuState
+import com.beatwave.music.ui.component.openCastPicker
 import com.beatwave.music.ui.component.NewAction
 import com.beatwave.music.ui.component.NewActionGrid
 import com.beatwave.music.ui.component.VolumeSlider
@@ -114,6 +126,8 @@ fun PlayerMenu(
 ) {
     mediaMetadata ?: return
     val context = LocalContext.current
+    val menuState = LocalMenuState.current
+    val (enableGoogleCast) = rememberPreference(EnableGoogleCastKey, defaultValue = true)
     val ringtoneViewModel = com.beatwave.music.LocalRingtoneViewModel.current
     val database = LocalDatabase.current
     val playerConnection = LocalPlayerConnection.current ?: return
@@ -232,27 +246,38 @@ fun PlayerMenu(
                 .padding(horizontal = 24.dp)
                 .padding(top = 24.dp, bottom = 6.dp),
         ) {
-            // Show Cast indicator when casting
+            // Show Cast indicator when casting (interactive pill to open Cast picker)
             if (isCasting && castDeviceName != null) {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
+                Surface(
+                    onClick = { openCastPicker(context, menuState, playerConnection) },
+                    shape = RoundedCornerShape(20.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.cast),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = stringResource(R.string.casting_to, castDeviceName ?: ""),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.cast_connected),
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = stringResource(R.string.casting_to, castDeviceName ?: ""),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
             
@@ -565,6 +590,37 @@ fun PlayerMenu(
         item {
             Material3MenuGroup(
                 items = buildList {
+                    if (BuildConfig.CAST_AVAILABLE && enableGoogleCast) {
+                        add(
+                            Material3MenuItemData(
+                                title = { Text(text = stringResource(R.string.google_cast)) },
+                                description = {
+                                    Text(
+                                        text = if (isCasting && castDeviceName != null) {
+                                            stringResource(R.string.casting_to, castDeviceName ?: "")
+                                        } else {
+                                            stringResource(R.string.google_cast_description)
+                                        },
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(
+                                            if (isCasting) R.drawable.cast_connected else R.drawable.cast
+                                        ),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(24.dp),
+                                        tint = if (isCasting) MaterialTheme.colorScheme.primary else LocalContentColor.current
+                                    )
+                                },
+                                onClick = {
+                                    openCastPicker(context, menuState, playerConnection)
+                                }
+                            )
+                        )
+                    }
                     add(
                         Material3MenuItemData(
                             title = { Text(text = stringResource(R.string.listen_together)) },
@@ -678,8 +734,8 @@ fun PlayerMenu(
                         )
                         add(
                             Material3MenuItemData(
-                                title = { Text(text = stringResource(R.string.advanced)) },
-                                description = { Text(text = stringResource(R.string.advanced_desc)) },
+                                title = { Text(text = "Music Presets & Tempo") },
+                                description = { Text(text = "Nightcore, Sped Up, Slowed, Daycore, Pitch & Speed") },
                                 icon = {
                                     Icon(
                                         painter = painterResource(R.drawable.tune),
@@ -741,6 +797,23 @@ fun PlayerMenu(
     }
 }
 
+enum class MusicPreset(
+    val title: String,
+    val description: String,
+    val speed: Float,
+    val transpose: Int,
+    val badge: String,
+) {
+    NORMAL("Normal", "1.0x Original", 1.0f, 0, "⚡"),
+    SPED_UP("Sped Up", "1.25x Speed", 1.25f, 0, "🚀"),
+    NIGHTCORE("Nightcore", "1.25x + Pitch Up", 1.25f, 3, "🌙"),
+    SLOWED("Slowed", "0.85x + Deep", 0.85f, -2, "☕"),
+    DAYCORE("Daycore", "0.80x + Pitch Down", 0.80f, -3, "🌊"),
+    VAPORWAVE("Vaporwave", "0.75x Chill Retro", 0.75f, -4, "📼"),
+    DOUBLE_SPEED("2x Fast", "2.0x Speed", 2.0f, 0, "⏩"),
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TempoPitchDialog(onDismiss: () -> Unit) {
     val playerConnection = LocalPlayerConnection.current ?: return
@@ -761,7 +834,18 @@ fun TempoPitchDialog(onDismiss: () -> Unit) {
         properties = DialogProperties(usePlatformDefaultWidth = false),
         onDismissRequest = onDismiss,
         title = {
-            Text(stringResource(R.string.tempo_and_pitch))
+            Column {
+                Text(
+                    text = "Music Presets & Tempo",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+                Text(
+                    text = "SoundCloud-style speed & pitch effects",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         },
         dismissButton = {
             TextButton(
@@ -782,7 +866,69 @@ fun TempoPitchDialog(onDismiss: () -> Unit) {
             }
         },
         text = {
-            Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // Preset Chips Section
+                Text(
+                    text = "SoundCloud-Style Presets",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    MusicPreset.values().forEach { preset ->
+                        val isSelected = !isInRoom &&
+                                kotlin.math.abs(tempo - preset.speed) < 0.01f &&
+                                transposeValue == preset.transpose
+
+                        FilterChip(
+                            selected = isSelected,
+                            onClick = {
+                                if (!isInRoom) {
+                                    tempo = preset.speed
+                                    transposeValue = preset.transpose
+                                    updatePlaybackParameters()
+                                }
+                            },
+                            label = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                                ) {
+                                    Text(preset.badge)
+                                    Text(
+                                        preset.title,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                    )
+                                }
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        )
+                    }
+                }
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+
+                Text(
+                    text = "Fine-Tune Tempo & Pitch",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.SemiBold
+                )
+
                 if (!isInRoom) {
                     ValueAdjuster(
                         icon = R.drawable.speed,

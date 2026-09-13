@@ -6,11 +6,13 @@
 package com.beatwave.music.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.ui.unit.em
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -167,6 +170,52 @@ fun HomeHeroCard(
                 ),
         )
 
+        // Glass border outline
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(
+                    width = 1.dp,
+                    brush = Brush.verticalGradient(
+                        listOf(
+                            Color.White.copy(alpha = 0.35f),
+                            Color.White.copy(alpha = 0.08f),
+                        )
+                    ),
+                    shape = ContinuousRoundedRectangle(cornerRadius)
+                )
+        )
+
+        // Top tag pill
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(AppleTokens.Gutter)
+                .clip(CircleShape)
+                .background(Color.Black.copy(alpha = 0.45f))
+                .border(1.dp, Color.White.copy(alpha = 0.25f), CircleShape)
+                .padding(horizontal = 10.dp, vertical = 4.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(6.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary)
+                )
+                Text(
+                    text = "FEATURED",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.ExtraBold,
+                    letterSpacing = 0.08.em,
+                    color = Color.White.copy(alpha = 0.95f),
+                )
+            }
+        }
+
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -180,6 +229,7 @@ fun HomeHeroCard(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
+            Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
@@ -195,11 +245,13 @@ fun HomeHeroCard(
                 HeroPill(
                     iconRes = R.drawable.play,
                     label = stringResource(R.string.play),
+                    isPrimary = true,
                     onClick = onPlay,
                 )
                 HeroPill(
                     iconRes = R.drawable.shuffle,
                     label = stringResource(R.string.shuffle),
+                    isPrimary = false,
                     onClick = onShuffle,
                 )
             }
@@ -211,27 +263,46 @@ fun HomeHeroCard(
 private fun HeroPill(
     iconRes: Int,
     label: String,
+    isPrimary: Boolean = false,
     onClick: () -> Unit,
 ) {
+    val bg = if (isPrimary) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        Color.White.copy(alpha = 0.2f)
+    }
+    val contentColor = if (isPrimary) {
+        MaterialTheme.colorScheme.onPrimary
+    } else {
+        Color.White
+    }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         modifier = Modifier
             .clip(CircleShape)
-            .background(Color.White.copy(alpha = 0.22f))
+            .background(bg)
+            .then(
+                if (!isPrimary) {
+                    Modifier.border(1.dp, Color.White.copy(alpha = 0.35f), CircleShape)
+                } else {
+                    Modifier
+                }
+            )
             .bounceClick(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Icon(
             painter = painterResource(iconRes),
             contentDescription = null,
-            tint = Color.White,
+            tint = contentColor,
             modifier = Modifier.size(16.dp),
         )
         Text(
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            color = Color.White,
+            fontWeight = FontWeight.SemiBold,
+            color = contentColor,
             maxLines = 1,
         )
     }

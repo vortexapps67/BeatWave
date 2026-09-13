@@ -158,7 +158,11 @@ android {
             keyAlias = "androiddebugkey"
             keyPassword = "android"
             storePassword = "android"
-            storeFile = file("${System.getProperty("user.home")}/.android/debug.keystore")
+            storeFile = if (file("persistent-debug.keystore").exists()) {
+                file("persistent-debug.keystore")
+            } else {
+                file("${System.getProperty("user.home")}/.android/debug.keystore")
+            }
         }
     }
 
@@ -170,6 +174,8 @@ android {
             isDebuggable = false
             if (file("keystore/release.keystore").exists()) {
                 signingConfig = signingConfigs.getByName("release")
+            } else if (file("persistent-debug.keystore").exists()) {
+                signingConfig = signingConfigs.getByName("persistentDebug")
             } else {
                 signingConfig = signingConfigs.getByName("debug")
             }

@@ -21,6 +21,10 @@
     </plurals>
 
     <!-- Home -->
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="good_night">Good night</string>
     <string name="history">History</string>
     <string name="stats">Stats</string>
     <string name="mood_and_genres">Mood and Genres</string>
@@ -592,4 +596,19 @@
     <string name="diy_redo">Redo</string>
     <string name="diy_rotation">Rotation</string>
     <string name="diy_size">Size</string>
+    <string name="recommended_because_listened">Because you listened to</string>
+    <string name="beatwave_sync">BeatWave Sync</string>
+    <string name="beatwave_sync_desc">Collaborative live rooms, shared playlists &amp; real-time chat with friends</string>
+    <string name="share_sync_link">Share Sync Link</string>
+    <string name="save_as_playlist">Save as Playlist</string>
+    <string name="saved_to_playlists">Saved to playlists</string>
+    <string name="chat">Chat</string>
+    <string name="send_message_hint">Type a message...</string>
+    <string name="theme_presets">Theme Presets</string>
+    <string name="theme_preset_oled">Deep Midnight OLED</string>
+    <string name="theme_preset_cyberpunk">Cyberpunk Neon</string>
+    <string name="theme_preset_emerald">Emerald Frosted Glass</string>
+    <string name="theme_preset_rose_gold">Rose Gold</string>
+    <string name="theme_preset_sunset_amber">Sunset Amber</string>
+    <string name="theme_preset_material_you">Dynamic Material You</string>
 </resources>

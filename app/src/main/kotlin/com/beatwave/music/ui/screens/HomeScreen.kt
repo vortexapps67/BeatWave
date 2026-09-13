@@ -10,6 +10,7 @@ import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -253,6 +254,7 @@ sealed class HomeSection(val id: String, val baseWeight: Int) {
     data object Hero : HomeSection("hero", 110)
     data object SpeedDial : HomeSection("speed_dial", 100)
     data object QuickPicks : HomeSection("quick_picks", 90)
+    data object LastPlayedRecommendation : HomeSection("last_played_recommendation", 85)
     data object DailyDiscover : HomeSection("daily_discover", 80)
     data object KeepListening : HomeSection("keep_listening", 50)
     data object AccountPlaylists : HomeSection("account_playlists", 40)
@@ -284,7 +286,17 @@ fun CommunityPlaylistCard(
     Card(
         modifier = modifier
             .width(360.dp)
-            .height(470.dp),
+            .height(470.dp)
+            .border(
+                1.dp,
+                Brush.verticalGradient(
+                    listOf(
+                        Color.White.copy(alpha = 0.25f),
+                        Color.White.copy(alpha = 0.05f)
+                    )
+                ),
+                RoundedCornerShape(AppleTokens.CardCornerLarge)
+            ),
         colors = CardDefaults.cardColors(
             containerColor = containerColor
         ),
@@ -293,7 +305,7 @@ fun CommunityPlaylistCard(
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
-                .background(onSurface.copy(alpha = 0.05f))
+                .background(onSurface.copy(alpha = 0.06f))
         ) {
             Row(
                 modifier = Modifier
@@ -528,6 +540,7 @@ fun DailyDiscoverCard(
     val haptic = LocalHapticFeedback.current
 
     val song = dailyDiscover.recommendation as? SongItem
+    val album = dailyDiscover.recommendation as? AlbumItem
     val playsString = stringResource(R.string.plays)
 
     Card(
@@ -542,6 +555,14 @@ fun DailyDiscoverCard(
                         menuState.show {
                             YouTubeSongMenu(
                                 song = song,
+                                navController = navController,
+                                onDismiss = { menuState.dismiss() }
+                            )
+                        }
+                    } else if (album != null) {
+                        menuState.show {
+                            YouTubeAlbumMenu(
+                                albumItem = album,
                                 navController = navController,
                                 onDismiss = { menuState.dismiss() }
                             )
@@ -566,56 +587,166 @@ fun DailyDiscoverCard(
                     .fillMaxSize()
             )
 
+            // Glass border outline
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(
+                        width = 1.dp,
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                Color.White.copy(alpha = 0.35f),
+                                Color.White.copy(alpha = 0.05f),
+                            )
+                        ),
+                        shape = RoundedCornerShape(AppleTokens.CardCornerLarge)
+                    )
+            )
+
+            // Top tag badge
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(14.dp)
+                    .clip(CircleShape)
+                    .background(Color.Black.copy(alpha = 0.45f))
+                    .border(1.dp, Color.White.copy(alpha = 0.25f), CircleShape)
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFF00E676))
+                    )
+                    Text(
+                        text = "DISCOVER",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 0.08.em,
+                        color = Color.White.copy(alpha = 0.95f),
+                    )
+                }
+            }
+
             if (maxWidth > 200.dp) {
+                // Subtle vertical gradient to make text & glass pod pop beautifully
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
+                        .background(
+                            Brush.verticalGradient(
+                                listOf(
+                                    Color.Transparent,
+                                    Color.Black.copy(alpha = 0.2f),
+                                    Color.Black.copy(alpha = 0.8f)
+                                )
+                            )
+                        )
                 )
 
-                Column(
+                val messages = listOf(
+                    R.string.daily_discover_sounds_like,
+                    R.string.daily_discover_because_you_listen_to,
+                    R.string.daily_discover_similar_to,
+                    R.string.daily_discover_based_on,
+                    R.string.daily_discover_for_fans_of
+                )
+                val messageRes = remember(dailyDiscover.seed.id) {
+                    messages[kotlin.math.abs(dailyDiscover.seed.id.hashCode()) % messages.size]
+                }
+
+                // Frosted Liquid Glass Bottom Pod
+                Box(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(24.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(12.dp)
+                        .clip(RoundedCornerShape(AppleTokens.CardCorner))
+                        .background(Color.White.copy(alpha = 0.14f))
+                        .border(
+                            width = 1.dp,
+                            brush = Brush.verticalGradient(
+                                listOf(
+                                    Color.White.copy(alpha = 0.4f),
+                                    Color.White.copy(alpha = 0.1f)
+                                )
+                            ),
+                            shape = RoundedCornerShape(AppleTokens.CardCorner)
+                        )
+                        .padding(14.dp)
                 ) {
-                    Column {
-                        Text(
-                            text = dailyDiscover.recommendation.title,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Color.White
-                        )
-                        Text(
-                            text = buildString {
-                                append((dailyDiscover.recommendation as? SongItem)?.artists?.joinToString(", ") { it.name } ?: "")
-                                if (playCount > 0) {
-                                    append(" • $playCount $playsString")
-                                }
-                            },
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White.copy(alpha = 0.7f)
-                        )
-                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 12.dp)
+                        ) {
+                            Text(
+                                text = dailyDiscover.recommendation.title,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+                                color = Color.White,
+                                maxLines = 1,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                            Spacer(Modifier.height(2.dp))
+                            Text(
+                                text = buildString {
+                                    if (song != null) {
+                                        append(song.artists.joinToString(", ") { it.name })
+                                        if (playCount > 0) {
+                                            append(" • $playCount $playsString")
+                                        }
+                                    } else if (album != null) {
+                                        append("Album")
+                                        val albumArtists = album.artists?.joinToString(", ") { it.name }
+                                        if (!albumArtists.isNullOrEmpty()) {
+                                            append(" • $albumArtists")
+                                        }
+                                    }
+                                },
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.White.copy(alpha = 0.8f),
+                                maxLines = 1,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                            Spacer(Modifier.height(4.dp))
+                            Text(
+                                text = stringResource(messageRes, "${dailyDiscover.seed.title} • ${dailyDiscover.seed.artists.joinToString(", ") { it.name }}"),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
+                                color = Color.White.copy(alpha = 0.6f),
+                                maxLines = 1,
+                                overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                            )
+                        }
 
-                    val messages = listOf(
-                        R.string.daily_discover_sounds_like,
-                        R.string.daily_discover_because_you_listen_to,
-                        R.string.daily_discover_similar_to,
-                        R.string.daily_discover_based_on,
-                        R.string.daily_discover_for_fans_of
-                    )
-                    val messageRes = remember(dailyDiscover.seed.id) {
-                        messages[kotlin.math.abs(dailyDiscover.seed.id.hashCode()) % messages.size]
+                        // Frosted Liquid Glass Play Circle
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(Color.White.copy(alpha = 0.25f))
+                                .border(1.dp, Color.White.copy(alpha = 0.45f), CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_widget_play),
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     }
-
-                    Text(
-                        text = stringResource(messageRes, "${dailyDiscover.seed.title} • ${dailyDiscover.seed.artists.joinToString(", ") { it.name }}"),
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
-                        color = Color.White.copy(alpha = 0.6f),
-                        maxLines = 1,
-                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
-                    )
                 }
             }
         }
@@ -643,6 +774,7 @@ fun HomeScreen(
     val forgottenFavorites by viewModel.forgottenFavorites.collectAsStateWithLifecycle()
     val keepListening by viewModel.keepListening.collectAsStateWithLifecycle()
     val similarRecommendations by viewModel.similarRecommendations.collectAsStateWithLifecycle()
+    val lastPlayedRecommendation by viewModel.lastPlayedRecommendation.collectAsStateWithLifecycle()
     val accountPlaylists by viewModel.accountPlaylists.collectAsStateWithLifecycle()
     val homePage by viewModel.homePage.collectAsStateWithLifecycle()
     val explorePage by viewModel.explorePage.collectAsStateWithLifecycle()
@@ -959,6 +1091,7 @@ fun HomeScreen(
         forgottenFavorites,
         communityPlaylists,
         similarRecommendations,
+        lastPlayedRecommendation,
         homePage?.sections,
         explorePage?.moodAndGenres
     ) {
@@ -973,6 +1106,7 @@ fun HomeScreen(
         // deleting the section's rendering code, so it is one line to bring back.
         // if (speedDialItems.isNotEmpty()) list.add(HomeSection.SpeedDial)
         if (quickPicks?.isNotEmpty() == true) list.add(HomeSection.QuickPicks)
+        if (lastPlayedRecommendation != null) list.add(HomeSection.LastPlayedRecommendation)
         if (communityPlaylists?.isNotEmpty() == true) list.add(HomeSection.FromTheCommunity)
         if (dailyDiscover?.isNotEmpty() == true) list.add(HomeSection.DailyDiscover)
         if (keepListening?.isNotEmpty() == true) list.add(HomeSection.KeepListening)
@@ -1145,13 +1279,27 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.TopStart
         ) {
-            // Flat fill behind everything — a no-op (matches the default
-            // Scaffold background) unless the user picked a specific custom
-            // theme color, in which case that becomes Home's actual background.
+            // Base fill with rich ambient atmospheric gradient aura
+            val homeBgBase = rememberAppBackgroundColor(MaterialTheme.colorScheme.background)
+            val globalAccent = rememberGlobalAccentColors().first
+            val tertiaryColor = MaterialTheme.colorScheme.tertiary
             Box(
                 modifier = Modifier
                     .matchParentSize()
-                    .background(rememberAppBackgroundColor(MaterialTheme.colorScheme.background))
+                    .background(homeBgBase)
+            )
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(
+                        Brush.verticalGradient(
+                            0.0f to globalAccent.copy(alpha = 0.22f),
+                            0.20f to tertiaryColor.copy(alpha = 0.14f),
+                            0.45f to globalAccent.copy(alpha = 0.06f),
+                            0.75f to Color.Transparent,
+                            1.0f to Color.Transparent,
+                        )
+                    )
             )
             HomeImageBackground(contentLoaded = homePage != null)
 
@@ -1219,15 +1367,24 @@ fun HomeScreen(
                 // app bar: the bar is transparent chrome here, and a large title that
                 // scrolls away is what gives the first screenful its weight.
                 item(key = "listen_now_title", contentType = "section_title") {
-                    Text(
-                        text = stringResource(if (localOnly) R.string.filter_local else R.string.listen_now),
-                        fontSize = AppleTokens.TitleLarge,
-                        lineHeight = AppleTokens.TitleLargeLineHeight,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = (-0.02).em,
-                        color = LocalContentColor.current,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                    val currentHour = remember { java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY) }
+                    val greetingTitle = when {
+                        localOnly -> stringResource(R.string.filter_local)
+                        currentHour in 5..11 -> stringResource(R.string.good_morning)
+                        currentHour in 12..16 -> stringResource(R.string.good_afternoon)
+                        currentHour in 17..21 -> stringResource(R.string.good_evening)
+                        else -> stringResource(R.string.good_night)
+                    }
+                    val greetingSubtitle = when {
+                        localOnly -> "Explore your offline collection"
+                        currentHour in 5..11 -> "Start your day with good music"
+                        currentHour in 12..16 -> "Keep the energy flow going"
+                        currentHour in 17..21 -> "Unwind with your favorite vibes"
+                        else -> "Late night sounds & relaxing tunes"
+                    }
+                    val globalAccent = rememberGlobalAccentColors().first
+
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .windowInsetsPadding(
@@ -1237,10 +1394,79 @@ fun HomeScreen(
                                 start = AppleTokens.Gutter,
                                 end = AppleTokens.Gutter,
                                 top = AppleTokens.ItemGap,
-                                bottom = AppleTokens.TextGap,
+                                bottom = 4.dp,
                             )
                             .animateItem(),
-                    )
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = greetingTitle,
+                                fontSize = AppleTokens.TitleLarge,
+                                lineHeight = AppleTokens.TitleLargeLineHeight,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = (-0.02).em,
+                                color = LocalContentColor.current,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                            Spacer(Modifier.height(2.dp))
+                            Text(
+                                text = greetingSubtitle,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = LocalContentColor.current.copy(alpha = 0.65f),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+
+                        // Profile / Account Quick Glass Button
+                        Box(
+                            modifier = Modifier
+                                .size(42.dp)
+                                .clip(CircleShape)
+                                .background(Color.White.copy(alpha = 0.1f))
+                                .border(
+                                    width = 1.dp,
+                                    brush = Brush.verticalGradient(
+                                        listOf(
+                                            globalAccent.copy(alpha = 0.6f),
+                                            Color.White.copy(alpha = 0.2f)
+                                        )
+                                    ),
+                                    shape = CircleShape
+                                )
+                                .combinedBounceClick(
+                                    onClick = {
+                                        navController.navigate("account")
+                                    }
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (url != null) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(url)
+                                        .diskCachePolicy(CachePolicy.ENABLED)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape)
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(R.drawable.person),
+                                    contentDescription = null,
+                                    tint = LocalContentColor.current.copy(alpha = 0.85f),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
                 }
 
                 // YouTube's own mood/genre filters (Energize, Relax, Feel good...).
@@ -1344,6 +1570,7 @@ fun HomeScreen(
                     accountPlaylists = accountPlaylists,
                     communityPlaylists = communityPlaylists,
                     similarRecommendations = similarRecommendations,
+                    lastPlayedRecommendation = lastPlayedRecommendation,
                     homePage = homePage,
                     explorePage = explorePage,
                     mediaMetadata = mediaMetadata,
@@ -1516,6 +1743,7 @@ private fun LazyListScope.homeSectionsContent(
     accountPlaylists: List<PlaylistItem>?,
     communityPlaylists: List<CommunityPlaylistItem>?,
     similarRecommendations: List<SimilarRecommendation>?,
+    lastPlayedRecommendation: SimilarRecommendation?,
     homePage: HomePage?,
     explorePage: ExplorePage?,
     mediaMetadata: MediaMetadata?,
@@ -1541,6 +1769,7 @@ private fun LazyListScope.homeSectionsContent(
                 randomizeJob = randomizeJob,
             )
             HomeSection.QuickPicks -> quickPicksSection(deps, quickPicks, mediaMetadata, isPlaying, quickPicksSongMap)
+            HomeSection.LastPlayedRecommendation -> lastPlayedRecommendationSection(deps, lastPlayedRecommendation)
             HomeSection.FromTheCommunity -> communityPlaylistsSection(deps, communityPlaylists)
             HomeSection.DailyDiscover -> dailyDiscoverSection(deps, dailyDiscover)
             HomeSection.KeepListening ->
@@ -2310,14 +2539,17 @@ private fun LazyListScope.dailyDiscoverSection(
                         dailyDiscover = item,
                         onClick = {
                             val song = item.recommendation as? SongItem
-                            val mediaMetadata = song?.toMediaMetadata()
-                            if (mediaMetadata != null) {
+                            val album = item.recommendation as? AlbumItem
+                            if (song != null) {
+                                val mediaMetadata = song.toMediaMetadata()
                                 deps.playerConnection.playQueue(
                                     YouTubeQueue(
                                         song.endpoint ?: WatchEndpoint(videoId = song.id),
                                         mediaMetadata
                                     )
                                 )
+                            } else if (album != null) {
+                                deps.navController.navigate("album/${album.id}")
                             }
                         },
                         navController = deps.navController,
@@ -2606,6 +2838,53 @@ private fun LazyListScope.forgottenFavoritesSection(
     }
 }
 
+private fun LazyListScope.lastPlayedRecommendationSection(
+    deps: HomeSectionDeps,
+    recommendation: SimilarRecommendation?,
+) {
+    recommendation?.let {
+        item(key = "last_played_rec_title", contentType = "section_title") {
+            NavigationTitle(
+                label = stringResource(R.string.recommended_because_listened),
+                title = recommendation.title.title,
+                thumbnail = recommendation.title.thumbnailUrl?.let { thumbnailUrl ->
+                    {
+                        AsyncImage(
+                            model = thumbnailUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(ListThumbnailSize)
+                                .clip(RoundedCornerShape(ThumbnailCornerRadius))
+                        )
+                    }
+                },
+                onClick = {
+                    when (recommendation.title) {
+                        is Song -> recommendation.title.album?.id?.let { deps.navController.navigate("album/$it") }
+                        is Album -> deps.navController.navigate("album/${recommendation.title.id}")
+                        is Artist -> deps.navController.navigate("artist/${recommendation.title.id}")
+                        is Playlist -> {}
+                    }
+                },
+                modifier = Modifier.animateItem(),
+            )
+        }
+
+        item(key = "last_played_rec_list", contentType = "carousel") {
+            LazyRow(
+                contentPadding = WindowInsets.systemBars
+                    .only(WindowInsetsSides.Horizontal)
+                    .asPaddingValues().plusStart(deps.sideInset),
+                modifier = Modifier.animateItem().bleedStart(deps.sideInset)
+            ) {
+                items(items = recommendation.items, key = { it.id }) { item ->
+                    deps.ytGridItem(item)
+                }
+            }
+        }
+    }
+}
+
 private fun LazyListScope.similarRecommendationsSection(
     section: HomeSection.SimilarRecommendation,
     deps: HomeSectionDeps,
@@ -2881,8 +3160,8 @@ private fun MoodCard(
     val colors = remember(title) {
         val hue = ((title.hashCode() % 360) + 360) % 360
         listOf(
-            Color.hsl(hue.toFloat(), 0.55f, 0.42f),
-            Color.hsl(((hue + 40) % 360).toFloat(), 0.60f, 0.26f),
+            Color.hsl(hue.toFloat(), 0.85f, 0.48f),
+            Color.hsl(((hue + 35) % 360).toFloat(), 0.90f, 0.35f),
         )
     }
     Box(
