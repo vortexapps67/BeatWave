@@ -8,7 +8,7 @@
     </a>
   </p>
   <p>
-    <b><a href="https://github.com/beatlabs790/BeatWave/releases/tag/v5.0.0">⬇️ DOWNLOAD BEATWAVE v5.0.0</a></b>
+    <b><a href="https://github.com/beatlabs790/BeatWave/releases/tag/v5.1.2">⬇️ DOWNLOAD BEATWAVE v5.0.0</a></b>
     — Latest release. Works on Android 8.0+.
   </p>
   <p>
@@ -181,7 +181,7 @@
 
   <h2>🙏 Credits</h2>
 
-  <p>BeatWave is developed and maintained by <a href="https://github.com/beatlabs790">BeatLabs</a>. See <a href="https://support-akshansh.vercel.app">support-akshansh.vercel.app</a> for support.</p>
+  <p>BeatWave is developed and maintained by <a href="https://github.com/vortexapps67">Vortex Apps</a>. See <a href="https://support-akshansh.vercel.app">support-akshansh.vercel.app</a> for support.</p>
 
   <table border="0" cellpadding="10" cellspacing="0" width="90%">
     <tr valign="top">
