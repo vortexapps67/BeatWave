@@ -4,11 +4,11 @@
 
   <p>
     <a href="https://github.com/beatlabs790/BeatWave/releases/tag/v5.0.0">
-      <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20DOWNLOAD%20BEATWAVE%201.5.2-4CAF50?style=for-the-badge&logo=android&logoColor=white" alt="Download BeatWave v5.0.0">
+      <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20DOWNLOAD%20BEATWAVE%201.5.2-4CAF50?style=for-the-badge&logo=android&logoColor=white" alt="Download BeatWave v5.1.2">
     </a>
   </p>
   <p>
-    <b><a href="https://github.com/beatlabs790/BeatWave/releases/tag/v5.1.2">⬇️ DOWNLOAD BEATWAVE v5.0.0</a></b>
+    <b><a href="https://github.com/beatlabs790/BeatWave/releases/tag/latest">⬇️ DOWNLOAD Latest Build.</a></b>
     — Latest release. Works on Android 8.0+.
   </p>
   <p>
