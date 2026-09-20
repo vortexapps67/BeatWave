@@ -3,6 +3,8 @@ package com.music.spotify
 import com.music.spotify.models.SpotifyPlaylist
 import com.music.spotify.models.SpotifyTrack
 
+import java.util.concurrent.ConcurrentHashMap
+
 object SpotifyMapper {
 
     private val FEAT_PATTERN = Regex("\\(feat\\..*?\\)")
@@ -13,22 +15,11 @@ object SpotifyMapper {
     private val NON_ALNUM_PATTERN = Regex("[^a-z0-9\\s]")
     private val MULTI_SPACE_PATTERN = Regex("\\s+")
 
-    private const val NORM_CACHE_MAX_SIZE = 256
+    private const val NORM_CACHE_MAX_SIZE = 512
     private const val EARLY_EXIT_THRESHOLD = 0.95
 
-    private val normalizeCache = object : LinkedHashMap<String, String>(
-        NORM_CACHE_MAX_SIZE, 0.75f, true
-    ) {
-        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, String>?): Boolean =
-            size > NORM_CACHE_MAX_SIZE
-    }
-
-    private val bigramCache = object : LinkedHashMap<String, Set<String>>(
-        NORM_CACHE_MAX_SIZE, 0.75f, true
-    ) {
-        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Set<String>>?): Boolean =
-            size > NORM_CACHE_MAX_SIZE
-    }
+    private val normalizeCache = ConcurrentHashMap<String, String>()
+    private val bigramCache = ConcurrentHashMap<String, Set<String>>()
 
     data class PrecomputedTrack(
         val normalizedTitle: String,
@@ -137,17 +128,19 @@ object SpotifyMapper {
     }
 
     private fun cachedNormalize(title: String): String {
-        normalizeCache[title]?.let { return it }
-        val normalized = normalizeTitle(title)
-        normalizeCache[title] = normalized
-        return normalized
+        if (normalizeCache.size > NORM_CACHE_MAX_SIZE) {
+            normalizeCache.clear()
+        }
+        return normalizeCache.computeIfAbsent(title) { normalizeTitle(it) }
     }
 
     private fun cachedBigrams(normalized: String): Set<String> {
-        bigramCache[normalized]?.let { return it }
-        val bigrams = if (normalized.length < 2) emptySet() else normalized.windowed(2).toSet()
-        bigramCache[normalized] = bigrams
-        return bigrams
+        if (bigramCache.size > NORM_CACHE_MAX_SIZE) {
+            bigramCache.clear()
+        }
+        return bigramCache.computeIfAbsent(normalized) {
+            if (it.length < 2) emptySet() else it.windowed(2).toSet()
+        }
     }
 
     private fun normalizeTitle(title: String): String {
