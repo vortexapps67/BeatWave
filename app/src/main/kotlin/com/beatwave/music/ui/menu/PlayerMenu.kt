@@ -51,6 +51,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import com.beatwave.music.ui.screens.AodScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -236,6 +237,16 @@ fun PlayerMenu(
     if (showPitchTempoDialog) {
         TempoPitchDialog(
             onDismiss = { showPitchTempoDialog = false },
+        )
+    }
+
+    var showAodScreen by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    if (showAodScreen) {
+        AodScreen(
+            onDismiss = { showAodScreen = false },
         )
     }
 
@@ -788,6 +799,22 @@ fun PlayerMenu(
                                 navController.navigate("ambient_mode")
                                 playerBottomSheetState.collapseSoft()
                                 onDismiss()
+                            }
+                        )
+                    )
+                    add(
+                        Material3MenuItemData(
+                            title = { Text(text = "Always-On Display (AOD)") },
+                            description = { Text(text = "Minimal AMOLED Standby Clock & Music") },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.bedtime),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            },
+                            onClick = {
+                                showAodScreen = true
                             }
                         )
                     )

@@ -611,6 +611,16 @@ val LyricsGlowEffectKey = booleanPreferencesKey("lyricsGlowEffect")
 val AppleMusicLyricsBlurKey = booleanPreferencesKey("appleMusicLyricsBlur")
 val LyricsStandardBlurKey = booleanPreferencesKey("lyricsStandardBlur")
 
+// Ambient Edge Glow (Fluid Glow V2)
+val AmbientEdgeGlowEnabledKey = booleanPreferencesKey("ambientEdgeGlowEnabled")
+val AmbientEdgeGlowIntensityKey = floatPreferencesKey("ambientEdgeGlowIntensity")
+
+// Always-On Display (AOD Mode)
+val AodModeEnabledKey = booleanPreferencesKey("aodModeEnabled")
+val AodAutoStartChargingKey = booleanPreferencesKey("aodAutoStartCharging")
+val AodPixelShiftEnabledKey = booleanPreferencesKey("aodPixelShiftEnabled")
+val AodDimLevelKey = floatPreferencesKey("aodDimLevel")
+
 val LiquidGlassGlobalEnabledKey = booleanPreferencesKey("liquidGlassGlobalEnabled")
 val LiquidGlassAdaptiveContrastKey = booleanPreferencesKey("liquidGlassAdaptiveContrast")
 val LiquidGlassTextColorKey = intPreferencesKey("liquidGlassTextColor")

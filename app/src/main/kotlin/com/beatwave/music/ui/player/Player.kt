@@ -212,6 +212,9 @@ import com.beatwave.music.extensions.toggleRepeatMode
 import com.beatwave.music.listentogether.RoomRole
 import com.beatwave.music.models.MediaMetadata
 import com.beatwave.music.playback.ExoDownloadService
+import com.beatwave.music.constants.AmbientEdgeGlowEnabledKey
+import com.beatwave.music.constants.AmbientEdgeGlowIntensityKey
+import com.beatwave.music.ui.component.AmbientEdgeGlow
 import com.beatwave.music.ui.component.BottomSheet
 import com.beatwave.music.ui.component.BottomSheetState
 import com.beatwave.music.ui.component.DjReadout
@@ -440,6 +443,9 @@ fun BottomSheetPlayer(
     val gradientStopsRaw by rememberPreference(PlayerGradientStopsKey, defaultValue = "")
     val gradientStops = remember(gradientStopsRaw) { decodeGradientStops(gradientStopsRaw) }
     val gradientAngle by rememberPreference(PlayerGradientAngleKey, defaultValue = 90f)
+
+    val ambientEdgeGlowEnabled by rememberPreference(AmbientEdgeGlowEnabledKey, defaultValue = false)
+    val ambientEdgeGlowIntensity by rememberPreference(AmbientEdgeGlowIntensityKey, defaultValue = 0.85f)
 
     val onBackgroundColor = when (playerBackground) {
         PlayerBackgroundStyle.DEFAULT -> MaterialTheme.colorScheme.secondary
@@ -1766,6 +1772,15 @@ fun BottomSheetPlayer(
                     PlayerBackgroundStyle.DEFAULT -> {
                         // Nothing
                     }
+                }
+
+                if (ambientEdgeGlowEnabled && gradientColors.isNotEmpty()) {
+                    AmbientEdgeGlow(
+                        colors = gradientColors,
+                        isPlaying = isPlaying,
+                        intensity = ambientEdgeGlowIntensity,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
 
                 // No artwork for this song: BLUR/GRADIENT/GLOW_ANIMATED/APPLE_MUSIC/
