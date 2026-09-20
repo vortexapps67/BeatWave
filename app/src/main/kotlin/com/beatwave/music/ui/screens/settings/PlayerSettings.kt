@@ -1145,7 +1145,7 @@ fun PlayerSettings(
             title = "Ambient Lighting (Fluid Glow V2)",
             items = listOf(
                 Material3SettingsItem(
-                    icon = painterResource(R.drawable.brush),
+                    icon = painterResource(R.drawable.palette),
                     title = { Text("Screen Edge Glow") },
                     description = { Text("Synchronize the screen edges with album art colors and rhythmic beat drops") },
                     trailingContent = {
@@ -1166,7 +1166,7 @@ fun PlayerSettings(
                     onClick = { onAmbientEdgeGlowEnabledChange(!ambientEdgeGlowEnabled) }
                 ),
                 Material3SettingsItem(
-                    icon = painterResource(R.drawable.brightness_medium),
+                    icon = painterResource(R.drawable.contrast),
                     title = { Text("Glow Intensity") },
                     description = {
                         Column {

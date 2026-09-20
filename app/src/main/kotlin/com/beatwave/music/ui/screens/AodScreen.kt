@@ -42,6 +42,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BatteryChargingFull
+import androidx.compose.material.icons.filled.BatteryFull
+import androidx.compose.material.icons.filled.Brightness6
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -309,12 +313,10 @@ fun AodScreen(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Icon(
-                            painter = painterResource(
-                                if (isCharging) R.drawable.bolt else R.drawable.battery_full
-                            ),
+                            imageVector = if (isCharging) Icons.Default.BatteryChargingFull else Icons.Default.BatteryFull,
                             contentDescription = null,
                             tint = Color.White.copy(alpha = (dimLevel * 0.6f).coerceIn(0.15f, 0.8f)),
-                            modifier = Modifier.size(14.dp)
+                            modifier = Modifier.size(15.dp)
                         )
                         Text(
                             text = "$batteryPercentage%",
@@ -503,7 +505,7 @@ fun AodScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.brightness_medium),
+                        imageVector = Icons.Default.Brightness6,
                         contentDescription = null,
                         tint = Color.White.copy(alpha = 0.7f),
                         modifier = Modifier.size(18.dp)
