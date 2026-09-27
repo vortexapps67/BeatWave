@@ -615,6 +615,7 @@
     <string name="export_audio_in_progress">Exporting…</string>
     <string name="export_audio_saved">Saved. Cached tracks export without using data.</string>
     <string name="export_audio_failed">Export failed: %1$s</string>
+    <string name="export_audio_desc">Save this track to your device storage</string>
     <string name="eight_d_audio">8D Audio</string>
     <string name="eight_d_audio_desc">Rotate the sound around you</string>
     <string name="eight_d_audio_on">On — tap to adjust speed</string>
