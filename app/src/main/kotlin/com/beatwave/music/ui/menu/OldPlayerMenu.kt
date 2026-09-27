@@ -108,6 +108,8 @@ fun OldPlayerMenu(
 
     val download by LocalDownloadUtil.current.getDownload(mediaMetadata.id).collectAsState(initial = null)
 
+    val audioToolsItems = rememberAudioToolsMenuItems(mediaMetadata)
+
     val listenTogetherManager = LocalListenTogetherManager.current
     val listenTogetherRoleState = listenTogetherManager?.role?.collectAsState(initial = RoomRole.NONE)
     // See Player.kt: gated on control mode, not on role.
@@ -613,6 +615,7 @@ fun OldPlayerMenu(
                             )
                         )
                     }
+                    addAll(audioToolsItems)
                     add(
                         Material3MenuItemData(
                             title = { Text(text = stringResource(R.string.listen_together)) },

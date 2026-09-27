@@ -102,13 +102,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.LocalContentColor
 import com.beatwave.music.BuildConfig
 import com.beatwave.music.constants.EnableGoogleCastKey
-import com.beatwave.music.constants.EightDEnabledKey
-import com.beatwave.music.constants.EightDRotationHzKey
-import com.beatwave.music.ui.component.EightDDialog
-import com.beatwave.music.utils.SongExporter
 import androidx.compose.material3.Switch
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import com.beatwave.music.ui.component.LocalMenuState
 import com.beatwave.music.ui.component.openCastPicker
 import com.beatwave.music.ui.component.NewAction
@@ -161,29 +155,7 @@ fun PlayerMenu(
     val download by downloadUtil.getDownload(mediaMetadata.id)
         .collectAsState(initial = null)
 
-    var isExporting by remember { mutableStateOf(false) }
-    val exportLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument("audio/mp4")
-    ) { destination ->
-        if (destination == null) return@rememberLauncherForActivityResult
-        isExporting = true
-        coroutineScope.launch {
-            val result = SongExporter.export(
-                context = context,
-                songId = mediaMetadata.id,
-                destination = destination,
-                playerCache = downloadUtil.playerCache,
-                downloadCache = downloadUtil.downloadCache,
-            )
-            isExporting = false
-            val message = when (result) {
-                is SongExporter.Result.Success -> context.getString(R.string.export_audio_saved)
-                is SongExporter.Result.Failure ->
-                    context.getString(R.string.export_audio_failed, result.message)
-            }
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        }
-    }
+    val audioToolsItems = rememberAudioToolsMenuItems(mediaMetadata)
 
     val artists =
         remember(mediaMetadata.artists) {
@@ -272,25 +244,6 @@ fun PlayerMenu(
         )
     }
 
-    val (eightDEnabled, onEightDEnabledChange) = rememberPreference(
-        EightDEnabledKey,
-        defaultValue = false,
-    )
-    val (eightDRotationHz, onEightDRotationHzChange) = rememberPreference(
-        EightDRotationHzKey,
-        defaultValue = 0.125f,
-    )
-    var showEightDDialog by rememberSaveable { mutableStateOf(false) }
-
-    if (showEightDDialog) {
-        EightDDialog(
-            enabled = eightDEnabled,
-            rotationHz = eightDRotationHz,
-            onEnabledChange = onEightDEnabledChange,
-            onRotationHzChange = onEightDRotationHzChange,
-            onDismiss = { showEightDDialog = false },
-        )
-    }
 
     var showAodScreen by rememberSaveable {
         mutableStateOf(false)
@@ -811,64 +764,7 @@ fun PlayerMenu(
                                 }
                             )
                         )
-                        add(
-                            Material3MenuItemData(
-                                title = {
-                                    Text(
-                                        text = if (isExporting) {
-                                            stringResource(R.string.export_audio_in_progress)
-                                        } else {
-                                            stringResource(R.string.export_audio)
-                                        }
-                                    )
-                                },
-                                description = { Text(text = stringResource(R.string.export_audio_desc)) },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.download),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                },
-                                onClick = {
-                                    if (isExporting) return@Material3MenuItemData
-                                    exportLauncher.launch(
-                                        SongExporter.suggestedFileName(
-                                            title = mediaMetadata.title,
-                                            artist = mediaMetadata.artists.joinToString { it.name },
-                                        )
-                                    )
-                                }
-                            )
-                        )
-                        add(
-                            Material3MenuItemData(
-                                title = { Text(text = stringResource(R.string.eight_d_audio)) },
-                                description = {
-                                    Text(
-                                        text = if (eightDEnabled) {
-                                            stringResource(R.string.eight_d_audio_on)
-                                        } else {
-                                            stringResource(R.string.eight_d_audio_desc)
-                                        }
-                                    )
-                                },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(R.drawable.spatial_tracking_apple),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                },
-                                trailingContent = {
-                                    Switch(
-                                        checked = eightDEnabled,
-                                        onCheckedChange = { onEightDEnabledChange(it) },
-                                    )
-                                },
-                                onClick = { showEightDDialog = true }
-                            )
-                        )
+                        addAll(audioToolsItems)
                     }
                     add(
                         Material3MenuItemData(
