@@ -162,6 +162,15 @@ class EightDAudioProcessor : AudioProcessor {
             phase += phaseStep
             if (phase >= TWO_PI) phase -= TWO_PI
         }
+
+        // Mark the input as consumed. The reads above are absolute
+        // (getShort(index)), which does not move the position, and
+        // AudioProcessingPipeline decides whether a processor accepted the data
+        // by checking hasRemaining() afterwards. Without this the same chunk is
+        // handed back on every pass and the last few milliseconds repeat
+        // forever — audible as a continuous buzz rather than the track.
+        inputBuffer.position(inputBuffer.limit())
+
         out.flip()
     }
 
@@ -235,5 +244,13 @@ class EightDAudioProcessor : AudioProcessor {
         /** Slowest and fastest orbit offered in the UI. */
         const val MIN_ROTATION_HZ = 0.05f
         const val MAX_ROTATION_HZ = 0.40f
+
+        /**
+         * Default swing width. Not 1.0: at full depth the far channel's gain
+         * reaches zero, so the track drops out of one ear entirely, which is
+         * more dramatic than musical. This keeps a little signal in both ears
+         * through the whole orbit.
+         */
+        const val DEFAULT_DEPTH = 0.85f
     }
 }

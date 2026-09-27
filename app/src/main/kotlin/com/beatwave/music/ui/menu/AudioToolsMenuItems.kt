@@ -26,8 +26,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.unit.dp
 import com.beatwave.music.LocalDownloadUtil
 import com.beatwave.music.R
+import com.beatwave.music.constants.EightDDepthKey
 import com.beatwave.music.constants.EightDEnabledKey
 import com.beatwave.music.constants.EightDRotationHzKey
+import com.beatwave.music.playback.audio.EightDAudioProcessor
 import com.beatwave.music.models.MediaMetadata
 import com.beatwave.music.ui.component.EightDDialog
 import com.beatwave.music.ui.component.Material3MenuItemData
@@ -86,14 +88,20 @@ fun rememberAudioToolsMenuItems(
         EightDRotationHzKey,
         defaultValue = 0.125f,
     )
+    val (eightDDepth, onEightDDepthChange) = rememberPreference(
+        EightDDepthKey,
+        defaultValue = EightDAudioProcessor.DEFAULT_DEPTH,
+    )
     var showEightDDialog by rememberSaveable { mutableStateOf(false) }
 
     if (showEightDDialog) {
         EightDDialog(
             enabled = eightDEnabled,
             rotationHz = eightDRotationHz,
+            depth = eightDDepth,
             onEnabledChange = onEightDEnabledChange,
             onRotationHzChange = onEightDRotationHzChange,
+            onDepthChange = onEightDDepthChange,
             onDismiss = { showEightDDialog = false },
         )
     }

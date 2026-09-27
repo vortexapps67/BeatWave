@@ -146,6 +146,7 @@ import com.beatwave.music.constants.ShufflePlaylistFirstKey
 import com.beatwave.music.constants.PreventDuplicateTracksInQueueKey
 import com.beatwave.music.constants.SimilarContent
 import com.beatwave.music.constants.SkipSilenceInstantKey
+import com.beatwave.music.constants.EightDDepthKey
 import com.beatwave.music.constants.EightDEnabledKey
 import com.beatwave.music.constants.EightDRotationHzKey
 import com.beatwave.music.constants.SkipSilenceKey
@@ -438,6 +439,9 @@ class MusicService :
 
     @Volatile
     private var cachedEightDRotationHz = 0.125f
+
+    @Volatile
+    private var cachedEightDDepth = EightDAudioProcessor.DEFAULT_DEPTH
     private val playerStallWatchdogs = HashMap<Player, LosslessStallWatchdogAudioProcessor>()
 
 
@@ -885,15 +889,23 @@ class MusicService :
         // built, so toggling it applies to whatever is already playing. The
         // processor ramps internally, so this never clicks mid-track.
         dataStore.data
-            .map { (it[EightDEnabledKey] ?: false) to (it[EightDRotationHzKey] ?: 0.125f) }
+            .map {
+                Triple(
+                    it[EightDEnabledKey] ?: false,
+                    it[EightDRotationHzKey] ?: 0.125f,
+                    it[EightDDepthKey] ?: EightDAudioProcessor.DEFAULT_DEPTH,
+                )
+            }
             .distinctUntilChanged()
-            .collectLatest(scope) { (eightDEnabled, rotationHz) ->
+            .collectLatest(scope) { (eightDEnabled, rotationHz, depth) ->
                 cachedEightDEnabled = eightDEnabled
                 cachedEightDRotationHz = rotationHz
+                cachedEightDDepth = depth
 
                 playerEightDProcessors.values.forEach { processor ->
                     processor.enabled = eightDEnabled
                     processor.rotationHz = rotationHz
+                    processor.depth = depth
                 }
             }
 
@@ -1213,6 +1225,7 @@ class MusicService :
         val eightD = EightDAudioProcessor().apply {
             enabled = cachedEightDEnabled
             rotationHz = cachedEightDRotationHz
+            depth = cachedEightDDepth
         }
 
         // Set initial state from the cached mirrors (kept fresh by the

@@ -119,6 +119,14 @@ class DelayAudioProcessor(
             }
             writeIndex = (writeIndex + channelCount) % bufferLen
         }
+
+        // Same reason as the passthrough branch's out.put(inputBuffer) above:
+        // the pipeline treats a buffer with bytes remaining as "not accepted"
+        // and re-queues it. The reads in this branch are absolute, so nothing
+        // has moved the position and it has to be marked consumed by hand —
+        // otherwise enabling the echo re-feeds one chunk indefinitely.
+        inputBuffer.position(inputBuffer.limit())
+
         out.flip()
     }
 

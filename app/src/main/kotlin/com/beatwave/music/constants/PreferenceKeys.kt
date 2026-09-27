@@ -237,6 +237,9 @@ val EightDEnabledKey = booleanPreferencesKey("eightDEnabled")
 
 /** Orbits per second, see EightDAudioProcessor.MIN/MAX_ROTATION_HZ. */
 val EightDRotationHzKey = floatPreferencesKey("eightDRotationHz")
+
+/** How far toward each ear the image travels, 0..1. */
+val EightDDepthKey = floatPreferencesKey("eightDDepth")
 val AudioNormalizationKey = booleanPreferencesKey("audioNormalization")
 val AutoLoadMoreKey = booleanPreferencesKey("autoLoadMore")
 val DisableLoadMoreWhenRepeatAllKey = booleanPreferencesKey("disableLoadMoreWhenRepeatAll")

@@ -622,4 +622,9 @@
     <string name="eight_d_audio_long_desc">Moves the track in a circle around your head using true stereo positioning, not just volume panning.</string>
     <string name="eight_d_rotation_speed">Rotation speed: %1$ds per lap</string>
     <string name="eight_d_headphones_hint">Best with headphones — the effect relies on each ear hearing something slightly different.</string>
+    <string name="eight_d_presets">Presets</string>
+    <string name="eight_d_preset_subtle">Subtle</string>
+    <string name="eight_d_preset_classic">Classic</string>
+    <string name="eight_d_preset_intense">Intense</string>
+    <string name="eight_d_width">Width: %1$d%%</string>
 </resources>
