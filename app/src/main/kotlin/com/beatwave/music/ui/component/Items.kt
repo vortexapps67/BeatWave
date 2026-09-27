@@ -352,6 +352,15 @@ fun GridItem(
             // edge, gridSpacing between neighbours.
             .padding(gridSpacing / 2)
     ) {
+        // Artists are circular; everything else uses the shared rounded shape.
+        // The depth treatment reads the same shape it is clipped to, so the rim
+        // follows the circle for artists instead of tracing a square around it.
+        val tileShape = if (horizontalAlignment == Alignment.CenterHorizontally) {
+            CircleShape
+        } else {
+            ThumbnailRoundedShape
+        }
+
         BoxWithConstraints(
             contentAlignment = Alignment.Center,
             modifier = if (fillMaxWidth) {
@@ -360,7 +369,8 @@ fun GridItem(
                 Modifier.height(gridHeight)
             }
                 .aspectRatio(thumbnailRatio)
-                .clip(ThumbnailRoundedShape)
+                .glassTileDepth(tileShape)
+                .clip(tileShape)
         ) {
             thumbnailContent()
         }

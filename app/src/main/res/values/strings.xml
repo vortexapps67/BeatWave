@@ -615,4 +615,10 @@
     <string name="export_audio_in_progress">Exporting…</string>
     <string name="export_audio_saved">Saved. Cached tracks export without using data.</string>
     <string name="export_audio_failed">Export failed: %1$s</string>
+    <string name="eight_d_audio">8D Audio</string>
+    <string name="eight_d_audio_desc">Rotate the sound around you</string>
+    <string name="eight_d_audio_on">On — tap to adjust speed</string>
+    <string name="eight_d_audio_long_desc">Moves the track in a circle around your head using true stereo positioning, not just volume panning.</string>
+    <string name="eight_d_rotation_speed">Rotation speed: %1$ds per lap</string>
+    <string name="eight_d_headphones_hint">Best with headphones — the effect relies on each ear hearing something slightly different.</string>
 </resources>

@@ -231,6 +231,12 @@ val RememberShuffleAndRepeatKey = booleanPreferencesKey("rememberShuffleAndRepea
 val ShuffleModeKey = booleanPreferencesKey("shuffleMode")
 val SkipSilenceKey = booleanPreferencesKey("skipSilence")
 val SkipSilenceInstantKey = booleanPreferencesKey("skipSilenceInstant")
+
+/** 8D audio: rotates the stereo image around the listener. Headphones only. */
+val EightDEnabledKey = booleanPreferencesKey("eightDEnabled")
+
+/** Orbits per second, see EightDAudioProcessor.MIN/MAX_ROTATION_HZ. */
+val EightDRotationHzKey = floatPreferencesKey("eightDRotationHz")
 val AudioNormalizationKey = booleanPreferencesKey("audioNormalization")
 val AutoLoadMoreKey = booleanPreferencesKey("autoLoadMore")
 val DisableLoadMoreWhenRepeatAllKey = booleanPreferencesKey("disableLoadMoreWhenRepeatAll")

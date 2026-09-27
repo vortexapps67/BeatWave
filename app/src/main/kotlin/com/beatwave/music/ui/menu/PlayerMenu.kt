@@ -102,6 +102,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.LocalContentColor
 import com.beatwave.music.BuildConfig
 import com.beatwave.music.constants.EnableGoogleCastKey
+import com.beatwave.music.constants.EightDEnabledKey
+import com.beatwave.music.constants.EightDRotationHzKey
+import com.beatwave.music.ui.component.EightDDialog
+import androidx.compose.material3.Switch
 import com.beatwave.music.ui.component.LocalMenuState
 import com.beatwave.music.ui.component.openCastPicker
 import com.beatwave.music.ui.component.NewAction
@@ -237,6 +241,26 @@ fun PlayerMenu(
     if (showPitchTempoDialog) {
         TempoPitchDialog(
             onDismiss = { showPitchTempoDialog = false },
+        )
+    }
+
+    val (eightDEnabled, onEightDEnabledChange) = rememberPreference(
+        EightDEnabledKey,
+        defaultValue = false,
+    )
+    val (eightDRotationHz, onEightDRotationHzChange) = rememberPreference(
+        EightDRotationHzKey,
+        defaultValue = 0.125f,
+    )
+    var showEightDDialog by rememberSaveable { mutableStateOf(false) }
+
+    if (showEightDDialog) {
+        EightDDialog(
+            enabled = eightDEnabled,
+            rotationHz = eightDRotationHz,
+            onEnabledChange = onEightDEnabledChange,
+            onRotationHzChange = onEightDRotationHzChange,
+            onDismiss = { showEightDDialog = false },
         )
     }
 
@@ -757,6 +781,34 @@ fun PlayerMenu(
                                 onClick = {
                                     showPitchTempoDialog = true
                                 }
+                            )
+                        )
+                        add(
+                            Material3MenuItemData(
+                                title = { Text(text = stringResource(R.string.eight_d_audio)) },
+                                description = {
+                                    Text(
+                                        text = if (eightDEnabled) {
+                                            stringResource(R.string.eight_d_audio_on)
+                                        } else {
+                                            stringResource(R.string.eight_d_audio_desc)
+                                        }
+                                    )
+                                },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.spatial_tracking_apple),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                },
+                                trailingContent = {
+                                    Switch(
+                                        checked = eightDEnabled,
+                                        onCheckedChange = { onEightDEnabledChange(it) },
+                                    )
+                                },
+                                onClick = { showEightDDialog = true }
                             )
                         )
                     }

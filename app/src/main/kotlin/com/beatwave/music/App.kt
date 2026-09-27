@@ -58,6 +58,7 @@ import java.net.PasswordAuthentication
 import java.net.Proxy
 import java.util.Locale
 import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltAndroidApp
 class App : Application(), SingletonImageLoader.Factory {
@@ -65,6 +66,13 @@ class App : Application(), SingletonImageLoader.Factory {
     @Inject
     @ApplicationScope
     lateinit var applicationScope: CoroutineScope
+
+    /**
+     * Held as a [Provider] so injecting it here does not itself build the graph
+     * this warms — see the warm-up in [onCreate].
+     */
+    @Inject
+    lateinit var downloadUtilProvider: Provider<com.beatwave.music.playback.DownloadUtil>
 
     override fun onCreate() {
         super.onCreate()
@@ -97,6 +105,27 @@ class App : Application(), SingletonImageLoader.Factory {
         // render never blocks on a DataStore read.
         applicationScope.launch(Dispatchers.IO) {
             cachedCoilCacheSize = dataStore.data.map { it[MaxImageCacheSizeKey] ?: 512 }.first()
+        }
+
+        // Build DownloadUtil — and with it both SimpleCaches — off the main
+        // thread, before MainActivity asks for it.
+        //
+        // MainActivity injects DownloadUtil, so Hilt was constructing it during
+        // that Activity's field injection, on the main thread, inside
+        // super.onCreate(). SimpleCache's constructor walks its whole cache
+        // directory and rebuilds an index from it, and DownloadUtil then reads
+        // the full download index cursor, so a cold start stalled for as long
+        // as those scans took — growing with every song the user cached, which
+        // is why startup got slower the more the app was used.
+        //
+        // Starting it here does not make the scan cheaper, it makes it
+        // concurrent: it runs alongside the rest of Application setup and
+        // Activity creation instead of serialising in front of the first frame.
+        // Hilt's @Singleton lock still makes MainActivity wait if it wins the
+        // race, so this is purely a head start, never a correctness change.
+        applicationScope.launch(Dispatchers.IO) {
+            runCatching { downloadUtilProvider.get() }
+                .onFailure { Timber.e(it, "Cache warm-up failed") }
         }
 
         // تهيئة إعدادات التطبيق عند الإقلاع

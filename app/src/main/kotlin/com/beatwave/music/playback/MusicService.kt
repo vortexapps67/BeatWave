@@ -146,6 +146,8 @@ import com.beatwave.music.constants.ShufflePlaylistFirstKey
 import com.beatwave.music.constants.PreventDuplicateTracksInQueueKey
 import com.beatwave.music.constants.SimilarContent
 import com.beatwave.music.constants.SkipSilenceInstantKey
+import com.beatwave.music.constants.EightDEnabledKey
+import com.beatwave.music.constants.EightDRotationHzKey
 import com.beatwave.music.constants.SkipSilenceKey
 import com.beatwave.music.constants.IpVersionKey
 import com.music.innertube.models.IpVersion
@@ -189,6 +191,7 @@ import com.beatwave.music.playback.audio.DjFilterAudioProcessor
 import com.beatwave.music.playback.audio.DjMixPlan
 import com.beatwave.music.playback.audio.DjMixTier
 import com.beatwave.music.playback.audio.DjTailAudioProcessor
+import com.beatwave.music.playback.audio.EightDAudioProcessor
 import com.beatwave.music.playback.audio.LosslessStallWatchdogAudioProcessor
 import com.beatwave.music.playback.audio.SilenceDetectorAudioProcessor
 import com.beatwave.music.playback.audio.TrackAnalyzerAudioProcessor
@@ -424,6 +427,17 @@ class MusicService :
     val playerFlow = _playerFlow.asStateFlow()
 
     private val playerSilenceProcessors = HashMap<Player, SilenceDetectorAudioProcessor>()
+
+    /** One per player instance, so the crossfade player gets the effect too. */
+    private val playerEightDProcessors = HashMap<Player, EightDAudioProcessor>()
+
+    /** Mirrors of the 8D prefs, kept fresh by collectors in onCreate so building
+     *  a player (which happens on the crossfade path) never blocks on DataStore. */
+    @Volatile
+    private var cachedEightDEnabled = false
+
+    @Volatile
+    private var cachedEightDRotationHz = 0.125f
     private val playerStallWatchdogs = HashMap<Player, LosslessStallWatchdogAudioProcessor>()
 
 
@@ -867,6 +881,22 @@ class MusicService :
                 }
             }
 
+        // 8D: pushed to every live processor rather than read when a player is
+        // built, so toggling it applies to whatever is already playing. The
+        // processor ramps internally, so this never clicks mid-track.
+        dataStore.data
+            .map { (it[EightDEnabledKey] ?: false) to (it[EightDRotationHzKey] ?: 0.125f) }
+            .distinctUntilChanged()
+            .collectLatest(scope) { (eightDEnabled, rotationHz) ->
+                cachedEightDEnabled = eightDEnabled
+                cachedEightDRotationHz = rotationHz
+
+                playerEightDProcessors.values.forEach { processor ->
+                    processor.enabled = eightDEnabled
+                    processor.rotationHz = rotationHz
+                }
+            }
+
         combine(
             currentFormat,
             dataStore.data
@@ -1180,6 +1210,10 @@ class MusicService :
         val djFilter = DjFilterAudioProcessor()
         val djTail = DjTailAudioProcessor()
         val djDelay = DelayAudioProcessor()
+        val eightD = EightDAudioProcessor().apply {
+            enabled = cachedEightDEnabled
+            rotationHz = cachedEightDRotationHz
+        }
 
         // Set initial state from the cached mirrors (kept fresh by the
         // dataStore.data collectors in onCreate) rather than blocking here â€”
@@ -1191,7 +1225,7 @@ class MusicService :
             .setMediaSourceFactory(createMediaSourceFactory())
             .setRenderersFactory(
                 createRenderersFactory(
-                    eqProcessor, silenceProcessor, stallWatchdog, bpmAnalyzer, djFilter, djTail, djDelay,
+                    eqProcessor, silenceProcessor, stallWatchdog, bpmAnalyzer, djFilter, djTail, djDelay, eightD,
                 )
             )
             .setLoadControl(
@@ -1220,6 +1254,7 @@ class MusicService :
 
         playerSilenceProcessors[player] = silenceProcessor
         playerStallWatchdogs[player] = stallWatchdog
+        playerEightDProcessors[player] = eightD
         djEngine.registerPlayer(player, bpmAnalyzer, djFilter, djTail, djDelay)
 
         player.apply {
@@ -3529,6 +3564,7 @@ class MusicService :
         djFilter: DjFilterAudioProcessor,
         djTail: DjTailAudioProcessor,
         djDelay: DelayAudioProcessor,
+        eightD: EightDAudioProcessor,
     ) =
         object : DefaultRenderersFactory(this) {
             override fun buildAudioSink(
@@ -3550,6 +3586,10 @@ class MusicService :
                             djFilter,
                             djTail,
                             djDelay,
+                            // Last in the chain: it positions the finished mix,
+                            // so EQ and the DJ effects land before the image is
+                            // placed rather than being panned along with it.
+                            eightD,
                         ),
                         SilenceSkippingAudioProcessor(2_000_000, 20_000, 256),
                         SonicAudioProcessor(),
@@ -3745,6 +3785,7 @@ class MusicService :
         player.removeListener(this)
         player.removeListener(sleepTimer)
         playerSilenceProcessors.remove(player)
+        playerEightDProcessors.remove(player)
         // Note: equalizerService audio processors are cleared in equalizerService.release() if needed,
         // or we can't easily reference the specific processor created in createExoPlayer here without storing it.
         // But since we are destroying the service, it's fine.
