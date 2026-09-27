@@ -146,13 +146,16 @@ val PlusJakartaSansFontFamily = FontFamily(
  *    leading at the first and last line, so a multi-line block is optically
  *    centred rather than bottom-heavy.
  */
+@OptIn(ExperimentalTextApi::class)
 private val AppPlatformStyle = PlatformTextStyle(includeFontPadding = false)
 
+@OptIn(ExperimentalTextApi::class)
 private val AppLineHeightStyle = LineHeightStyle(
     alignment = LineHeightStyle.Alignment.Center,
     trim = LineHeightStyle.Trim.None,
 )
 
+@OptIn(ExperimentalTextApi::class)
 private fun appTextStyle(
     fontFamily: FontFamily,
     fontWeight: FontWeight,
@@ -192,6 +195,7 @@ private fun appTextStyle(
  * Font.kt) so every text role renders in it; falls back to the system default
  * when none is installed.
  */
+@OptIn(ExperimentalTextApi::class)
 fun AppTypography(fontFamily: FontFamily = FontFamily.Default) = Typography(
     displayLarge = appTextStyle(fontFamily, FontWeight.SemiBold, 57.sp, 64.sp, (-1.2).sp),
     displayMedium = appTextStyle(fontFamily, FontWeight.SemiBold, 45.sp, 52.sp, (-0.9).sp),

@@ -12,9 +12,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.drawOutline
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -92,9 +95,48 @@ fun Modifier.glassTileDepth(
 
         onDrawWithContent {
             drawContent()
-            drawOutline(outline = fullOutline, brush = scrim)
+            paintOutline(fullOutline, scrim)
             translate(strokeWidth / 2f, strokeWidth / 2f) {
-                drawOutline(outline = insetOutline, brush = rim, style = Stroke(strokeWidth))
+                paintOutline(insetOutline, rim, Stroke(strokeWidth))
             }
         }
     }
+
+/**
+ * Paints [outline] with [brush].
+ *
+ * Hand-rolled on top of the three [DrawScope] primitives rather than calling
+ * the stdlib `drawOutline` helper, whose package has moved between Compose
+ * versions; `drawRect`/`drawRoundRect`/`drawPath` are members of [DrawScope]
+ * itself and need no import to resolve.
+ */
+private fun DrawScope.paintOutline(
+    outline: Outline,
+    brush: Brush,
+    style: DrawStyle = Fill,
+) {
+    when (outline) {
+        is Outline.Rectangle -> drawRect(
+            brush = brush,
+            topLeft = Offset(outline.rect.left, outline.rect.top),
+            size = Size(outline.rect.width, outline.rect.height),
+            style = style,
+        )
+
+        is Outline.Rounded -> {
+            val rr = outline.roundRect
+            drawRoundRect(
+                brush = brush,
+                topLeft = Offset(rr.left, rr.top),
+                size = Size(rr.width, rr.height),
+                cornerRadius = androidx.compose.ui.geometry.CornerRadius(
+                    rr.topLeftCornerRadius.x,
+                    rr.topLeftCornerRadius.y,
+                ),
+                style = style,
+            )
+        }
+
+        is Outline.Generic -> drawPath(path = outline.path, brush = brush, style = style)
+    }
+}
