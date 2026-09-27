@@ -94,7 +94,10 @@ import com.beatwave.music.ui.component.SongListItem
 import com.beatwave.music.ui.component.TextFieldDialog
 import com.beatwave.music.ui.utils.ShowMediaInfo
 import com.beatwave.music.utils.ExternalTagEditor
+import com.beatwave.music.utils.SongExporter
 import com.beatwave.music.utils.listItemShape
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.beatwave.music.viewmodels.CachePlaylistViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -125,6 +128,33 @@ fun SongMenu(
     var refetchIconDegree by remember { mutableFloatStateOf(0f) }
 
     val cacheViewModel = hiltViewModel<CachePlaylistViewModel>()
+
+    val downloadUtil = LocalDownloadUtil.current
+    var isExporting by remember { mutableStateOf(false) }
+    val exportLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("audio/mp4")
+    ) { destination ->
+        if (destination == null) return@rememberLauncherForActivityResult
+        isExporting = true
+        coroutineScope.launch {
+            val result = SongExporter.export(
+                context = context,
+                songId = song.id,
+                destination = destination,
+                playerCache = downloadUtil.playerCache,
+                downloadCache = downloadUtil.downloadCache,
+            )
+            isExporting = false
+            val message = when (result) {
+                is SongExporter.Result.Success ->
+                    context.getString(R.string.export_audio_saved)
+
+                is SongExporter.Result.Failure ->
+                    context.getString(R.string.export_audio_failed, result.message)
+            }
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
+    }
 
     val rotationAnimation by animateFloatAsState(
         targetValue = refetchIconDegree,
@@ -666,6 +696,34 @@ fun SongMenu(
                             )
                         )
                     }
+                    add(
+                        Material3MenuItemData(
+                            title = {
+                                Text(
+                                    text = if (isExporting) {
+                                        stringResource(R.string.export_audio_in_progress)
+                                    } else {
+                                        stringResource(R.string.export_audio)
+                                    }
+                                )
+                            },
+                            icon = {
+                                Icon(
+                                    painter = painterResource(R.drawable.download),
+                                    contentDescription = null,
+                                )
+                            },
+                            onClick = {
+                                if (isExporting) return@Material3MenuItemData
+                                exportLauncher.launch(
+                                    SongExporter.suggestedFileName(
+                                        title = song.song.title,
+                                        artist = song.artists.joinToString { it.name },
+                                    )
+                                )
+                            }
+                        )
+                    )
                     add(
                         Material3MenuItemData(
                             title = { Text(text = stringResource(R.string.set_as_ringtone)) },

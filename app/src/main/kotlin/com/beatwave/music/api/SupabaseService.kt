@@ -299,6 +299,45 @@ object SupabaseService {
         }
     }
 
+    /**
+     * Writes the admin's public reply onto a suggestion. A blank comment clears
+     * it, so an admin can retract a reply without deleting the suggestion.
+     */
+    suspend fun updateSuggestionComment(id: Long, comment: String): Result<Unit> =
+        patchRow("suggestions", id) { put("admin_comment", comment.ifBlank { null }) }
+
+    /** Writes the admin's public reply onto a bug report. Blank clears it. */
+    suspend fun updateBugReportComment(id: Long, comment: String): Result<Unit> =
+        patchRow("bug_reports", id) { put("admin_comment", comment.ifBlank { null }) }
+
+    private suspend fun patchRow(
+        table: String,
+        id: Long,
+        buildBody: kotlinx.serialization.json.JsonObjectBuilder.() -> Unit,
+    ): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            val body = buildJsonObject(buildBody)
+            val request = Request.Builder()
+                .url("${SupabaseConfig.URL}/rest/v1/$table?id=eq.$id")
+                .patch(body.toString().toRequestBody(mediaType))
+                .header("apikey", SupabaseConfig.SECRET_KEY)
+                .header("Authorization", "Bearer ${SupabaseConfig.SECRET_KEY}")
+                .header("Content-Type", "application/json")
+                .build()
+
+            client.newCall(request).execute().use { response ->
+                if (response.isSuccessful) {
+                    Result.success(Unit)
+                } else {
+                    val errorBody = response.body?.string() ?: ""
+                    Result.failure(Exception("HTTP error: ${response.code} ${response.message} - $errorBody"))
+                }
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun deleteSuggestion(id: Long): Result<Unit> = withContext(Dispatchers.IO) {
         try {
             val request = Request.Builder()

@@ -34,7 +34,9 @@ data class SuggestionRow(
     val content: String,
     val status: String = "pending",
     val user_name: String,
-    val insta_id: String? = null
+    val insta_id: String? = null,
+    /** Admin's public reply, shown back to the submitter in their own list. */
+    val admin_comment: String? = null
 )
 
 @Serializable
@@ -54,5 +56,7 @@ data class BugReportRow(
     val insta_id: String? = null,
     val description: String,
     val device_info: String? = null,
-    val status: String = "pending"
+    val status: String = "pending",
+    /** Admin's public reply, shown back to the reporter in their own list. */
+    val admin_comment: String? = null
 )

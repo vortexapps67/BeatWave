@@ -37,6 +37,7 @@ sealed class HistoryItem {
     abstract val description: String
     abstract val status: String
     abstract val typeLabel: String
+    abstract val adminComment: String?
 
     data class Suggestion(val row: SuggestionRow) : HistoryItem() {
         override val id: Long = row.id ?: 0L
@@ -44,6 +45,7 @@ sealed class HistoryItem {
         override val description: String = row.content
         override val status: String = row.status
         override val typeLabel: String = "Suggestion"
+        override val adminComment: String? = row.admin_comment
     }
 
     data class Bug(val row: BugReportRow) : HistoryItem() {
@@ -52,6 +54,7 @@ sealed class HistoryItem {
         override val description: String = row.description
         override val status: String = row.status
         override val typeLabel: String = "Bug Report"
+        override val adminComment: String? = row.admin_comment
     }
 }
 
@@ -392,6 +395,30 @@ fun HistoryCard(item: HistoryItem) {
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
+            item.adminComment?.takeIf { it.isNotBlank() }?.let { reply ->
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Text(
+                            text = "REPLY FROM THE TEAM",
+                            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = reply,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+            }
         }
     }
 }

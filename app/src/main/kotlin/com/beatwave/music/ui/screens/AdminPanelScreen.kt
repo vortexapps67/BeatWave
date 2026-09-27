@@ -271,6 +271,20 @@ fun SuggestionsTab(bottomPadding: androidx.compose.ui.unit.Dp = 0.dp) {
                             }
                         }
                     },
+                    onSaveComment = { comment ->
+                        item.id?.let { id ->
+                            actionInProgressId = id
+                            coroutineScope.launch {
+                                val res = SupabaseService.updateSuggestionComment(id, comment)
+                                actionInProgressId = null
+                                if (res.isSuccess) {
+                                    refreshSuggestions()
+                                } else {
+                                    Toast.makeText(context, "Error saving comment: ${res.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+                    },
                     onDelete = {
                         item.id?.let { id ->
                             actionInProgressId = id
@@ -296,6 +310,7 @@ fun SuggestionItemCard(
     item: SuggestionRow,
     actionInProgress: Boolean,
     onUpdateStatus: (String) -> Unit,
+    onSaveComment: (String) -> Unit,
     onDelete: () -> Unit
 ) {
     Card(
@@ -376,6 +391,92 @@ fun SuggestionItemCard(
                     ) {
                         Text("Reject")
                     }
+                }
+            }
+
+            AdminCommentEditor(
+                savedComment = item.admin_comment,
+                enabled = !actionInProgress,
+                onSave = onSaveComment
+            )
+        }
+    }
+}
+
+/**
+ * Inline editor for the admin's public reply on a suggestion or bug report.
+ *
+ * Collapsed to a single line until tapped so a long list of reports stays
+ * scannable; [savedComment] is the value currently stored server-side and is
+ * what the submitter sees in their own list.
+ */
+@Composable
+fun AdminCommentEditor(
+    savedComment: String?,
+    enabled: Boolean,
+    onSave: (String) -> Unit,
+) {
+    var isEditing by remember(savedComment) { mutableStateOf(false) }
+    var draft by remember(savedComment) { mutableStateOf(savedComment.orEmpty()) }
+
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f))
+
+        if (!isEditing) {
+            if (!savedComment.isNullOrBlank()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f))
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = "ADMIN REPLY",
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = savedComment,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+
+            TextButton(onClick = { isEditing = true }, enabled = enabled) {
+                Text(if (savedComment.isNullOrBlank()) "Add comment" else "Edit comment")
+            }
+        } else {
+            OutlinedTextField(
+                value = draft,
+                onValueChange = { draft = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text("Reply to the user") },
+                placeholder = { Text("e.g. Added in v6.1.0 — thanks!") },
+                minLines = 2,
+                enabled = enabled
+            )
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TextButton(
+                    onClick = {
+                        onSave(draft.trim())
+                        isEditing = false
+                    },
+                    enabled = enabled
+                ) {
+                    Text("Save")
+                }
+                TextButton(
+                    onClick = {
+                        draft = savedComment.orEmpty()
+                        isEditing = false
+                    },
+                    enabled = enabled
+                ) {
+                    Text("Cancel")
                 }
             }
         }
@@ -550,6 +651,20 @@ fun BugReportsTab(bottomPadding: androidx.compose.ui.unit.Dp = 0.dp) {
                                 }
                             }
                         }
+                    },
+                    onSaveComment = { comment ->
+                        item.id?.let { id ->
+                            actionInProgressId = id
+                            coroutineScope.launch {
+                                val res = SupabaseService.updateBugReportComment(id, comment)
+                                actionInProgressId = null
+                                if (res.isSuccess) {
+                                    refreshBugReports()
+                                } else {
+                                    Toast.makeText(context, "Error saving comment: ${res.exceptionOrNull()?.message}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
                     }
                 )
             }
@@ -561,7 +676,8 @@ fun BugReportsTab(bottomPadding: androidx.compose.ui.unit.Dp = 0.dp) {
 fun BugReportItemCard(
     item: BugReportRow,
     actionInProgress: Boolean,
-    onUpdateStatus: (String) -> Unit
+    onUpdateStatus: (String) -> Unit,
+    onSaveComment: (String) -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -656,6 +772,12 @@ fun BugReportItemCard(
                     }
                 }
             }
+
+            AdminCommentEditor(
+                savedComment = item.admin_comment,
+                enabled = !actionInProgress,
+                onSave = onSaveComment
+            )
         }
     }
 }

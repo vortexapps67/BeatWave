@@ -55,8 +55,10 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.HttpDataSource
 import androidx.media3.datasource.ResolvingDataSource
+import androidx.media3.datasource.cache.Cache
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR
+import androidx.media3.datasource.cache.ContentMetadata
 import androidx.media3.datasource.cache.SimpleCache
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
@@ -1596,7 +1598,7 @@ class MusicService :
                 // Check if already in cache or downloaded
                 val cached = songUrlCache[effKey]?.takeIf { it.second > System.currentTimeMillis() }
                 if (cached != null) continue
-                if (downloadCache.isCached(mediaId, 0, CHUNK_LENGTH) || playerCache.isCached(effKey, 0, CHUNK_LENGTH)) continue
+                if (isFullyCached(downloadCache, mediaId) || isFullyCached(playerCache, effKey)) continue
 
                 Timber.tag(TAG).d("PREFETCHING STREAM: Upcoming track index=$idx mediaId=$mediaId")
                 try {
@@ -3123,6 +3125,22 @@ class MusicService :
         }
     }
 
+    /**
+     * True when [key] is stored end-to-end in [cache].
+     *
+     * Callers used to ask `isCached(key, 0, CHUNK_LENGTH)`, i.e. "are the first
+     * 10MB present?". Songs are typically 3-5MB, so that never held even for a
+     * fully cached track and every play fell through to a network fetch —
+     * offline playback of an already-streamed song was impossible. Size the
+     * question to the track instead: the cache records the real content length
+     * once the first response lands, so ask whether exactly that much is held.
+     */
+    private fun isFullyCached(cache: Cache, key: String): Boolean {
+        val contentLength = ContentMetadata.getContentLength(cache.getContentMetadata(key))
+        if (contentLength <= 0L) return false
+        return cache.isCached(key, 0L, contentLength)
+    }
+
     private fun createCacheDataSource(): CacheDataSource.Factory {
         val ytProxy = YouTube.proxy
         val ytProxyAuth = YouTube.proxyAuth
@@ -3366,7 +3384,12 @@ class MusicService :
                     return@Factory dataSpec
                 }
 
-                if (playerCache.isCached(effKey, dataSpec.position, CHUNK_LENGTH)) {
+                if (playerCache.isCached(
+                        effKey,
+                        dataSpec.position,
+                        if (dataSpec.length >= 0) dataSpec.length else 1,
+                    ) || isFullyCached(playerCache, effKey)
+                ) {
                     scope.launch(Dispatchers.IO) { recoverSong(mediaId) }
                     return@Factory spec
                 }

@@ -611,4 +611,8 @@
     <string name="theme_preset_rose_gold">Rose Gold</string>
     <string name="theme_preset_sunset_amber">Sunset Amber</string>
     <string name="theme_preset_material_you">Dynamic Material You</string>
+    <string name="export_audio">Export audio file</string>
+    <string name="export_audio_in_progress">Exporting…</string>
+    <string name="export_audio_saved">Saved. Cached tracks export without using data.</string>
+    <string name="export_audio_failed">Export failed: %1$s</string>
 </resources>

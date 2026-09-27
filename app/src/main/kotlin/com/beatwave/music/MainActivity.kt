@@ -547,26 +547,31 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Load cached Supabase credentials
-        try {
-            kotlinx.coroutines.runBlocking {
-                val cachedUrl = dataStore.get(CachedSupabaseUrlKey, "")
-                val cachedAnon = dataStore.get(CachedSupabaseAnonKey, "")
-                val cachedSecret = dataStore.get(CachedSupabaseSecretKey, "")
-                val cachedJwks = dataStore.get(CachedSupabaseJwksUrlKey, "")
-                if (cachedUrl.isNotBlank() && cachedAnon.isNotBlank() && cachedSecret.isNotBlank()) {
-                    com.beatwave.music.SupabaseConfig.init(
-                        url = cachedUrl,
-                        anon = cachedAnon,
-                        secret = cachedSecret,
-                        jwks = cachedJwks.ifBlank { com.beatwave.music.BuildConfig.SUPABASE_JWKS_URL }
-                    )
-                }
-            }
-        } catch (_: Exception) {}
-
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        // Cached Supabase credentials, read after the splash is up.
+        //
+        // This used to run first, wrapped in runBlocking, so a cold start held
+        // the main thread on a preferences disk read before drawing anything.
+        // Nothing here is on the first-frame path — the only Supabase callers
+        // are the update/news checks, which fire well after the UI mounts — so
+        // the read happens once the window exists and the user sees the splash
+        // immediately instead of a frozen launch.
+        try {
+            val cachedUrl = dataStore.get(CachedSupabaseUrlKey, "")
+            val cachedAnon = dataStore.get(CachedSupabaseAnonKey, "")
+            val cachedSecret = dataStore.get(CachedSupabaseSecretKey, "")
+            val cachedJwks = dataStore.get(CachedSupabaseJwksUrlKey, "")
+            if (cachedUrl.isNotBlank() && cachedAnon.isNotBlank() && cachedSecret.isNotBlank()) {
+                com.beatwave.music.SupabaseConfig.init(
+                    url = cachedUrl,
+                    anon = cachedAnon,
+                    secret = cachedSecret,
+                    jwks = cachedJwks.ifBlank { com.beatwave.music.BuildConfig.SUPABASE_JWKS_URL }
+                )
+            }
+        } catch (_: Exception) {}
         window.decorView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
