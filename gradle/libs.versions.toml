@@ -144,7 +144,7 @@ work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "w
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3Version" }
-quickjs-kt = { module = "io.github.dokar3:quickjs-kt-android", version = "1.0.5" }
+quickjs-kt = { module = "io.github.dokar3:quickjs-kt-android", version = "1.0.12" }
 
 
 [plugins]
