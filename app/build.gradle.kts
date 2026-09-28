@@ -386,6 +386,10 @@ dependencies {
     implementation(libs.androidx.material.icons.extended.v178)
     implementation(libs.work.runtime.ktx)
     implementation(libs.androidx.core.splashscreen)
+    // Applies src/main/baseline-prof.txt on first run so the startup path is
+    // AOT-compiled instead of interpreted. Without this the profile is packaged
+    // but never installed on most devices.
+    implementation(libs.androidx.profileinstaller)
 
     testImplementation(libs.junit)
 }

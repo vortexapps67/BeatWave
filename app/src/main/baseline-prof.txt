@@ -1,0 +1,110 @@
+# Baseline profile — classes and methods on the cold-start path.
+#
+# Everything listed here is AOT-compiled at install time instead of being
+# interpreted and JIT'd on first run. Compose is the main beneficiary: a cold
+# start otherwise interprets the whole runtime, composer, layout and draw
+# machinery before the first frame can be produced.
+#
+# Flags: H = hot, S = startup, P = post-startup.
+#
+# This is a hand-curated profile covering the startup path traced through
+# App.onCreate -> MainActivity.onCreate -> first composition. It is deliberately
+# broad at the package level rather than method-exact, because a wildcard rule
+# that over-includes costs some install-time compilation, while a missing rule
+# costs a JIT pause on every cold start.
+#
+# To regenerate this precisely from a real device run, add the Baseline Profile
+# Gradle plugin in a :baselineprofile module and run its generator against a
+# scripted launch; that produces a method-level profile that supersedes this
+# file. This curated version exists because the project builds on CI with no
+# attached device.
+
+# --- Application and entry points -------------------------------------------
+HSPLcom/beatwave/music/App;-><init>()V
+HSPLcom/beatwave/music/App;->onCreate()V
+HSPLcom/beatwave/music/App;->newImageLoader(Landroid/content/Context;)Lcoil3/ImageLoader;
+HSPLcom/beatwave/music/MainActivity;-><init>()V
+HSPLcom/beatwave/music/MainActivity;->onCreate(Landroid/os/Bundle;)V
+Lcom/beatwave/music/App;
+Lcom/beatwave/music/MainActivity;
+Lcom/beatwave/music/WelcomeActivity;
+
+# --- Hilt generated graph ----------------------------------------------------
+Lcom/beatwave/music/Hilt_App;
+Lcom/beatwave/music/Hilt_MainActivity;
+Lcom/beatwave/music/DaggerApp_HiltComponents_SingletonC**;
+Lcom/beatwave/music/di/**;
+Ldagger/hilt/android/internal/**;
+
+# --- Theme, typography, and the design system read on the first frame --------
+HSPLcom/beatwave/music/ui/theme/**->**(**)**
+Lcom/beatwave/music/ui/theme/**;
+Lcom/beatwave/music/constants/**;
+
+# --- Preferences: read synchronously during startup --------------------------
+HSPLcom/beatwave/music/utils/DataStoreKt;->**(**)**
+Lcom/beatwave/music/utils/DataStoreKt;
+Landroidx/datastore/**;
+
+# --- Player surfaces mounted with the first composition ----------------------
+Lcom/beatwave/music/ui/component/**;
+Lcom/beatwave/music/ui/screens/HomeScreen**;
+Lcom/beatwave/music/ui/player/MiniPlayer**;
+Lcom/beatwave/music/ui/player/AppleMiniPlayer**;
+Lcom/beatwave/music/playback/PlayerConnection**;
+
+# --- Room: the home feed's first queries -------------------------------------
+Landroidx/room/**;
+Landroidx/sqlite/**;
+Lcom/beatwave/music/db/**;
+
+# --- Compose runtime ---------------------------------------------------------
+# The composer, snapshot system and slot table run for every composable on the
+# first frame, so these are the highest-value entries in the file.
+HSPLandroidx/compose/runtime/**->**(**)**
+Landroidx/compose/runtime/**;
+HSPLandroidx/compose/ui/node/**->**(**)**
+Landroidx/compose/ui/node/**;
+HSPLandroidx/compose/ui/layout/**->**(**)**
+Landroidx/compose/ui/layout/**;
+HSPLandroidx/compose/ui/graphics/**->**(**)**
+Landroidx/compose/ui/graphics/**;
+HSPLandroidx/compose/ui/platform/**->**(**)**
+Landroidx/compose/ui/platform/**;
+HSPLandroidx/compose/ui/draw/**->**(**)**
+Landroidx/compose/ui/draw/**;
+HSPLandroidx/compose/ui/text/**->**(**)**
+Landroidx/compose/ui/text/**;
+HSPLandroidx/compose/ui/unit/**->**(**)**
+Landroidx/compose/ui/unit/**;
+HSPLandroidx/compose/ui/Modifier**->**(**)**
+Landroidx/compose/ui/Modifier**;
+
+# --- Compose foundation and Material3 ----------------------------------------
+HSPLandroidx/compose/foundation/**->**(**)**
+Landroidx/compose/foundation/**;
+HSPLandroidx/compose/material3/**->**(**)**
+Landroidx/compose/material3/**;
+HSPLandroidx/compose/animation/**->**(**)**
+Landroidx/compose/animation/**;
+
+# --- Lifecycle, activity, navigation -----------------------------------------
+HSPLandroidx/lifecycle/**->**(**)**
+Landroidx/lifecycle/**;
+HSPLandroidx/activity/**->**(**)**
+Landroidx/activity/**;
+Landroidx/navigation/**;
+Landroidx/core/splashscreen/**;
+
+# --- Coroutines: every startup path above suspends at some point --------------
+HSPLkotlinx/coroutines/**->**(**)**
+Lkotlinx/coroutines/**;
+HSPLkotlin/coroutines/**->**(**)**
+
+# --- Image loading for the first screen of artwork ---------------------------
+HSPLcoil3/**->**(**)**
+Lcoil3/**;
+
+# --- Media3: the session connects while the UI is mounting -------------------
+Landroidx/media3/session/**;
+Landroidx/media3/common/**;
