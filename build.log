@@ -1,0 +1,1039 @@
+Downloading https://services.gradle.org/distributions/gradle-9.4.1-bin.zip
+.............10%.............20%.............30%.............40%.............50%.............60%..............70%.............80%.............90%.............100%
+
+Welcome to Gradle 9.4.1!
+
+Here are the highlights of this release:
+ - Java 26 support
+ - Non-class-based JVM tests
+ - Enhanced console progress bar
+
+For more details see https://docs.gradle.org/9.4.1/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: assembleUniversalGmsRelease
+
+> Configure project :app
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: API 'applicationVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling applicationVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'testVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling testVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'unitTestVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling unitTestVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+w: file:///home/runner/work/BeatWave/BeatWave/app/build.gradle.kts:39:1: 'fun Project.android(configure: Action<BaseAppModuleExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.ApplicationExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :artistvideo
+w: file:///home/runner/work/BeatWave/BeatWave/artistvideo/build.gradle.kts:7:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :betterlyrics
+w: file:///home/runner/work/BeatWave/BeatWave/betterlyrics/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :innertube
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :jiosaavn
+w: file:///home/runner/work/BeatWave/BeatWave/jiosaavn/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :kizzy
+w: file:///home/runner/work/BeatWave/BeatWave/kizzy/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :kugou
+w: file:///home/runner/work/BeatWave/BeatWave/kugou/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :lastfm
+w: file:///home/runner/work/BeatWave/BeatWave/lastfm/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :lrclib
+w: file:///home/runner/work/BeatWave/BeatWave/lrclib/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :musixmatchlyrics
+w: file:///home/runner/work/BeatWave/BeatWave/musixmatchlyrics/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :paxsenixlyrics
+w: file:///home/runner/work/BeatWave/BeatWave/paxsenixlyrics/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :shazamkit
+w: file:///home/runner/work/BeatWave/BeatWave/shazamkit/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :simpmusic
+w: file:///home/runner/work/BeatWave/BeatWave/simpmusic/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :spine
+w: file:///home/runner/work/BeatWave/BeatWave/spine/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :spotify
+w: file:///home/runner/work/BeatWave/BeatWave/spotify/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :youlyplus
+w: file:///home/runner/work/BeatWave/BeatWave/youlyplus/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Task :canvas:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :applecanvas:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :vivimusiccanvas:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :vivimusiccanvas:processResources NO-SOURCE
+> Task :applecanvas:processResources NO-SOURCE
+> Task :canvas:processResources NO-SOURCE
+> Task :artistvideo:preBuild UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preUniversalGmsReleaseBuild UP-TO-DATE
+> Task :betterlyrics:preBuild UP-TO-DATE
+> Task :artistvideo:preReleaseBuild UP-TO-DATE
+> Task :betterlyrics:preReleaseBuild UP-TO-DATE
+> Task :betterlyrics:mergeReleaseJniLibFolders
+> Task :app:mergeUniversalGmsReleaseJniLibFolders
+> Task :artistvideo:mergeReleaseJniLibFolders
+> Task :innertube:preBuild UP-TO-DATE
+> Task :innertube:preReleaseBuild UP-TO-DATE
+> Task :betterlyrics:mergeReleaseNativeLibs NO-SOURCE
+> Task :artistvideo:mergeReleaseNativeLibs NO-SOURCE
+> Task :innertube:mergeReleaseJniLibFolders
+> Task :innertube:mergeReleaseNativeLibs NO-SOURCE
+> Task :artistvideo:copyReleaseJniLibsProjectOnly
+> Task :innertube:copyReleaseJniLibsProjectOnly
+> Task :betterlyrics:copyReleaseJniLibsProjectOnly
+> Task :kugou:preBuild UP-TO-DATE
+> Task :kugou:preReleaseBuild UP-TO-DATE
+> Task :jiosaavn:preBuild UP-TO-DATE
+> Task :jiosaavn:preReleaseBuild UP-TO-DATE
+> Task :kizzy:preBuild UP-TO-DATE
+> Task :kizzy:preReleaseBuild UP-TO-DATE
+> Task :jiosaavn:mergeReleaseJniLibFolders
+> Task :kugou:mergeReleaseJniLibFolders
+> Task :kizzy:mergeReleaseJniLibFolders
+> Task :kugou:mergeReleaseNativeLibs NO-SOURCE
+> Task :jiosaavn:mergeReleaseNativeLibs NO-SOURCE
+> Task :kizzy:mergeReleaseNativeLibs NO-SOURCE
+> Task :kugou:copyReleaseJniLibsProjectOnly
+> Task :lastfm:preBuild UP-TO-DATE
+> Task :lastfm:preReleaseBuild UP-TO-DATE
+> Task :kizzy:copyReleaseJniLibsProjectOnly
+> Task :lrclib:preBuild UP-TO-DATE
+> Task :lrclib:preReleaseBuild UP-TO-DATE
+> Task :jiosaavn:copyReleaseJniLibsProjectOnly
+> Task :musixmatchlyrics:preBuild UP-TO-DATE
+> Task :musixmatchlyrics:preReleaseBuild UP-TO-DATE
+> Task :lrclib:mergeReleaseJniLibFolders
+> Task :lastfm:mergeReleaseJniLibFolders
+> Task :musixmatchlyrics:mergeReleaseJniLibFolders
+> Task :lrclib:mergeReleaseNativeLibs NO-SOURCE
+> Task :musixmatchlyrics:mergeReleaseNativeLibs NO-SOURCE
+> Task :lastfm:mergeReleaseNativeLibs NO-SOURCE
+> Task :lrclib:copyReleaseJniLibsProjectOnly
+> Task :paxsenixlyrics:preBuild UP-TO-DATE
+> Task :paxsenixlyrics:preReleaseBuild UP-TO-DATE
+> Task :lastfm:copyReleaseJniLibsProjectOnly
+> Task :shazamkit:preBuild UP-TO-DATE
+> Task :shazamkit:preReleaseBuild UP-TO-DATE
+> Task :musixmatchlyrics:copyReleaseJniLibsProjectOnly
+> Task :simpmusic:preBuild UP-TO-DATE
+> Task :simpmusic:preReleaseBuild UP-TO-DATE
+> Task :paxsenixlyrics:mergeReleaseJniLibFolders
+> Task :shazamkit:mergeReleaseJniLibFolders
+> Task :paxsenixlyrics:mergeReleaseNativeLibs NO-SOURCE
+> Task :simpmusic:mergeReleaseJniLibFolders
+> Task :paxsenixlyrics:copyReleaseJniLibsProjectOnly
+> Task :spine:preBuild UP-TO-DATE
+> Task :spine:preReleaseBuild UP-TO-DATE
+> Task :simpmusic:mergeReleaseNativeLibs NO-SOURCE
+> Task :shazamkit:mergeReleaseNativeLibs NO-SOURCE
+> Task :simpmusic:copyReleaseJniLibsProjectOnly
+> Task :spotify:preBuild UP-TO-DATE
+> Task :spotify:preReleaseBuild UP-TO-DATE
+> Task :spine:mergeReleaseJniLibFolders
+> Task :spine:mergeReleaseNativeLibs NO-SOURCE
+> Task :shazamkit:copyReleaseJniLibsProjectOnly
+> Task :youlyplus:preBuild UP-TO-DATE
+> Task :youlyplus:preReleaseBuild UP-TO-DATE
+> Task :spine:copyReleaseJniLibsProjectOnly
+> Task :spotify:mergeReleaseJniLibFolders
+> Task :spotify:mergeReleaseNativeLibs NO-SOURCE
+> Task :spotify:copyReleaseJniLibsProjectOnly
+> Task :artistvideo:prepareReleaseArtProfile
+> Task :youlyplus:mergeReleaseJniLibFolders
+> Task :youlyplus:mergeReleaseNativeLibs NO-SOURCE
+> Task :innertube:prepareReleaseArtProfile
+> Task :betterlyrics:prepareReleaseArtProfile
+> Task :jiosaavn:prepareReleaseArtProfile
+> Task :youlyplus:copyReleaseJniLibsProjectOnly
+> Task :kizzy:prepareReleaseArtProfile
+> Task :lastfm:prepareReleaseArtProfile
+> Task :lrclib:prepareReleaseArtProfile
+> Task :kugou:prepareReleaseArtProfile
+> Task :musixmatchlyrics:prepareReleaseArtProfile
+> Task :shazamkit:prepareReleaseArtProfile
+> Task :paxsenixlyrics:prepareReleaseArtProfile
+> Task :simpmusic:prepareReleaseArtProfile
+> Task :spotify:prepareReleaseArtProfile
+> Task :spine:prepareReleaseArtProfile
+> Task :youlyplus:prepareReleaseArtProfile
+> Task :innertube:generateReleaseResources
+> Task :innertube:processReleaseNavigationResources
+> Task :innertube:javaPreCompileRelease
+> Task :kugou:generateReleaseResources
+> Task :kugou:packageReleaseResources
+> Task :innertube:packageReleaseResources
+> Task :kugou:processReleaseNavigationResources
+> Task :innertube:parseReleaseLocalResources
+> Task :kugou:parseReleaseLocalResources
+> Task :innertube:generateReleaseRFile
+> Task :kugou:generateReleaseRFile
+> Task :app:mergeUniversalGmsReleaseArtProfile
+> Task :app:expandUniversalGmsReleaseL8ArtProfileWildcards
+> Task :kugou:javaPreCompileRelease
+> Task :lrclib:generateReleaseResources
+> Task :lrclib:packageReleaseResources
+> Task :lrclib:processReleaseNavigationResources
+> Task :lrclib:parseReleaseLocalResources
+> Task :lrclib:generateReleaseRFile
+
+> Task :canvas:compileKotlin
+w: file:///home/runner/work/BeatWave/BeatWave/canvas/src/main/kotlin/com/beatwave/music/canvas/TidalCanvasProvider.kt:175:72 Unnecessary safe call on a non-null receiver of type 'JsonObject'.
+
+> Task :canvas:compileJava NO-SOURCE
+> Task :canvas:classes UP-TO-DATE
+> Task :lrclib:compileReleaseKotlin
+> Task :lrclib:javaPreCompileRelease
+> Task :lrclib:compileReleaseJavaWithJavac NO-SOURCE
+> Task :kugou:compileReleaseKotlin
+> Task :kugou:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lrclib:mergeReleaseGeneratedProguardFiles
+> Task :kugou:mergeReleaseGeneratedProguardFiles
+> Task :lrclib:exportReleaseConsumerProguardFiles
+> Task :kugou:exportReleaseConsumerProguardFiles
+> Task :kizzy:generateReleaseResources
+> Task :kizzy:processReleaseNavigationResources
+> Task :canvas:jar
+> Task :kizzy:javaPreCompileRelease
+> Task :kizzy:packageReleaseResources
+> Task :kizzy:parseReleaseLocalResources
+> Task :kizzy:generateReleaseRFile
+> Task :vivimusiccanvas:compileKotlin
+> Task :vivimusiccanvas:compileJava NO-SOURCE
+> Task :vivimusiccanvas:classes UP-TO-DATE
+> Task :vivimusiccanvas:jar
+> Task :lastfm:generateReleaseResources
+> Task :lastfm:packageReleaseResources
+> Task :lastfm:processReleaseNavigationResources
+> Task :lastfm:parseReleaseLocalResources
+> Task :lastfm:generateReleaseRFile
+> Task :applecanvas:compileKotlin
+> Task :applecanvas:compileJava NO-SOURCE
+> Task :applecanvas:classes UP-TO-DATE
+> Task :applecanvas:jar
+> Task :app:mergeUniversalGmsReleaseNativeLibs
+> Task :lastfm:compileReleaseKotlin
+> Task :lastfm:javaPreCompileRelease
+> Task :lastfm:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lastfm:mergeReleaseGeneratedProguardFiles
+> Task :lastfm:exportReleaseConsumerProguardFiles
+> Task :betterlyrics:generateReleaseResources
+
+> Task :app:stripUniversalGmsReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libquickjs.so. Run with --info option to learn more.
+
+> Task :betterlyrics:packageReleaseResources
+> Task :betterlyrics:processReleaseNavigationResources
+> Task :app:extractUniversalGmsReleaseNativeSymbolTables
+> Task :betterlyrics:parseReleaseLocalResources
+> Task :betterlyrics:generateReleaseRFile
+> Task :app:mergeUniversalGmsReleaseNativeDebugMetadata NO-SOURCE
+> Task :betterlyrics:javaPreCompileRelease
+> Task :paxsenixlyrics:generateReleaseResources
+> Task :paxsenixlyrics:packageReleaseResources
+> Task :paxsenixlyrics:processReleaseNavigationResources
+> Task :paxsenixlyrics:parseReleaseLocalResources
+> Task :paxsenixlyrics:generateReleaseRFile
+> Task :paxsenixlyrics:javaPreCompileRelease
+> Task :simpmusic:generateReleaseResources
+> Task :simpmusic:packageReleaseResources
+> Task :simpmusic:processReleaseNavigationResources
+> Task :simpmusic:parseReleaseLocalResources
+> Task :simpmusic:generateReleaseRFile
+> Task :kizzy:compileReleaseKotlin
+> Task :kizzy:compileReleaseJavaWithJavac NO-SOURCE
+> Task :kizzy:mergeReleaseGeneratedProguardFiles
+> Task :kizzy:exportReleaseConsumerProguardFiles
+> Task :simpmusic:javaPreCompileRelease
+> Task :youlyplus:generateReleaseResources
+> Task :youlyplus:packageReleaseResources
+> Task :youlyplus:processReleaseNavigationResources
+> Task :youlyplus:parseReleaseLocalResources
+> Task :youlyplus:generateReleaseRFile
+> Task :simpmusic:compileReleaseKotlin
+> Task :simpmusic:compileReleaseJavaWithJavac NO-SOURCE
+> Task :simpmusic:mergeReleaseGeneratedProguardFiles
+> Task :simpmusic:exportReleaseConsumerProguardFiles
+> Task :youlyplus:javaPreCompileRelease
+> Task :shazamkit:generateReleaseResources
+> Task :shazamkit:packageReleaseResources
+> Task :shazamkit:processReleaseNavigationResources
+> Task :shazamkit:parseReleaseLocalResources
+> Task :shazamkit:generateReleaseRFile
+> Task :youlyplus:compileReleaseKotlin
+> Task :youlyplus:compileReleaseJavaWithJavac NO-SOURCE
+> Task :youlyplus:mergeReleaseGeneratedProguardFiles
+> Task :youlyplus:exportReleaseConsumerProguardFiles
+> Task :shazamkit:javaPreCompileRelease
+> Task :artistvideo:generateReleaseResources
+> Task :artistvideo:packageReleaseResources
+> Task :artistvideo:processReleaseNavigationResources
+> Task :artistvideo:parseReleaseLocalResources
+> Task :betterlyrics:compileReleaseKotlin
+> Task :betterlyrics:compileReleaseJavaWithJavac NO-SOURCE
+> Task :artistvideo:generateReleaseRFile
+> Task :betterlyrics:mergeReleaseGeneratedProguardFiles
+> Task :betterlyrics:exportReleaseConsumerProguardFiles
+> Task :betterlyrics:bundleLibCompileToJarRelease
+> Task :shazamkit:compileReleaseKotlin
+> Task :shazamkit:compileReleaseJavaWithJavac NO-SOURCE
+> Task :shazamkit:mergeReleaseGeneratedProguardFiles
+> Task :shazamkit:exportReleaseConsumerProguardFiles
+> Task :artistvideo:javaPreCompileRelease
+> Task :paxsenixlyrics:compileReleaseKotlin
+> Task :musixmatchlyrics:generateReleaseResources
+> Task :paxsenixlyrics:compileReleaseJavaWithJavac NO-SOURCE
+> Task :paxsenixlyrics:mergeReleaseGeneratedProguardFiles
+> Task :paxsenixlyrics:exportReleaseConsumerProguardFiles
+> Task :musixmatchlyrics:processReleaseNavigationResources
+> Task :musixmatchlyrics:packageReleaseResources
+> Task :musixmatchlyrics:javaPreCompileRelease
+> Task :jiosaavn:generateReleaseResources
+> Task :musixmatchlyrics:parseReleaseLocalResources
+> Task :jiosaavn:packageReleaseResources
+> Task :jiosaavn:processReleaseNavigationResources
+> Task :jiosaavn:parseReleaseLocalResources
+> Task :musixmatchlyrics:generateReleaseRFile
+> Task :jiosaavn:generateReleaseRFile
+> Task :artistvideo:compileReleaseKotlin
+> Task :artistvideo:compileReleaseJavaWithJavac NO-SOURCE
+> Task :artistvideo:mergeReleaseGeneratedProguardFiles
+> Task :artistvideo:exportReleaseConsumerProguardFiles
+> Task :jiosaavn:javaPreCompileRelease
+> Task :spotify:generateReleaseResources
+> Task :spotify:packageReleaseResources
+> Task :spotify:processReleaseNavigationResources
+> Task :spotify:parseReleaseLocalResources
+> Task :spotify:generateReleaseRFile
+> Task :musixmatchlyrics:compileReleaseKotlin
+> Task :jiosaavn:compileReleaseKotlin
+> Task :jiosaavn:compileReleaseJavaWithJavac NO-SOURCE
+> Task :jiosaavn:mergeReleaseGeneratedProguardFiles
+> Task :jiosaavn:exportReleaseConsumerProguardFiles
+> Task :musixmatchlyrics:compileReleaseJavaWithJavac NO-SOURCE
+> Task :musixmatchlyrics:mergeReleaseGeneratedProguardFiles
+> Task :spotify:javaPreCompileRelease
+> Task :spine:generateReleaseResources
+> Task :musixmatchlyrics:exportReleaseConsumerProguardFiles
+> Task :spine:processReleaseNavigationResources
+> Task :spine:javaPreCompileRelease
+> Task :spine:packageReleaseResources
+> Task :spine:parseReleaseLocalResources
+> Task :spine:generateReleaseRFile
+> Task :app:checkUniversalGmsReleaseDuplicateClasses
+> Task :app:generateUniversalGmsReleaseBuildConfig
+> Task :app:protobufDummy UP-TO-DATE
+> Task :app:extractGmsProto
+> Task :artistvideo:bundleLibRuntimeToJarRelease
+> Task :artistvideo:processReleaseJavaRes
+> Task :artistvideo:createFullJarRelease
+> Task :betterlyrics:bundleLibRuntimeToJarRelease
+> Task :betterlyrics:processReleaseJavaRes
+> Task :betterlyrics:createFullJarRelease
+> Task :jiosaavn:bundleLibRuntimeToJarRelease
+> Task :jiosaavn:processReleaseJavaRes
+> Task :jiosaavn:createFullJarRelease
+> Task :kizzy:bundleLibRuntimeToJarRelease
+> Task :kizzy:processReleaseJavaRes
+> Task :kizzy:createFullJarRelease
+> Task :kugou:bundleLibRuntimeToJarRelease
+> Task :kugou:processReleaseJavaRes
+> Task :kugou:createFullJarRelease
+> Task :lastfm:bundleLibRuntimeToJarRelease
+> Task :lastfm:processReleaseJavaRes
+> Task :lastfm:createFullJarRelease
+> Task :lrclib:bundleLibRuntimeToJarRelease
+> Task :lrclib:processReleaseJavaRes
+> Task :lrclib:createFullJarRelease
+> Task :musixmatchlyrics:bundleLibRuntimeToJarRelease
+> Task :musixmatchlyrics:processReleaseJavaRes
+> Task :musixmatchlyrics:createFullJarRelease
+> Task :paxsenixlyrics:bundleLibRuntimeToJarRelease
+> Task :paxsenixlyrics:processReleaseJavaRes
+> Task :paxsenixlyrics:createFullJarRelease
+> Task :shazamkit:bundleLibRuntimeToJarRelease
+> Task :shazamkit:processReleaseJavaRes
+> Task :shazamkit:createFullJarRelease
+> Task :simpmusic:bundleLibRuntimeToJarRelease
+> Task :simpmusic:processReleaseJavaRes
+> Task :simpmusic:createFullJarRelease
+> Task :youlyplus:bundleLibRuntimeToJarRelease
+> Task :youlyplus:processReleaseJavaRes
+> Task :youlyplus:createFullJarRelease
+> Task :app:extractProto
+> Task :app:extractReleaseProto
+> Task :app:extractUniversalGmsProto
+> Task :app:extractUniversalGmsReleaseProto
+> Task :app:extractUniversalProto
+> Task :app:extractUniversalGmsReleaseSupportedLocales
+> Task :app:mapUniversalGmsReleaseSourceSetPaths
+> Task :artistvideo:extractReleaseSupportedLocales
+> Task :betterlyrics:extractReleaseSupportedLocales
+> Task :innertube:extractReleaseSupportedLocales
+> Task :jiosaavn:extractReleaseSupportedLocales
+> Task :kizzy:extractReleaseSupportedLocales
+> Task :kugou:extractReleaseSupportedLocales
+> Task :lastfm:extractReleaseSupportedLocales
+> Task :lrclib:extractReleaseSupportedLocales
+> Task :musixmatchlyrics:extractReleaseSupportedLocales
+> Task :paxsenixlyrics:extractReleaseSupportedLocales
+> Task :shazamkit:extractReleaseSupportedLocales
+> Task :simpmusic:extractReleaseSupportedLocales
+> Task :spine:extractReleaseSupportedLocales
+> Task :spotify:extractReleaseSupportedLocales
+> Task :youlyplus:extractReleaseSupportedLocales
+> Task :app:generateUniversalGmsReleaseLocaleConfig
+> Task :app:generateUniversalGmsReleaseResources
+> Task :spotify:compileReleaseKotlin
+> Task :spotify:compileReleaseJavaWithJavac NO-SOURCE
+> Task :spotify:mergeReleaseGeneratedProguardFiles
+> Task :spotify:exportReleaseConsumerProguardFiles
+> Task :spotify:bundleLibRuntimeToJarRelease
+> Task :spotify:processReleaseJavaRes
+> Task :spotify:createFullJarRelease
+> Task :app:processUniversalGmsReleaseNavigationResources
+> Task :artistvideo:bundleLibCompileToJarRelease
+> Task :jiosaavn:bundleLibCompileToJarRelease
+> Task :kizzy:bundleLibCompileToJarRelease
+> Task :kugou:bundleLibCompileToJarRelease
+> Task :lastfm:bundleLibCompileToJarRelease
+> Task :lrclib:bundleLibCompileToJarRelease
+> Task :musixmatchlyrics:bundleLibCompileToJarRelease
+> Task :paxsenixlyrics:bundleLibCompileToJarRelease
+> Task :shazamkit:bundleLibCompileToJarRelease
+> Task :simpmusic:bundleLibCompileToJarRelease
+> Task :spotify:bundleLibCompileToJarRelease
+> Task :youlyplus:bundleLibCompileToJarRelease
+> Task :app:packageUniversalGmsReleaseResources
+> Task :app:parseUniversalGmsReleaseLocalResources
+> Task :innertube:compileReleaseKotlin
+> Task :app:javaPreCompileUniversalGmsRelease
+
+> Task :spine:compileReleaseKotlin
+w: file:///home/runner/work/BeatWave/BeatWave/spine/src/main/kotlin/com/music/spine/ModuleManager.kt:168:62 Unnecessary safe call on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/spine/src/main/kotlin/com/music/spine/QuickJsExecutor.kt:366:49 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+
+> Task :spine:compileReleaseJavaWithJavac NO-SOURCE
+> Task :spine:processReleaseJavaRes
+> Task :spine:mergeReleaseGeneratedProguardFiles
+> Task :spine:exportReleaseConsumerProguardFiles
+> Task :spine:bundleLibRuntimeToJarRelease
+> Task :spine:createFullJarRelease
+> Task :spine:bundleLibCompileToJarRelease
+> Task :app:generateUniversalGmsReleaseRFile
+> Task :innertube:writeReleaseAarMetadata
+> Task :artistvideo:writeReleaseAarMetadata
+> Task :betterlyrics:writeReleaseAarMetadata
+> Task :jiosaavn:writeReleaseAarMetadata
+> Task :kugou:writeReleaseAarMetadata
+> Task :kizzy:writeReleaseAarMetadata
+> Task :lrclib:writeReleaseAarMetadata
+> Task :lastfm:writeReleaseAarMetadata
+> Task :musixmatchlyrics:writeReleaseAarMetadata
+> Task :paxsenixlyrics:writeReleaseAarMetadata
+> Task :shazamkit:writeReleaseAarMetadata
+> Task :simpmusic:writeReleaseAarMetadata
+> Task :spine:writeReleaseAarMetadata
+> Task :youlyplus:writeReleaseAarMetadata
+> Task :spotify:writeReleaseAarMetadata
+> Task :app:compileUniversalGmsReleaseNavigationResources
+> Task :app:createUniversalGmsReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksUniversalGmsRelease
+> Task :artistvideo:extractDeepLinksRelease
+> Task :app:checkUniversalGmsReleaseAarMetadata
+> Task :betterlyrics:extractDeepLinksRelease
+> Task :artistvideo:processReleaseManifest
+> Task :betterlyrics:processReleaseManifest
+> Task :innertube:extractDeepLinksRelease
+> Task :jiosaavn:extractDeepLinksRelease
+> Task :innertube:processReleaseManifest
+> Task :jiosaavn:processReleaseManifest
+> Task :kizzy:extractDeepLinksRelease
+> Task :kugou:extractDeepLinksRelease
+> Task :kizzy:processReleaseManifest
+> Task :lastfm:extractDeepLinksRelease
+> Task :kugou:processReleaseManifest
+> Task :lrclib:extractDeepLinksRelease
+> Task :lastfm:processReleaseManifest
+> Task :musixmatchlyrics:extractDeepLinksRelease
+> Task :lrclib:processReleaseManifest
+> Task :paxsenixlyrics:extractDeepLinksRelease
+> Task :musixmatchlyrics:processReleaseManifest
+> Task :shazamkit:extractDeepLinksRelease
+> Task :paxsenixlyrics:processReleaseManifest
+> Task :simpmusic:extractDeepLinksRelease
+> Task :shazamkit:processReleaseManifest
+> Task :spine:extractDeepLinksRelease
+> Task :simpmusic:processReleaseManifest
+> Task :spotify:extractDeepLinksRelease
+> Task :spine:processReleaseManifest
+> Task :youlyplus:extractDeepLinksRelease
+
+> Task :spotify:processReleaseManifest
+package="com.music.spotify" found in source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/spotify/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.music.spotify" from the source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/spotify/src/main/AndroidManifest.xml.
+
+> Task :artistvideo:mapReleaseSourceSetPaths
+
+> Task :youlyplus:processReleaseManifest
+package="com.music.youlyplus" found in source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/youlyplus/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.music.youlyplus" from the source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/youlyplus/src/main/AndroidManifest.xml.
+
+> Task :artistvideo:compileReleaseLibraryResources
+> Task :betterlyrics:mapReleaseSourceSetPaths
+> Task :betterlyrics:compileReleaseLibraryResources
+> Task :innertube:mapReleaseSourceSetPaths
+> Task :innertube:compileReleaseLibraryResources
+> Task :jiosaavn:mapReleaseSourceSetPaths
+> Task :jiosaavn:compileReleaseLibraryResources
+> Task :kizzy:mapReleaseSourceSetPaths
+> Task :kizzy:compileReleaseLibraryResources
+> Task :kugou:mapReleaseSourceSetPaths
+> Task :kugou:compileReleaseLibraryResources
+> Task :lastfm:mapReleaseSourceSetPaths
+> Task :lastfm:compileReleaseLibraryResources
+> Task :lrclib:mapReleaseSourceSetPaths
+> Task :lrclib:compileReleaseLibraryResources
+> Task :musixmatchlyrics:mapReleaseSourceSetPaths
+> Task :musixmatchlyrics:compileReleaseLibraryResources
+> Task :paxsenixlyrics:mapReleaseSourceSetPaths
+> Task :paxsenixlyrics:compileReleaseLibraryResources
+> Task :shazamkit:mapReleaseSourceSetPaths
+> Task :shazamkit:compileReleaseLibraryResources
+> Task :simpmusic:mapReleaseSourceSetPaths
+> Task :app:processUniversalGmsReleaseMainManifest
+> Task :simpmusic:compileReleaseLibraryResources
+> Task :spine:mapReleaseSourceSetPaths
+> Task :spine:compileReleaseLibraryResources
+> Task :spotify:mapReleaseSourceSetPaths
+> Task :spotify:compileReleaseLibraryResources
+> Task :youlyplus:mapReleaseSourceSetPaths
+> Task :youlyplus:compileReleaseLibraryResources
+> Task :app:extractProguardFiles
+> Task :app:mergeUniversalGmsReleaseStartupProfile
+> Task :app:generateUniversalGmsReleaseAssets UP-TO-DATE
+> Task :artistvideo:generateReleaseAssets UP-TO-DATE
+> Task :artistvideo:mergeReleaseAssets
+> Task :betterlyrics:generateReleaseAssets UP-TO-DATE
+> Task :betterlyrics:mergeReleaseAssets
+> Task :innertube:generateReleaseAssets UP-TO-DATE
+> Task :innertube:mergeReleaseAssets
+> Task :jiosaavn:generateReleaseAssets UP-TO-DATE
+> Task :jiosaavn:mergeReleaseAssets
+> Task :kizzy:generateReleaseAssets UP-TO-DATE
+> Task :kizzy:mergeReleaseAssets
+> Task :kugou:generateReleaseAssets UP-TO-DATE
+> Task :app:processUniversalGmsReleaseManifest
+> Task :kugou:mergeReleaseAssets
+> Task :lastfm:generateReleaseAssets UP-TO-DATE
+> Task :app:processUniversalGmsReleaseManifestForPackage
+> Task :lrclib:generateReleaseAssets UP-TO-DATE
+> Task :lastfm:mergeReleaseAssets
+> Task :musixmatchlyrics:generateReleaseAssets UP-TO-DATE
+> Task :lrclib:mergeReleaseAssets
+> Task :paxsenixlyrics:generateReleaseAssets UP-TO-DATE
+> Task :musixmatchlyrics:mergeReleaseAssets
+> Task :shazamkit:generateReleaseAssets UP-TO-DATE
+> Task :paxsenixlyrics:mergeReleaseAssets
+> Task :simpmusic:generateReleaseAssets UP-TO-DATE
+> Task :shazamkit:mergeReleaseAssets
+> Task :spine:generateReleaseAssets UP-TO-DATE
+> Task :spine:mergeReleaseAssets
+> Task :spotify:generateReleaseAssets UP-TO-DATE
+> Task :simpmusic:mergeReleaseAssets
+> Task :youlyplus:generateReleaseAssets UP-TO-DATE
+> Task :spotify:mergeReleaseAssets
+> Task :youlyplus:mergeReleaseAssets
+> Task :app:extractUniversalGmsReleaseVersionControlInfo
+> Task :artistvideo:extractProguardFiles
+> Task :app:mergeUniversalGmsReleaseAssets
+> Task :app:compressUniversalGmsReleaseAssets
+> Task :artistvideo:prepareLintJarForPublish
+> Task :betterlyrics:extractProguardFiles
+
+> Task :innertube:compileReleaseKotlin
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/src/main/kotlin/com/music/innertube/YouTube.kt:268:32 Unnecessary safe call on a non-null receiver of type 'Tabs.Tab.TabRenderer'.
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/src/main/kotlin/com/music/innertube/YouTube.kt:285:32 Unnecessary safe call on a non-null receiver of type 'Tabs.Tab.TabRenderer'.
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/src/main/kotlin/com/music/innertube/pages/RelatedPage.kt:119:58 Unnecessary safe call on a non-null receiver of type 'Runs'.
+
+> Task :innertube:compileReleaseJavaWithJavac NO-SOURCE
+> Task :innertube:mergeReleaseGeneratedProguardFiles
+> Task :betterlyrics:generateReleaseLintModel
+> Task :innertube:exportReleaseConsumerProguardFiles
+> Task :innertube:processReleaseJavaRes
+> Task :innertube:bundleLibRuntimeToJarRelease
+> Task :innertube:bundleLibCompileToJarRelease
+> Task :innertube:createFullJarRelease
+> Task :app:mergeUniversalGmsReleaseResources
+> Task :betterlyrics:prepareLintJarForPublish
+> Task :innertube:extractProguardFiles
+> Task :artistvideo:generateReleaseLintModel
+> Task :innertube:prepareLintJarForPublish
+> Task :jiosaavn:extractProguardFiles
+> Task :innertube:generateReleaseLintModel
+> Task :jiosaavn:generateReleaseLintModel
+> Task :jiosaavn:prepareLintJarForPublish
+> Task :kizzy:extractProguardFiles
+> Task :kizzy:prepareLintJarForPublish
+> Task :kugou:extractProguardFiles
+> Task :kugou:generateReleaseLintModel
+> Task :kizzy:generateReleaseLintModel
+> Task :lastfm:extractProguardFiles
+> Task :lastfm:generateReleaseLintModel
+> Task :kugou:prepareLintJarForPublish
+> Task :lrclib:extractProguardFiles
+> Task :lastfm:prepareLintJarForPublish
+> Task :lrclib:prepareLintJarForPublish
+> Task :lrclib:generateReleaseLintModel
+> Task :musixmatchlyrics:extractProguardFiles
+> Task :musixmatchlyrics:prepareLintJarForPublish
+> Task :paxsenixlyrics:extractProguardFiles
+> Task :musixmatchlyrics:generateReleaseLintModel
+> Task :paxsenixlyrics:prepareLintJarForPublish
+> Task :paxsenixlyrics:generateReleaseLintModel
+> Task :shazamkit:extractProguardFiles
+> Task :shazamkit:prepareLintJarForPublish
+> Task :simpmusic:extractProguardFiles
+> Task :shazamkit:generateReleaseLintModel
+> Task :simpmusic:prepareLintJarForPublish
+> Task :spine:extractProguardFiles
+> Task :simpmusic:generateReleaseLintModel
+> Task :spine:prepareLintJarForPublish
+> Task :spotify:extractProguardFiles
+> Task :spotify:generateReleaseLintModel
+> Task :spotify:prepareLintJarForPublish
+> Task :youlyplus:extractProguardFiles
+> Task :youlyplus:generateReleaseLintModel
+> Task :youlyplus:prepareLintJarForPublish
+> Task :innertube:checkReleaseAarMetadata
+> Task :innertube:stripReleaseDebugSymbols NO-SOURCE
+> Task :innertube:copyReleaseJniLibsProjectAndLocalJars
+> Task :innertube:extractDeepLinksForAarRelease
+> Task :spine:generateReleaseLintModel
+> Task :innertube:mergeReleaseConsumerProguardFiles
+> Task :innertube:mergeReleaseJavaResource
+> Task :kugou:checkReleaseAarMetadata
+> Task :kugou:stripReleaseDebugSymbols NO-SOURCE
+> Task :kugou:copyReleaseJniLibsProjectAndLocalJars
+> Task :kugou:extractDeepLinksForAarRelease
+> Task :app:extractIncludeUniversalGmsReleaseProto
+> Task :app:generateUniversalGmsReleaseProto
+> Task :app:processUniversalGmsReleaseResources
+> Task :kugou:mergeReleaseConsumerProguardFiles
+> Task :kugou:mergeReleaseJavaResource
+> Task :lrclib:checkReleaseAarMetadata
+> Task :lrclib:stripReleaseDebugSymbols NO-SOURCE
+> Task :lrclib:copyReleaseJniLibsProjectAndLocalJars
+> Task :lrclib:extractDeepLinksForAarRelease
+> Task :lrclib:extractReleaseAnnotations
+> Task :kugou:extractReleaseAnnotations
+> Task :lrclib:mergeReleaseConsumerProguardFiles
+> Task :innertube:extractReleaseAnnotations
+> Task :kugou:syncReleaseLibJars
+> Task :kugou:bundleReleaseLocalLintAar
+> Task :innertube:syncReleaseLibJars
+> Task :innertube:bundleReleaseLocalLintAar
+> Task :kizzy:stripReleaseDebugSymbols NO-SOURCE
+> Task :lrclib:mergeReleaseJavaResource
+> Task :lrclib:syncReleaseLibJars
+> Task :lrclib:bundleReleaseLocalLintAar
+> Task :kizzy:extractDeepLinksForAarRelease
+> Task :kizzy:extractReleaseAnnotations
+> Task :kizzy:mergeReleaseConsumerProguardFiles
+> Task :kizzy:copyReleaseJniLibsProjectAndLocalJars
+> Task :kizzy:checkReleaseAarMetadata
+> Task :kizzy:mergeReleaseJavaResource
+> Task :lastfm:stripReleaseDebugSymbols NO-SOURCE
+> Task :lastfm:checkReleaseAarMetadata
+> Task :lastfm:copyReleaseJniLibsProjectAndLocalJars
+> Task :lastfm:extractDeepLinksForAarRelease
+> Task :lastfm:mergeReleaseConsumerProguardFiles
+> Task :lastfm:extractReleaseAnnotations
+> Task :lastfm:mergeReleaseJavaResource
+> Task :kizzy:syncReleaseLibJars
+> Task :paxsenixlyrics:checkReleaseAarMetadata
+> Task :paxsenixlyrics:stripReleaseDebugSymbols NO-SOURCE
+> Task :kizzy:bundleReleaseLocalLintAar
+> Task :lastfm:syncReleaseLibJars
+> Task :paxsenixlyrics:copyReleaseJniLibsProjectAndLocalJars
+> Task :paxsenixlyrics:extractDeepLinksForAarRelease
+> Task :lastfm:bundleReleaseLocalLintAar
+> Task :paxsenixlyrics:mergeReleaseConsumerProguardFiles
+> Task :paxsenixlyrics:extractReleaseAnnotations
+> Task :betterlyrics:stripReleaseDebugSymbols NO-SOURCE
+> Task :paxsenixlyrics:mergeReleaseJavaResource
+> Task :betterlyrics:checkReleaseAarMetadata
+> Task :betterlyrics:copyReleaseJniLibsProjectAndLocalJars
+> Task :betterlyrics:extractDeepLinksForAarRelease
+> Task :betterlyrics:mergeReleaseConsumerProguardFiles
+> Task :betterlyrics:extractReleaseAnnotations
+> Task :betterlyrics:mergeReleaseJavaResource
+> Task :simpmusic:checkReleaseAarMetadata
+> Task :simpmusic:stripReleaseDebugSymbols NO-SOURCE
+> Task :paxsenixlyrics:syncReleaseLibJars
+> Task :simpmusic:copyReleaseJniLibsProjectAndLocalJars
+> Task :betterlyrics:syncReleaseLibJars
+> Task :simpmusic:extractDeepLinksForAarRelease
+> Task :paxsenixlyrics:bundleReleaseLocalLintAar
+> Task :betterlyrics:bundleReleaseLocalLintAar
+> Task :simpmusic:mergeReleaseConsumerProguardFiles
+> Task :simpmusic:extractReleaseAnnotations
+> Task :simpmusic:mergeReleaseJavaResource
+> Task :youlyplus:stripReleaseDebugSymbols NO-SOURCE
+> Task :youlyplus:checkReleaseAarMetadata
+> Task :youlyplus:extractDeepLinksForAarRelease
+> Task :youlyplus:copyReleaseJniLibsProjectAndLocalJars
+> Task :youlyplus:extractReleaseAnnotations
+> Task :simpmusic:syncReleaseLibJars
+> Task :youlyplus:mergeReleaseConsumerProguardFiles
+> Task :simpmusic:bundleReleaseLocalLintAar
+> Task :youlyplus:mergeReleaseJavaResource
+> Task :shazamkit:checkReleaseAarMetadata
+> Task :shazamkit:stripReleaseDebugSymbols NO-SOURCE
+> Task :shazamkit:copyReleaseJniLibsProjectAndLocalJars
+> Task :shazamkit:extractDeepLinksForAarRelease
+> Task :youlyplus:syncReleaseLibJars
+> Task :shazamkit:mergeReleaseConsumerProguardFiles
+> Task :youlyplus:bundleReleaseLocalLintAar
+> Task :shazamkit:mergeReleaseJavaResource
+> Task :shazamkit:extractReleaseAnnotations
+> Task :artistvideo:stripReleaseDebugSymbols NO-SOURCE
+> Task :artistvideo:copyReleaseJniLibsProjectAndLocalJars
+> Task :artistvideo:extractDeepLinksForAarRelease
+> Task :artistvideo:checkReleaseAarMetadata
+> Task :artistvideo:mergeReleaseConsumerProguardFiles
+> Task :artistvideo:mergeReleaseJavaResource
+> Task :shazamkit:syncReleaseLibJars
+> Task :musixmatchlyrics:checkReleaseAarMetadata
+> Task :musixmatchlyrics:stripReleaseDebugSymbols NO-SOURCE
+> Task :musixmatchlyrics:copyReleaseJniLibsProjectAndLocalJars
+> Task :musixmatchlyrics:extractDeepLinksForAarRelease
+> Task :shazamkit:bundleReleaseLocalLintAar
+> Task :musixmatchlyrics:extractReleaseAnnotations
+> Task :musixmatchlyrics:mergeReleaseConsumerProguardFiles
+> Task :jiosaavn:checkReleaseAarMetadata
+> Task :musixmatchlyrics:mergeReleaseJavaResource
+> Task :jiosaavn:stripReleaseDebugSymbols NO-SOURCE
+> Task :jiosaavn:copyReleaseJniLibsProjectAndLocalJars
+> Task :jiosaavn:extractDeepLinksForAarRelease
+> Task :jiosaavn:extractReleaseAnnotations
+> Task :musixmatchlyrics:syncReleaseLibJars
+> Task :jiosaavn:mergeReleaseConsumerProguardFiles
+> Task :musixmatchlyrics:bundleReleaseLocalLintAar
+> Task :jiosaavn:mergeReleaseJavaResource
+> Task :spotify:checkReleaseAarMetadata
+> Task :spotify:stripReleaseDebugSymbols NO-SOURCE
+> Task :spotify:copyReleaseJniLibsProjectAndLocalJars
+> Task :spotify:extractDeepLinksForAarRelease
+> Task :jiosaavn:syncReleaseLibJars
+> Task :jiosaavn:bundleReleaseLocalLintAar
+> Task :spotify:extractReleaseAnnotations
+> Task :spotify:mergeReleaseConsumerProguardFiles
+> Task :spine:checkReleaseAarMetadata
+> Task :spine:stripReleaseDebugSymbols NO-SOURCE
+> Task :spine:copyReleaseJniLibsProjectAndLocalJars
+> Task :spine:extractDeepLinksForAarRelease
+> Task :spotify:mergeReleaseJavaResource
+> Task :spotify:syncReleaseLibJars
+> Task :spotify:bundleReleaseLocalLintAar
+> Task :spine:mergeReleaseConsumerProguardFiles
+> Task :spine:mergeReleaseJavaResource
+> Task :spine:extractReleaseAnnotations
+> Task :spine:syncReleaseLibJars
+> Task :spine:bundleReleaseLocalLintAar
+> Task :artistvideo:writeReleaseLintModelMetadata
+> Task :artistvideo:extractReleaseAnnotations
+> Task :artistvideo:syncReleaseLibJars
+> Task :artistvideo:bundleReleaseLocalLintAar
+> Task :betterlyrics:writeReleaseLintModelMetadata
+> Task :betterlyrics:lintVitalAnalyzeRelease
+> Task :artistvideo:lintVitalAnalyzeRelease
+> Task :innertube:writeReleaseLintModelMetadata
+> Task :jiosaavn:writeReleaseLintModelMetadata
+> Task :jiosaavn:lintVitalAnalyzeRelease
+> Task :kizzy:writeReleaseLintModelMetadata
+> Task :kugou:lintVitalAnalyzeRelease
+> Task :kugou:writeReleaseLintModelMetadata
+> Task :kizzy:lintVitalAnalyzeRelease
+> Task :lastfm:writeReleaseLintModelMetadata
+> Task :lastfm:lintVitalAnalyzeRelease
+> Task :lrclib:writeReleaseLintModelMetadata
+> Task :lrclib:lintVitalAnalyzeRelease
+> Task :musixmatchlyrics:writeReleaseLintModelMetadata
+> Task :musixmatchlyrics:lintVitalAnalyzeRelease
+> Task :paxsenixlyrics:writeReleaseLintModelMetadata
+> Task :paxsenixlyrics:lintVitalAnalyzeRelease
+> Task :shazamkit:writeReleaseLintModelMetadata
+> Task :simpmusic:lintVitalAnalyzeRelease
+> Task :shazamkit:lintVitalAnalyzeRelease
+> Task :simpmusic:writeReleaseLintModelMetadata
+> Task :spine:writeReleaseLintModelMetadata
+> Task :spine:lintVitalAnalyzeRelease
+> Task :spotify:writeReleaseLintModelMetadata
+> Task :spotify:lintVitalAnalyzeRelease
+> Task :youlyplus:writeReleaseLintModelMetadata
+> Task :artistvideo:generateReleaseLintVitalModel
+> Task :betterlyrics:generateReleaseLintVitalModel
+> Task :innertube:generateReleaseLintVitalModel
+> Task :jiosaavn:generateReleaseLintVitalModel
+> Task :kizzy:generateReleaseLintVitalModel
+> Task :kugou:generateReleaseLintVitalModel
+> Task :lastfm:generateReleaseLintVitalModel
+> Task :lrclib:generateReleaseLintVitalModel
+> Task :youlyplus:lintVitalAnalyzeRelease
+> Task :paxsenixlyrics:generateReleaseLintVitalModel
+> Task :musixmatchlyrics:generateReleaseLintVitalModel
+> Task :shazamkit:generateReleaseLintVitalModel
+> Task :spine:generateReleaseLintVitalModel
+> Task :simpmusic:generateReleaseLintVitalModel
+> Task :spotify:generateReleaseLintVitalModel
+> Task :youlyplus:generateReleaseLintVitalModel
+> Task :app:writeUniversalGmsReleaseAppMetadata
+> Task :app:validateSigningUniversalGmsRelease
+> Task :app:writeUniversalGmsReleaseSigningConfigVersions
+> Task :innertube:lintVitalAnalyzeRelease
+> Task :app:kspUniversalGmsReleaseKotlin
+> Task :app:compileUniversalGmsReleaseKotlin
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/MainActivity.kt:675:50 'val defaultDisplay: Display!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/MainActivity.kt:676:56 'val defaultDisplay: Display!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/MainActivity.kt:708:42 'val defaultDisplay: Display!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/MainActivity.kt:1470:61 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/MainActivity.kt:2988:20 'var statusBarColor: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/MainActivity.kt:2991:20 'var navigationBarColor: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/WelcomeActivity.kt:308:26 'val LocalLifecycleOwner: ProvidableCompositionLocal<LifecycleOwner>' is deprecated. Moved to lifecycle-runtime-compose library in androidx.lifecycle.compose package.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/WelcomeActivity.kt:1218:60 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/WelcomeActivity.kt:1629:33 'var databaseEnabled: Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/WelcomeActivity.kt:1635:82 'static field REQUESTED_WITH_HEADER_ALLOW_LIST: String' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/WelcomeActivity.kt:1636:51 'static fun setRequestedWithHeaderOriginAllowList(p0: WebSettings, p1: (Mutable)Set<String!>): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/WelcomeActivity.kt:1785:33 'var databaseEnabled: Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ai/AiPlaylistModifier.kt:119:51 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/DeepLService.kt:82:49 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/MistralService.kt:156:53 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/OpenRouterService.kt:153:49 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/OpenRouterStreamingService.kt:133:49 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/OpenRouterStreamingService.kt:143:76 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:40:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:60:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:64:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:93:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:102:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:124:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:128:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:158:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:167:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:187:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:191:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:213:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:217:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:243:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:263:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:267:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:293:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:332:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:354:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:376:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:401:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:421:45 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/api/SupabaseService.kt:425:50 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/extensions/PlayerExt.kt:140:31 No cast needed.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/extensions/PlayerExt.kt:147:31 No cast needed.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/extensions/PlayerExt.kt:154:31 No cast needed.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/listentogether/ListenTogetherClient.kt:1429:37 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/listentogether/LocalSocketTransport.kt:101:33 'fun resolveService(p0: NsdServiceInfo!, p1: NsdManager.ResolveListener!): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/listentogether/LocalSocketTransport.kt:108:62 'var host: InetAddress!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/playback/MusicService.kt:3503:48 Elvis operator (?:) always returns the left operand of non-nullable type 'YTPlayerUtils.PlaybackData'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/playback/MusicService.kt:3542:206 Unnecessary safe call on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/playback/audio/DelayAudioProcessor.kt:157:9 'fun flush(): Unit' is deprecated. Deprecated in AudioProcessor.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/playback/audio/EightDAudioProcessor.kt:211:9 'fun flush(): Unit' is deprecated. Deprecated in AudioProcessor.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/playback/audio/LosslessStallWatchdogAudioProcessor.kt:166:9 'fun flush(): Unit' is deprecated. Deprecated in AudioProcessor.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/playback/audio/TrackAnalyzerAudioProcessor.kt:200:9 'fun flush(): Unit' is deprecated. Deprecated in AudioProcessor.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/BottomSheetMenu.kt:77:81 'val windowInsets: WindowInsets' is deprecated. Renamed as modalWindowInsets.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1276:97 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1321:70 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1378:70 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1425:70 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1481:70 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1548:70 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1602:70 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/Lyrics.kt:1617:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'List<WordTimestamp>'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/MetroLyrics.kt:867:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'MetroWordTimestamp'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/UpdaterComponents.kt:221:13 'fun ClickableText(text: AnnotatedString, modifier: Modifier = ..., style: TextStyle = ..., softWrap: Boolean = ..., overflow: TextOverflow = ..., maxLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., onClick: (Int) -> Unit): Unit' is deprecated. Use Text or BasicText and pass an AnnotatedString that contains a LinkAnnotation. Check LinkAnnotation's documentation for more details and samples.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/UpdaterComponents.kt:225:39 'static fun startActivity(p0: Context, p1: Intent, p2: Bundle?): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/backdrop/internal/Paint.kt:18:10 'fun asFrameworkPaint(): Paint' is deprecated. Use platform-specific extension to get platform reference.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/component/backdrop/internal/Paint.kt:24:10 'fun asFrameworkPaint(): Paint' is deprecated. Use platform-specific extension to get platform reference.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/menu/OldPlayerMenu.kt:644:58 Unnecessary safe call on a non-null receiver of type 'ListenTogetherManager'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/menu/PlaylistMenu.kt:682:57 Condition is always 'true'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/AppleMiniPlayer.kt:344:62 Unnecessary safe call on a non-null receiver of type 'CastConnectionHandler'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/AudioQualityBadge.kt:47:23 No cast needed.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/AudioQualityBadge.kt:103:55 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/PlaybackError.kt:87:21 'val LocalClipboardManager: ProvidableCompositionLocal<ClipboardManager>' is deprecated. Use LocalClipboard instead which supports suspend functions.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player.kt:1556:73 Unnecessary safe call on a non-null receiver of type 'CanvasArtwork'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player.kt:1556:100 Unnecessary safe call on a non-null receiver of type 'CanvasArtwork'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player.kt:1571:66 Unnecessary safe call on a non-null receiver of type 'CanvasArtwork'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player.kt:2152:54 Unnecessary safe call on a non-null receiver of type 'MediaMetadata'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player.kt:2547:45 Unnecessary safe call on a non-null receiver of type 'MediaMetadata'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player.kt:2686:83 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/PlayerV2Canvas.kt:58:48 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player_v2.kt:874:82 'val Icons.Filled.VolumeOff: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeOff.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player_v2.kt:874:111 'val Icons.Filled.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeUp.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player_v2.kt:926:44 'val Icons.Filled.VolumeMute: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeMute.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/Player_v2.kt:961:48 'val Icons.Filled.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeUp.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/UpNextSong.kt:61:39 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/UpNextSong.kt:66:42 Unnecessary safe call on a non-null receiver of type 'List<MediaMetadata.Artist>'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/customize/DiyPlayerMockup.kt:488:46 Redundant call of conversion method.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/player/customize/DiyPlayerMockup.kt:504:76 Redundant call of conversion method.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/AdminPanelScreen.kt:71:13 'fun ScrollableTabRow(selectedTabIndex: Int, modifier: Modifier = ..., containerColor: Color = ..., contentColor: Color = ..., edgePadding: Dp = ..., indicator: ComposableFunction1<List<TabPosition>, Unit> = ..., divider: ComposableFunction0<Unit> = ..., tabs: ComposableFunction0<Unit>): Unit' is deprecated. Replaced with PrimaryScrollableTabRow and SecondaryScrollableTabRow tab variants.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/ChannelPickerScreen.kt:50:62 'fun <reified VM : ViewModel> hiltViewModel(viewModelStoreOwner: ViewModelStoreOwner = ..., key: String? = ...): VM' is deprecated. Moved to package: androidx.hilt.lifecycle.viewmodel.compose.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/LoginScreen.kt:79:62 'fun <reified VM : ViewModel> hiltViewModel(viewModelStoreOwner: ViewModelStoreOwner = ..., key: String? = ...): VM' is deprecated. Moved to package: androidx.hilt.lifecycle.viewmodel.compose.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/LoginScreen.kt:231:74 'static field REQUESTED_WITH_HEADER_ALLOW_LIST: String' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/LoginScreen.kt:234:43 'static fun setRequestedWithHeaderOriginAllowList(p0: WebSettings, p1: (Mutable)Set<String!>): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/YouTubeBrowseScreen.kt:119:13 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/YouTubeBrowseScreen.kt:174:33 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/artist/ArtistScreen.kt:603:74 Unnecessary safe call on a non-null receiver of type 'ArtistPage'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/artist/ArtistScreen.kt:815:65 Unnecessary safe call on a non-null receiver of type 'ArtistPage'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/artist/ArtistScreen.kt:816:69 Unnecessary safe call on a non-null receiver of type 'ArtistPage'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/library/LocalSongsScreen.kt:73:37 'fun <reified VM : ViewModel> hiltViewModel(viewModelStoreOwner: ViewModelStoreOwner = ..., key: String? = ...): VM' is deprecated. Moved to package: androidx.hilt.lifecycle.viewmodel.compose.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/playlist/CachePlaylistScreen.kt:642:76 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/search/LocalSearchScreen.kt:126:13 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/search/suggestions/AppleMusicScraper.kt:33:30 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/AppearanceSettings.kt:585:29 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/FontSelectionScreen.kt:150:17 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/ListenBrainzManager.kt:67:42 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/ListenBrainzManager.kt:131:42 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/LocalFoldersSettingsScreen.kt:85:42 'fun <reified VM : ViewModel> hiltViewModel(viewModelStoreOwner: ViewModelStoreOwner = ..., key: String? = ...): VM' is deprecated. Moved to package: androidx.hilt.lifecycle.viewmodel.compose.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/ModuleDetailScreen.kt:219:26 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes ExposedDropdownMenuAnchorType and enabled parameters.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/ModuleDetailScreen.kt:263:26 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes ExposedDropdownMenuAnchorType and enabled parameters.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/ScanMusicScreen.kt:57:37 'fun <reified VM : ViewModel> hiltViewModel(viewModelStoreOwner: ViewModelStoreOwner = ..., key: String? = ...): VM' is deprecated. Moved to package: androidx.hilt.lifecycle.viewmodel.compose.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/SpotifyScreen.kt:74:41 'fun <reified VM : ViewModel> hiltViewModel(viewModelStoreOwner: ViewModelStoreOwner = ..., key: String? = ...): VM' is deprecated. Moved to package: androidx.hilt.lifecycle.viewmodel.compose.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/SpotifyScreen.kt:556:33 'var databaseEnabled: Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/SuggestionScreen.kt:131:13 'fun TabRow(selectedTabIndex: Int, modifier: Modifier = ..., containerColor: Color = ..., contentColor: Color = ..., indicator: ComposableFunction1<List<TabPosition>, Unit> = ..., divider: ComposableFunction0<Unit> = ..., tabs: ComposableFunction0<Unit>): Unit' is deprecated. Replaced with PrimaryTabRow and SecondaryTabRow.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/SuggestionScreen.kt:172:53 'val outlinedButtonBorder: BorderStroke' is deprecated. Please use the version that takes an `enabled` param to get the `BorderStroke` with the correct opacity.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/settings/SuggestionScreen.kt:185:53 'val outlinedButtonBorder: BorderStroke' is deprecated. Please use the version that takes an `enabled` param to get the `BorderStroke` with the correct opacity.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/screens/wrapped/pages/WrappedIntro.kt:123:38 Unnecessary safe call on a non-null receiver of type 'WrappedManager'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/theme/Theme.kt:116:17 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/utils/ShowMediaInfo.kt:230:58 Redundant call of conversion method.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/utils/ShowMediaInfo.kt:236:53 Redundant call of conversion method.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/ui/utils/ShowMediaInfo.kt:251:82 Redundant call of conversion method.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/BotDetectionMitigator.kt:109:46 Unnecessary safe call on a non-null receiver of type 'Context'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/ComposeToImage.kt:118:52 Redundant call of conversion method.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/LocalAudioScanner.kt:144:25 Condition is always 'true'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/SongExporter.kt:332:36 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/SongExporter.kt:381:65 'static field INFO_OUTPUT_BUFFERS_CHANGED: Int' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:378:81 Condition is always 'true'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:396:45 Condition is always 'true'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:414:75 Unnecessary safe call on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:493:85 Unnecessary safe call on a non-null receiver of type 'Int'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:1026:13 Condition is always 'false'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:1167:93 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:1181:57 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:1218:45 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:1234:97 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/YTPlayerUtils.kt:1307:135 Unnecessary safe call on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/cipher/PlayerJsFetcher.kt:137:33 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/cipher/PlayerJsFetcher.kt:155:29 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/utils/potoken/PoTokenWebView.kt:296:34 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/viewmodels/ArtistViewModel.kt:117:52 Unnecessary safe call on a non-null receiver of type 'ArtistItem'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/viewmodels/LocalSearchViewModel.kt:46:25 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/viewmodels/SpotifyImportViewModel.kt:585:34 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/AudioDeviceBottomSheet.kt:525:88 'val Icons.Filled.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeUp.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/AudioDeviceBottomSheet.kt:737:74 'val Icons.Filled.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeUp.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/AudioDeviceBottomSheet.kt:737:101 'val Icons.Filled.VolumeOff: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeOff.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/AudioDeviceBottomSheet.kt:794:13 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/AudioDeviceBottomSheet.kt:1134:52 'val Icons.Filled.VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeUp.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/BluetoothUtils.kt:38:42 'var isBluetoothA2dpOn: Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/BluetoothUtils.kt:38:76 'var isBluetoothScoOn: Boolean' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:153:75 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:154:73 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:155:74 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:432:49 'fun ClickableText(text: AnnotatedString, modifier: Modifier = ..., style: TextStyle = ..., softWrap: Boolean = ..., overflow: TextOverflow = ..., maxLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., onClick: (Int) -> Unit): Unit' is deprecated. Use Text or BasicText and pass an AnnotatedString that contains a LinkAnnotation. Check LinkAnnotation's documentation for more details and samples.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:436:75 'static fun startActivity(p0: Context, p1: Intent, p2: Bundle?): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:535:50 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:536:62 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/changelog/changelogscreen.kt:537:54 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/commitscreen/commitscreen.kt:133:72 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/commitscreen/commitscreen.kt:136:77 Java type mismatch: inferred type is 'Nothing?', but 'String' was expected.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/commitscreen/commitscreen.kt:223:51 'static fun startActivity(p0: Context, p1: Intent, p2: Bundle?): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/updater/vivimusicupdater.kt:264:44 'fun largeTopAppBarColors(containerColor: Color = ..., scrolledContainerColor: Color = ..., navigationIconContentColor: Color = ..., titleContentColor: Color = ..., actionIconContentColor: Color = ...): TopAppBarColors' is deprecated. Use topAppBarColors instead.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/updater/vivimusicupdater.kt:332:63 'static fun startActivity(p0: Context, p1: Intent, p2: Bundle?): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/updater/vivimusicupdater.kt:485:41 'fun ClickableText(text: AnnotatedString, modifier: Modifier = ..., style: TextStyle = ..., softWrap: Boolean = ..., overflow: TextOverflow = ..., maxLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., onClick: (Int) -> Unit): Unit' is deprecated. Use Text or BasicText and pass an AnnotatedString that contains a LinkAnnotation. Check LinkAnnotation's documentation for more details and samples.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/updater/vivimusicupdater.kt:489:67 'static fun startActivity(p0: Context, p1: Intent, p2: Bundle?): Unit' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/BeatWave/BeatWave/app/src/main/kotlin/com/beatwave/music/vivimusic/updater/vivimusicupdater.kt:501:72 'fun LinearProgressIndicator(progress: Float, modifier: Modifier = ..., color: Color = ..., trackColor: Color = ..., strokeCap: StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda.
+
+> Task :app:processUniversalGmsReleaseJavaRes
+> Task :app:mergeUniversalGmsReleaseJavaResource
+> Task :app:compileUniversalGmsReleaseJavaWithJavac
+> Task :app:hiltSyncUniversalGmsRelease
+> Task :app:generateUniversalGmsReleaseLintVitalReportModel
+> Task :app:hiltAggregateDepsUniversalGmsRelease
+> Task :app:hiltJavaCompileUniversalGmsRelease
+> Task :app:transformUniversalGmsReleaseClassesWithAsm
+> Task :app:mergeUniversalGmsReleaseGeneratedProguardFiles
+> Task :app:expandUniversalGmsReleaseArtProfileWildcards
+> Task :app:produceUniversalGmsReleaseComposeMapping
+> Task :app:reportUniversalGmsReleaseComposeMappingErrors
+> Task :app:lintVitalAnalyzeUniversalGmsRelease
+> Task :app:minifyUniversalGmsReleaseWithR8
+> Task :app:lintVitalReportUniversalGmsRelease
+> Task :app:lintVitalUniversalGmsRelease
+> Task :app:mergeUniversalGmsReleaseComposeMapping
+> Task :app:convertShrunkResourcesToBinaryUniversalGmsRelease
+> Task :app:optimizeUniversalGmsReleaseResources
+> Task :app:l8DexDesugarLibUniversalGmsRelease
+> Task :app:compileUniversalGmsReleaseArtProfile
+> Task :app:packageUniversalGmsRelease
+> Task :app:assembleUniversalGmsRelease
+> Task :app:createUniversalGmsReleaseApkListingFileRedirect
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793340217533.json
+
+BUILD SUCCESSFUL in 14m 38s
+628 actionable tasks: 628 executed
+Configuration cache entry stored.
