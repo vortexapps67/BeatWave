@@ -66,6 +66,11 @@ import com.beatwave.music.ui.theme.MonospaceFontFamily
 import com.beatwave.music.ui.theme.SerifFontFamily
 import com.beatwave.music.ui.theme.CursiveFontFamily
 import com.beatwave.music.ui.theme.SansSerifFontFamily
+import com.beatwave.music.ui.theme.SansSerifMediumFontFamily
+import com.beatwave.music.ui.theme.SansSerifCondensedFontFamily
+import com.beatwave.music.ui.theme.SansSerifLightFontFamily
+import com.beatwave.music.ui.theme.SansSerifBlackFontFamily
+import com.beatwave.music.ui.theme.SansSerifSmallcapsFontFamily
 import com.beatwave.music.ui.theme.copyCustomFont
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.backToMain

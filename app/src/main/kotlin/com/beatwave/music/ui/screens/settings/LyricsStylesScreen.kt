@@ -26,7 +26,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import com.beatwave.music.ui.component.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -50,8 +50,8 @@ import androidx.navigation.NavController
 import com.beatwave.music.R
 import com.beatwave.music.constants.LyricsAnimationStyle
 import com.beatwave.music.constants.LyricsAnimationStyleKey
+import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.backToMain
-import com.beatwave.music.utils.appTopBarWindowInsets
 import com.beatwave.music.utils.rememberEnumPreference
 
 data class LyricsStyleOption(

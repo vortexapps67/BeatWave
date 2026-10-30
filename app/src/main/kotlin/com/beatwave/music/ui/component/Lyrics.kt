@@ -1227,6 +1227,9 @@ fun Lyrics(
                         }
                     }
                     
+                    // Smaller scale for background vocals
+                    val bgScale = if (item.isBackground) 0.85f else 1f
+
                     // Fisheye Lens Distortion Effect
                     // Naturally expands items near center of viewport while curving top/bottom away
                     val lineDistance = kotlin.math.abs(index - (if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex))
@@ -1252,7 +1255,7 @@ fun Lyrics(
                                 this.scaleX = scale * bgScale * fisheyeScale
                                 this.scaleY = scale * bgScale * fisheyeScale
                                 this.rotationX = fisheyeRotationX
-                                this.cameraDistance = 16f * density
+                                this.cameraDistance = 16f * density.density
                             }
                             .blur(blurRadius.dp),
                         horizontalAlignment = agentAlignment
@@ -1814,7 +1817,7 @@ fun Lyrics(
                                     )
                                 ),
                                 modifier = Modifier.graphicsLayer {
-                                    alpha = spotlightProgress.value
+                                    this.alpha = spotlightProgress.value
                                 }
                             )
                         } else if (isActiveLine && lyricsGlowEffect) {
