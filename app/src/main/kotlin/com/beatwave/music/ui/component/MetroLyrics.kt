@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.beatwave.music.LocalPlayerConnection
 import com.beatwave.music.constants.AppleMusicLyricsBlurKey
+import com.beatwave.music.constants.LyricsFisheyeEffectKey
 import com.beatwave.music.constants.LyricsRomanizeAsMainKey
 import com.beatwave.music.lyrics.LyricsEntry
 import com.beatwave.music.ui.screens.settings.LyricsPosition
@@ -130,6 +131,7 @@ fun MetroLyricsLine(
     modifier: Modifier = Modifier
 ) {
     val (appleMusicLyricsBlur) = rememberPreference(AppleMusicLyricsBlurKey, true)
+    val (lyricsFisheyeEffect) = rememberPreference(LyricsFisheyeEffectKey, true)
     val (romanizeAsMain) = rememberPreference(LyricsRomanizeAsMainKey, false)
     
     val romanizedTextState by entry.romanizedTextFlow.collectAsState()
@@ -185,8 +187,31 @@ fun MetroLyricsLine(
     val lyricsTextSize = 36f
     val lyricsLineSpacing = 1.3f
 
+    val fisheyeScale = if (lyricsFisheyeEffect) {
+        when (distanceFromCurrent) {
+            0 -> 1.08f
+            1 -> 1.02f
+            2 -> 0.96f
+            3 -> 0.90f
+            else -> 0.85f
+        }
+    } else 1f
+
+    val fisheyeRotationX = if (lyricsFisheyeEffect) {
+        val signedDistance = (if (isActive) 0 else distanceFromCurrent).coerceIn(-4, 4)
+        signedDistance * -3.5f
+    } else 0f
+
+    val densityVal = LocalDensity.current.density
+
     val itemModifier = modifier
         .fillMaxWidth()
+        .graphicsLayer {
+            this.scaleX = fisheyeScale
+            this.scaleY = fisheyeScale
+            this.rotationX = fisheyeRotationX
+            this.cameraDistance = 16f * densityVal
+        }
         .clip(RoundedCornerShape(16.dp))
         .combinedClickable(
             enabled = true,

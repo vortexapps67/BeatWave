@@ -205,6 +205,13 @@ fun SettingsScreen(
                 )
                 SettingsDivider()
                 SettingsNavItem(
+                    icon = painterResource(R.drawable.lyrics),
+                    iconTint = Color(0xFFFF2D55),
+                    title = stringResource(R.string.lyrics_styles_title),
+                    onClick = { navController.navigate("settings/appearance/lyrics_styles") },
+                )
+                SettingsDivider()
+                SettingsNavItem(
                     icon = painterResource(R.drawable.play),
                     iconTint = Color(0xFFFF375F),
                     title = stringResource(R.string.player_and_audio),

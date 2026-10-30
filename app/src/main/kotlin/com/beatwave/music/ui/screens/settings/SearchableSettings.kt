@@ -25,6 +25,7 @@ fun getAllSearchableSettings(): List<SearchableSetting> {
         SearchableSetting("Canvas", null, "Appearance", "settings/appearance/canvas"),
         SearchableSetting("Player Theme", null, "Appearance", "settings/appearance/playertheme"),
         SearchableSetting("Liquid Glass", null, "Appearance", "settings/appearance/liquidglass"),
+        SearchableSetting(stringResource(R.string.lyrics_styles_title), "Custom animations and styles for synchronized lyrics", "Appearance", "settings/appearance/lyrics_styles"),
         SearchableSetting(stringResource(R.string.app_icon), null, "Appearance", "settings/appearance/appicon"),
         SearchableSetting(stringResource(R.string.presets), null, "Appearance", "settings/appearance/presets"),
         SearchableSetting(stringResource(R.string.player_icons), null, "Appearance", "settings/appearance/playericons"),

@@ -63,7 +63,12 @@ enum class AppFont(val value: String) {
     MONOSPACE("monospace"),
     SERIF("serif"),
     CURSIVE("cursive"),
-    SANS_SERIF("sans_serif");
+    SANS_SERIF("sans_serif"),
+    SANS_SERIF_MEDIUM("sans_serif_medium"),
+    SANS_SERIF_CONDENSED("sans_serif_condensed"),
+    SANS_SERIF_LIGHT("sans_serif_light"),
+    SANS_SERIF_BLACK("sans_serif_black"),
+    SANS_SERIF_SMALLCAPS("sans_serif_smallcaps");
 
     companion object {
         fun fromValue(value: String): AppFont = values().find { it.value == value } ?: SYSTEM
@@ -627,6 +632,7 @@ val DeeplFormalityKey = stringPreferencesKey("deeplFormality")
 val LyricsGlowEffectKey = booleanPreferencesKey("lyricsGlowEffect")
 val AppleMusicLyricsBlurKey = booleanPreferencesKey("appleMusicLyricsBlur")
 val LyricsStandardBlurKey = booleanPreferencesKey("lyricsStandardBlur")
+val LyricsFisheyeEffectKey = booleanPreferencesKey("lyricsFisheyeEffect")
 
 // Ambient Edge Glow (Fluid Glow V2)
 val AmbientEdgeGlowEnabledKey = booleanPreferencesKey("ambientEdgeGlowEnabled")

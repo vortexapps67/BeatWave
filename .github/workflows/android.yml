@@ -2,7 +2,7 @@ name: Build Android Release APK
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "beatwave-test-build-with-fisheye-lyrics" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:

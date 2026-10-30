@@ -137,6 +137,11 @@ fun FontSelectionScreen(
                 AppFont.SERIF -> SerifFontFamily
                 AppFont.CURSIVE -> CursiveFontFamily
                 AppFont.SANS_SERIF -> SansSerifFontFamily
+                AppFont.SANS_SERIF_MEDIUM -> SansSerifMediumFontFamily
+                AppFont.SANS_SERIF_CONDENSED -> SansSerifCondensedFontFamily
+                AppFont.SANS_SERIF_LIGHT -> SansSerifLightFontFamily
+                AppFont.SANS_SERIF_BLACK -> SansSerifBlackFontFamily
+                AppFont.SANS_SERIF_SMALLCAPS -> SansSerifSmallcapsFontFamily
                 else -> FontFamily.Default
             }
         }.getOrDefault(FontFamily.Default)
@@ -491,6 +496,111 @@ fun FontSelectionScreen(
                             )
                         },
                         onClick = { onSelectedFontChange(AppFont.SANS_SERIF.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.SANS_SERIF_MEDIUM.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Sans-Serif Medium",
+                                fontFamily = SansSerifMediumFontFamily
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Balanced medium weight for enhanced legibility and punchy headers",
+                                fontFamily = SansSerifMediumFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.SANS_SERIF_MEDIUM.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.SANS_SERIF_CONDENSED.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Condensed Studio",
+                                fontFamily = SansSerifCondensedFontFamily
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Tight horizontal rhythm engineered for long track titles and credits",
+                                fontFamily = SansSerifCondensedFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.SANS_SERIF_CONDENSED.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.SANS_SERIF_LIGHT.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Air Light Sans",
+                                fontFamily = SansSerifLightFontFamily
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Delicate, airy hairline strokes giving an ultra-modern minimal luxury aesthetic",
+                                fontFamily = SansSerifLightFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.SANS_SERIF_LIGHT.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.SANS_SERIF_BLACK.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Heavy Black Poster",
+                                fontFamily = SansSerifBlackFontFamily
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Ultra-bold editorial poster weight with maximum visual impact",
+                                fontFamily = SansSerifBlackFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.SANS_SERIF_BLACK.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.SANS_SERIF_SMALLCAPS.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Small Caps Pro",
+                                fontFamily = SansSerifSmallcapsFontFamily
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Authoritative small-capital styling inspired by premium audio master discs",
+                                fontFamily = SansSerifSmallcapsFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.SANS_SERIF_SMALLCAPS.value) }
                     )
                 )
             )

@@ -1302,4 +1302,18 @@
     <string name="font_sans_flex_desc">A modern versatile flexible sans-serif.</string>
     <string name="font_outfit_desc">A clean and modern geometric sans-serif.</string>
     <string name="font_plus_jakarta_sans_desc">A premium warm geometric sans-serif typeface.</string>
+    <string name="lyrics_fisheye_effect">Fisheye Distortion Effect</string>
+    <string name="lyrics_fisheye_effect_desc">Dynamic optical lens curvature that zooms and arches lyrics lines as they scroll through the viewport center</string>
+    <string name="lyrics_styles_title">Lyrics Styles &amp; Animation</string>
+    <string name="lyrics_styles_desc">Choose from 5 distinct visual presentation styles for synchronized lyrics</string>
+    <string name="lyrics_style_apple_fluid">Apple Music Fluid</string>
+    <string name="lyrics_style_apple_fluid_desc">Iconic smooth word-by-word filling gradient with responsive glow</string>
+    <string name="lyrics_style_metro">Metro Minimalist</string>
+    <string name="lyrics_style_metro_desc">High-contrast, razor-sharp typographic layout inspired by Windows Phone Metro UI</string>
+    <string name="lyrics_style_kinetic_neon">Kinetic Neon Pulse</string>
+    <string name="lyrics_style_kinetic_neon_desc">Electrified neon letter highlights with audio-synced reactive chromatic glow</string>
+    <string name="lyrics_style_cassette_stage">Stage Karaoke</string>
+    <string name="lyrics_style_cassette_stage_desc">Broadcast-grade dual-tone sweep with energetic word bouncing</string>
+    <string name="lyrics_style_cinema_fade">Cinema Spotlight</string>
+    <string name="lyrics_style_cinema_fade_desc">Subtle cinematic focus with soft atmospheric blur and deep contrast</string>
 </resources>

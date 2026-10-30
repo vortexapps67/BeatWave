@@ -2825,58 +2825,42 @@ class MainActivity : ComponentActivity() {
         var isVisible by remember { mutableStateOf(true) }
         val alphaAnim by animateFloatAsState(
             targetValue = if (isVisible) 1f else 0f,
-            animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing),
+            animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
             label = "splashAlpha",
             finishedListener = { if (!isVisible) safeDismiss() }
         )
 
+        // Apple Music signature zoom morph
         val scaleAnim by animateFloatAsState(
-            targetValue = if (isVisible) 1f else 1.12f,
-            animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing),
+            targetValue = if (isVisible) 1f else 1.25f,
+            animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing),
             label = "splashScale"
         )
 
-        val infiniteTransition = rememberInfiniteTransition(label = "pulseRing")
-        val pulseScale1 by infiniteTransition.animateFloat(
-            initialValue = 0.95f,
-            targetValue = 1.38f,
+        // Smooth breathing emblem pulse
+        val infiniteTransition = rememberInfiniteTransition(label = "appleBreathing")
+        val emblemGlowAlpha by infiniteTransition.animateFloat(
+            initialValue = 0.25f,
+            targetValue = 0.65f,
             animationSpec = infiniteRepeatable(
-                animation = tween(1200, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
+                animation = tween(1400, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse
             ),
-            label = "pulse1"
-        )
-        val pulseAlpha1 by infiniteTransition.animateFloat(
-            initialValue = 0.6f,
-            targetValue = 0f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1200, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "pulseAlpha1"
+            label = "glowAlpha"
         )
 
-        val pulseScale2 by infiniteTransition.animateFloat(
-            initialValue = 0.95f,
-            targetValue = 1.65f,
+        val auraScale by infiniteTransition.animateFloat(
+            initialValue = 0.96f,
+            targetValue = 1.08f,
             animationSpec = infiniteRepeatable(
-                animation = tween(1600, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
+                animation = tween(1600, easing = FastOutSlowInEasing),
+                repeatMode = RepeatMode.Reverse
             ),
-            label = "pulse2"
-        )
-        val pulseAlpha2 by infiniteTransition.animateFloat(
-            initialValue = 0.4f,
-            targetValue = 0f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1600, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "pulseAlpha2"
+            label = "auraScale"
         )
 
         LaunchedEffect(Unit) {
-            delay(1200L)
+            delay(1250L)
             isVisible = false
             delay(500L)
             safeDismiss()
@@ -2890,7 +2874,15 @@ class MainActivity : ComponentActivity() {
                     scaleX = scaleAnim
                     scaleY = scaleAnim
                 }
-                .background(MaterialTheme.colorScheme.background)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.surface,
+                            MaterialTheme.colorScheme.background,
+                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
+                        )
+                    )
+                )
                 .clickable(
                     interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
                     indication = null
@@ -2899,43 +2891,50 @@ class MainActivity : ComponentActivity() {
                 },
             contentAlignment = Alignment.Center
         ) {
-            // Expanding Sonic Ripples
+            // Ambient Apple Music chromatic aura
             Box(
                 modifier = Modifier
-                    .size(150.dp)
+                    .size(240.dp)
                     .graphicsLayer {
-                        scaleX = pulseScale2
-                        scaleY = pulseScale2
-                        alpha = pulseAlpha2
+                        scaleX = auraScale
+                        scaleY = auraScale
+                        alpha = emblemGlowAlpha
                     }
-                    .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-            )
-            Box(
-                modifier = Modifier
-                    .size(150.dp)
-                    .graphicsLayer {
-                        scaleX = pulseScale1
-                        scaleY = pulseScale1
-                        alpha = pulseAlpha1
-                    }
-                    .border(2.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                Color(0xFFFF2D55).copy(alpha = 0.3f),
+                                Color.Transparent
+                            )
+                        ),
+                        shape = CircleShape
+                    )
             )
 
-            // Center BeatWave Emblem Card
+            // Center Apple Music inspired Squircle Emblem & Typography
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Surface(
-                    shape = CircleShape,
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.95f),
-                    border = androidx.compose.foundation.BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)),
-                    shadowElevation = 16.dp,
-                    modifier = Modifier.size(108.dp)
+                    shape = RoundedCornerShape(28.dp),
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.92f),
+                    border = androidx.compose.foundation.BorderStroke(
+                        1.5.dp, 
+                        Brush.verticalGradient(
+                            listOf(
+                                Color.White.copy(alpha = 0.35f),
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)
+                            )
+                        )
+                    ),
+                    shadowElevation = 24.dp,
+                    modifier = Modifier.size(116.dp)
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier.padding(18.dp)
+                        modifier = Modifier.padding(20.dp)
                     ) {
                         Image(
                             painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
@@ -2946,25 +2945,34 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(28.dp))
 
                 Text(
-                    text = "BEATWAVE",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = 4.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    text = "BeatWave",
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        fontFamily = OutfitFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = (-0.5).sp
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Spacer(Modifier.height(6.dp))
 
-                Text(
-                    text = "SOUND IN MOTION",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                )
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                ) {
+                    Text(
+                        text = "Sound in Motion",
+                        style = MaterialTheme.typography.labelMedium.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            letterSpacing = 0.8.sp
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                    )
+                }
             }
         }
     }

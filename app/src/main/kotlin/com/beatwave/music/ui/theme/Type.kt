@@ -88,6 +88,26 @@ val CursiveFontFamily: FontFamily = FontFamily.Cursive
 
 val SansSerifFontFamily: FontFamily = FontFamily.SansSerif
 
+val SansSerifMediumFontFamily: FontFamily by lazy {
+    runCatching { FontFamily(androidx.compose.ui.text.font.Font(android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL))) }.getOrDefault(FontFamily.Default)
+}
+
+val SansSerifCondensedFontFamily: FontFamily by lazy {
+    runCatching { FontFamily(androidx.compose.ui.text.font.Font(android.graphics.Typeface.create("sans-serif-condensed", android.graphics.Typeface.NORMAL))) }.getOrDefault(FontFamily.Default)
+}
+
+val SansSerifLightFontFamily: FontFamily by lazy {
+    runCatching { FontFamily(androidx.compose.ui.text.font.Font(android.graphics.Typeface.create("sans-serif-light", android.graphics.Typeface.NORMAL))) }.getOrDefault(FontFamily.Default)
+}
+
+val SansSerifBlackFontFamily: FontFamily by lazy {
+    runCatching { FontFamily(androidx.compose.ui.text.font.Font(android.graphics.Typeface.create("sans-serif-black", android.graphics.Typeface.NORMAL))) }.getOrDefault(FontFamily.Default)
+}
+
+val SansSerifSmallcapsFontFamily: FontFamily by lazy {
+    runCatching { FontFamily(androidx.compose.ui.text.font.Font(android.graphics.Typeface.create("sans-serif-smallcaps", android.graphics.Typeface.NORMAL))) }.getOrDefault(FontFamily.Default)
+}
+
 /**
  * Shared text metrics for every role below.
  *

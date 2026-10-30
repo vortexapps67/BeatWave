@@ -142,6 +142,7 @@ import com.beatwave.music.constants.LyricsRomanizeMacedonianKey
 import com.beatwave.music.constants.LyricsRomanizeRussianKey
 import com.beatwave.music.constants.LyricsRomanizeSerbianKey
 import com.beatwave.music.constants.LyricsRomanizeUkrainianKey
+import com.beatwave.music.constants.LyricsFisheyeEffectKey
 import com.beatwave.music.constants.LyricsStandardBlurKey
 import com.beatwave.music.constants.LyricsScrollKey
 import com.beatwave.music.constants.LyricsTextPositionKey
@@ -233,6 +234,7 @@ fun Lyrics(
     val lyricsTextSize by rememberPreference(LyricsTextSizeKey, 30f)
     val lyricsLineSpacing by rememberPreference(LyricsLineSpacingKey, 1.3f)
     val lyricsStandardBlur by rememberPreference(LyricsStandardBlurKey, false)
+    val lyricsFisheyeEffect by rememberPreference(LyricsFisheyeEffectKey, true)
     
     val openRouterApiKey by rememberPreference(OpenRouterApiKey, "")
     val deeplApiKey by rememberPreference(DeeplApiKey, "")
@@ -921,7 +923,10 @@ fun Lyrics(
                     key = { index, item -> "$index-${item.time}" } // Add stable key
                 ) { index, item ->
                     val isSelected = selectedIndices.contains(index)
-                    if (lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1 && item.words?.isNotEmpty() == true) {
+                    val isAppleOrFluid = (lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1 || 
+                                          lyricsAnimationStyle == LyricsAnimationStyle.APPLE || 
+                                          lyricsAnimationStyle == LyricsAnimationStyle.APPLE_V2)
+                    if (isAppleOrFluid && item.words?.isNotEmpty() == true) {
                         val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < lines.size) {
                             lines[displayedCurrentLineIndex].time
                         } else -1L
@@ -1222,15 +1227,32 @@ fun Lyrics(
                         }
                     }
                     
-                    // Smaller scale for background vocals
-                    val bgScale = if (item.isBackground) 0.85f else 1f
+                    // Fisheye Lens Distortion Effect
+                    // Naturally expands items near center of viewport while curving top/bottom away
+                    val lineDistance = kotlin.math.abs(index - (if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex))
+                    val fisheyeScale = if (lyricsFisheyeEffect) {
+                        when (lineDistance) {
+                            0 -> 1.08f
+                            1 -> 1.02f
+                            2 -> 0.96f
+                            3 -> 0.90f
+                            else -> 0.85f
+                        }
+                    } else 1f
+
+                    val fisheyeRotationX = if (lyricsFisheyeEffect) {
+                        val signedDistance = (index - (if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex)).coerceIn(-4, 4)
+                        signedDistance * -3.5f
+                    } else 0f
 
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
                                 this.alpha = if (item.isBackground) alpha * 0.8f else alpha
-                                this.scaleX = scale * bgScale
-                                this.scaleY = scale * bgScale
+                                this.scaleX = scale * bgScale * fisheyeScale
+                                this.scaleY = scale * bgScale * fisheyeScale
+                                this.rotationX = fisheyeRotationX
+                                this.cameraDistance = 16f * density
                             }
                             .blur(blurRadius.dp),
                         horizontalAlignment = agentAlignment
@@ -1697,6 +1719,103 @@ fun Lyrics(
                                 showTranslated = hasActiveTranslations,
                                 agentAlignment = agentAlignment,
                                 agentTextAlign = agentTextAlign
+                            )
+                        } else if (isActiveLine && lyricsAnimationStyle == LyricsAnimationStyle.GLOW) {
+                            // Style 3: Kinetic Neon Pulse - Electrified chromatic highlights with reactive halo
+                            val pulseAnim = remember { Animatable(0f) }
+                            LaunchedEffect(index) {
+                                while (true) {
+                                    pulseAnim.animateTo(1f, animationSpec = tween(1400, easing = FastOutSlowInEasing))
+                                    pulseAnim.animateTo(0f, animationSpec = tween(1400, easing = FastOutSlowInEasing))
+                                }
+                            }
+                            val pulse = pulseAnim.value
+                            val neonBrush = Brush.linearGradient(
+                                colors = listOf(
+                                    expressiveAccent,
+                                    Color(0xFF00F0FF),
+                                    expressiveAccent,
+                                    Color(0xFFFF007F)
+                                )
+                            )
+                            Text(
+                                text = mainText,
+                                fontSize = (lyricsTextSize * 1.04f).sp,
+                                textAlign = alignment,
+                                fontWeight = FontWeight.Black,
+                                lineHeight = (lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f)).sp,
+                                style = TextStyle(
+                                    brush = neonBrush,
+                                    shadow = Shadow(
+                                        color = expressiveAccent.copy(alpha = 0.7f + 0.3f * pulse),
+                                        offset = Offset(0f, 0f),
+                                        blurRadius = 24f + 16f * pulse
+                                    )
+                                ),
+                                modifier = Modifier.graphicsLayer {
+                                    scaleX = 1f + 0.03f * pulse
+                                    scaleY = 1f + 0.03f * pulse
+                                }
+                            )
+                        } else if (isActiveLine && lyricsAnimationStyle == LyricsAnimationStyle.KARAOKE) {
+                            // Style 4: Stage Karaoke - Broadcast energetic dual sweep
+                            val sweepProgress = remember { Animatable(0f) }
+                            LaunchedEffect(index) {
+                                sweepProgress.snapTo(0f)
+                                sweepProgress.animateTo(1f, animationSpec = tween(700, easing = FastOutSlowInEasing))
+                            }
+                            val sweep = sweepProgress.value
+                            val stageBrush = Brush.horizontalGradient(
+                                0.0f to Color(0xFFFFD700),
+                                (sweep).coerceIn(0f, 1f) to expressiveAccent,
+                                (sweep + 0.15f).coerceIn(0f, 1f) to expressiveAccent.copy(alpha = 0.5f),
+                                1.0f to expressiveAccent.copy(alpha = 0.5f)
+                            )
+                            Text(
+                                text = mainText,
+                                fontSize = lyricsTextSize.sp,
+                                textAlign = alignment,
+                                fontWeight = FontWeight.ExtraBold,
+                                lineHeight = (lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f)).sp,
+                                style = TextStyle(
+                                    brush = stageBrush,
+                                    shadow = Shadow(
+                                        color = Color(0xFFFFD700).copy(alpha = 0.8f * sweep),
+                                        offset = Offset(0f, 2f),
+                                        blurRadius = 14f
+                                    )
+                                ),
+                                modifier = Modifier.graphicsLayer {
+                                    val bounce = if (sweep < 0.4f) (kotlin.math.sin(sweep * 2.5f * Math.PI.toFloat()) * 0.05f) else 0f
+                                    scaleX = 1f + bounce
+                                    scaleY = 1f + bounce
+                                }
+                            )
+                        } else if (isActiveLine && lyricsAnimationStyle == LyricsAnimationStyle.SLIDE) {
+                            // Style 5: Cinema Spotlight - Deep contrast with pure atmospheric clarity
+                            val spotlightProgress = remember { Animatable(0f) }
+                            LaunchedEffect(index) {
+                                spotlightProgress.snapTo(0f)
+                                spotlightProgress.animateTo(1f, animationSpec = tween(600, easing = FastOutSlowInEasing))
+                            }
+                            Text(
+                                text = mainText,
+                                fontSize = (lyricsTextSize * 1.02f).sp,
+                                color = Color.White,
+                                textAlign = alignment,
+                                fontWeight = FontWeight.Bold,
+                                letterSpacing = 0.5.sp,
+                                lineHeight = (lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f)).sp,
+                                style = TextStyle(
+                                    shadow = Shadow(
+                                        color = Color.Black.copy(alpha = 0.7f),
+                                        offset = Offset(0f, 4f),
+                                        blurRadius = 12f
+                                    )
+                                ),
+                                modifier = Modifier.graphicsLayer {
+                                    alpha = spotlightProgress.value
+                                }
                             )
                         } else if (isActiveLine && lyricsGlowEffect) {
                             // Initial animation for glow fill from left to right

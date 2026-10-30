@@ -147,6 +147,7 @@ import com.beatwave.music.constants.LibraryIconsOnlyKey
 import com.beatwave.music.constants.ListenTogetherInTopBarKey
 import com.beatwave.music.constants.LyricsAnimationStyle
 import com.beatwave.music.constants.LyricsAnimationStyleKey
+import com.beatwave.music.constants.LyricsFisheyeEffectKey
 import com.beatwave.music.constants.LyricsStandardBlurKey
 import com.beatwave.music.constants.LyricsTextPositionKey
 import com.beatwave.music.constants.LyricsTextSizeKey
@@ -273,6 +274,7 @@ fun AppearanceSettings(
     val (lyricsGlowEffect, onLyricsGlowEffectChange) = rememberPreference(LyricsGlowEffectKey, defaultValue = true)
     val (appleMusicLyricsBlur, onAppleMusicLyricsBlurChange) = rememberPreference(AppleMusicLyricsBlurKey, defaultValue = true)
     val (lyricsStandardBlur, onLyricsStandardBlurChange) = rememberPreference(LyricsStandardBlurKey, defaultValue = false)
+    val (lyricsFisheyeEffect, onLyricsFisheyeEffectChange) = rememberPreference(LyricsFisheyeEffectKey, defaultValue = true)
     val (swipeLyrics, onSwipeLyricsChange) = rememberPreference(SwipeLyricsKey, defaultValue = false)
     val (enableLyricsThumbnailPlayPause, onEnableLyricsThumbnailPlayPauseChange) = rememberPreference(EnableLyricsThumbnailPlayPauseKey, defaultValue = false)
     val (oneTapFullscreenLyrics, onOneTapFullscreenLyricsChange) = rememberPreference(OneTapFullscreenLyricsKey, defaultValue = false)
@@ -575,6 +577,11 @@ fun AppearanceSettings(
                             AppFont.SERIF -> "Classic Editorial Serif"
                             AppFont.CURSIVE -> "Acoustic Cursive"
                             AppFont.SANS_SERIF -> "Clean Sans-Serif"
+                            AppFont.SANS_SERIF_MEDIUM -> "Sans-Serif Medium"
+                            AppFont.SANS_SERIF_CONDENSED -> "Condensed Studio"
+                            AppFont.SANS_SERIF_LIGHT -> "Air Light Sans"
+                            AppFont.SANS_SERIF_BLACK -> "Heavy Black Poster"
+                            AppFont.SANS_SERIF_SMALLCAPS -> "Small Caps Pro"
                             else -> stringResource(R.string.font_system)
                         }
                         Text(fontLabel)
@@ -925,24 +932,20 @@ fun AppearanceSettings(
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.lyrics),
-                    title = { Text(stringResource(R.string.lyrics_animation_style)) },
+                    title = { Text(stringResource(R.string.lyrics_styles_title)) },
                     description = {
                         Text(
                             when (lyricsAnimationStyle) {
-                                LyricsAnimationStyle.NONE -> stringResource(R.string.none)
-                                LyricsAnimationStyle.FADE -> stringResource(R.string.fade)
-                                LyricsAnimationStyle.GLOW -> stringResource(R.string.glow)
-                                LyricsAnimationStyle.SLIDE -> stringResource(R.string.slide)
-                                LyricsAnimationStyle.KARAOKE -> stringResource(R.string.karaoke)
-                                LyricsAnimationStyle.VIVIMUSIC_1 -> stringResource(R.string.vivimusic_1)
-                                LyricsAnimationStyle.APPLE -> stringResource(R.string.apple_music_style)
-                                LyricsAnimationStyle.APPLE_V2 -> stringResource(R.string.apple_music_style_letter)
-                                LyricsAnimationStyle.LYRICS_V2 -> stringResource(R.string.lyrics_v2_fluid)
-                                LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_animation_metro)
+                                LyricsAnimationStyle.VIVIMUSIC_1, LyricsAnimationStyle.APPLE -> stringResource(R.string.lyrics_style_apple_fluid)
+                                LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_style_metro)
+                                LyricsAnimationStyle.GLOW -> stringResource(R.string.lyrics_style_kinetic_neon)
+                                LyricsAnimationStyle.KARAOKE -> stringResource(R.string.lyrics_style_cassette_stage)
+                                LyricsAnimationStyle.SLIDE -> stringResource(R.string.lyrics_style_cinema_fade)
+                                else -> stringResource(R.string.lyrics_style_apple_fluid)
                             }
                         )
                     },
-                    onClick = { showLyricsAnimationStyleDialog = true }
+                    onClick = { navController.navigate("settings/appearance/lyrics_styles") }
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.lyrics),
@@ -964,6 +967,27 @@ fun AppearanceSettings(
                         )
                     },
                     onClick = { onLyricsGlowEffectChange(!lyricsGlowEffect) }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.lyrics),
+                    title = { Text(stringResource(R.string.lyrics_fisheye_effect)) },
+                    description = { Text(stringResource(R.string.lyrics_fisheye_effect_desc)) },
+                    trailingContent = {
+                        Switch(
+                            checked = lyricsFisheyeEffect,
+                            onCheckedChange = onLyricsFisheyeEffectChange,
+                            thumbContent = {
+                                Icon(
+                                    painter = painterResource(
+                                        id = if (lyricsFisheyeEffect) R.drawable.check else R.drawable.close
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                                )
+                            }
+                        )
+                    },
+                    onClick = { onLyricsFisheyeEffectChange(!lyricsFisheyeEffect) }
                 ),
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1) {
                     Material3SettingsItem(
