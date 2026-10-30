@@ -126,6 +126,7 @@ import com.beatwave.music.constants.DarkModeKey
 import com.beatwave.music.constants.LyricsAnimationStyle
 import com.beatwave.music.constants.LyricsAnimationStyleKey
 import com.beatwave.music.constants.LyricsClickKey
+import com.beatwave.music.constants.LyricsFisheyeEffectKey
 import com.beatwave.music.constants.LyricsGlowEffectKey
 import com.beatwave.music.constants.LyricsLineSpacingKey
 import com.beatwave.music.constants.LyricsRomanizeAsMainKey
@@ -233,6 +234,7 @@ fun Lyrics(
     val lyricsTextSize by rememberPreference(LyricsTextSizeKey, 30f)
     val lyricsLineSpacing by rememberPreference(LyricsLineSpacingKey, 1.3f)
     val lyricsStandardBlur by rememberPreference(LyricsStandardBlurKey, false)
+    val lyricsFisheyeEffect by rememberPreference(LyricsFisheyeEffectKey, true)
     
     val openRouterApiKey by rememberPreference(OpenRouterApiKey, "")
     val deeplApiKey by rememberPreference(DeeplApiKey, "")
@@ -1225,12 +1227,39 @@ fun Lyrics(
                     // Smaller scale for background vocals
                     val bgScale = if (item.isBackground) 0.85f else 1f
 
+                    val lineDistance = kotlin.math.abs(index - (if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex)).toFloat()
+
+                    val fisheyeScale = if (lyricsFisheyeEffect) {
+                        (0.74f + 0.44f / (1f + 0.35f * lineDistance * lineDistance)).coerceIn(0.70f, 1.20f)
+                    } else 1f
+
+                    val fisheyeRotationX = if (lyricsFisheyeEffect) {
+                        val delta = (index - (if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex)).toFloat()
+                        (-delta * 4.2f).coerceIn(-24f, 24f)
+                    } else 0f
+
+                    val fisheyeAlpha = if (lyricsFisheyeEffect) {
+                        (1f - (lineDistance * 0.09f)).coerceIn(0.30f, 1f)
+                    } else 1f
+
+                    val fisheyeTranslationX = if (lyricsFisheyeEffect) {
+                        when (lyricsTextPosition) {
+                            LyricsPosition.CENTER -> 0f
+                            LyricsPosition.LEFT -> (14f / (1f + 0.4f * lineDistance * lineDistance))
+                            LyricsPosition.RIGHT -> (-14f / (1f + 0.4f * lineDistance * lineDistance))
+                        }
+                    } else 0f
+
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.alpha = if (item.isBackground) alpha * 0.8f else alpha
-                                this.scaleX = scale * bgScale
-                                this.scaleY = scale * bgScale
+                                this.cameraDistance = 16f * density
+                                this.rotationX = fisheyeRotationX
+                                this.translationX = fisheyeTranslationX
+                                val baseA = if (item.isBackground) alpha * 0.8f else alpha
+                                this.alpha = baseA * fisheyeAlpha
+                                this.scaleX = scale * bgScale * fisheyeScale
+                                this.scaleY = scale * bgScale * fisheyeScale
                             }
                             .blur(blurRadius.dp),
                         horizontalAlignment = agentAlignment
@@ -1696,6 +1725,53 @@ fun Lyrics(
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
                                 showTranslated = hasActiveTranslations,
                                 agentAlignment = agentAlignment,
+                                agentTextAlign = agentTextAlign
+                            )
+                        } else if (lyricsAnimationStyle == LyricsAnimationStyle.NEON_PULSE) {
+                            NeonPulseLyricsLine(
+                                entry = item,
+                                isActive = isActiveLine,
+                                effectivePlaybackPosition = effectivePlaybackPosition,
+                                expressiveAccent = expressiveAccent,
+                                baseFontSize = lyricsTextSize,
+                                lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
+                                agentTextAlign = agentTextAlign
+                            )
+                        } else if (lyricsAnimationStyle == LyricsAnimationStyle.SPOTIFY_BOUNCE) {
+                            SpotifyBounceLyricsLine(
+                                entry = item,
+                                isActive = isActiveLine,
+                                effectivePlaybackPosition = effectivePlaybackPosition,
+                                expressiveAccent = expressiveAccent,
+                                baseFontSize = lyricsTextSize,
+                                lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
+                                agentTextAlign = agentTextAlign
+                            )
+                        } else if (lyricsAnimationStyle == LyricsAnimationStyle.CINEMATIC_MINIMAL) {
+                            CinematicMinimalLyricsLine(
+                                entry = item,
+                                isActive = isActiveLine,
+                                effectivePlaybackPosition = effectivePlaybackPosition,
+                                baseFontSize = lyricsTextSize,
+                                lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
+                                agentTextAlign = agentTextAlign
+                            )
+                        } else if (lyricsAnimationStyle == LyricsAnimationStyle.GRADIENT_SWEEP) {
+                            GradientSweepLyricsLine(
+                                entry = item,
+                                isActive = isActiveLine,
+                                effectivePlaybackPosition = effectivePlaybackPosition,
+                                baseFontSize = lyricsTextSize,
+                                lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
+                                agentTextAlign = agentTextAlign
+                            )
+                        } else if (lyricsAnimationStyle == LyricsAnimationStyle.RETRO_CASSETTE) {
+                            RetroCassetteLyricsLine(
+                                entry = item,
+                                isActive = isActiveLine,
+                                effectivePlaybackPosition = effectivePlaybackPosition,
+                                baseFontSize = lyricsTextSize,
+                                lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
                                 agentTextAlign = agentTextAlign
                             )
                         } else if (isActiveLine && lyricsGlowEffect) {

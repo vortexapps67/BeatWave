@@ -108,6 +108,12 @@ fun vivimusicTheme(
                 AppFont.SERIF -> SerifFontFamily
                 AppFont.CURSIVE -> CursiveFontFamily
                 AppFont.SANS_SERIF -> SansSerifFontFamily
+                AppFont.SAN_FRANCISCO -> SanFranciscoFontFamily
+                AppFont.INTER -> InterFontFamily
+                AppFont.EDITORIAL_SERIF -> EditorialSerifFontFamily
+                AppFont.TECH_MONO -> TechMonoFontFamily
+                AppFont.CONDENSED_GROTESK -> CondensedGroteskFontFamily
+                AppFont.CASUAL_ROUNDED -> CasualRoundedFontFamily
                 else -> customFont ?: FontFamily.Default
             }
         }.getOrDefault(customFont ?: FontFamily.Default)

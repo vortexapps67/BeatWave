@@ -63,7 +63,13 @@ enum class AppFont(val value: String) {
     MONOSPACE("monospace"),
     SERIF("serif"),
     CURSIVE("cursive"),
-    SANS_SERIF("sans_serif");
+    SANS_SERIF("sans_serif"),
+    SAN_FRANCISCO("san_francisco"),
+    INTER("inter"),
+    EDITORIAL_SERIF("editorial_serif"),
+    TECH_MONO("tech_mono"),
+    CONDENSED_GROTESK("condensed_grotesk"),
+    CASUAL_ROUNDED("casual_rounded");
 
     companion object {
         fun fromValue(value: String): AppFont = values().find { it.value == value } ?: SYSTEM
@@ -780,6 +786,8 @@ val ModuleSettingsKey = stringPreferencesKey("moduleSettings")
 val FetchedModulesKey = stringPreferencesKey("fetchedModules")
 
 
+val LyricsFisheyeEffectKey = booleanPreferencesKey("lyricsFisheyeEffect")
+
 val LyricsAnimationStyleKey = stringPreferencesKey("lyricsAnimationStyle")
 enum class LyricsAnimationStyle {
     NONE,
@@ -792,6 +800,11 @@ enum class LyricsAnimationStyle {
     VIVIMUSIC_1,
     LYRICS_V2,
     METRO_LYRICS,
+    NEON_PULSE,
+    SPOTIFY_BOUNCE,
+    CINEMATIC_MINIMAL,
+    GRADIENT_SWEEP,
+    RETRO_CASSETTE,
 }
 
 val LyricsTextSizeKey = floatPreferencesKey("lyricsTextSize")

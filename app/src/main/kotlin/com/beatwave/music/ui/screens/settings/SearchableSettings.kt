@@ -20,6 +20,8 @@ fun getAllSearchableSettings(): List<SearchableSetting> {
         SearchableSetting(stringResource(R.string.system_update), null, "General", "settings/update"),
         SearchableSetting(stringResource(R.string.appearance), null, "General", "settings/appearance"),
         SearchableSetting(stringResource(R.string.player_and_audio), null, "General", "settings/player"),
+        SearchableSetting("Lyrics Styles & Animations", "Fisheye lens, Neon Pulse, Spotify Bounce, Cinematic Minimal, Gradient Sweep, Retro Cassette", "Lyrics", "settings/lyrics_styles"),
+        SearchableSetting("Fisheye 3D Lyrics Effect", "Spherical curvature and dynamic center magnification", "Lyrics", "settings/lyrics_styles"),
         SearchableSetting(stringResource(R.string.theme), null, "Appearance", "settings/appearance/theme"),
         SearchableSetting("App Font", null, "Appearance", "settings/appearance/font"),
         SearchableSetting("Canvas", null, "Appearance", "settings/appearance/canvas"),

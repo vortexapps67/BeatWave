@@ -66,6 +66,12 @@ import com.beatwave.music.ui.theme.MonospaceFontFamily
 import com.beatwave.music.ui.theme.SerifFontFamily
 import com.beatwave.music.ui.theme.CursiveFontFamily
 import com.beatwave.music.ui.theme.SansSerifFontFamily
+import com.beatwave.music.ui.theme.SanFranciscoFontFamily
+import com.beatwave.music.ui.theme.InterFontFamily
+import com.beatwave.music.ui.theme.EditorialSerifFontFamily
+import com.beatwave.music.ui.theme.TechMonoFontFamily
+import com.beatwave.music.ui.theme.CondensedGroteskFontFamily
+import com.beatwave.music.ui.theme.CasualRoundedFontFamily
 import com.beatwave.music.ui.theme.copyCustomFont
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.backToMain
@@ -137,6 +143,12 @@ fun FontSelectionScreen(
                 AppFont.SERIF -> SerifFontFamily
                 AppFont.CURSIVE -> CursiveFontFamily
                 AppFont.SANS_SERIF -> SansSerifFontFamily
+                AppFont.SAN_FRANCISCO -> SanFranciscoFontFamily
+                AppFont.INTER -> InterFontFamily
+                AppFont.EDITORIAL_SERIF -> EditorialSerifFontFamily
+                AppFont.TECH_MONO -> TechMonoFontFamily
+                AppFont.CONDENSED_GROTESK -> CondensedGroteskFontFamily
+                AppFont.CASUAL_ROUNDED -> CasualRoundedFontFamily
                 else -> FontFamily.Default
             }
         }.getOrDefault(FontFamily.Default)
@@ -491,6 +503,137 @@ fun FontSelectionScreen(
                             )
                         },
                         onClick = { onSelectedFontChange(AppFont.SANS_SERIF.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.SAN_FRANCISCO.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "San Francisco (Cupertino)",
+                                fontFamily = SanFranciscoFontFamily,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Apple-inspired balanced neo-grotesque with tight optical tracking",
+                                fontFamily = SanFranciscoFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.SAN_FRANCISCO.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.INTER.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Inter Display",
+                                fontFamily = InterFontFamily,
+                                fontWeight = FontWeight.Medium
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Modern precision geometric typeface crafted for high-density screens",
+                                fontFamily = InterFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.INTER.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.EDITORIAL_SERIF.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Editorial Luxury Serif",
+                                fontFamily = EditorialSerifFontFamily,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "High-fashion classical luxury serif with expressive character",
+                                fontFamily = EditorialSerifFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.EDITORIAL_SERIF.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.TECH_MONO.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Tech Code Mono",
+                                fontFamily = TechMonoFontFamily,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Developer studio monospace with sharp geometric glyphs",
+                                fontFamily = TechMonoFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.TECH_MONO.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.CONDENSED_GROTESK.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Condensed Grotesk",
+                                fontFamily = CondensedGroteskFontFamily,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Punchy cinematic poster display font for commanding headlines",
+                                fontFamily = CondensedGroteskFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.CONDENSED_GROTESK.value) }
+                    ),
+                    Material3SettingsItem(
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedFont == AppFont.CASUAL_ROUNDED.value,
+                                onClick = null
+                            )
+                        },
+                        title = {
+                            Text(
+                                text = "Casual Rounded",
+                                fontFamily = CasualRoundedFontFamily
+                            )
+                        },
+                        description = {
+                            Text(
+                                text = "Warm, relaxed organic letterforms with inviting curves",
+                                fontFamily = CasualRoundedFontFamily
+                            )
+                        },
+                        onClick = { onSelectedFontChange(AppFont.CASUAL_ROUNDED.value) }
                     )
                 )
             )

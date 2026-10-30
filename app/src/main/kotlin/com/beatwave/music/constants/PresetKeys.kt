@@ -102,6 +102,7 @@ object PresetKeys {
         LyricsGlowEffectKey,
         AppleMusicLyricsBlurKey,
         LyricsStandardBlurKey,
+        LyricsFisheyeEffectKey,
         LyricsAnimationStyleKey,
         LyricsTextSizeKey,
         LyricsLineSpacingKey,

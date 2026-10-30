@@ -147,6 +147,7 @@ import com.beatwave.music.constants.LibraryIconsOnlyKey
 import com.beatwave.music.constants.ListenTogetherInTopBarKey
 import com.beatwave.music.constants.LyricsAnimationStyle
 import com.beatwave.music.constants.LyricsAnimationStyleKey
+import com.beatwave.music.constants.LyricsFisheyeEffectKey
 import com.beatwave.music.constants.LyricsStandardBlurKey
 import com.beatwave.music.constants.LyricsTextPositionKey
 import com.beatwave.music.constants.LyricsTextSizeKey
@@ -274,6 +275,7 @@ fun AppearanceSettings(
     val (lyricsGlowEffect, onLyricsGlowEffectChange) = rememberPreference(LyricsGlowEffectKey, defaultValue = true)
     val (appleMusicLyricsBlur, onAppleMusicLyricsBlurChange) = rememberPreference(AppleMusicLyricsBlurKey, defaultValue = true)
     val (lyricsStandardBlur, onLyricsStandardBlurChange) = rememberPreference(LyricsStandardBlurKey, defaultValue = false)
+    val (lyricsFisheyeEffect, onLyricsFisheyeEffectChange) = rememberPreference(LyricsFisheyeEffectKey, defaultValue = true)
     val (swipeLyrics, onSwipeLyricsChange) = rememberPreference(SwipeLyricsKey, defaultValue = false)
     val (enableLyricsThumbnailPlayPause, onEnableLyricsThumbnailPlayPauseChange) = rememberPreference(EnableLyricsThumbnailPlayPauseKey, defaultValue = false)
     val (oneTapFullscreenLyrics, onOneTapFullscreenLyricsChange) = rememberPreference(OneTapFullscreenLyricsKey, defaultValue = false)
@@ -436,6 +438,11 @@ fun AppearanceSettings(
                     LyricsAnimationStyle.VIVIMUSIC_1 -> stringResource(R.string.vivimusic_1)
                     LyricsAnimationStyle.LYRICS_V2 -> stringResource(R.string.lyrics_v2_fluid)
                     LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_animation_metro)
+                    LyricsAnimationStyle.NEON_PULSE -> "Neon Pulse (Cyberpunk)"
+                    LyricsAnimationStyle.SPOTIFY_BOUNCE -> "Spotify Bounce"
+                    LyricsAnimationStyle.CINEMATIC_MINIMAL -> "Cinematic Minimal"
+                    LyricsAnimationStyle.GRADIENT_SWEEP -> "Gradient Sweep"
+                    LyricsAnimationStyle.RETRO_CASSETTE -> "Retro Cassette 80s"
                 }
             }
         )
@@ -940,10 +947,42 @@ fun AppearanceSettings(
                                 LyricsAnimationStyle.APPLE_V2 -> stringResource(R.string.apple_music_style_letter)
                                 LyricsAnimationStyle.LYRICS_V2 -> stringResource(R.string.lyrics_v2_fluid)
                                 LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_animation_metro)
+                                LyricsAnimationStyle.NEON_PULSE -> "Neon Pulse (Cyberpunk)"
+                                LyricsAnimationStyle.SPOTIFY_BOUNCE -> "Spotify Bounce"
+                                LyricsAnimationStyle.CINEMATIC_MINIMAL -> "Cinematic Minimal"
+                                LyricsAnimationStyle.GRADIENT_SWEEP -> "Gradient Sweep"
+                                LyricsAnimationStyle.RETRO_CASSETTE -> "Retro Cassette 80s"
                             }
                         )
                     },
                     onClick = { showLyricsAnimationStyleDialog = true }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.blur_on),
+                    title = { Text("Lyrics Styles & Animations Studio") },
+                    description = { Text("Interactive preview, 5 new dynamic styles & visual tuning") },
+                    onClick = { navController.navigate("settings/lyrics_styles") }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.blur_on),
+                    title = { Text("Fisheye 3D Lens Effect") },
+                    description = { Text("Dynamic spherical curvature and magnification on active lyrics") },
+                    trailingContent = {
+                        Switch(
+                            checked = lyricsFisheyeEffect,
+                            onCheckedChange = onLyricsFisheyeEffectChange,
+                            thumbContent = {
+                                Icon(
+                                    painter = painterResource(
+                                        id = if (lyricsFisheyeEffect) R.drawable.check else R.drawable.close
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                                )
+                            }
+                        )
+                    },
+                    onClick = { onLyricsFisheyeEffectChange(!lyricsFisheyeEffect) }
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.lyrics),

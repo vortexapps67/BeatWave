@@ -25,7 +25,7 @@ val appVersionMinor = versionProps.getProperty("VERSION_MINOR").toInt()
 val appVersionPatch = versionProps.getProperty("VERSION_PATCH").toInt()
 // 1.5.1 -> 10501. Room for MINOR/PATCH up to 99 each before a scheme change is needed.
 val appVersionCode = appVersionMajor * 10_000 + appVersionMinor * 100 + appVersionPatch
-val appVersionName = "$appVersionMajor.$appVersionMinor.$appVersionPatch"
+val appVersionName = if (appVersionPatch == 0) "$appVersionMajor.$appVersionMinor" else "$appVersionMajor.$appVersionMinor.$appVersionPatch"
 
 plugins {
     id("com.android.application")

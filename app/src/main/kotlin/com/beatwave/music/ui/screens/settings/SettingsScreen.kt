@@ -213,6 +213,22 @@ fun SettingsScreen(
             }
         }
 
+        item(key = "spacer_lyrics") { Spacer(Modifier.height(24.dp)) }
+
+        // Section: Lyrics & Typography
+        item(key = "lyrics_header") { SettingsSectionHeader("LYRICS") }
+        item(key = "lyrics_section") {
+            SettingsSection {
+                SettingsNavItem(
+                    icon = painterResource(R.drawable.lyrics),
+                    iconTint = Color(0xFFFF2D55),
+                    title = "Lyrics Styles & Fisheye Effect",
+                    badge = "NEW",
+                    onClick = { navController.navigate("settings/lyrics_styles") },
+                )
+            }
+        }
+
         item(key = "spacer_1") { Spacer(Modifier.height(24.dp)) }
 
         // Section: Account
