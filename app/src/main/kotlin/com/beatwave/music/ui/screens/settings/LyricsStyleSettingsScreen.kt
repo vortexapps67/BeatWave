@@ -554,36 +554,36 @@ private fun LiveLyricsInteractivePreview(
                 time = 0L,
                 text = "Neon lights across the midnight sky",
                 words = listOf(
-                    WordTimestamp(0.0, 0.7, "Neon"),
-                    WordTimestamp(0.7, 1.4, "lights"),
-                    WordTimestamp(1.4, 2.0, "across"),
-                    WordTimestamp(2.0, 2.5, "the"),
-                    WordTimestamp(2.5, 3.2, "midnight"),
-                    WordTimestamp(3.2, 4.0, "sky")
+                    WordTimestamp(text = "Neon", startTime = 0.0, endTime = 0.7),
+                    WordTimestamp(text = "lights", startTime = 0.7, endTime = 1.4),
+                    WordTimestamp(text = "across", startTime = 1.4, endTime = 2.0),
+                    WordTimestamp(text = "the", startTime = 2.0, endTime = 2.5),
+                    WordTimestamp(text = "midnight", startTime = 2.5, endTime = 3.2),
+                    WordTimestamp(text = "sky", startTime = 3.2, endTime = 4.0)
                 )
             ),
             LyricsEntry(
                 time = 4000L,
                 text = "Rhythm pulsing in the heart of sound",
                 words = listOf(
-                    WordTimestamp(4.0, 4.8, "Rhythm"),
-                    WordTimestamp(4.8, 5.8, "pulsing"),
-                    WordTimestamp(5.8, 6.4, "in"),
-                    WordTimestamp(6.4, 6.8, "the"),
-                    WordTimestamp(6.8, 7.5, "heart"),
-                    WordTimestamp(7.5, 8.0, "of"),
-                    WordTimestamp(8.0, 9.0, "sound")
+                    WordTimestamp(text = "Rhythm", startTime = 4.0, endTime = 4.8),
+                    WordTimestamp(text = "pulsing", startTime = 4.8, endTime = 5.8),
+                    WordTimestamp(text = "in", startTime = 5.8, endTime = 6.4),
+                    WordTimestamp(text = "the", startTime = 6.4, endTime = 6.8),
+                    WordTimestamp(text = "heart", startTime = 6.8, endTime = 7.5),
+                    WordTimestamp(text = "of", startTime = 7.5, endTime = 8.0),
+                    WordTimestamp(text = "sound", startTime = 8.0, endTime = 9.0)
                 )
             ),
             LyricsEntry(
                 time = 9000L,
                 text = "Every beat echoes into tomorrow",
                 words = listOf(
-                    WordTimestamp(9.0, 9.7, "Every"),
-                    WordTimestamp(9.7, 10.4, "beat"),
-                    WordTimestamp(10.4, 11.2, "echoes"),
-                    WordTimestamp(11.2, 11.6, "into"),
-                    WordTimestamp(11.6, 12.0, "tomorrow")
+                    WordTimestamp(text = "Every", startTime = 9.0, endTime = 9.7),
+                    WordTimestamp(text = "beat", startTime = 9.7, endTime = 10.4),
+                    WordTimestamp(text = "echoes", startTime = 10.4, endTime = 11.2),
+                    WordTimestamp(text = "into", startTime = 11.2, endTime = 11.6),
+                    WordTimestamp(text = "tomorrow", startTime = 11.6, endTime = 12.0)
                 )
             )
         )
