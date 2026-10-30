@@ -88,65 +88,17 @@ val CursiveFontFamily: FontFamily = FontFamily.Cursive
 
 val SansSerifFontFamily: FontFamily = FontFamily.SansSerif
 
-val SanFranciscoFontFamily: FontFamily by lazy {
-    runCatching {
-        FontFamily(
-            androidx.compose.ui.text.font.Typeface(
-                android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.NORMAL)
-            )
-        )
-    }.getOrDefault(FontFamily.SansSerif)
-}
+val SanFranciscoFontFamily: FontFamily = FontFamily.SansSerif
 
-val InterFontFamily: FontFamily by lazy {
-    runCatching {
-        FontFamily(
-            androidx.compose.ui.text.font.Typeface(
-                android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
-            )
-        )
-    }.getOrDefault(FontFamily.SansSerif)
-}
+val InterFontFamily: FontFamily = PlusJakartaSansFontFamily
 
-val EditorialSerifFontFamily: FontFamily by lazy {
-    runCatching {
-        FontFamily(
-            androidx.compose.ui.text.font.Typeface(
-                android.graphics.Typeface.create("serif", android.graphics.Typeface.BOLD)
-            )
-        )
-    }.getOrDefault(FontFamily.Serif)
-}
+val EditorialSerifFontFamily: FontFamily = FontFamily.Serif
 
-val TechMonoFontFamily: FontFamily by lazy {
-    runCatching {
-        FontFamily(
-            androidx.compose.ui.text.font.Typeface(
-                android.graphics.Typeface.create("monospace", android.graphics.Typeface.BOLD)
-            )
-        )
-    }.getOrDefault(FontFamily.Monospace)
-}
+val TechMonoFontFamily: FontFamily = FontFamily.Monospace
 
-val CondensedGroteskFontFamily: FontFamily by lazy {
-    runCatching {
-        FontFamily(
-            androidx.compose.ui.text.font.Typeface(
-                android.graphics.Typeface.create("sans-serif-condensed", android.graphics.Typeface.BOLD)
-            )
-        )
-    }.getOrDefault(FontFamily.SansSerif)
-}
+val CondensedGroteskFontFamily: FontFamily = OutfitFontFamily
 
-val CasualRoundedFontFamily: FontFamily by lazy {
-    runCatching {
-        FontFamily(
-            androidx.compose.ui.text.font.Typeface(
-                android.graphics.Typeface.create("casual", android.graphics.Typeface.NORMAL)
-            )
-        )
-    }.getOrDefault(FontFamily.Cursive)
-}
+val CasualRoundedFontFamily: FontFamily = FontFamily.Cursive
 
 /**
  * Shared text metrics for every role below.

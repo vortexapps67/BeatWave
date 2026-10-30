@@ -83,14 +83,11 @@ import com.beatwave.music.lyrics.WordTimestamp
 import com.beatwave.music.ui.component.CinematicMinimalLyricsLine
 import com.beatwave.music.ui.component.GradientSweepLyricsLine
 import com.beatwave.music.ui.component.IconButton
-import com.beatwave.music.ui.component.LyricsLineV2
 import com.beatwave.music.ui.component.Material3SettingsGroup
 import com.beatwave.music.ui.component.Material3SettingsItem
-import com.beatwave.music.ui.component.MetroLyricsLine
 import com.beatwave.music.ui.component.NeonPulseLyricsLine
 import com.beatwave.music.ui.component.RetroCassetteLyricsLine
 import com.beatwave.music.ui.component.SpotifyBounceLyricsLine
-import com.beatwave.music.ui.component.ViviMusicLyricsLine
 import com.beatwave.music.ui.theme.AppleTokens
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.backToMain

@@ -1253,7 +1253,7 @@ fun Lyrics(
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.cameraDistance = 16f * density
+                                this.cameraDistance = 16f * density.density
                                 this.rotationX = fisheyeRotationX
                                 this.translationX = fisheyeTranslationX
                                 val baseA = if (item.isBackground) alpha * 0.8f else alpha
