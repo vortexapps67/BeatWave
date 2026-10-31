@@ -207,6 +207,8 @@ import com.beatwave.music.constants.LiquidGlassAdaptiveContrastKey
 import com.beatwave.music.constants.LiquidGlassBlurRadiusKey
 import com.beatwave.music.constants.LiquidGlassChromaticAberrationKey
 import com.beatwave.music.constants.LiquidGlassDepthEffectKey
+import com.beatwave.music.constants.LiquidGlassEngine
+import com.beatwave.music.constants.LiquidGlassEngineKey
 import com.beatwave.music.constants.LiquidGlassGlobalEnabledKey
 import com.beatwave.music.constants.LiquidGlassHighlightColorKey
 import com.beatwave.music.constants.LiquidGlassHighlightOpacityKey
@@ -948,6 +950,7 @@ class MainActivity : ComponentActivity() {
                 }
                 val floatingNavBarScrollConnection = rememberFloatingTabBarScrollConnection()
                 val (liquidGlassGlobalEnabled) = rememberPreference(LiquidGlassGlobalEnabledKey, defaultValue = true)
+                val (liquidGlassEngine) = rememberEnumPreference(LiquidGlassEngineKey, defaultValue = LiquidGlassEngine.NEW_GLASS)
                 val (liquidGlassVibrancy) = rememberPreference(LiquidGlassVibrancyKey, defaultValue = 1.2f)
                 val (liquidGlassBlurRadius) = rememberPreference(LiquidGlassBlurRadiusKey, defaultValue = 2f)
                 val (liquidGlassLensHeight) = rememberPreference(LiquidGlassLensHeightKey, defaultValue = 0.4f)
@@ -1023,7 +1026,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 val glassEffectConfig = remember(
-                    liquidGlassGlobalEnabled, liquidGlassVibrancy, liquidGlassBlurRadius,
+                    liquidGlassGlobalEnabled, liquidGlassEngine, liquidGlassVibrancy, liquidGlassBlurRadius,
                     liquidGlassLensHeight, liquidGlassLensAmount, liquidGlassChromaticAberration,
                     liquidGlassDepthEffect, liquidGlassSurfaceTintColorInt,
                     liquidGlassSurfaceOpacity, liquidGlassTextColorInt, liquidGlassPlayerEnabled,
@@ -1042,6 +1045,7 @@ class MainActivity : ComponentActivity() {
                         // The glass look is part of the floating nav bar experience, so it
                         // only activates when that bar is enabled too.
                         globalEnabled = liquidGlassGlobalEnabled,
+                        engine = liquidGlassEngine,
                         vibrancy = liquidGlassVibrancy,
                         blurRadius = liquidGlassBlurRadius,
                         lensHeight = liquidGlassLensHeight,

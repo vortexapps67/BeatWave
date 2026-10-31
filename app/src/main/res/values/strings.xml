@@ -518,6 +518,8 @@
     <string name="app_icon_og">THE OG</string>
     <string name="app_icon_best">The Best One</string>
     <string name="app_icon_glass">Liquid Glass</string>
+    <string name="app_icon_classic">BeatWave Classic</string>
+    <string name="app_icon_midnight">Midnight Stealth</string>
 
     <!-- Presets / DIY -->
     <string name="presets">Presets</string>

@@ -45,6 +45,7 @@ import com.beatwave.music.ui.component.backdrop.shadow.Shadow
 @Stable
 data class GlassEffectConfig(
     val globalEnabled: Boolean = true,
+    val engine: com.beatwave.music.constants.LiquidGlassEngine = com.beatwave.music.constants.LiquidGlassEngine.NEW_GLASS,
     val vibrancy: Float = 1.2f,
     /** Blur in dp applied to glass pills. User requested 2dp for landscape fix. */
     val blurRadius: Float = 2f,
@@ -395,17 +396,73 @@ fun Modifier.liquidGlass(
         Color(0xFF4A4A4E)
     }
 
+    val isNewGlass = config.engine == com.beatwave.music.constants.LiquidGlassEngine.NEW_GLASS
+
     // Translucent style or unsupported/low-RAM devices short-circuit everything below:
     // no backdrop is sampled and no expensive RenderEffect runs, keeping rendering fast and buttery smooth.
     if (!isGlassAllowed() || shouldUseTranslucentGlassFallback(config.style, isRenderEffectSupported())) {
-        return this
-            .clip(shape)
-            .background(surfaceTintColor.copy(alpha = config.surfaceOpacity.coerceIn(0f, 1f)))
+        val baseModifier = this.clip(shape)
+        return if (isNewGlass) {
+            baseModifier
+                .background(
+                    androidx.compose.ui.graphics.Brush.verticalGradient(
+                        listOf(
+                            surfaceTintColor.copy(alpha = (config.surfaceOpacity * 1.12f).coerceIn(0f, 0.95f)),
+                            surfaceTintColor.copy(alpha = (config.surfaceOpacity * 0.88f).coerceIn(0f, 0.95f))
+                        )
+                    )
+                )
+                .then(
+                    if (applyEdgeEffects) {
+                        Modifier.border(
+                            width = 1.dp,
+                            brush = androidx.compose.ui.graphics.Brush.verticalGradient(
+                                listOf(
+                                    Color.White.copy(alpha = 0.22f),
+                                    Color.White.copy(alpha = 0.04f)
+                                )
+                            ),
+                            shape = shape
+                        )
+                    } else Modifier
+                )
+        } else {
+            baseModifier
+                .background(surfaceTintColor.copy(alpha = config.surfaceOpacity.coerceIn(0f, 1f)))
+        }
     }
 
-    val backdrop = LocalAppBackdrop.current ?: return this
-        .clip(shape)
-        .background(surfaceTintColor.copy(alpha = config.surfaceOpacity.coerceIn(0f, 1f)))
+    val backdrop = LocalAppBackdrop.current ?: run {
+        val baseModifier = this.clip(shape)
+        return if (isNewGlass) {
+            baseModifier
+                .background(
+                    androidx.compose.ui.graphics.Brush.verticalGradient(
+                        listOf(
+                            surfaceTintColor.copy(alpha = (config.surfaceOpacity * 1.12f).coerceIn(0f, 0.95f)),
+                            surfaceTintColor.copy(alpha = (config.surfaceOpacity * 0.88f).coerceIn(0f, 0.95f))
+                        )
+                    )
+                )
+                .then(
+                    if (applyEdgeEffects) {
+                        Modifier.border(
+                            width = 1.dp,
+                            brush = androidx.compose.ui.graphics.Brush.verticalGradient(
+                                listOf(
+                                    Color.White.copy(alpha = 0.22f),
+                                    Color.White.copy(alpha = 0.04f)
+                                )
+                            ),
+                            shape = shape
+                        )
+                    } else Modifier
+                )
+        } else {
+            baseModifier
+                .background(surfaceTintColor.copy(alpha = config.surfaceOpacity.coerceIn(0f, 1f)))
+        }
+    }
     val density = LocalDensity.current
     val deviceTier = rememberDevicePerformanceTier()
 
@@ -421,9 +478,11 @@ fun Modifier.liquidGlass(
     // resolution, so they are pre-multiplied by the resolution scale to keep the
     // same visual size.
     val blurPx = with(density) { blurRadiusDp.dp.toPx() } * resolutionScale
-    val saturation = glassSaturation(config.vibrancy)
-    val lensHeightPx = with(density) { (config.lensHeight * LENS_MAX_DP).dp.toPx() } * resolutionScale
-    val lensAmountPx = with(density) { (config.lensAmount * LENS_MAX_DP).dp.toPx() } * resolutionScale
+    val saturation = if (isNewGlass) 1f + 0.25f * config.vibrancy.coerceIn(0f, 2f) else glassSaturation(config.vibrancy)
+    val effectiveLensMaxDp = if (isNewGlass) 26f else LENS_MAX_DP
+    val lensHeightPx = with(density) { (config.lensHeight * effectiveLensMaxDp).dp.toPx() } * resolutionScale
+    val lensAmountPx = with(density) { (config.lensAmount * effectiveLensMaxDp).dp.toPx() } * resolutionScale
+    val effectiveChromaticAberration = if (isNewGlass) false else config.chromaticAberration
 
     val animatedHighlightAngle = HighlightAngleFrozen
     val shapeBlock: () -> Shape = remember(shape) { { shape } }
@@ -463,7 +522,7 @@ fun Modifier.liquidGlass(
                     refractionHeight = lensHeightPx,
                     refractionAmount = lensAmountPx,
                     depthEffect = if (deviceTier == DevicePerformanceTier.MEDIUM) false else config.depthEffect,
-                    chromaticAberration = if (deviceTier == DevicePerformanceTier.MEDIUM) false else config.chromaticAberration,
+                    chromaticAberration = if (deviceTier == DevicePerformanceTier.MEDIUM) false else effectiveChromaticAberration,
                 )
             }
         }

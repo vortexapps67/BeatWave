@@ -20,7 +20,7 @@ import com.beatwave.music.WelcomeActivity
  * alias is enabled at a time, and the enabled one is what the launcher draws. Component
  * enablement is stored by the system, so it survives reinstall-free updates on its own — the
  * DataStore copy exists only so the picker can show a checkmark without querying PackageManager
- * thirteen times per frame.
+ * repeatedly.
  *
  * [previewRes] is the adaptive icon's *foreground* layer; the picker composes it over
  * [R.color.ic_launcher_tile] to reproduce what the launcher shows.
@@ -30,14 +30,19 @@ enum class AppIcon(
     val alias: String,
     @DrawableRes val previewRes: Int,
     @StringRes val labelRes: Int,
+    val subtitle: String = "",
 ) {
-    GLASS("glass", ".LauncherGlass", R.mipmap.ic_launcher_glass_fg, R.string.app_icon_glass),
+    GLASS("glass", ".LauncherGlass", R.mipmap.ic_launcher_glass_fg, R.string.app_icon_glass, "Translucent liquid crystal with frosted refraction"),
+    OG("og", ".LauncherOg", R.mipmap.ic_launcher_og_fg, R.string.app_icon_og, "Classic BeatWave cyan-to-purple sonic wave"),
+    BEST("best", ".LauncherBest", R.mipmap.ic_launcher_best_fg, R.string.app_icon_best, "Neon Prime glowing spectrum with high-energy accents"),
+    CLASSIC("classic", ".LauncherClassic", R.mipmap.ic_launcher_foreground, R.string.app_icon_classic, "Default adaptive system tile tuned for all launchers"),
+    MIDNIGHT("midnight", ".LauncherMidnight", R.drawable.ic_launcher_monochrome, R.string.app_icon_midnight, "Ultra-minimalist stealth black with titanium emblem"),
     ;
 
     companion object {
         val DEFAULT: AppIcon get() = GLASS
 
-        fun fromId(id: String?): AppIcon = entries.firstOrNull { it.id == id } ?: DEFAULT
+        fun fromId(id: String?): AppIcon = values().firstOrNull { it.id == id } ?: DEFAULT
 
         /**
          * Enables [icon]'s alias and disables every other one.
@@ -48,18 +53,22 @@ enum class AppIcon(
          * usually redraws within a second or two on its own.
          */
         fun apply(context: Context, icon: AppIcon) {
-            val pm = context.packageManager
-            pm.setComponentEnabledSetting(
-                componentFor(context, icon),
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP,
-            )
-            entries.filter { it != icon }.forEach {
+            runCatching {
+                val pm = context.packageManager
                 pm.setComponentEnabledSetting(
-                    componentFor(context, it),
-                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    componentFor(context, icon),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP,
                 )
+                values().filter { it != icon }.forEach {
+                    runCatching {
+                        pm.setComponentEnabledSetting(
+                            componentFor(context, it),
+                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                            PackageManager.DONT_KILL_APP,
+                        )
+                    }
+                }
             }
         }
 

@@ -146,7 +146,7 @@ fun LyricsStyleSettingsScreen(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.arrow_back),
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = "Back"
                         )
                     }
                 },
@@ -333,7 +333,7 @@ fun LyricsStyleSettingsScreen(
                 title = "TYPOGRAPHY & TUNING",
                 items = listOf(
                     Material3SettingsItem(
-                        icon = painterResource(R.drawable.text),
+                        icon = painterResource(R.drawable.edit),
                         title = { Text("Lyrics Font Size (${lyricsTextSize.toInt()} sp)") },
                         description = {
                             Slider(
@@ -345,7 +345,7 @@ fun LyricsStyleSettingsScreen(
                         }
                     ),
                     Material3SettingsItem(
-                        icon = painterResource(R.drawable.format_line_spacing),
+                        icon = painterResource(R.drawable.sliders),
                         title = { Text("Line Spacing (${String.format("%.1f", lyricsLineSpacing)}x)") },
                         description = {
                             Slider(
@@ -357,7 +357,7 @@ fun LyricsStyleSettingsScreen(
                         }
                     ),
                     Material3SettingsItem(
-                        icon = painterResource(R.drawable.blur_on),
+                        icon = painterResource(R.drawable.gradient),
                         title = { Text("Depth-of-field Progressive Blur") },
                         description = { Text("Applies cinematic focus blur to distant inactive lines") },
                         trailingContent = {
@@ -485,7 +485,7 @@ private fun FisheyeEffectMasterCard(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.blur_on),
+                    painter = painterResource(R.drawable.spatial_tracking_apple),
                     contentDescription = null,
                     tint = if (enabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.size(26.dp)

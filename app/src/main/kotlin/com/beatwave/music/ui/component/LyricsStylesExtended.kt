@@ -177,14 +177,19 @@ fun NeonPulseLyricsLine(
         } else null
 
         val styledText = buildAnnotatedString {
-            withStyle(
-                style = SpanStyle(
-                    brush = if (isActive) neonBrush else null,
-                    color = if (!isActive) neonCyan.copy(alpha = 0.45f) else Color.Unspecified,
-                    fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.SemiBold,
+            val style = if (isActive) {
+                SpanStyle(
+                    brush = neonBrush,
+                    fontWeight = FontWeight.ExtraBold,
                     shadow = shadow
                 )
-            ) {
+            } else {
+                SpanStyle(
+                    color = neonCyan.copy(alpha = 0.45f),
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            withStyle(style = style) {
                 append(entry.text)
             }
         }
@@ -464,14 +469,19 @@ fun GradientSweepLyricsLine(
         } else null
 
         val styledText = buildAnnotatedString {
-            withStyle(
-                style = SpanStyle(
+            val style = if (isActive && sweepBrush != null) {
+                SpanStyle(
                     brush = sweepBrush,
-                    color = if (!isActive) Color.White.copy(alpha = 0.32f) else Color.Unspecified,
-                    fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.SemiBold,
-                    shadow = if (isActive) Shadow(color = Color(0xFF00F5FF).copy(alpha = 0.6f), blurRadius = 16f) else null
+                    fontWeight = FontWeight.ExtraBold,
+                    shadow = Shadow(color = Color(0xFF00F5FF).copy(alpha = 0.6f), blurRadius = 16f)
                 )
-            ) {
+            } else {
+                SpanStyle(
+                    color = Color.White.copy(alpha = 0.32f),
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+            withStyle(style = style) {
                 append(entry.text)
             }
         }

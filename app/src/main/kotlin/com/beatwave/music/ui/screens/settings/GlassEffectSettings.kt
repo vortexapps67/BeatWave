@@ -91,6 +91,8 @@ import com.beatwave.music.constants.LiquidGlassSurfaceTintColorKey
 import com.beatwave.music.constants.LiquidGlassAdaptiveContrastKey
 import com.beatwave.music.constants.LiquidGlassTextColorKey
 import com.beatwave.music.constants.LiquidGlassVibrancyKey
+import com.beatwave.music.constants.LiquidGlassEngineKey
+import com.beatwave.music.constants.LiquidGlassEngine
 import com.beatwave.music.models.MediaMetadata
 import com.beatwave.music.ui.component.GlassStyle
 import com.beatwave.music.ui.component.ColorPickerDialog
@@ -133,6 +135,10 @@ fun GlassEffectSettings(
     navController: NavController,
     scrollBehavior: TopAppBarScrollBehavior,
 ) {
+    val (liquidGlassEngine, onLiquidGlassEngineChange) = rememberEnumPreference(
+        LiquidGlassEngineKey, defaultValue = LiquidGlassEngine.NEW_GLASS
+    )
+    var showEngineDialog by rememberSaveable { mutableStateOf(false) }
     val (vibrancy, onVibrancyChange) = rememberPreference(
         LiquidGlassVibrancyKey, defaultValue = 1.2f
     )
@@ -277,6 +283,7 @@ fun GlassEffectSettings(
     // LocalGlassEffectConfig so it updates as the user drags, without waiting for
     // the app-wide config to round-trip through DataStore.
     val previewConfig = GlassEffectConfig(
+        engine = liquidGlassEngine,
         vibrancy = vibrancy,
         blurRadius = blurRadius,
         lensHeight = lensHeight,
@@ -302,6 +309,27 @@ fun GlassEffectSettings(
                 .bleedHorizontally(10.dp)
                 .padding(top = 8.dp, bottom = 16.dp),
         )
+
+                Material3SettingsGroup(
+            title = "Rendering Engine",
+            items = listOf(
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.gradient),
+                    title = { Text("Liquid Glass Engine") },
+                    description = {
+                        Text(
+                            if (liquidGlassEngine == LiquidGlassEngine.NEW_GLASS)
+                                "New Liquid Glass (Classy & Smooth)"
+                            else
+                                "Old Liquid Glass (Legacy Multi-Pass)"
+                        )
+                    },
+                    onClick = { showEngineDialog = true }
+                )
+            )
+        )
+
+        Spacer(modifier = Modifier.height(27.dp))
 
         Material3SettingsGroup(
             title = stringResource(R.string.liquid_glass_effects),
@@ -586,6 +614,56 @@ fun GlassEffectSettings(
 
 
         Spacer(modifier = Modifier.height(16.dp))
+    }
+
+        if (showEngineDialog) {
+        DefaultDialog(
+            onDismiss = { showEngineDialog = false },
+            buttons = {
+                Spacer(modifier = Modifier.weight(1f))
+                TextButton(onClick = { showEngineDialog = false }) { Text(stringResource(android.R.string.cancel)) }
+            }
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Liquid Glass Engine",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(bottom = 12.dp),
+                )
+                LiquidGlassEngine.values().forEach { engine ->
+                    val isSelected = engine == liquidGlassEngine
+                    val (label, desc) = when (engine) {
+                        LiquidGlassEngine.NEW_GLASS ->
+                            "New Liquid Glass (Classy & Smooth)" to
+                            "Refined optical refraction, zero visual distortion/slop, 60/120 FPS on all devices below Android 16."
+                        LiquidGlassEngine.OLD_GLASS ->
+                            "Old Liquid Glass (Legacy Multi-Pass)" to
+                            "Original high-distortion experimental AGSL shader with heavy multi-pass lens displacement."
+                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onLiquidGlassEngineChange(engine)
+                                showEngineDialog = false
+                            }
+                            .padding(vertical = 10.dp)
+                    ) {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = if (isSelected) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.onSurface,
+                        )
+                        Text(
+                            text = desc,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
     }
 
     if (showVibrancyDialog) {

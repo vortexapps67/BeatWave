@@ -63,6 +63,7 @@ import com.beatwave.music.ui.screens.settings.SuggestionScreen
 import com.beatwave.music.ui.screens.settings.AccountSettingsScreen
 import com.beatwave.music.ui.screens.settings.AiSettings
 import com.beatwave.music.ui.screens.settings.AppearanceSettings
+import com.beatwave.music.ui.screens.settings.AppIconSettingsScreen
 import com.beatwave.music.ui.screens.settings.BackupAndRestore
 import com.beatwave.music.ui.screens.settings.CanvasSelection
 import com.beatwave.music.ui.screens.settings.ContentSettings
@@ -432,6 +433,18 @@ fun NavGraphBuilder.navigationBuilder(
 
     sharedComposable("settings/appearance/liquidglass") {
         GlassEffectSettings(navController, scrollBehavior)
+    }
+
+    sharedComposable("settings/appearance/app_icon") {
+        AppIconSettingsScreen(navController, scrollBehavior)
+    }
+
+    sharedComposable("settings/appearance/appicon") {
+        AppIconSettingsScreen(navController, scrollBehavior)
+    }
+
+    sharedComposable("settings/app_icon") {
+        AppIconSettingsScreen(navController, scrollBehavior)
     }
 
     sharedComposable("settings/lyrics_styles") {

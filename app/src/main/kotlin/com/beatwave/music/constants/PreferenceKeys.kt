@@ -647,6 +647,17 @@ val AodPixelShiftEnabledKey = booleanPreferencesKey("aodPixelShiftEnabled")
 val AodDimLevelKey = floatPreferencesKey("aodDimLevel")
 
 val LiquidGlassGlobalEnabledKey = booleanPreferencesKey("liquidGlassGlobalEnabled")
+val LiquidGlassEngineKey = stringPreferencesKey("liquidGlassEngine")
+
+enum class LiquidGlassEngine(val value: String) {
+    NEW_GLASS("new_glass"),
+    OLD_GLASS("old_glass");
+
+    companion object {
+        fun fromValue(value: String): LiquidGlassEngine =
+            values().find { it.value == value } ?: NEW_GLASS
+    }
+}
 val LiquidGlassAdaptiveContrastKey = booleanPreferencesKey("liquidGlassAdaptiveContrast")
 val LiquidGlassTextColorKey = intPreferencesKey("liquidGlassTextColor")
 val LiquidGlassSurfaceTintColorKey = intPreferencesKey("liquidGlassSurfaceTintColor")

@@ -179,6 +179,8 @@ import com.beatwave.music.utils.rememberEnumPreference
 import com.beatwave.music.utils.rememberPreference
 import kotlin.math.roundToInt
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
+import com.beatwave.music.constants.LiquidGlassEngineKey
+import com.beatwave.music.constants.LiquidGlassEngine
 import com.beatwave.music.constants.LyricsClickKey
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.constants.AppleMusicLyricsBlurKey
@@ -276,6 +278,8 @@ fun AppearanceSettings(
     val (appleMusicLyricsBlur, onAppleMusicLyricsBlurChange) = rememberPreference(AppleMusicLyricsBlurKey, defaultValue = true)
     val (lyricsStandardBlur, onLyricsStandardBlurChange) = rememberPreference(LyricsStandardBlurKey, defaultValue = false)
     val (lyricsFisheyeEffect, onLyricsFisheyeEffectChange) = rememberPreference(LyricsFisheyeEffectKey, defaultValue = true)
+    val (liquidGlassEngine, onLiquidGlassEngineChange) = rememberEnumPreference(LiquidGlassEngineKey, defaultValue = LiquidGlassEngine.NEW_GLASS)
+    var showLiquidGlassEngineDialog by rememberSaveable { mutableStateOf(false) }
     val (swipeLyrics, onSwipeLyricsChange) = rememberPreference(SwipeLyricsKey, defaultValue = false)
     val (enableLyricsThumbnailPlayPause, onEnableLyricsThumbnailPlayPauseChange) = rememberPreference(EnableLyricsThumbnailPlayPauseKey, defaultValue = false)
     val (oneTapFullscreenLyrics, onOneTapFullscreenLyricsChange) = rememberPreference(OneTapFullscreenLyricsKey, defaultValue = false)
@@ -411,6 +415,31 @@ fun AppearanceSettings(
                     LyricsPosition.LEFT -> stringResource(R.string.left)
                     LyricsPosition.CENTER -> stringResource(R.string.center)
                     LyricsPosition.RIGHT -> stringResource(R.string.right)
+                }
+            }
+        )
+    }
+
+        if (showLiquidGlassEngineDialog) {
+        EnumDialog(
+            onDismiss = { showLiquidGlassEngineDialog = false },
+            onSelect = {
+                onLiquidGlassEngineChange(it)
+                showLiquidGlassEngineDialog = false
+            },
+            title = "Liquid Glass Engine",
+            current = liquidGlassEngine,
+            values = LiquidGlassEngine.values().toList(),
+            valueText = {
+                when (it) {
+                    LiquidGlassEngine.NEW_GLASS -> "New Liquid Glass (Classy & Ultra-Smooth)"
+                    LiquidGlassEngine.OLD_GLASS -> "Old Liquid Glass (Legacy AGSL Shader)"
+                }
+            },
+            valueDescription = {
+                when (it) {
+                    LiquidGlassEngine.NEW_GLASS -> "Refined optical refraction, zero visual distortion/slop, 60/120 FPS on all devices below Android 16."
+                    LiquidGlassEngine.OLD_GLASS -> "Original high-distortion experimental AGSL shader with heavy multi-pass lens displacement."
                 }
             }
         )
@@ -591,6 +620,12 @@ fun AppearanceSettings(
                 ),
 
                 Material3SettingsItem(
+                    icon = painterResource(R.drawable.image),
+                    title = { Text(stringResource(R.string.app_icon)) },
+                    description = { Text(stringResource(R.string.app_icon_desc)) },
+                    onClick = { navController.navigate("settings/appearance/app_icon") }
+                ),
+                Material3SettingsItem(
                     icon = painterResource(R.drawable.palette),
                     title = { Text(stringResource(R.string.presets)) },
                     description = { Text(stringResource(R.string.presets_desc)) },
@@ -619,7 +654,21 @@ fun AppearanceSettings(
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.tune),
                     title = { Text(stringResource(R.string.liquid_glass)) },
+                    description = { Text("Customize blur, refraction, vibrancy and surface tints") },
                     onClick = { navController.navigate("settings/appearance/liquidglass") }
+                ),
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.gradient),
+                    title = { Text("Liquid Glass Engine") },
+                    description = {
+                        Text(
+                            if (liquidGlassEngine == LiquidGlassEngine.NEW_GLASS)
+                                "New Liquid Glass (Classy & Ultra-Smooth)"
+                            else
+                                "Old Liquid Glass (Legacy AGSL Shader)"
+                        )
+                    },
+                    onClick = { showLiquidGlassEngineDialog = true }
                 )
             )
         )
@@ -958,13 +1007,13 @@ fun AppearanceSettings(
                     onClick = { showLyricsAnimationStyleDialog = true }
                 ),
                 Material3SettingsItem(
-                    icon = painterResource(R.drawable.blur_on),
+                    icon = painterResource(R.drawable.gradient),
                     title = { Text("Lyrics Styles & Animations Studio") },
                     description = { Text("Interactive preview, 5 new dynamic styles & visual tuning") },
                     onClick = { navController.navigate("settings/lyrics_styles") }
                 ),
                 Material3SettingsItem(
-                    icon = painterResource(R.drawable.blur_on),
+                    icon = painterResource(R.drawable.spatial_tracking_apple),
                     title = { Text("Fisheye 3D Lens Effect") },
                     description = { Text("Dynamic spherical curvature and magnification on active lyrics") },
                     trailingContent = {

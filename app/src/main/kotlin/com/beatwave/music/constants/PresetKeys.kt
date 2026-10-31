@@ -112,6 +112,7 @@ object PresetKeys {
 
     val GLASS: List<Preferences.Key<*>> = listOf(
         LiquidGlassGlobalEnabledKey,
+        LiquidGlassEngineKey,
         LiquidGlassAdaptiveContrastKey,
         LiquidGlassTextColorKey,
         LiquidGlassSurfaceTintColorKey,
