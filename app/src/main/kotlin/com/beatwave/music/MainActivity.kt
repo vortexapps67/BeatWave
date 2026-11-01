@@ -2866,7 +2866,7 @@ class MainActivity : ComponentActivity() {
 
         // Safety timeout so splash never blocks user
         LaunchedEffect(Unit) {
-            delay(11000L)
+            delay(3500L)
             if (isVisible) {
                 isVisible = false
             }
@@ -2878,16 +2878,10 @@ class MainActivity : ComponentActivity() {
                 .graphicsLayer {
                     alpha = alphaAnim
                 }
-                .background(Color.Black)
-                .clickable(
-                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
-                    indication = null
-                ) {
-                    isVisible = false
-                },
+                .background(Color.Black),
             contentAlignment = Alignment.Center
         ) {
-            // Muted startup MP4 animation provided by user
+            // Muted startup MP4 animation provided by user (plays in full, no skip)
             androidx.compose.ui.viewinterop.AndroidView(
                 factory = { ctx ->
                     android.widget.VideoView(ctx).apply {
@@ -2895,7 +2889,7 @@ class MainActivity : ComponentActivity() {
                         setVideoURI(videoUri)
                         setOnPreparedListener { mp ->
                             mp.isLooping = false
-                            mp.setVolume(0f, 0f) // Fully muted as requested
+                            mp.setVolume(0f, 0f) // Fully muted
                             mp.start()
                         }
                         setOnCompletionListener {
@@ -2909,21 +2903,6 @@ class MainActivity : ComponentActivity() {
                 },
                 modifier = Modifier.fillMaxSize()
             )
-
-            // Subtle skip hint at bottom
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 32.dp),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Text(
-                    text = "Tap to skip",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.White.copy(alpha = 0.4f),
-                    letterSpacing = 1.2.sp
-                )
-            }
         }
     }
 

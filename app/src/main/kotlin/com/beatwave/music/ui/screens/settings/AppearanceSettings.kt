@@ -500,6 +500,7 @@ fun AppearanceSettings(
                     LyricsAnimationStyle.VIVIMUSIC_1 -> stringResource(R.string.vivimusic_1)
                     LyricsAnimationStyle.LYRICS_V2 -> stringResource(R.string.lyrics_v2_fluid)
                     LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_animation_metro)
+                    LyricsAnimationStyle.FISHEYE -> "Fisheye 3D Barrel (Stickers & Drum)"
                     LyricsAnimationStyle.NEON_PULSE -> "Neon Pulse (Cyberpunk)"
                     LyricsAnimationStyle.SPOTIFY_BOUNCE -> "Spotify Bounce"
                     LyricsAnimationStyle.CINEMATIC_MINIMAL -> "Cinematic Minimal"
@@ -1056,6 +1057,7 @@ fun AppearanceSettings(
                                 LyricsAnimationStyle.APPLE_V2 -> stringResource(R.string.apple_music_style_letter)
                                 LyricsAnimationStyle.LYRICS_V2 -> stringResource(R.string.lyrics_v2_fluid)
                                 LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_animation_metro)
+                                LyricsAnimationStyle.FISHEYE -> "Fisheye 3D Barrel (Stickers & Drum)"
                                 LyricsAnimationStyle.NEON_PULSE -> "Neon Pulse (Cyberpunk)"
                                 LyricsAnimationStyle.SPOTIFY_BOUNCE -> "Spotify Bounce"
                                 LyricsAnimationStyle.CINEMATIC_MINIMAL -> "Cinematic Minimal"

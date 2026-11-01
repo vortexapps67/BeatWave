@@ -81,6 +81,7 @@ import com.beatwave.music.constants.OneTapFullscreenLyricsKey
 import com.beatwave.music.lyrics.LyricsEntry
 import com.beatwave.music.lyrics.WordTimestamp
 import com.beatwave.music.ui.component.CinematicMinimalLyricsLine
+import com.beatwave.music.ui.component.FisheyeStickerLyricsLine
 import com.beatwave.music.ui.component.GradientSweepLyricsLine
 import com.beatwave.music.ui.component.IconButton
 import com.beatwave.music.ui.component.Material3SettingsGroup
@@ -192,6 +193,13 @@ fun LyricsStyleSettingsScreen(
             )
 
             val newStyles = listOf(
+                LyricsStyleInfo(
+                    style = LyricsAnimationStyle.FISHEYE,
+                    title = "Fisheye 3D Barrel",
+                    tagline = "Cylindrical rotating drum with sticker word badges & contextual emojis",
+                    badge = "HOT",
+                    accentColor = Color(0xFFFF2D55)
+                ),
                 LyricsStyleInfo(
                     style = LyricsAnimationStyle.NEON_PULSE,
                     title = "Neon Pulse (Cyberpunk)",
@@ -651,28 +659,30 @@ private fun LiveLyricsInteractivePreview(
                     val delta = (index - activeIndex).toFloat()
                     val absDistance = kotlin.math.abs(delta)
 
-                    val fisheyeScaleX = if (fisheyeEnabled) {
+                    val isFisheyeActive = fisheyeEnabled || selectedStyle == LyricsAnimationStyle.FISHEYE
+
+                    val fisheyeScaleX = if (isFisheyeActive) {
                         (0.58f + 1.04f / (1f + 0.48f * absDistance * absDistance)).coerceIn(0.55f, 1.62f)
                     } else 1f
 
-                    val fisheyeScaleY = if (fisheyeEnabled) {
+                    val fisheyeScaleY = if (isFisheyeActive) {
                         (0.60f + 0.90f / (1f + 0.52f * absDistance * absDistance)).coerceIn(0.58f, 1.50f)
                     } else 1f
 
-                    val fisheyeRotationX = if (fisheyeEnabled) {
+                    val fisheyeRotationX = if (isFisheyeActive) {
                         (-delta * 22f).coerceIn(-52f, 52f)
                     } else 0f
 
-                    val fisheyeTranslationY = if (fisheyeEnabled) {
+                    val fisheyeTranslationY = if (isFisheyeActive) {
                         val sign = if (delta < 0) 1f else -1f
                         (sign * (absDistance * absDistance * 4.8f)).coerceIn(-42f, 42f)
                     } else 0f
 
-                    val fisheyeAlpha = if (fisheyeEnabled) {
+                    val fisheyeAlpha = if (isFisheyeActive) {
                         (1f - (absDistance * 0.12f)).coerceIn(0.20f, 1f)
                     } else 1f
 
-                    val fisheyePivotY = if (fisheyeEnabled) {
+                    val fisheyePivotY = if (isFisheyeActive) {
                         when {
                             delta < -0.1f -> 1.0f
                             delta > 0.1f -> 0.0f
@@ -684,7 +694,7 @@ private fun LiveLyricsInteractivePreview(
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer {
-                                this.cameraDistance = if (fisheyeEnabled) 6f * density else 16f * density
+                                this.cameraDistance = if (isFisheyeActive) 6f * density else 16f * density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationY = fisheyeTranslationY
@@ -694,6 +704,18 @@ private fun LiveLyricsInteractivePreview(
                             }
                     ) {
                         when (selectedStyle) {
+                            LyricsAnimationStyle.FISHEYE -> {
+                                FisheyeStickerLyricsLine(
+                                    entry = entry,
+                                    isActive = isActive,
+                                    effectivePlaybackPosition = currentPlaybackMs,
+                                    expressiveAccent = Color.White,
+                                    baseFontSize = 18f,
+                                    lineHeight = 24f,
+                                    agentTextAlign = TextAlign.Center,
+                                    agentAlignment = Alignment.CenterHorizontally
+                                )
+                            }
                             LyricsAnimationStyle.NEON_PULSE -> {
                                 NeonPulseLyricsLine(
                                     entry = entry,

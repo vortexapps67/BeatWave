@@ -814,6 +814,7 @@ enum class LyricsAnimationStyle {
     VIVIMUSIC_1,
     LYRICS_V2,
     METRO_LYRICS,
+    FISHEYE,
     NEON_PULSE,
     SPOTIFY_BOUNCE,
     CINEMATIC_MINIMAL,

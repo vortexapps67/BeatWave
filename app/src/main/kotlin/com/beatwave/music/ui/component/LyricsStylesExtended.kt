@@ -596,3 +596,180 @@ fun RetroCassetteLyricsLine(
         }
     }
 }
+
+
+/**
+ * 6. FISHEYE STICKER CYLINDER:
+ * True cylindrical 3D rotating drum barrel with word-level cutout sticker badges
+ * and contextual doodle emojis (cloud, sun, snowflake, eye, heart, flame, star),
+ * matching the authentic music video fisheye aesthetic.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun FisheyeStickerLyricsLine(
+    entry: LyricsEntry,
+    isActive: Boolean,
+    effectivePlaybackPosition: Long,
+    expressiveAccent: Color,
+    baseFontSize: Float,
+    lineHeight: Float,
+    agentTextAlign: TextAlign = TextAlign.Center,
+    agentAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    showRomanized: Boolean = false,
+    showTranslated: Boolean = false,
+) {
+    val arrangement = when (agentTextAlign) {
+        TextAlign.Center -> Arrangement.Center
+        TextAlign.Right -> Arrangement.End
+        else -> Arrangement.Start
+    }
+
+    val wordList = entry.words
+    val hasWords = wordList != null && wordList.isNotEmpty()
+
+    fun getWordEmoji(rawWord: String): String? {
+        val clean = rawWord.lowercase().trim().replace(Regex("[^a-z]"), "")
+        return when {
+            clean in setOf("sun", "light", "shine", "day", "bright", "sunny", "morning") -> "☀"
+            clean in setOf("sky", "cloud", "clouds", "rain", "blue", "air", "high") -> "☁"
+            clean in setOf("see", "look", "eyes", "eye", "watch", "sight", "blind") -> "👁"
+            clean in setOf("cold", "ice", "freeze", "snow", "winter", "chilly") -> "❄"
+            clean in setOf("love", "heart", "baby", "kiss", "trust", "sweet", "darling") -> "🤍"
+            clean in setOf("fire", "burn", "hot", "flame", "blaze") -> "🔥"
+            clean in setOf("night", "star", "dark", "moon", "midnight") -> "✨"
+            clean in setOf("car", "drive", "road", "ride", "city", "speed") -> "🚗"
+            clean in setOf("call", "phone", "talk", "hear", "voice") -> "📞"
+            else -> null
+        }
+    }
+
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 6.dp, vertical = 2.dp),
+        horizontalArrangement = arrangement,
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        if (hasWords) {
+            wordList!!.forEachIndexed { wordIndex, word ->
+                val wordStartMs = (word.startTime * 1000).toLong()
+                val wordEndMs = (word.endTime * 1000).toLong()
+                val isWordActive = isActive && effectivePlaybackPosition >= wordStartMs && effectivePlaybackPosition <= wordEndMs
+                val hasWordPassed = isActive && effectivePlaybackPosition > wordEndMs
+
+                val badgeBg = when {
+                    isWordActive -> Color.White
+                    hasWordPassed -> Color.White.copy(alpha = 0.92f)
+                    isActive -> Color.White.copy(alpha = 0.28f)
+                    else -> Color.White.copy(alpha = 0.14f)
+                }
+
+                val textColor = when {
+                    isWordActive || hasWordPassed -> Color.Black
+                    isActive -> Color.White
+                    else -> Color.White.copy(alpha = 0.72f)
+                }
+
+                val emoji = getWordEmoji(word.text)
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(horizontal = 3.dp, vertical = 2.dp)
+                ) {
+                    if (emoji != null && (wordIndex % 2 == 0 || isWordActive)) {
+                        Text(
+                            text = emoji,
+                            fontSize = (baseFontSize * 0.9f).sp,
+                            modifier = Modifier.graphicsLayer {
+                                rotationZ = if (wordIndex % 2 == 0) -8f else 8f
+                            }
+                        )
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(badgeBg)
+                                .then(
+                                    if (isWordActive) {
+                                        Modifier.graphicsLayer {
+                                            scaleX = 1.06f
+                                            scaleY = 1.06f
+                                        }
+                                    } else Modifier
+                                )
+                                .padding(horizontal = 10.dp, vertical = 4.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = word.text,
+                                fontSize = (baseFontSize * 0.95f).sp,
+                                fontWeight = if (isWordActive || hasWordPassed) FontWeight.ExtraBold else FontWeight.Bold,
+                                color = textColor,
+                                letterSpacing = (-0.4).sp,
+                                lineHeight = (baseFontSize * 1.15f).sp
+                            )
+                        }
+
+                        if (isWordActive) {
+                            Spacer(modifier = Modifier.height(3.dp))
+                            Box(
+                                modifier = Modifier
+                                    .width(20.dp)
+                                    .height(3.dp)
+                                    .clip(RoundedCornerShape(2.dp))
+                                    .background(Color.White)
+                            )
+                        }
+                    }
+                }
+            }
+        } else {
+            val words = remember(entry.text) {
+                entry.text.split(Regex("\\s+")).filter { it.isNotBlank() }
+            }
+            words.forEachIndexed { wordIndex, wordText ->
+                val badgeBg = if (isActive) Color.White else Color.White.copy(alpha = 0.16f)
+                val textColor = if (isActive) Color.Black else Color.White.copy(alpha = 0.75f)
+                val emoji = getWordEmoji(wordText)
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(horizontal = 3.dp, vertical = 2.dp)
+                ) {
+                    if (emoji != null && (wordIndex == 0 || wordIndex == words.size - 1)) {
+                        Text(
+                            text = emoji,
+                            fontSize = (baseFontSize * 0.9f).sp,
+                            modifier = Modifier.graphicsLayer {
+                                rotationZ = if (wordIndex % 2 == 0) -7f else 7f
+                            }
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(badgeBg)
+                            .padding(horizontal = 10.dp, vertical = 4.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = wordText,
+                            fontSize = (baseFontSize * 0.95f).sp,
+                            fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.Bold,
+                            color = textColor,
+                            letterSpacing = (-0.4).sp,
+                            lineHeight = (baseFontSize * 1.15f).sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1231,33 +1231,35 @@ fun Lyrics(
                     val lineDelta = (index - activeLineIdx).toFloat()
                     val absDistance = kotlin.math.abs(lineDelta)
 
+                    val isFisheyeActive = lyricsFisheyeEffect || lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE
+
                     // Authentic spherical lens barrel transformation matching music video fisheye
-                    val fisheyeScaleX = if (lyricsFisheyeEffect) {
+                    val fisheyeScaleX = if (isFisheyeActive) {
                         // True spherical barrel expansion: center line expands dramatically in width (up to 1.62x)
                         (0.58f + 1.04f / (1f + 0.48f * absDistance * absDistance)).coerceIn(0.55f, 1.62f)
                     } else 1f
 
-                    val fisheyeScaleY = if (lyricsFisheyeEffect) {
+                    val fisheyeScaleY = if (isFisheyeActive) {
                         // Spherical height expansion (up to 1.50x)
                         (0.60f + 0.90f / (1f + 0.52f * absDistance * absDistance)).coerceIn(0.58f, 1.50f)
                     } else 1f
 
-                    val fisheyeRotationX = if (lyricsFisheyeEffect) {
+                    val fisheyeRotationX = if (isFisheyeActive) {
                         // Dramatic spherical pitch curvature: top curves backward, bottom curves downward
                         (-lineDelta * 22f).coerceIn(-52f, 52f)
                     } else 0f
 
-                    val fisheyeTranslationY = if (lyricsFisheyeEffect) {
+                    val fisheyeTranslationY = if (isFisheyeActive) {
                         // Spherical foreshortening: lines compress along curvature toward center dome
                         val sign = if (lineDelta < 0) 1f else -1f
                         (sign * (absDistance * absDistance * 4.8f)).coerceIn(-42f, 42f)
                     } else 0f
 
-                    val fisheyeAlpha = if (lyricsFisheyeEffect) {
+                    val fisheyeAlpha = if (isFisheyeActive) {
                         (1f - (absDistance * 0.12f)).coerceIn(0.20f, 1f)
                     } else 1f
 
-                    val fisheyePivotY = if (lyricsFisheyeEffect) {
+                    val fisheyePivotY = if (isFisheyeActive) {
                         when {
                             lineDelta < -0.1f -> 1.0f  // Lines above pivot from bottom edge (closest to equator)
                             lineDelta > 0.1f -> 0.0f   // Lines below pivot from top edge (closest to equator)
@@ -1265,7 +1267,7 @@ fun Lyrics(
                         }
                     } else 0.5f
 
-                    val fisheyeTranslationX = if (lyricsFisheyeEffect) {
+                    val fisheyeTranslationX = if (isFisheyeActive) {
                         when (lyricsTextPosition) {
                             LyricsPosition.CENTER -> 0f
                             LyricsPosition.LEFT -> (24f / (1f + 0.45f * absDistance * absDistance))
@@ -1276,7 +1278,7 @@ fun Lyrics(
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.cameraDistance = if (lyricsFisheyeEffect) 6f * density.density else 16f * density.density
+                                this.cameraDistance = if (isFisheyeActive) 6f * density.density else 16f * density.density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationX = fisheyeTranslationX
@@ -1798,6 +1800,17 @@ fun Lyrics(
                                 baseFontSize = lyricsTextSize,
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
                                 agentTextAlign = agentTextAlign
+                            )
+                        } else if (lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE) {
+                            FisheyeStickerLyricsLine(
+                                entry = item,
+                                isActive = isActiveLine,
+                                effectivePlaybackPosition = effectivePlaybackPosition,
+                                expressiveAccent = expressiveAccent,
+                                baseFontSize = lyricsTextSize,
+                                lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
+                                agentTextAlign = agentTextAlign,
+                                agentAlignment = agentAlignment
                             )
                         } else if (isActiveLine && lyricsGlowEffect) {
                             // Initial animation for glow fill from left to right
