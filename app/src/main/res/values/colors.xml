@@ -11,4 +11,6 @@
       overrides this per instance for the one case that isn't — a LIGHT card.
     -->
     <color name="widget_on_card">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>
