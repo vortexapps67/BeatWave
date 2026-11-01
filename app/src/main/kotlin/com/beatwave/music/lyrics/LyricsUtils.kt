@@ -572,6 +572,84 @@ object LyricsUtils {
             }.toList()
     }
 
+    fun chunkLinesForFisheye(lines: List<LyricsEntry>): List<LyricsEntry> {
+        if (lines.isEmpty()) return lines
+        val result = ArrayList<LyricsEntry>(lines.size * 3)
+
+        for (lineIdx in lines.indices) {
+            val entry = lines[lineIdx]
+            if (entry.text.isBlank()) {
+                result.add(entry)
+                continue
+            }
+            val nextEntryTime = lines.getOrNull(lineIdx + 1)?.time ?: (entry.time + 3200L)
+            val lineDuration = (nextEntryTime - entry.time).coerceIn(400L, 10000L)
+
+            val words = entry.words
+            if (words != null && words.isNotEmpty()) {
+                // Strictly 1 to 3 words per line, targeting punchy 1-2 word lines
+                var i = 0
+                while (i < words.size) {
+                    val remaining = words.size - i
+                    val takeCount = when {
+                        remaining == 4 -> 2
+                        remaining == 3 -> 3
+                        remaining >= 2 -> 2
+                        else -> 1
+                    }
+                    val chunkWords = words.subList(i, i + takeCount)
+                    val chunkStartTime = (chunkWords.first().startTime * 1000).toLong().coerceAtLeast(entry.time)
+                    val chunkText = chunkWords.joinToString(" ") { it.text }
+                    result.add(
+                        LyricsEntry(
+                            time = chunkStartTime,
+                            text = chunkText,
+                            words = chunkWords,
+                            agent = entry.agent,
+                            isBackground = entry.isBackground
+                        )
+                    )
+                    i += takeCount
+                }
+            } else {
+                // Non-word-synced: break sentence into 1 to 3 words per line
+                val rawTokens = entry.text.trim().split(Regex("\\s+")).filter { it.isNotBlank() }
+                if (rawTokens.size <= 3) {
+                    result.add(entry)
+                } else {
+                    val chunks = ArrayList<List<String>>()
+                    var i = 0
+                    while (i < rawTokens.size) {
+                        val remaining = rawTokens.size - i
+                        val takeCount = when {
+                            remaining == 4 -> 2
+                            remaining == 3 -> 3
+                            remaining >= 2 -> 2
+                            else -> 1
+                        }
+                        chunks.add(rawTokens.subList(i, i + takeCount))
+                        i += takeCount
+                    }
+                    val chunkDuration = lineDuration / chunks.size
+                    chunks.forEachIndexed { cIdx, cWords ->
+                        val chunkStartTime = entry.time + (cIdx * chunkDuration)
+                        val chunkText = cWords.joinToString(" ")
+                        result.add(
+                            LyricsEntry(
+                                time = chunkStartTime,
+                                text = chunkText,
+                                words = null,
+                                agent = entry.agent,
+                                isBackground = entry.isBackground
+                            )
+                        )
+                    }
+                }
+            }
+        }
+        return result
+    }
+
     fun findCurrentLineIndex(
         lines: List<LyricsEntry>,
         position: Long,

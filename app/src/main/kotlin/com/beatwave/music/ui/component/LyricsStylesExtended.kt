@@ -617,6 +617,7 @@ fun FisheyeStickerLyricsLine(
     lineHeight: Float,
     agentTextAlign: TextAlign = TextAlign.Center,
     agentAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    distanceFromCenter: Float = 0f,
     showRomanized: Boolean = false,
     showTranslated: Boolean = false,
 ) {
@@ -648,16 +649,50 @@ fun FisheyeStickerLyricsLine(
     FlowRow(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 6.dp, vertical = 2.dp),
+            .padding(horizontal = 4.dp, vertical = 2.dp),
         horizontalArrangement = arrangement,
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
         if (hasWords) {
-            wordList!!.forEachIndexed { wordIndex, word ->
+            val totalWords = wordList!!.size
+            wordList.forEachIndexed { wordIndex, word ->
                 val wordStartMs = (word.startTime * 1000).toLong()
                 val wordEndMs = (word.endTime * 1000).toLong()
                 val isWordActive = isActive && effectivePlaybackPosition >= wordStartMs && effectivePlaybackPosition <= wordEndMs
                 val hasWordPassed = isActive && effectivePlaybackPosition > wordEndMs
+
+                // Relative horizontal placement across the 1-3 words: left (-1), center (0), right (+1)
+                val relX = if (totalWords > 1) {
+                    (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
+                } else 0f
+
+                // Intra-line spherical / barrel arching transforms
+                val wordRotZ: Float
+                val wordTransY: Float
+                val wordScale: Float
+
+                if (kotlin.math.abs(distanceFromCenter) <= 0.15f) {
+                    // Equator / Center line barrel bulge
+                    if (relX == 0f) {
+                        wordRotZ = 0f
+                        wordTransY = -4f
+                        wordScale = if (isWordActive) 1.14f else 1.08f
+                    } else {
+                        wordRotZ = relX * 5.5f
+                        wordTransY = 4f
+                        wordScale = if (isWordActive) 1.06f else 0.98f
+                    }
+                } else if (distanceFromCenter < -0.15f) {
+                    // Top lines bend in convex dome arch
+                    wordRotZ = relX * 7.5f
+                    wordTransY = kotlin.math.abs(relX) * 7.5f
+                    wordScale = 0.94f
+                } else {
+                    // Bottom lines bend in concave bowl arch
+                    wordRotZ = -relX * 7.5f
+                    wordTransY = -kotlin.math.abs(relX) * 7.5f
+                    wordScale = 0.94f
+                }
 
                 val badgeBg = when {
                     isWordActive -> Color.White
@@ -677,12 +712,19 @@ fun FisheyeStickerLyricsLine(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.padding(horizontal = 3.dp, vertical = 2.dp)
+                    modifier = Modifier
+                        .graphicsLayer {
+                            this.rotationZ = wordRotZ
+                            this.translationY = wordTransY
+                            this.scaleX = wordScale
+                            this.scaleY = wordScale
+                        }
+                        .padding(horizontal = 3.dp, vertical = 2.dp)
                 ) {
                     if (emoji != null && (wordIndex % 2 == 0 || isWordActive)) {
                         Text(
                             text = emoji,
-                            fontSize = (baseFontSize * 0.9f).sp,
+                            fontSize = (baseFontSize * 1.05f).sp,
                             modifier = Modifier.graphicsLayer {
                                 rotationZ = if (wordIndex % 2 == 0) -8f else 8f
                             }
@@ -696,24 +738,16 @@ fun FisheyeStickerLyricsLine(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(badgeBg)
-                                .then(
-                                    if (isWordActive) {
-                                        Modifier.graphicsLayer {
-                                            scaleX = 1.06f
-                                            scaleY = 1.06f
-                                        }
-                                    } else Modifier
-                                )
-                                .padding(horizontal = 10.dp, vertical = 4.dp),
+                                .padding(horizontal = 12.dp, vertical = 5.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
                                 text = word.text,
-                                fontSize = (baseFontSize * 0.95f).sp,
-                                fontWeight = if (isWordActive || hasWordPassed) FontWeight.ExtraBold else FontWeight.Bold,
+                                fontSize = (baseFontSize * 1.25f).sp,
+                                fontWeight = if (isWordActive || hasWordPassed) FontWeight.Black else FontWeight.ExtraBold,
                                 color = textColor,
-                                letterSpacing = (-0.4).sp,
-                                lineHeight = (baseFontSize * 1.15f).sp
+                                letterSpacing = (-0.5).sp,
+                                lineHeight = (baseFontSize * 1.35f).sp
                             )
                         }
 
@@ -721,7 +755,7 @@ fun FisheyeStickerLyricsLine(
                             Spacer(modifier = Modifier.height(3.dp))
                             Box(
                                 modifier = Modifier
-                                    .width(20.dp)
+                                    .width(22.dp)
                                     .height(3.dp)
                                     .clip(RoundedCornerShape(2.dp))
                                     .background(Color.White)
@@ -734,7 +768,28 @@ fun FisheyeStickerLyricsLine(
             val words = remember(entry.text) {
                 entry.text.split(Regex("\\s+")).filter { it.isNotBlank() }
             }
+            val totalWords = words.size
             words.forEachIndexed { wordIndex, wordText ->
+                val relX = if (totalWords > 1) {
+                    (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
+                } else 0f
+
+                val wordRotZ = if (kotlin.math.abs(distanceFromCenter) <= 0.15f) {
+                    relX * 5.5f
+                } else if (distanceFromCenter < -0.15f) {
+                    relX * 7.5f
+                } else {
+                    -relX * 7.5f
+                }
+
+                val wordTransY = if (kotlin.math.abs(distanceFromCenter) <= 0.15f) {
+                    if (relX == 0f) -4f else 4f
+                } else if (distanceFromCenter < -0.15f) {
+                    kotlin.math.abs(relX) * 7.5f
+                } else {
+                    -kotlin.math.abs(relX) * 7.5f
+                }
+
                 val badgeBg = if (isActive) Color.White else Color.White.copy(alpha = 0.16f)
                 val textColor = if (isActive) Color.Black else Color.White.copy(alpha = 0.75f)
                 val emoji = getWordEmoji(wordText)
@@ -742,12 +797,17 @@ fun FisheyeStickerLyricsLine(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    modifier = Modifier.padding(horizontal = 3.dp, vertical = 2.dp)
+                    modifier = Modifier
+                        .graphicsLayer {
+                            this.rotationZ = wordRotZ
+                            this.translationY = wordTransY
+                        }
+                        .padding(horizontal = 3.dp, vertical = 2.dp)
                 ) {
                     if (emoji != null && (wordIndex == 0 || wordIndex == words.size - 1)) {
                         Text(
                             text = emoji,
-                            fontSize = (baseFontSize * 0.9f).sp,
+                            fontSize = (baseFontSize * 1.05f).sp,
                             modifier = Modifier.graphicsLayer {
                                 rotationZ = if (wordIndex % 2 == 0) -7f else 7f
                             }
@@ -758,16 +818,16 @@ fun FisheyeStickerLyricsLine(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
                             .background(badgeBg)
-                            .padding(horizontal = 10.dp, vertical = 4.dp),
+                            .padding(horizontal = 12.dp, vertical = 5.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = wordText,
-                            fontSize = (baseFontSize * 0.95f).sp,
-                            fontWeight = if (isActive) FontWeight.ExtraBold else FontWeight.Bold,
+                            fontSize = (baseFontSize * 1.25f).sp,
+                            fontWeight = if (isActive) FontWeight.Black else FontWeight.ExtraBold,
                             color = textColor,
-                            letterSpacing = (-0.4).sp,
-                            lineHeight = (baseFontSize * 1.15f).sp
+                            letterSpacing = (-0.5).sp,
+                            lineHeight = (baseFontSize * 1.35f).sp
                         )
                     }
                 }

@@ -628,13 +628,22 @@ fun Lyrics(
         }
     }
 
+    val isFisheyeMode = lyricsFisheyeEffect || lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE
+    val effectiveLines = remember(lines, isFisheyeMode) {
+        if (isFisheyeMode) {
+            com.beatwave.music.lyrics.LyricsUtils.chunkLinesForFisheye(lines)
+        } else {
+            lines
+        }
+    }
+
     // Reset selection mode if lyrics change
-    LaunchedEffect(lines) {
+    LaunchedEffect(effectiveLines) {
         isSelectionModeActive = false
         selectedIndices.clear()
     }
 
-    LaunchedEffect(lyrics) {
+    LaunchedEffect(lyrics, isFisheyeMode) {
         if (lyrics.isNullOrEmpty() || !lyrics.startsWith("[")) {
             currentLineIndex = -1
             return@LaunchedEffect
@@ -646,7 +655,7 @@ fun Lyrics(
             val position = sliderPosition ?: playerConnection.player.currentPosition
             currentPlaybackPosition = position
             val lyricsOffset = currentSong?.song?.lyricsOffset ?: 0
-            val newLineIndex = findCurrentLineIndex(lines, position + lyricsOffset)
+            val newLineIndex = findCurrentLineIndex(effectiveLines, position + lyricsOffset)
             if (newLineIndex != currentLineIndex) {
                 currentLineIndex = newLineIndex
             }
@@ -919,13 +928,13 @@ fun Lyrics(
                 val effectivePlaybackPosition = currentPlaybackPosition + lyricsOffset
 
                 itemsIndexed(
-                    items = lines,
+                    items = effectiveLines,
                     key = { index, item -> "$index-${item.time}" } // Add stable key
                 ) { index, item ->
                     val isSelected = selectedIndices.contains(index)
                     if (lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1 && item.words?.isNotEmpty() == true) {
-                        val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < lines.size) {
-                            lines[displayedCurrentLineIndex].time
+                        val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < effectiveLines.size) {
+                            effectiveLines[displayedCurrentLineIndex].time
                         } else -1L
                         val isLineAtSameTime = item.time == currentLineTime
                         val isActiveByIndex = index == displayedCurrentLineIndex
@@ -933,7 +942,7 @@ fun Lyrics(
 
                         ViviMusicLyricsLine(
                             entry = item,
-                            nextEntryTime = lines.getOrNull(index + 1)?.time,
+                            nextEntryTime = effectiveLines.getOrNull(index + 1)?.time,
                             effectivePlaybackPosition = effectivePlaybackPosition,
                             isSynced = isSynced,
                             isActive = isActiveByIndex || isActiveByTime,
@@ -1004,8 +1013,8 @@ fun Lyrics(
                         )
                         return@itemsIndexed
                     } else if (lyricsAnimationStyle == LyricsAnimationStyle.METRO_LYRICS) {
-                        val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < lines.size) {
-                            lines[displayedCurrentLineIndex].time
+                        val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < effectiveLines.size) {
+                            effectiveLines[displayedCurrentLineIndex].time
                         } else -1L
                         val isLineAtSameTime = item.time == currentLineTime
                         val isActiveByIndex = index == displayedCurrentLineIndex
@@ -1013,7 +1022,7 @@ fun Lyrics(
 
                         MetroLyricsLine(
                             entry = item,
-                            nextEntryTime = lines.getOrNull(index + 1)?.time,
+                            nextEntryTime = effectiveLines.getOrNull(index + 1)?.time,
                             effectivePlaybackPosition = effectivePlaybackPosition,
                             lyricsOffset = lyricsOffset,
                             isSynced = isSynced,
@@ -1158,8 +1167,8 @@ fun Lyrics(
                     
                     // Check if this line shares the same time as the currently active line
                     // This enables synchronized word-by-word animation for both main and background vocals
-                    val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < lines.size) {
-                        lines[displayedCurrentLineIndex].time
+                    val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < effectiveLines.size) {
+                        effectiveLines[displayedCurrentLineIndex].time
                     } else -1L
                     val isLineAtSameTime = item.time == currentLineTime
                     val isActiveByIndex = index == displayedCurrentLineIndex
@@ -1235,28 +1244,28 @@ fun Lyrics(
 
                     // Authentic spherical lens barrel transformation matching music video fisheye
                     val fisheyeScaleX = if (isFisheyeActive) {
-                        // True spherical barrel expansion: center line expands dramatically in width (up to 1.62x)
-                        (0.58f + 1.04f / (1f + 0.48f * absDistance * absDistance)).coerceIn(0.55f, 1.62f)
+                        // True spherical barrel expansion: center line expands dramatically in width (up to 1.75x)
+                        (0.45f + 1.30f / (1f + 0.50f * absDistance * absDistance)).coerceIn(0.42f, 1.75f)
                     } else 1f
 
                     val fisheyeScaleY = if (isFisheyeActive) {
-                        // Spherical height expansion (up to 1.50x)
-                        (0.60f + 0.90f / (1f + 0.52f * absDistance * absDistance)).coerceIn(0.58f, 1.50f)
+                        // Spherical height expansion (up to 1.70x)
+                        (0.50f + 1.20f / (1f + 0.55f * absDistance * absDistance)).coerceIn(0.45f, 1.70f)
                     } else 1f
 
                     val fisheyeRotationX = if (isFisheyeActive) {
                         // Dramatic spherical pitch curvature: top curves backward, bottom curves downward
-                        (-lineDelta * 22f).coerceIn(-52f, 52f)
+                        (-lineDelta * 28.5f).coerceIn(-65f, 65f)
                     } else 0f
 
                     val fisheyeTranslationY = if (isFisheyeActive) {
                         // Spherical foreshortening: lines compress along curvature toward center dome
                         val sign = if (lineDelta < 0) 1f else -1f
-                        (sign * (absDistance * absDistance * 4.8f)).coerceIn(-42f, 42f)
+                        (sign * (absDistance * absDistance * 8.0f)).coerceIn(-65f, 65f)
                     } else 0f
 
                     val fisheyeAlpha = if (isFisheyeActive) {
-                        (1f - (absDistance * 0.12f)).coerceIn(0.20f, 1f)
+                        (1f - (absDistance * 0.18f)).coerceIn(0.20f, 1f)
                     } else 1f
 
                     val fisheyePivotY = if (isFisheyeActive) {
@@ -1268,17 +1277,13 @@ fun Lyrics(
                     } else 0.5f
 
                     val fisheyeTranslationX = if (isFisheyeActive) {
-                        when (lyricsTextPosition) {
-                            LyricsPosition.CENTER -> 0f
-                            LyricsPosition.LEFT -> (24f / (1f + 0.45f * absDistance * absDistance))
-                            LyricsPosition.RIGHT -> (-24f / (1f + 0.45f * absDistance * absDistance))
-                        }
+                        0f
                     } else 0f
 
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 6f * density.density else 16f * density.density
+                                this.cameraDistance = if (isFisheyeActive) 4.0f * density.density else 16f * density.density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationX = fisheyeTranslationX
@@ -1635,7 +1640,7 @@ fun Lyrics(
                             }
                             Text(text = styledText, fontSize = lyricsTextSize.sp, textAlign = alignment, lineHeight = (lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f)).sp)
                         } else if (lyricsAnimationStyle == LyricsAnimationStyle.APPLE_V2) {
-                            val nextEntryTime = lines.getOrNull(index + 1)?.time
+                            val nextEntryTime = effectiveLines.getOrNull(index + 1)?.time
                             val duration = remember(item.time, nextEntryTime) {
                                 if (nextEntryTime != null) nextEntryTime - item.time else 4000L
                             }
@@ -1810,7 +1815,8 @@ fun Lyrics(
                                 baseFontSize = lyricsTextSize,
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
                                 agentTextAlign = agentTextAlign,
-                                agentAlignment = agentAlignment
+                                agentAlignment = agentAlignment,
+                                distanceFromCenter = lineDelta
                             )
                         } else if (isActiveLine && lyricsGlowEffect) {
                             // Initial animation for glow fill from left to right
@@ -2025,7 +2031,7 @@ fun Lyrics(
                         if (selectedIndices.isNotEmpty()) {
                             val sortedIndices = selectedIndices.sorted()
                             val selectedLyricsText = sortedIndices
-                                .mapNotNull { lines.getOrNull(it)?.text }
+                                .mapNotNull { effectiveLines.getOrNull(it)?.text }
                                 .joinToString("\n")
 
                             if (selectedLyricsText.isNotBlank()) {

@@ -597,10 +597,17 @@ private fun LiveLyricsInteractivePreview(
         )
     }
 
-    val activeIndex = when {
-        currentPlaybackMs < 4000L -> 0
-        currentPlaybackMs < 9000L -> 1
-        else -> 2
+    val isFisheyeActivePreview = fisheyeEnabled || selectedStyle == LyricsAnimationStyle.FISHEYE
+    val previewLines = remember(selectedStyle, fisheyeEnabled) {
+        if (isFisheyeActivePreview) {
+            com.beatwave.music.lyrics.LyricsUtils.chunkLinesForFisheye(sampleLines)
+        } else {
+            sampleLines
+        }
+    }
+
+    val activeIndex = remember(previewLines, currentPlaybackMs) {
+        com.beatwave.music.lyrics.LyricsUtils.findCurrentLineIndex(previewLines, currentPlaybackMs).coerceAtLeast(0)
     }
 
     Card(
@@ -652,7 +659,7 @@ private fun LiveLyricsInteractivePreview(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                sampleLines.forEachIndexed { index, entry ->
+                previewLines.forEachIndexed { index, entry ->
                     val isActive = index == activeIndex
                     val lineDistance = kotlin.math.abs(index - activeIndex).toFloat()
 
@@ -662,24 +669,24 @@ private fun LiveLyricsInteractivePreview(
                     val isFisheyeActive = fisheyeEnabled || selectedStyle == LyricsAnimationStyle.FISHEYE
 
                     val fisheyeScaleX = if (isFisheyeActive) {
-                        (0.58f + 1.04f / (1f + 0.48f * absDistance * absDistance)).coerceIn(0.55f, 1.62f)
+                        (0.45f + 1.30f / (1f + 0.50f * absDistance * absDistance)).coerceIn(0.42f, 1.75f)
                     } else 1f
 
                     val fisheyeScaleY = if (isFisheyeActive) {
-                        (0.60f + 0.90f / (1f + 0.52f * absDistance * absDistance)).coerceIn(0.58f, 1.50f)
+                        (0.50f + 1.20f / (1f + 0.55f * absDistance * absDistance)).coerceIn(0.45f, 1.70f)
                     } else 1f
 
                     val fisheyeRotationX = if (isFisheyeActive) {
-                        (-delta * 22f).coerceIn(-52f, 52f)
+                        (-delta * 28.5f).coerceIn(-65f, 65f)
                     } else 0f
 
                     val fisheyeTranslationY = if (isFisheyeActive) {
                         val sign = if (delta < 0) 1f else -1f
-                        (sign * (absDistance * absDistance * 4.8f)).coerceIn(-42f, 42f)
+                        (sign * (absDistance * absDistance * 8.0f)).coerceIn(-65f, 65f)
                     } else 0f
 
                     val fisheyeAlpha = if (isFisheyeActive) {
-                        (1f - (absDistance * 0.12f)).coerceIn(0.20f, 1f)
+                        (1f - (absDistance * 0.18f)).coerceIn(0.20f, 1f)
                     } else 1f
 
                     val fisheyePivotY = if (isFisheyeActive) {
@@ -694,7 +701,7 @@ private fun LiveLyricsInteractivePreview(
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 6f * density else 16f * density
+                                this.cameraDistance = if (isFisheyeActive) 4.0f * density else 16f * density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationY = fisheyeTranslationY
@@ -713,7 +720,8 @@ private fun LiveLyricsInteractivePreview(
                                     baseFontSize = 18f,
                                     lineHeight = 24f,
                                     agentTextAlign = TextAlign.Center,
-                                    agentAlignment = Alignment.CenterHorizontally
+                                    agentAlignment = Alignment.CenterHorizontally,
+                                    distanceFromCenter = delta
                                 )
                             }
                             LyricsAnimationStyle.NEON_PULSE -> {

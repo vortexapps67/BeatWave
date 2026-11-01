@@ -2859,14 +2859,14 @@ class MainActivity : ComponentActivity() {
 
         val alphaAnim by animateFloatAsState(
             targetValue = if (isVisible) 1f else 0f,
-            animationSpec = tween(durationMillis = 320, easing = FastOutSlowInEasing),
+            animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing),
             label = "splashAlpha",
             finishedListener = { if (!isVisible) safeDismiss() }
         )
 
-        // Safety timeout so splash never blocks user
+        // Safety timeout in case video ends
         LaunchedEffect(Unit) {
-            delay(3500L)
+            delay(3000L)
             if (isVisible) {
                 isVisible = false
             }
@@ -2881,23 +2881,55 @@ class MainActivity : ComponentActivity() {
                 .background(Color.Black),
             contentAlignment = Alignment.Center
         ) {
-            // Muted startup MP4 animation provided by user (plays in full, no skip)
+            var activePlayer by remember { mutableStateOf<android.media.MediaPlayer?>(null) }
+            DisposableEffect(Unit) {
+                onDispose {
+                    try {
+                        activePlayer?.release()
+                    } catch (_: Exception) {}
+                    activePlayer = null
+                }
+            }
+
             androidx.compose.ui.viewinterop.AndroidView(
                 factory = { ctx ->
-                    android.widget.VideoView(ctx).apply {
-                        val videoUri = android.net.Uri.parse("android.resource://" + ctx.packageName + "/" + com.beatwave.music.R.raw.startup_animation)
-                        setVideoURI(videoUri)
-                        setOnPreparedListener { mp ->
-                            mp.isLooping = false
-                            mp.setVolume(0f, 0f) // Fully muted
-                            mp.start()
-                        }
-                        setOnCompletionListener {
-                            isVisible = false
-                        }
-                        setOnErrorListener { _, _, _ ->
-                            safeDismiss()
-                            true
+                    android.view.TextureView(ctx).apply {
+                        surfaceTextureListener = object : android.view.TextureView.SurfaceTextureListener {
+                            override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
+                                try {
+                                    val s = android.view.Surface(surface)
+                                    val mp = android.media.MediaPlayer().apply {
+                                        setSurface(s)
+                                        val afd = ctx.resources.openRawResourceFd(com.beatwave.music.R.raw.startup_animation)
+                                        setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                                        afd.close()
+                                        isLooping = false
+                                        setVolume(0f, 0f) // Fully muted
+                                        setOnCompletionListener {
+                                            isVisible = false
+                                        }
+                                        setOnErrorListener { _, _, _ ->
+                                            isVisible = false
+                                            true
+                                        }
+                                        prepare()
+                                        start()
+                                    }
+                                    activePlayer = mp
+                                } catch (e: Exception) {
+                                    isVisible = false
+                                }
+                            }
+
+                            override fun onSurfaceTextureSizeChanged(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {}
+                            override fun onSurfaceTextureDestroyed(surface: android.graphics.SurfaceTexture): Boolean {
+                                try {
+                                    activePlayer?.release()
+                                } catch (_: Exception) {}
+                                activePlayer = null
+                                return true
+                            }
+                            override fun onSurfaceTextureUpdated(surface: android.graphics.SurfaceTexture) {}
                         }
                     }
                 },
