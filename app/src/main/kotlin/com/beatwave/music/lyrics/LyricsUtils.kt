@@ -592,10 +592,8 @@ object LyricsUtils {
                 while (i < words.size) {
                     val remaining = words.size - i
                     val takeCount = when {
-                        remaining == 4 -> 2
-                        remaining == 3 -> 3
-                        remaining >= 2 -> 2
-                        else -> 1
+                        remaining >= 3 -> 3
+                        else -> remaining
                     }
                     val chunkWords = words.subList(i, i + takeCount)
                     val chunkStartTime = (chunkWords.first().startTime * 1000).toLong().coerceAtLeast(entry.time)

@@ -623,6 +623,23 @@ fun FisheyeStickerLyricsLine(
     val wordList = entry.words
     val hasWords = wordList != null && wordList.isNotEmpty()
 
+    // Authentic black-and-white monochrome doodle glyphs matching video reference
+    fun getWordDoodle(rawWord: String): String? {
+        val clean = rawWord.lowercase().trim().replace(Regex("[^a-z]"), "")
+        return when {
+            clean in setOf("sun", "light", "shine", "day", "bright", "sunny", "morning") -> "☀\uFE0E"
+            clean in setOf("sky", "cloud", "clouds", "rain", "blue", "air", "high") -> "☁\uFE0E"
+            clean in setOf("see", "look", "eyes", "eye", "watch", "sight", "blind") -> "👁\uFE0E"
+            clean in setOf("cold", "ice", "freeze", "snow", "winter", "chilly") -> "❄\uFE0E"
+            clean in setOf("love", "heart", "baby", "kiss", "trust", "sweet", "darling") -> "♥\uFE0E"
+            clean in setOf("fire", "burn", "hot", "flame", "blaze", "wild") -> "⚡\uFE0E"
+            clean in setOf("night", "star", "dark", "moon", "midnight") -> "★\uFE0E"
+            clean in setOf("car", "drive", "road", "ride", "city", "speed") -> "▲\uFE0E"
+            clean in setOf("call", "phone", "talk", "hear", "voice", "sing", "song") -> "♫\uFE0E"
+            else -> null
+        }
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -638,27 +655,27 @@ fun FisheyeStickerLyricsLine(
                 val isWordActive = isActive && effectivePlaybackPosition >= wordStartMs && effectivePlaybackPosition <= wordEndMs
                 val hasWordPassed = isActive && effectivePlaybackPosition > wordEndMs
 
-                // Relative horizontal placement across the 1-3 words: left (-1), center (0), right (+1)
+                // Relative horizontal placement across 1-3 words: left (-1), center (0), right (+1)
                 val relX = if (totalWords > 1) {
                     (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
                 } else 0f
 
-                // Intra-line spherical / barrel arching transforms
+                // Dramatic 3D spherical / barrel intra-line curvature transforms
                 val wordRotZ: Float
                 val wordTransY: Float
 
                 if (distanceFromCenter < -0.15f) {
                     // Top lines bend in convex dome arch
-                    wordRotZ = relX * 4.5f
-                    wordTransY = kotlin.math.abs(relX) * 4.0f
+                    wordRotZ = relX * 6.5f
+                    wordTransY = kotlin.math.abs(relX) * 5.5f
                 } else if (distanceFromCenter > 0.15f) {
                     // Bottom lines bend in concave bowl arch
-                    wordRotZ = -relX * 4.5f
-                    wordTransY = -kotlin.math.abs(relX) * 4.0f
+                    wordRotZ = -relX * 6.5f
+                    wordTransY = -kotlin.math.abs(relX) * 5.5f
                 } else {
-                    // Center line slight equator bulge
-                    wordRotZ = relX * 3.0f
-                    wordTransY = if (relX == 0f) -2.0f else 2.0f
+                    // Equator line: center word bulges forward, outer words tilt outward
+                    wordRotZ = relX * 4.0f
+                    wordTransY = if (relX == 0f) -3.5f else 3.5f
                 }
 
                 val badgeBg = when {
@@ -674,6 +691,8 @@ fun FisheyeStickerLyricsLine(
                     else -> Color.White.copy(alpha = 0.70f)
                 }
 
+                val doodle = getWordDoodle(word.text)
+
                 Box(
                     modifier = Modifier
                         .graphicsLayer {
@@ -686,14 +705,27 @@ fun FisheyeStickerLyricsLine(
                         .padding(horizontal = 14.dp, vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = word.text,
-                        fontSize = (baseFontSize * 1.05f).sp,
-                        fontWeight = if (isWordActive || hasWordPassed) FontWeight.Black else FontWeight.ExtraBold,
-                        color = textColor,
-                        letterSpacing = (-0.4).sp,
-                        lineHeight = (baseFontSize * 1.25f).sp
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        if (doodle != null) {
+                            Text(
+                                text = doodle,
+                                fontSize = (baseFontSize * 0.90f).sp,
+                                fontWeight = FontWeight.Bold,
+                                color = textColor
+                            )
+                        }
+                        Text(
+                            text = word.text,
+                            fontSize = (baseFontSize * 1.05f).sp,
+                            fontWeight = if (isWordActive || hasWordPassed) FontWeight.Black else FontWeight.ExtraBold,
+                            color = textColor,
+                            letterSpacing = (-0.4).sp,
+                            lineHeight = (baseFontSize * 1.25f).sp
+                        )
+                    }
                 }
             }
         } else {
@@ -707,23 +739,24 @@ fun FisheyeStickerLyricsLine(
                 } else 0f
 
                 val wordRotZ = if (distanceFromCenter < -0.15f) {
-                    relX * 4.5f
+                    relX * 6.5f
                 } else if (distanceFromCenter > 0.15f) {
-                    -relX * 4.5f
+                    -relX * 6.5f
                 } else {
-                    relX * 3.0f
+                    relX * 4.0f
                 }
 
                 val wordTransY = if (distanceFromCenter < -0.15f) {
-                    kotlin.math.abs(relX) * 4.0f
+                    kotlin.math.abs(relX) * 5.5f
                 } else if (distanceFromCenter > 0.15f) {
-                    -kotlin.math.abs(relX) * 4.0f
+                    -kotlin.math.abs(relX) * 5.5f
                 } else {
-                    if (relX == 0f) -2.0f else 2.0f
+                    if (relX == 0f) -3.5f else 3.5f
                 }
 
                 val badgeBg = if (isActive) Color.White else Color.White.copy(alpha = 0.14f)
                 val textColor = if (isActive) Color.Black else Color.White.copy(alpha = 0.72f)
+                val doodle = getWordDoodle(wordText)
 
                 Box(
                     modifier = Modifier
@@ -737,14 +770,27 @@ fun FisheyeStickerLyricsLine(
                         .padding(horizontal = 14.dp, vertical = 6.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = wordText,
-                        fontSize = (baseFontSize * 1.05f).sp,
-                        fontWeight = if (isActive) FontWeight.Black else FontWeight.ExtraBold,
-                        color = textColor,
-                        letterSpacing = (-0.4).sp,
-                        lineHeight = (baseFontSize * 1.25f).sp
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        if (doodle != null) {
+                            Text(
+                                text = doodle,
+                                fontSize = (baseFontSize * 0.90f).sp,
+                                fontWeight = FontWeight.Bold,
+                                color = textColor
+                            )
+                        }
+                        Text(
+                            text = wordText,
+                            fontSize = (baseFontSize * 1.05f).sp,
+                            fontWeight = if (isActive) FontWeight.Black else FontWeight.ExtraBold,
+                            color = textColor,
+                            letterSpacing = (-0.4).sp,
+                            lineHeight = (baseFontSize * 1.25f).sp
+                        )
+                    }
                 }
             }
         }

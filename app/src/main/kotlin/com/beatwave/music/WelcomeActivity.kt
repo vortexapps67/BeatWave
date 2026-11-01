@@ -359,9 +359,9 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                     ) {
                         Surface(
                             shape = RoundedCornerShape(18.dp),
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f),
-                            border = androidx.compose.foundation.BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)),
-                            shadowElevation = 8.dp,
+                            color = Color(0xFF1A1A1A).copy(alpha = 0.85f),
+                            border = androidx.compose.foundation.BorderStroke(1.2.dp, Color.White.copy(alpha = 0.25f)),
+                            shadowElevation = 0.dp,
                             modifier = Modifier.size(58.dp)
                         ) {
                             Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(10.dp)) {
@@ -377,14 +377,14 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                             Text(
                                 text = stringResource(com.beatwave.music.R.string.welcome_to),
                                 style = thinHeaderStyle,
-                                color = MaterialTheme.colorScheme.onBackground
+                                color = Color.White.copy(alpha = 0.75f)
                             )
                             Text(
                                 text = stringResource(com.beatwave.music.R.string.app_name).uppercase(),
                                 fontFamily = GoogleSansFlex,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 42.sp,
-                                color = MaterialTheme.colorScheme.primary,
+                                color = Color.White,
                                 lineHeight = 46.sp
                             )
                         }
@@ -399,21 +399,22 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                             text = flavorSuffix,
                             fontFamily = GoogleSansFlex,
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.secondary
+                            color = Color.White.copy(alpha = 0.70f)
                         )
 
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Surface(
                             shape = CircleShape,
-                            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f)
+                            color = Color.White.copy(alpha = 0.12f),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.20f))
                         ) {
                             Text(
                                 text = "v${BuildConfig.VERSION_NAME}",
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                                color = Color.White
                             )
                         }
                     }
@@ -434,7 +435,7 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                             text = stringResource(com.beatwave.music.R.string.welcome_preparing_subtitle),
                             fontFamily = GoogleSansFlex,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = Color.White.copy(alpha = 0.75f),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -1083,8 +1084,8 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                             .width(dotWidth)
                             .clip(RoundedCornerShape(50))
                             .background(
-                                if (selected) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                                if (selected) Color.White
+                                else Color.White.copy(alpha = 0.25f)
                             )
                     )
                 }
@@ -1172,8 +1173,8 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                                 }
                             }
                         },
-                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = alphaNext),
-                        contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = alphaNext),
+                        containerColor = Color.White.copy(alpha = alphaNext),
+                        contentColor = Color.Black.copy(alpha = alphaNext),
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -1263,15 +1264,11 @@ fun BeatWaveSonicWaveformVisualizer(modifier: Modifier = Modifier) {
         label = "wavePhase"
     )
 
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val secondaryColor = MaterialTheme.colorScheme.secondary
-    val tertiaryColor = MaterialTheme.colorScheme.tertiary
-
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        // Sonic Wave Rings - robust stroke without hardware-incompatible dash effects
+        // Ambient Liquid Glass Sonic Rings - subtle frosted glow
         androidx.compose.foundation.Canvas(
             modifier = Modifier
                 .fillMaxSize()
@@ -1284,66 +1281,76 @@ fun BeatWaveSonicWaveformVisualizer(modifier: Modifier = Modifier) {
             val maxRadius = size.minDimension / 2f
 
             drawCircle(
-                color = primaryColor.copy(alpha = 0.18f),
+                color = Color.White.copy(alpha = 0.05f),
                 radius = maxRadius * 0.95f,
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.5.dp.toPx())
+            )
+
+            drawCircle(
+                color = Color.White.copy(alpha = 0.09f),
+                radius = maxRadius * 0.78f,
                 style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.dp.toPx())
             )
 
             drawCircle(
-                color = secondaryColor.copy(alpha = 0.28f),
-                radius = maxRadius * 0.78f,
-                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.5f.dp.toPx())
-            )
-
-            drawCircle(
-                color = tertiaryColor.copy(alpha = 0.35f),
+                color = Color.White.copy(alpha = 0.15f),
                 radius = maxRadius * 0.60f,
-                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.dp.toPx())
+                style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.5.dp.toPx())
             )
         }
 
-        // Animated soundwave bars driven safely from wavePhase
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.size(140.dp, 80.dp)
-        ) {
-            val barCount = 9
-            for (i in 0 until barCount) {
-                val factor = kotlin.math.sin(wavePhase + i * 0.7f).coerceIn(-1f, 1f)
-                val normalized = (factor + 1f) / 2f
-                val barHeight = (18 + normalized * 48).dp
-                val barColor = if (i % 2 == 0) primaryColor else secondaryColor
-                Box(
-                    modifier = Modifier
-                        .width(7.dp)
-                        .height(barHeight)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(barColor)
-                )
-            }
-        }
-
-        // Center circular BeatWave emblem
+        // Frosted Liquid Glass Card containing the Dancing BeatWave Visualizer
         Surface(
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.surface,
-            border = androidx.compose.foundation.BorderStroke(2.5.dp, primaryColor.copy(alpha = 0.9f)),
-            shadowElevation = 14.dp,
-            modifier = Modifier.size(80.dp)
+            shape = RoundedCornerShape(32.dp),
+            color = Color(0xFF141414).copy(alpha = 0.75f),
+            border = androidx.compose.foundation.BorderStroke(
+                1.5.dp,
+                androidx.compose.ui.graphics.Brush.linearGradient(
+                    listOf(
+                        Color.White.copy(alpha = 0.40f),
+                        Color.White.copy(alpha = 0.08f)
+                    )
+                )
+            ),
+            shadowElevation = 0.dp,
+            modifier = Modifier.size(190.dp)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(14.dp)
+                    .padding(16.dp)
             ) {
-                androidx.compose.foundation.Image(
-                    painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
-                    contentDescription = "BeatWave Logo",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = androidx.compose.ui.layout.ContentScale.Fit
-                )
+                // Animated soundwave bars dancing cleanly with authentic BeatWave symmetry
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth().height(100.dp)
+                ) {
+                    val barCount = 9
+                    // Symmetrical bell-curve profile: center bars taller
+                    val baseHeights = listOf(22f, 34f, 50f, 68f, 84f, 68f, 50f, 34f, 22f)
+                    for (i in 0 until barCount) {
+                        val factor = kotlin.math.sin(wavePhase + i * 0.65f).coerceIn(-1f, 1f)
+                        val normalized = (factor + 1f) / 2f
+                        val baseH = baseHeights[i]
+                        val dynamicH = (baseH * 0.55f + normalized * (baseH * 0.45f)).dp
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(dynamicH)
+                                .clip(RoundedCornerShape(50))
+                                .background(
+                                    androidx.compose.ui.graphics.Brush.verticalGradient(
+                                        listOf(
+                                            Color.White,
+                                            Color.White.copy(alpha = 0.70f)
+                                        )
+                                    )
+                                )
+                        )
+                    }
+                }
             }
         }
     }

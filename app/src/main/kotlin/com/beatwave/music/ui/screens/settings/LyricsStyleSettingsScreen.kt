@@ -670,20 +670,20 @@ private fun LiveLyricsInteractivePreview(
                     val isFisheyeActive = fisheyeEnabled || selectedStyle == LyricsAnimationStyle.FISHEYE
 
                     val fisheyeScaleX = if (isFisheyeActive) {
-                        (0.72f + 0.60f / (1f + 0.45f * absDistance * absDistance)).coerceIn(0.68f, 1.35f)
+                        (0.68f + 0.68f / (1f + 0.40f * absDistance * absDistance)).coerceIn(0.65f, 1.45f)
                     } else 1f
 
                     val fisheyeScaleY = if (isFisheyeActive) {
-                        (0.75f + 0.55f / (1f + 0.45f * absDistance * absDistance)).coerceIn(0.70f, 1.30f)
+                        (0.70f + 0.65f / (1f + 0.40f * absDistance * absDistance)).coerceIn(0.68f, 1.40f)
                     } else 1f
 
                     val fisheyeRotationX = if (isFisheyeActive) {
-                        (-delta * 22f).coerceIn(-52f, 52f)
+                        (-delta * 32f).coerceIn(-68f, 68f)
                     } else 0f
 
                     val fisheyeTranslationY = if (isFisheyeActive) {
                         val sign = if (delta < 0) 1f else -1f
-                        (sign * (absDistance * absDistance * 4.5f)).coerceIn(-38f, 38f)
+                        (sign * (absDistance * absDistance * 6.0f)).coerceIn(-48f, 48f)
                     } else 0f
 
                     val fisheyeAlpha = if (isFisheyeActive) {
@@ -702,7 +702,7 @@ private fun LiveLyricsInteractivePreview(
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 6.0f * density else 16f * density
+                                this.cameraDistance = if (isFisheyeActive) 3.8f * density else 16f * density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationY = fisheyeTranslationY
