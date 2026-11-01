@@ -1208,8 +1208,11 @@ fun Lyrics(
                         label = "standard_blur"
                     )
 
-                    // Determine alignment based on agent for multi-singer support
+                    val isFisheyeActive = lyricsFisheyeEffect || lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE
+
+                    // Determine alignment based on agent for multi-singer support (Fisheye is always dead-center)
                     val agentAlignment = when {
+                        isFisheyeActive -> Alignment.CenterHorizontally
                         item.isBackground -> Alignment.CenterHorizontally // Background always centered
                         item.agent == "v1" -> Alignment.Start // First vocalist - left
                         item.agent == "v2" -> Alignment.End // Second vocalist - right
@@ -1222,6 +1225,7 @@ fun Lyrics(
                     }
                     
                     val agentTextAlign = when {
+                        isFisheyeActive -> TextAlign.Center
                         item.isBackground -> TextAlign.Center
                         item.agent == "v1" -> TextAlign.Left
                         item.agent == "v2" -> TextAlign.Right
@@ -1240,50 +1244,42 @@ fun Lyrics(
                     val lineDelta = (index - activeLineIdx).toFloat()
                     val absDistance = kotlin.math.abs(lineDelta)
 
-                    val isFisheyeActive = lyricsFisheyeEffect || lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE
-
-                    // Authentic spherical lens barrel transformation matching music video fisheye
+                    // Balanced spherical lens barrel magnification (clean 1.35x center focus, zero overflow)
                     val fisheyeScaleX = if (isFisheyeActive) {
-                        // True spherical barrel expansion: center line expands dramatically in width (up to 1.75x)
-                        (0.45f + 1.30f / (1f + 0.50f * absDistance * absDistance)).coerceIn(0.42f, 1.75f)
+                        (0.72f + 0.60f / (1f + 0.45f * absDistance * absDistance)).coerceIn(0.68f, 1.35f)
                     } else 1f
 
                     val fisheyeScaleY = if (isFisheyeActive) {
-                        // Spherical height expansion (up to 1.70x)
-                        (0.50f + 1.20f / (1f + 0.55f * absDistance * absDistance)).coerceIn(0.45f, 1.70f)
+                        (0.75f + 0.55f / (1f + 0.45f * absDistance * absDistance)).coerceIn(0.70f, 1.30f)
                     } else 1f
 
                     val fisheyeRotationX = if (isFisheyeActive) {
-                        // Dramatic spherical pitch curvature: top curves backward, bottom curves downward
-                        (-lineDelta * 28.5f).coerceIn(-65f, 65f)
+                        (-lineDelta * 22f).coerceIn(-52f, 52f)
                     } else 0f
 
                     val fisheyeTranslationY = if (isFisheyeActive) {
-                        // Spherical foreshortening: lines compress along curvature toward center dome
                         val sign = if (lineDelta < 0) 1f else -1f
-                        (sign * (absDistance * absDistance * 8.0f)).coerceIn(-65f, 65f)
+                        (sign * (absDistance * absDistance * 4.5f)).coerceIn(-38f, 38f)
                     } else 0f
 
                     val fisheyeAlpha = if (isFisheyeActive) {
-                        (1f - (absDistance * 0.18f)).coerceIn(0.20f, 1f)
+                        (1f - (absDistance * 0.16f)).coerceIn(0.25f, 1f)
                     } else 1f
 
                     val fisheyePivotY = if (isFisheyeActive) {
                         when {
-                            lineDelta < -0.1f -> 1.0f  // Lines above pivot from bottom edge (closest to equator)
-                            lineDelta > 0.1f -> 0.0f   // Lines below pivot from top edge (closest to equator)
+                            lineDelta < -0.1f -> 1.0f
+                            lineDelta > 0.1f -> 0.0f
                             else -> 0.5f
                         }
                     } else 0.5f
 
-                    val fisheyeTranslationX = if (isFisheyeActive) {
-                        0f
-                    } else 0f
+                    val fisheyeTranslationX = 0f
 
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 4.0f * density.density else 16f * density.density
+                                this.cameraDistance = if (isFisheyeActive) 6.0f * density.density else 16f * density.density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationX = fisheyeTranslationX
@@ -1293,7 +1289,7 @@ fun Lyrics(
                                 this.scaleX = scale * bgScale * fisheyeScaleX
                                 this.scaleY = scale * bgScale * fisheyeScaleY
                             }
-                            .blur(blurRadius.dp),
+                            .then(if (!isFisheyeActive && blurRadius > 0f) Modifier.blur(blurRadius.dp) else Modifier),
                         horizontalAlignment = agentAlignment
                     ) {
                         // Use time-based active check to sync both main and background lines with same timestamp

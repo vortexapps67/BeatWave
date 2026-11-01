@@ -606,7 +606,6 @@ fun RetroCassetteLyricsLine(
  * and contextual doodle emojis (cloud, sun, snowflake, eye, heart, flame, star),
  * matching the authentic music video fisheye aesthetic.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FisheyeStickerLyricsLine(
     entry: LyricsEntry,
@@ -621,37 +620,15 @@ fun FisheyeStickerLyricsLine(
     showRomanized: Boolean = false,
     showTranslated: Boolean = false,
 ) {
-    val arrangement = when (agentTextAlign) {
-        TextAlign.Center -> Arrangement.Center
-        TextAlign.Right -> Arrangement.End
-        else -> Arrangement.Start
-    }
-
     val wordList = entry.words
     val hasWords = wordList != null && wordList.isNotEmpty()
 
-    fun getWordEmoji(rawWord: String): String? {
-        val clean = rawWord.lowercase().trim().replace(Regex("[^a-z]"), "")
-        return when {
-            clean in setOf("sun", "light", "shine", "day", "bright", "sunny", "morning") -> "☀"
-            clean in setOf("sky", "cloud", "clouds", "rain", "blue", "air", "high") -> "☁"
-            clean in setOf("see", "look", "eyes", "eye", "watch", "sight", "blind") -> "👁"
-            clean in setOf("cold", "ice", "freeze", "snow", "winter", "chilly") -> "❄"
-            clean in setOf("love", "heart", "baby", "kiss", "trust", "sweet", "darling") -> "🤍"
-            clean in setOf("fire", "burn", "hot", "flame", "blaze") -> "🔥"
-            clean in setOf("night", "star", "dark", "moon", "midnight") -> "✨"
-            clean in setOf("car", "drive", "road", "ride", "city", "speed") -> "🚗"
-            clean in setOf("call", "phone", "talk", "hear", "voice") -> "📞"
-            else -> null
-        }
-    }
-
-    FlowRow(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp, vertical = 2.dp),
-        horizontalArrangement = arrangement,
-        verticalArrangement = Arrangement.spacedBy(6.dp)
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         if (hasWords) {
             val totalWords = wordList!!.size
@@ -669,99 +646,54 @@ fun FisheyeStickerLyricsLine(
                 // Intra-line spherical / barrel arching transforms
                 val wordRotZ: Float
                 val wordTransY: Float
-                val wordScale: Float
 
-                if (kotlin.math.abs(distanceFromCenter) <= 0.15f) {
-                    // Equator / Center line barrel bulge
-                    if (relX == 0f) {
-                        wordRotZ = 0f
-                        wordTransY = -4f
-                        wordScale = if (isWordActive) 1.14f else 1.08f
-                    } else {
-                        wordRotZ = relX * 5.5f
-                        wordTransY = 4f
-                        wordScale = if (isWordActive) 1.06f else 0.98f
-                    }
-                } else if (distanceFromCenter < -0.15f) {
+                if (distanceFromCenter < -0.15f) {
                     // Top lines bend in convex dome arch
-                    wordRotZ = relX * 7.5f
-                    wordTransY = kotlin.math.abs(relX) * 7.5f
-                    wordScale = 0.94f
-                } else {
+                    wordRotZ = relX * 4.5f
+                    wordTransY = kotlin.math.abs(relX) * 4.0f
+                } else if (distanceFromCenter > 0.15f) {
                     // Bottom lines bend in concave bowl arch
-                    wordRotZ = -relX * 7.5f
-                    wordTransY = -kotlin.math.abs(relX) * 7.5f
-                    wordScale = 0.94f
+                    wordRotZ = -relX * 4.5f
+                    wordTransY = -kotlin.math.abs(relX) * 4.0f
+                } else {
+                    // Center line slight equator bulge
+                    wordRotZ = relX * 3.0f
+                    wordTransY = if (relX == 0f) -2.0f else 2.0f
                 }
 
                 val badgeBg = when {
                     isWordActive -> Color.White
-                    hasWordPassed -> Color.White.copy(alpha = 0.92f)
-                    isActive -> Color.White.copy(alpha = 0.28f)
-                    else -> Color.White.copy(alpha = 0.14f)
+                    hasWordPassed -> Color.White.copy(alpha = 0.90f)
+                    isActive -> Color.White.copy(alpha = 0.22f)
+                    else -> Color.White.copy(alpha = 0.12f)
                 }
 
                 val textColor = when {
                     isWordActive || hasWordPassed -> Color.Black
                     isActive -> Color.White
-                    else -> Color.White.copy(alpha = 0.72f)
+                    else -> Color.White.copy(alpha = 0.70f)
                 }
 
-                val emoji = getWordEmoji(word.text)
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                Box(
                     modifier = Modifier
                         .graphicsLayer {
                             this.rotationZ = wordRotZ
                             this.translationY = wordTransY
-                            this.scaleX = wordScale
-                            this.scaleY = wordScale
                         }
-                        .padding(horizontal = 3.dp, vertical = 2.dp)
+                        .padding(horizontal = 4.dp, vertical = 2.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(badgeBg)
+                        .padding(horizontal = 14.dp, vertical = 6.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    if (emoji != null && (wordIndex % 2 == 0 || isWordActive)) {
-                        Text(
-                            text = emoji,
-                            fontSize = (baseFontSize * 1.05f).sp,
-                            modifier = Modifier.graphicsLayer {
-                                rotationZ = if (wordIndex % 2 == 0) -8f else 8f
-                            }
-                        )
-                    }
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(badgeBg)
-                                .padding(horizontal = 12.dp, vertical = 5.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = word.text,
-                                fontSize = (baseFontSize * 1.25f).sp,
-                                fontWeight = if (isWordActive || hasWordPassed) FontWeight.Black else FontWeight.ExtraBold,
-                                color = textColor,
-                                letterSpacing = (-0.5).sp,
-                                lineHeight = (baseFontSize * 1.35f).sp
-                            )
-                        }
-
-                        if (isWordActive) {
-                            Spacer(modifier = Modifier.height(3.dp))
-                            Box(
-                                modifier = Modifier
-                                    .width(22.dp)
-                                    .height(3.dp)
-                                    .clip(RoundedCornerShape(2.dp))
-                                    .background(Color.White)
-                            )
-                        }
-                    }
+                    Text(
+                        text = word.text,
+                        fontSize = (baseFontSize * 1.05f).sp,
+                        fontWeight = if (isWordActive || hasWordPassed) FontWeight.Black else FontWeight.ExtraBold,
+                        color = textColor,
+                        letterSpacing = (-0.4).sp,
+                        lineHeight = (baseFontSize * 1.25f).sp
+                    )
                 }
             }
         } else {
@@ -774,62 +706,45 @@ fun FisheyeStickerLyricsLine(
                     (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
                 } else 0f
 
-                val wordRotZ = if (kotlin.math.abs(distanceFromCenter) <= 0.15f) {
-                    relX * 5.5f
-                } else if (distanceFromCenter < -0.15f) {
-                    relX * 7.5f
+                val wordRotZ = if (distanceFromCenter < -0.15f) {
+                    relX * 4.5f
+                } else if (distanceFromCenter > 0.15f) {
+                    -relX * 4.5f
                 } else {
-                    -relX * 7.5f
+                    relX * 3.0f
                 }
 
-                val wordTransY = if (kotlin.math.abs(distanceFromCenter) <= 0.15f) {
-                    if (relX == 0f) -4f else 4f
-                } else if (distanceFromCenter < -0.15f) {
-                    kotlin.math.abs(relX) * 7.5f
+                val wordTransY = if (distanceFromCenter < -0.15f) {
+                    kotlin.math.abs(relX) * 4.0f
+                } else if (distanceFromCenter > 0.15f) {
+                    -kotlin.math.abs(relX) * 4.0f
                 } else {
-                    -kotlin.math.abs(relX) * 7.5f
+                    if (relX == 0f) -2.0f else 2.0f
                 }
 
-                val badgeBg = if (isActive) Color.White else Color.White.copy(alpha = 0.16f)
-                val textColor = if (isActive) Color.Black else Color.White.copy(alpha = 0.75f)
-                val emoji = getWordEmoji(wordText)
+                val badgeBg = if (isActive) Color.White else Color.White.copy(alpha = 0.14f)
+                val textColor = if (isActive) Color.Black else Color.White.copy(alpha = 0.72f)
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                Box(
                     modifier = Modifier
                         .graphicsLayer {
                             this.rotationZ = wordRotZ
                             this.translationY = wordTransY
                         }
-                        .padding(horizontal = 3.dp, vertical = 2.dp)
+                        .padding(horizontal = 4.dp, vertical = 2.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(badgeBg)
+                        .padding(horizontal = 14.dp, vertical = 6.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    if (emoji != null && (wordIndex == 0 || wordIndex == words.size - 1)) {
-                        Text(
-                            text = emoji,
-                            fontSize = (baseFontSize * 1.05f).sp,
-                            modifier = Modifier.graphicsLayer {
-                                rotationZ = if (wordIndex % 2 == 0) -7f else 7f
-                            }
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(badgeBg)
-                            .padding(horizontal = 12.dp, vertical = 5.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = wordText,
-                            fontSize = (baseFontSize * 1.25f).sp,
-                            fontWeight = if (isActive) FontWeight.Black else FontWeight.ExtraBold,
-                            color = textColor,
-                            letterSpacing = (-0.5).sp,
-                            lineHeight = (baseFontSize * 1.35f).sp
-                        )
-                    }
+                    Text(
+                        text = wordText,
+                        fontSize = (baseFontSize * 1.05f).sp,
+                        fontWeight = if (isActive) FontWeight.Black else FontWeight.ExtraBold,
+                        color = textColor,
+                        letterSpacing = (-0.4).sp,
+                        lineHeight = (baseFontSize * 1.25f).sp
+                    )
                 }
             }
         }

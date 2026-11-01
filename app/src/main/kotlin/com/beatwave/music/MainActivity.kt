@@ -2652,85 +2652,46 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    pendingUpdate?.let { update ->
-                        val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
-                        AlertDialog(
-                            onDismissRequest = {
-                                if (update.update_type != "force") {
-                                    pendingUpdate = null
-                                }
-                            },
-                            title = { Text(update.title) },
-                            text = {
-                                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Text("Version: ${update.version}")
-                                    Text(update.description)
-                                }
-                            },
-                            confirmButton = {
-                                Button(
-                                    onClick = {
-                                        update.apk_url?.let { url ->
-                                            try {
-                                                uriHandler.openUri(url)
-                                            } catch (_: Exception) {}
-                                        }
-                                        if (update.update_type != "force") {
-                                            pendingUpdate = null
-                                        }
+                    if (!showAppSplash) {
+                        pendingUpdate?.let { update ->
+                            val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
+                            WelcomeUpdateDialog(
+                                title = update.title,
+                                version = update.version,
+                                description = update.description,
+                                confirmLabel = if (update.apk_url != null) "Download" else "Get Started",
+                                onConfirm = {
+                                    update.apk_url?.let { url ->
+                                        try {
+                                            uriHandler.openUri(url)
+                                        } catch (_: Exception) {}
                                     }
-                                ) {
-                                    Text("Download")
-                                }
-                            },
-                            dismissButton = {
-                                if (update.update_type != "force") {
-                                    TextButton(onClick = { pendingUpdate = null }) {
-                                        Text("Later")
+                                    if (update.update_type != "force") {
+                                        pendingUpdate = null
                                     }
-                                }
-                            }
-                        )
-                    }
+                                },
+                                onDismiss = if (update.update_type != "force") { { pendingUpdate = null } } else null,
+                                dismissLabel = "Later"
+                            )
+                        }
 
-                    pendingNews?.let { news ->
-                        AlertDialog(
-                            onDismissRequest = {
-                                onLastSeenNewsIdChange(news.id ?: 0L)
-                                pendingNews = null
-                            },
-                            title = { Text(news.title) },
-                            text = {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                                    modifier = Modifier.verticalScroll(rememberScrollState())
-                                ) {
-                                    news.image_url?.let { url ->
-                                        if (url.isNotBlank()) {
-                                            AsyncImage(
-                                                model = url,
-                                                contentDescription = null,
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .height(180.dp)
-                                                    .clip(RoundedCornerShape(8.dp))
-                                            )
-                                        }
-                                    }
-                                    Text(news.content)
-                                }
-                            },
-                            confirmButton = {
-                                Button(
-                                    onClick = {
-                                        onLastSeenNewsIdChange(news.id ?: 0L)
-                                        pendingNews = null
-                                    }
-                                ) {
-                                    Text("Got it")
-                                }
-                            }
-                        )
+                        pendingNews?.let { news ->
+                            WelcomeUpdateDialog(
+                                title = news.title,
+                                version = "ANNOUNCEMENT",
+                                description = news.content,
+                                confirmLabel = "Got it",
+                                onConfirm = {
+                                    onLastSeenNewsIdChange(news.id ?: 0L)
+                                    pendingNews = null
+                                },
+                                onDismiss = {
+                                    onLastSeenNewsIdChange(news.id ?: 0L)
+                                    pendingNews = null
+                                },
+                                dismissLabel = "Dismiss"
+                            )
+                        }
                     }
                 }
 
@@ -2841,6 +2802,131 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
+    private fun WelcomeUpdateDialog(
+        title: String,
+        version: String,
+        description: String,
+        onConfirm: () -> Unit,
+        confirmLabel: String = "Get Started",
+        onDismiss: (() -> Unit)? = null,
+        dismissLabel: String = "Explore App"
+    ) {
+        androidx.compose.ui.window.Dialog(
+            onDismissRequest = { onDismiss?.invoke() },
+            properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.90f)
+                    .clip(RoundedCornerShape(28.dp))
+                    .background(Color(0xFF0F0F14).copy(alpha = 0.96f))
+                    .border(1.dp, Color.White.copy(alpha = 0.14f), RoundedCornerShape(28.dp))
+                    .padding(24.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // BeatWave Soundwave Glowing Icon Badge
+                    Box(
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(androidx.compose.foundation.shape.CircleShape)
+                            .background(Color.White.copy(alpha = 0.08f))
+                            .border(1.dp, Color.White.copy(alpha = 0.18f), androidx.compose.foundation.shape.CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        androidx.compose.material3.Icon(
+                            painter = androidx.compose.ui.res.painterResource(com.beatwave.music.R.drawable.beatwave_notification),
+                            contentDescription = "BeatWave Logo",
+                            tint = Color.White,
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+
+                    // Brand Title
+                    Text(
+                        text = title.ifBlank { "BEATWAVE" },
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Black,
+                        letterSpacing = 1.2.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+
+                    // Version Chip Badge
+                    if (version.isNotBlank()) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(Color.White.copy(alpha = 0.10f))
+                                .border(1.dp, Color(0xFF64B5F6).copy(alpha = 0.35f), RoundedCornerShape(12.dp))
+                                .padding(horizontal = 14.dp, vertical = 5.dp)
+                        ) {
+                            Text(
+                                text = if (version.startsWith("v", ignoreCase = true)) version else "v $version",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF90CAF9),
+                                letterSpacing = 0.6.sp
+                            )
+                        }
+                    }
+
+                    // Description text
+                    Text(
+                        text = description.ifBlank { "Welcome to BeatWave 6.2. Enjoy true 3D barrel fisheye synced lyrics, premium liquid glass styling, and hardware-accelerated playback." },
+                        fontSize = 14.sp,
+                        color = Color.White.copy(alpha = 0.78f),
+                        textAlign = TextAlign.Center,
+                        lineHeight = 20.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    // Action Buttons
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (onDismiss != null) {
+                            TextButton(
+                                onClick = onDismiss,
+                                modifier = Modifier.weight(1f),
+                                shape = RoundedCornerShape(18.dp)
+                            ) {
+                                Text(
+                                    text = dismissLabel,
+                                    color = Color.White.copy(alpha = 0.65f),
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            }
+                        }
+
+                        Button(
+                            onClick = onConfirm,
+                            modifier = Modifier.weight(if (onDismiss != null) 1.2f else 1f),
+                            colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                                containerColor = Color.White,
+                                contentColor = Color.Black
+                            ),
+                            shape = RoundedCornerShape(18.dp)
+                        ) {
+                            Text(
+                                text = confirmLabel,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
     private fun AppStartupSplashScreen(
         onDismiss: () -> Unit
     ) {
@@ -2912,8 +2998,10 @@ class MainActivity : ComponentActivity() {
                                             isVisible = false
                                             true
                                         }
-                                        prepare()
-                                        start()
+                                        setOnPreparedListener { player ->
+                                            player.start()
+                                        }
+                                        prepareAsync()
                                     }
                                     activePlayer = mp
                                 } catch (e: Exception) {

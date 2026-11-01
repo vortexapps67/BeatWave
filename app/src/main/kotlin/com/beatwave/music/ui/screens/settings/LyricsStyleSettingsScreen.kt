@@ -657,7 +657,8 @@ private fun LiveLyricsInteractivePreview(
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 previewLines.forEachIndexed { index, entry ->
                     val isActive = index == activeIndex
@@ -669,24 +670,24 @@ private fun LiveLyricsInteractivePreview(
                     val isFisheyeActive = fisheyeEnabled || selectedStyle == LyricsAnimationStyle.FISHEYE
 
                     val fisheyeScaleX = if (isFisheyeActive) {
-                        (0.45f + 1.30f / (1f + 0.50f * absDistance * absDistance)).coerceIn(0.42f, 1.75f)
+                        (0.72f + 0.60f / (1f + 0.45f * absDistance * absDistance)).coerceIn(0.68f, 1.35f)
                     } else 1f
 
                     val fisheyeScaleY = if (isFisheyeActive) {
-                        (0.50f + 1.20f / (1f + 0.55f * absDistance * absDistance)).coerceIn(0.45f, 1.70f)
+                        (0.75f + 0.55f / (1f + 0.45f * absDistance * absDistance)).coerceIn(0.70f, 1.30f)
                     } else 1f
 
                     val fisheyeRotationX = if (isFisheyeActive) {
-                        (-delta * 28.5f).coerceIn(-65f, 65f)
+                        (-delta * 22f).coerceIn(-52f, 52f)
                     } else 0f
 
                     val fisheyeTranslationY = if (isFisheyeActive) {
                         val sign = if (delta < 0) 1f else -1f
-                        (sign * (absDistance * absDistance * 8.0f)).coerceIn(-65f, 65f)
+                        (sign * (absDistance * absDistance * 4.5f)).coerceIn(-38f, 38f)
                     } else 0f
 
                     val fisheyeAlpha = if (isFisheyeActive) {
-                        (1f - (absDistance * 0.18f)).coerceIn(0.20f, 1f)
+                        (1f - (absDistance * 0.16f)).coerceIn(0.25f, 1f)
                     } else 1f
 
                     val fisheyePivotY = if (isFisheyeActive) {
@@ -701,7 +702,7 @@ private fun LiveLyricsInteractivePreview(
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 4.0f * density else 16f * density
+                                this.cameraDistance = if (isFisheyeActive) 6.0f * density else 16f * density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationY = fisheyeTranslationY
