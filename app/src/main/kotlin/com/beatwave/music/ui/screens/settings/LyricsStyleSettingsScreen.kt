@@ -648,28 +648,49 @@ private fun LiveLyricsInteractivePreview(
                     val isActive = index == activeIndex
                     val lineDistance = kotlin.math.abs(index - activeIndex).toFloat()
 
-                    val fisheyeScale = if (fisheyeEnabled) {
-                        (0.74f + 0.44f / (1f + 0.35f * lineDistance * lineDistance)).coerceIn(0.70f, 1.20f)
+                    val delta = (index - activeIndex).toFloat()
+                    val absDistance = kotlin.math.abs(delta)
+
+                    val fisheyeScaleX = if (fisheyeEnabled) {
+                        (0.58f + 1.04f / (1f + 0.48f * absDistance * absDistance)).coerceIn(0.55f, 1.62f)
+                    } else 1f
+
+                    val fisheyeScaleY = if (fisheyeEnabled) {
+                        (0.60f + 0.90f / (1f + 0.52f * absDistance * absDistance)).coerceIn(0.58f, 1.50f)
                     } else 1f
 
                     val fisheyeRotationX = if (fisheyeEnabled) {
-                        val delta = (index - activeIndex).toFloat()
-                        (-delta * 4.2f).coerceIn(-24f, 24f)
+                        (-delta * 22f).coerceIn(-52f, 52f)
+                    } else 0f
+
+                    val fisheyeTranslationY = if (fisheyeEnabled) {
+                        val sign = if (delta < 0) 1f else -1f
+                        (sign * (absDistance * absDistance * 4.8f)).coerceIn(-42f, 42f)
                     } else 0f
 
                     val fisheyeAlpha = if (fisheyeEnabled) {
-                        (1f - (lineDistance * 0.12f)).coerceIn(0.30f, 1f)
+                        (1f - (absDistance * 0.12f)).coerceIn(0.20f, 1f)
                     } else 1f
+
+                    val fisheyePivotY = if (fisheyeEnabled) {
+                        when {
+                            delta < -0.1f -> 1.0f
+                            delta > 0.1f -> 0.0f
+                            else -> 0.5f
+                        }
+                    } else 0.5f
 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer {
-                                this.cameraDistance = 16f * density
+                                this.cameraDistance = if (fisheyeEnabled) 6f * density else 16f * density
+                                this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
+                                this.translationY = fisheyeTranslationY
                                 this.alpha = if (isActive) 1f else 0.45f * fisheyeAlpha
-                                this.scaleX = (if (isActive) 1.05f else 1f) * fisheyeScale
-                                this.scaleY = (if (isActive) 1.05f else 1f) * fisheyeScale
+                                this.scaleX = (if (isActive) 1.05f else 1f) * fisheyeScaleX
+                                this.scaleY = (if (isActive) 1.05f else 1f) * fisheyeScaleY
                             }
                     ) {
                         when (selectedStyle) {

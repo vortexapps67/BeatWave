@@ -24,6 +24,9 @@ val DonationPromptLastShownKey = longPreferencesKey("donationPromptLastShown")
 val DonationPromptDismissedKey = booleanPreferencesKey("donationPromptDismissed")
 val LastSeenChangelogVersionKey = stringPreferencesKey("lastSeenChangelogVersion")
 val AppIconKey = stringPreferencesKey("appIcon")
+val UserNicknameKey = stringPreferencesKey("user_nickname")
+val UserProfilePicUriKey = stringPreferencesKey("user_profile_pic_uri")
+
 
 /** JSON map of player-control slot -> user-supplied glyph. See ui/player/customize/PlayerIcons.kt. */
 /**

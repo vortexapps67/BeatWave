@@ -236,6 +236,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.beatwave.music.viewmodels.DailyDiscoverItem
+import com.beatwave.music.constants.UserNicknameKey
+import com.beatwave.music.constants.UserProfilePicUriKey
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import java.io.File
+import com.beatwave.music.ui.component.DefaultDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.OutlinedTextField
+
 
 
 /**
@@ -807,6 +816,10 @@ fun HomeScreen(
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     val isRandomizing by viewModel.isRandomizing.collectAsStateWithLifecycle()
     val pullRefreshState = rememberPullToRefreshState()
+    val (userNickname, onUserNicknameChange) = rememberPreference(UserNicknameKey, defaultValue = "")
+    val (userProfilePicUri, onUserProfilePicUriChange) = rememberPreference(UserProfilePicUriKey, defaultValue = "")
+    var showUserProfileDialog by rememberSaveable { mutableStateOf(false) }
+
 
     val quickPicksLazyGridState = rememberLazyGridState()
     val forgottenFavoritesLazyGridState = rememberLazyGridState()
@@ -1374,8 +1387,13 @@ fun HomeScreen(
                 // scrolls away is what gives the first screenful its weight.
                 item(key = "listen_now_title", contentType = "section_title") {
                     val currentHour = remember { java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY) }
+                    val nicknameTrimmed = userNickname.trim()
                     val greetingTitle = when {
                         localOnly -> stringResource(R.string.filter_local)
+                        nicknameTrimmed.isNotEmpty() && currentHour in 5..11 -> "Good morning, $nicknameTrimmed"
+                        nicknameTrimmed.isNotEmpty() && currentHour in 12..16 -> "Good afternoon, $nicknameTrimmed"
+                        nicknameTrimmed.isNotEmpty() && currentHour in 17..21 -> "Good evening, $nicknameTrimmed"
+                        nicknameTrimmed.isNotEmpty() -> "Late night vibes, $nicknameTrimmed"
                         currentHour in 5..11 -> stringResource(R.string.good_morning)
                         currentHour in 12..16 -> stringResource(R.string.good_afternoon)
                         currentHour in 17..21 -> stringResource(R.string.good_evening)
@@ -1452,27 +1470,43 @@ fun HomeScreen(
                         // Profile / Account Quick Glass Button
                         Box(
                             modifier = Modifier
-                                .size(42.dp)
+                                .size(46.dp)
                                 .clip(CircleShape)
                                 .background(Color.White.copy(alpha = 0.1f))
                                 .border(
-                                    width = 1.dp,
+                                    width = 1.5.dp,
                                     brush = Brush.verticalGradient(
                                         listOf(
-                                            globalAccent.copy(alpha = 0.6f),
-                                            Color.White.copy(alpha = 0.2f)
+                                            globalAccent.copy(alpha = 0.85f),
+                                            Color.White.copy(alpha = 0.25f)
                                         )
                                     ),
                                     shape = CircleShape
                                 )
                                 .combinedBounceClick(
                                     onClick = {
+                                        showUserProfileDialog = true
+                                    },
+                                    onLongClick = {
                                         navController.navigate("account")
                                     }
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
-                            if (url != null) {
+                            if (userProfilePicUri.isNotEmpty() && File(userProfilePicUri).exists()) {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data(File(userProfilePicUri))
+                                        .diskCachePolicy(CachePolicy.ENABLED)
+                                        .crossfade(true)
+                                        .build(),
+                                    contentDescription = "Profile Picture",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(CircleShape)
+                                )
+                            } else if (url != null) {
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
                                         .data(url)
@@ -1485,12 +1519,18 @@ fun HomeScreen(
                                         .fillMaxSize()
                                         .clip(CircleShape)
                                 )
+                            } else if (nicknameTrimmed.isNotEmpty()) {
+                                Text(
+                                    text = nicknameTrimmed.take(1).uppercase(),
+                                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                    color = Color.White
+                                )
                             } else {
                                 Icon(
                                     painter = painterResource(R.drawable.person),
                                     contentDescription = null,
                                     tint = LocalContentColor.current.copy(alpha = 0.85f),
-                                    modifier = Modifier.size(20.dp)
+                                    modifier = Modifier.size(22.dp)
                                 )
                             }
                         }
@@ -2385,6 +2425,139 @@ private fun LazyListScope.speedDialSection(
             }
         }
     }
+
+    if (showUserProfileDialog) {
+        val context = LocalContext.current
+        var tempNickname by rememberSaveable { mutableStateOf(userNickname) }
+        val photoPickerLauncher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent()
+        ) { pickedUri ->
+            pickedUri?.let { uri ->
+                runCatching {
+                    context.contentResolver.openInputStream(uri)?.use { input ->
+                        val destFile = File(context.filesDir, "user_profile_avatar.jpg")
+                        destFile.outputStream().use { output -> input.copyTo(output) }
+                        onUserProfilePicUriChange(destFile.absolutePath)
+                        android.widget.Toast.makeText(context, "Profile picture updated!", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        DefaultDialog(
+            onDismiss = { showUserProfileDialog = false },
+            buttons = {
+                TextButton(onClick = { showUserProfileDialog = false }) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                TextButton(
+                    onClick = {
+                        onUserNicknameChange(tempNickname.trim())
+                        showUserProfileDialog = false
+                        android.widget.Toast.makeText(context, "Profile saved!", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    Text("Save", fontWeight = FontWeight.Bold)
+                }
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Edit Profile",
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Box(
+                    modifier = Modifier
+                        .size(96.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF1E1E26))
+                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                        .clickable {
+                            photoPickerLauncher.launch("image/*")
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    if (userProfilePicUri.isNotEmpty() && File(userProfilePicUri).exists()) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(context)
+                                .data(File(userProfilePicUri))
+                                .diskCachePolicy(CachePolicy.ENABLED)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = "Profile Picture",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape)
+                        )
+                    } else if (tempNickname.isNotBlank()) {
+                        Text(
+                            text = tempNickname.trim().take(1).uppercase(),
+                            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.person),
+                            contentDescription = null,
+                            tint = Color.White.copy(alpha = 0.7f),
+                            modifier = Modifier.size(42.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    TextButton(
+                        onClick = { photoPickerLauncher.launch("image/*") }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.image),
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text("Change Photo", fontSize = 13.sp)
+                    }
+
+                    if (userProfilePicUri.isNotEmpty()) {
+                        TextButton(
+                            onClick = {
+                                onUserProfilePicUriChange("")
+                                runCatching { File(context.filesDir, "user_profile_avatar.jpg").delete() }
+                            }
+                        ) {
+                            Text("Remove", fontSize = 13.sp, color = MaterialTheme.colorScheme.error)
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                OutlinedTextField(
+                    value = tempNickname,
+                    onValueChange = { tempNickname = it },
+                    label = { Text("Your Nickname") },
+                    placeholder = { Text("e.g. Alex, BeatMaster") },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
+
 }
 
 @OptIn(ExperimentalFoundationApi::class)

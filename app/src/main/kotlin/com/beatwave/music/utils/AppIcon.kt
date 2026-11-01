@@ -21,9 +21,6 @@ import com.beatwave.music.WelcomeActivity
  * enablement is stored by the system, so it survives reinstall-free updates on its own — the
  * DataStore copy exists only so the picker can show a checkmark without querying PackageManager
  * repeatedly.
- *
- * [previewRes] is the adaptive icon's *foreground* layer; the picker composes it over
- * [R.color.ic_launcher_tile] to reproduce what the launcher shows.
  */
 enum class AppIcon(
     val id: String,
@@ -32,12 +29,55 @@ enum class AppIcon(
     @StringRes val labelRes: Int,
     val subtitle: String = "",
 ) {
-    GLASS("glass", ".LauncherGlass", R.mipmap.ic_launcher_glass_fg, R.string.app_icon_glass, "Translucent liquid crystal with frosted refraction"),
-    OG("og", ".LauncherOg", R.mipmap.ic_launcher_og_fg, R.string.app_icon_og, "Classic BeatWave cyan-to-purple sonic wave"),
-    BEST("best", ".LauncherBest", R.mipmap.ic_launcher_best_fg, R.string.app_icon_best, "Neon Prime glowing spectrum with high-energy accents"),
-    CLASSIC("classic", ".LauncherClassic", R.mipmap.ic_launcher_foreground, R.string.app_icon_classic, "Default adaptive system tile tuned for all launchers"),
-    MIDNIGHT("midnight", ".LauncherMidnight", R.drawable.ic_launcher_monochrome, R.string.app_icon_midnight, "Ultra-minimalist stealth black with titanium emblem"),
-    ;
+    GLASS(
+        "glass",
+        ".LauncherGlass",
+        R.mipmap.ic_launcher_glass_fg,
+        R.string.app_icon_glass,
+        "Translucent liquid crystal with frosted refraction"
+    ),
+    KYOTO_MATCHA(
+        "kyoto_matcha",
+        ".LauncherKyotoMatcha",
+        R.drawable.ic_launcher_kyoto_matcha_preview,
+        R.string.app_icon_kyoto_matcha,
+        "Harmonious zen botanical aesthetic with matcha jade accents"
+    ),
+    ROSE_GOLD(
+        "rose_gold",
+        ".LauncherRoseGold",
+        R.drawable.ic_launcher_rose_gold_preview,
+        R.string.app_icon_rose_gold,
+        "Luxurious champagne pink metallic sheen with refined warmth"
+    ),
+    NORDIC_SLATE(
+        "nordic_slate",
+        ".LauncherNordicSlate",
+        R.drawable.ic_launcher_nordic_slate_preview,
+        R.string.app_icon_nordic_slate,
+        "Minimalist Scandinavian cool slate and arctic titanium tones"
+    ),
+    EMERALD_GLASS(
+        "emerald_glass",
+        ".LauncherEmeraldGlass",
+        R.drawable.ic_launcher_emerald_glass_preview,
+        R.string.app_icon_emerald_glass,
+        "Deep emerald crystalline glass with optical frost finish"
+    ),
+    MOCHA_ESPRESSO(
+        "mocha_espresso",
+        ".LauncherMochaEspresso",
+        R.drawable.ic_launcher_mocha_espresso_preview,
+        R.string.app_icon_mocha_espresso,
+        "Velvety roasted coffee and warm dark roast mahogany palette"
+    ),
+    SUNSET_AMBER(
+        "sunset_amber",
+        ".LauncherSunsetAmber",
+        R.drawable.ic_launcher_sunset_amber_preview,
+        R.string.app_icon_sunset_amber,
+        "Vibrant warm horizon glow with golden hour solar energy"
+    );
 
     companion object {
         val DEFAULT: AppIcon get() = GLASS

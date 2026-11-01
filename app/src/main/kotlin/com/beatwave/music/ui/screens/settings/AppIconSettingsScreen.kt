@@ -6,7 +6,6 @@
 package com.beatwave.music.ui.screens.settings
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
@@ -44,15 +43,14 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,11 +62,9 @@ import com.beatwave.music.R
 import com.beatwave.music.constants.AppIconKey
 import com.beatwave.music.ui.component.IconButton
 import com.beatwave.music.ui.theme.AppleTokens
-import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.ui.utils.backToMain
 import com.beatwave.music.utils.AppIcon
 import com.beatwave.music.utils.rememberPreference
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -147,7 +143,7 @@ fun AppIconSettingsScreen(
                     // Ambient Glow Bloom behind the icon
                     Box(
                         modifier = Modifier
-                            .size(120.dp)
+                            .size(130.dp)
                             .background(
                                 Brush.radialGradient(
                                     colors = listOf(
@@ -162,12 +158,12 @@ fun AppIconSettingsScreen(
                         // Adaptive Squircle App Icon Tile
                         Box(
                             modifier = Modifier
-                                .size(92.dp)
+                                .size(96.dp)
                                 .clip(RoundedCornerShape(22.dp))
-                                .background(colorResource(R.color.ic_launcher_tile))
+                                .background(Color.Black)
                                 .border(
                                     1.2.dp,
-                                    Color.White.copy(alpha = 0.16f),
+                                    Color.White.copy(alpha = 0.20f),
                                     RoundedCornerShape(22.dp)
                                 ),
                             contentAlignment = Alignment.Center
@@ -175,14 +171,13 @@ fun AppIconSettingsScreen(
                             Image(
                                 painter = painterResource(currentIcon.previewRes),
                                 contentDescription = stringResource(currentIcon.labelRes),
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(14.dp)
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(18.dp))
 
                     Text(
                         text = stringResource(currentIcon.labelRes),
@@ -268,12 +263,12 @@ fun AppIconSettingsScreen(
                             // Mini Icon Tile
                             Box(
                                 modifier = Modifier
-                                    .size(54.dp)
+                                    .size(56.dp)
                                     .clip(RoundedCornerShape(13.dp))
-                                    .background(colorResource(R.color.ic_launcher_tile))
+                                    .background(Color.Black)
                                     .border(
                                         1.dp,
-                                        Color.White.copy(alpha = 0.12f),
+                                        Color.White.copy(alpha = 0.16f),
                                         RoundedCornerShape(13.dp)
                                     ),
                                 contentAlignment = Alignment.Center
@@ -281,9 +276,8 @@ fun AppIconSettingsScreen(
                                 Image(
                                     painter = painterResource(iconOption.previewRes),
                                     contentDescription = stringResource(iconOption.labelRes),
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(8.dp)
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
                                 )
                             }
 

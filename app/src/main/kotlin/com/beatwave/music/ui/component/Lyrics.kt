@@ -1227,39 +1227,64 @@ fun Lyrics(
                     // Smaller scale for background vocals
                     val bgScale = if (item.isBackground) 0.85f else 1f
 
-                    val lineDistance = kotlin.math.abs(index - (if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex)).toFloat()
+                    val activeLineIdx = if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex
+                    val lineDelta = (index - activeLineIdx).toFloat()
+                    val absDistance = kotlin.math.abs(lineDelta)
 
-                    val fisheyeScale = if (lyricsFisheyeEffect) {
-                        (0.74f + 0.44f / (1f + 0.35f * lineDistance * lineDistance)).coerceIn(0.70f, 1.20f)
+                    // Authentic spherical lens barrel transformation matching music video fisheye
+                    val fisheyeScaleX = if (lyricsFisheyeEffect) {
+                        // True spherical barrel expansion: center line expands dramatically in width (up to 1.62x)
+                        (0.58f + 1.04f / (1f + 0.48f * absDistance * absDistance)).coerceIn(0.55f, 1.62f)
+                    } else 1f
+
+                    val fisheyeScaleY = if (lyricsFisheyeEffect) {
+                        // Spherical height expansion (up to 1.50x)
+                        (0.60f + 0.90f / (1f + 0.52f * absDistance * absDistance)).coerceIn(0.58f, 1.50f)
                     } else 1f
 
                     val fisheyeRotationX = if (lyricsFisheyeEffect) {
-                        val delta = (index - (if (displayedCurrentLineIndex >= 0) displayedCurrentLineIndex else currentLineIndex)).toFloat()
-                        (-delta * 4.2f).coerceIn(-24f, 24f)
+                        // Dramatic spherical pitch curvature: top curves backward, bottom curves downward
+                        (-lineDelta * 22f).coerceIn(-52f, 52f)
+                    } else 0f
+
+                    val fisheyeTranslationY = if (lyricsFisheyeEffect) {
+                        // Spherical foreshortening: lines compress along curvature toward center dome
+                        val sign = if (lineDelta < 0) 1f else -1f
+                        (sign * (absDistance * absDistance * 4.8f)).coerceIn(-42f, 42f)
                     } else 0f
 
                     val fisheyeAlpha = if (lyricsFisheyeEffect) {
-                        (1f - (lineDistance * 0.09f)).coerceIn(0.30f, 1f)
+                        (1f - (absDistance * 0.12f)).coerceIn(0.20f, 1f)
                     } else 1f
+
+                    val fisheyePivotY = if (lyricsFisheyeEffect) {
+                        when {
+                            lineDelta < -0.1f -> 1.0f  // Lines above pivot from bottom edge (closest to equator)
+                            lineDelta > 0.1f -> 0.0f   // Lines below pivot from top edge (closest to equator)
+                            else -> 0.5f
+                        }
+                    } else 0.5f
 
                     val fisheyeTranslationX = if (lyricsFisheyeEffect) {
                         when (lyricsTextPosition) {
                             LyricsPosition.CENTER -> 0f
-                            LyricsPosition.LEFT -> (14f / (1f + 0.4f * lineDistance * lineDistance))
-                            LyricsPosition.RIGHT -> (-14f / (1f + 0.4f * lineDistance * lineDistance))
+                            LyricsPosition.LEFT -> (24f / (1f + 0.45f * absDistance * absDistance))
+                            LyricsPosition.RIGHT -> (-24f / (1f + 0.45f * absDistance * absDistance))
                         }
                     } else 0f
 
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.cameraDistance = 16f * density.density
+                                this.cameraDistance = if (lyricsFisheyeEffect) 6f * density.density else 16f * density.density
+                                this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationX = fisheyeTranslationX
+                                this.translationY = fisheyeTranslationY
                                 val baseA = if (item.isBackground) alpha * 0.8f else alpha
                                 this.alpha = baseA * fisheyeAlpha
-                                this.scaleX = scale * bgScale * fisheyeScale
-                                this.scaleY = scale * bgScale * fisheyeScale
+                                this.scaleX = scale * bgScale * fisheyeScaleX
+                                this.scaleY = scale * bgScale * fisheyeScaleY
                             }
                             .blur(blurRadius.dp),
                         horizontalAlignment = agentAlignment

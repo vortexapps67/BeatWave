@@ -236,12 +236,12 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".LauncherOg"
+            android:name=".LauncherKyotoMatcha"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_og"
+            android:icon="@mipmap/ic_launcher_kyoto_matcha"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_og"
+            android:roundIcon="@mipmap/ic_launcher_kyoto_matcha"
             android:targetActivity=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -250,12 +250,12 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".LauncherBest"
+            android:name=".LauncherRoseGold"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_best"
+            android:icon="@mipmap/ic_launcher_rose_gold"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_best"
+            android:roundIcon="@mipmap/ic_launcher_rose_gold"
             android:targetActivity=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -264,12 +264,12 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".LauncherClassic"
+            android:name=".LauncherNordicSlate"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_launcher_nordic_slate"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/ic_launcher_nordic_slate"
             android:targetActivity=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -278,12 +278,40 @@
         </activity-alias>
 
         <activity-alias
-            android:name=".LauncherMidnight"
+            android:name=".LauncherEmeraldGlass"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_midnight"
+            android:icon="@mipmap/ic_launcher_emerald_glass"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_midnight"
+            android:roundIcon="@mipmap/ic_launcher_emerald_glass"
+            android:targetActivity=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".LauncherMochaEspresso"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_mocha_espresso"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_mocha_espresso"
+            android:targetActivity=".WelcomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".LauncherSunsetAmber"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_sunset_amber"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_sunset_amber"
             android:targetActivity=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

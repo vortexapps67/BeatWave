@@ -2856,83 +2856,29 @@ class MainActivity : ComponentActivity() {
         }
 
         var isVisible by remember { mutableStateOf(true) }
-        var emblemEntered by remember { mutableStateOf(false) }
-
-        LaunchedEffect(Unit) {
-            emblemEntered = true
-            delay(1150L)
-            isVisible = false
-            delay(400L)
-            safeDismiss()
-        }
 
         val alphaAnim by animateFloatAsState(
             targetValue = if (isVisible) 1f else 0f,
-            animationSpec = tween(durationMillis = 380, easing = FastOutSlowInEasing),
+            animationSpec = tween(durationMillis = 320, easing = FastOutSlowInEasing),
             label = "splashAlpha",
             finishedListener = { if (!isVisible) safeDismiss() }
         )
 
-        val scaleAnim by animateFloatAsState(
-            targetValue = if (isVisible) 1f else 1.08f,
-            animationSpec = tween(durationMillis = 380, easing = FastOutSlowInEasing),
-            label = "splashScale"
-        )
-
-        val emblemScale by animateFloatAsState(
-            targetValue = if (emblemEntered) 1f else 0.72f,
-            animationSpec = spring(
-                dampingRatio = 0.82f,
-                stiffness = com.beatwave.music.ui.theme.AppleTokens.Motion.Stiffness
-            ),
-            label = "emblemScale"
-        )
-
-        val emblemAlpha by animateFloatAsState(
-            targetValue = if (emblemEntered) 1f else 0f,
-            animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing),
-            label = "emblemAlpha"
-        )
-
-        // Shimmer specular sweep across the emblem
-        val infiniteTransition = rememberInfiniteTransition(label = "appleOpeningInfinite")
-        val shimmerOffset by infiniteTransition.animateFloat(
-            initialValue = -150f,
-            targetValue = 250f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(2200, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "emblemShimmer"
-        )
-
-        // Pulsing background ambient aurora
-        val auraPulse by infiniteTransition.animateFloat(
-            initialValue = 0.85f,
-            targetValue = 1.15f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(2600, easing = LinearEasing),
-                repeatMode = RepeatMode.Reverse
-            ),
-            label = "auraPulse"
-        )
-
-        // 5-bar animated equalizer visualizer
-        val bar1 by infiniteTransition.animateFloat(initialValue = 0.3f, targetValue = 0.95f, animationSpec = infiniteRepeatable(tween(420, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "eq1")
-        val bar2 by infiniteTransition.animateFloat(initialValue = 0.8f, targetValue = 0.35f, animationSpec = infiniteRepeatable(tween(560, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "eq2")
-        val bar3 by infiniteTransition.animateFloat(initialValue = 0.4f, targetValue = 1.0f, animationSpec = infiniteRepeatable(tween(380, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "eq3")
-        val bar4 by infiniteTransition.animateFloat(initialValue = 0.9f, targetValue = 0.25f, animationSpec = infiniteRepeatable(tween(620, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "eq4")
-        val bar5 by infiniteTransition.animateFloat(initialValue = 0.35f, targetValue = 0.85f, animationSpec = infiniteRepeatable(tween(490, easing = FastOutSlowInEasing), RepeatMode.Reverse), label = "eq5")
+        // Safety timeout so splash never blocks user
+        LaunchedEffect(Unit) {
+            delay(11000L)
+            if (isVisible) {
+                isVisible = false
+            }
+        }
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer {
                     alpha = alphaAnim
-                    scaleX = scaleAnim
-                    scaleY = scaleAnim
                 }
-                .background(Color(0xFF0A0A0E))
+                .background(Color.Black)
                 .clickable(
                     interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
                     indication = null
@@ -2941,122 +2887,42 @@ class MainActivity : ComponentActivity() {
                 },
             contentAlignment = Alignment.Center
         ) {
-            // Apple Music Ambient Radial Glow Bloom
-            Box(
-                modifier = Modifier
-                    .size(380.dp)
-                    .graphicsLayer {
-                        scaleX = auraPulse
-                        scaleY = auraPulse
-                        alpha = emblemAlpha * 0.45f
+            // Muted startup MP4 animation provided by user
+            androidx.compose.ui.viewinterop.AndroidView(
+                factory = { ctx ->
+                    android.widget.VideoView(ctx).apply {
+                        val videoUri = android.net.Uri.parse("android.resource://" + ctx.packageName + "/" + com.beatwave.music.R.raw.startup_animation)
+                        setVideoURI(videoUri)
+                        setOnPreparedListener { mp ->
+                            mp.isLooping = false
+                            mp.setVolume(0f, 0f) // Fully muted as requested
+                            mp.start()
+                        }
+                        setOnCompletionListener {
+                            isVisible = false
+                        }
+                        setOnErrorListener { _, _, _ ->
+                            safeDismiss()
+                            true
+                        }
                     }
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(
-                                Color(0xFFFA2D48).copy(alpha = 0.38f),
-                                Color(0xFFAF52DE).copy(alpha = 0.24f),
-                                Color(0xFF007AFF).copy(alpha = 0.08f),
-                                Color.Transparent
-                            )
-                        ),
-                        shape = CircleShape
-                    )
+                },
+                modifier = Modifier.fillMaxSize()
             )
 
-            // Center Content
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.graphicsLayer {
-                    scaleX = emblemScale
-                    scaleY = emblemScale
-                    alpha = emblemAlpha
-                }
+            // Subtle skip hint at bottom
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 32.dp),
+                contentAlignment = Alignment.BottomCenter
             ) {
-                // Apple Music Rounded Squircle Emblem Tile
-                Surface(
-                    shape = RoundedCornerShape(com.beatwave.music.ui.theme.AppleTokens.CardCornerLarge),
-                    color = Color(0xFF16161C),
-                    border = androidx.compose.foundation.BorderStroke(1.2.dp, Color.White.copy(alpha = 0.16f)),
-                    shadowElevation = 18.dp,
-                    modifier = Modifier.size(118.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Image(
-                            painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
-                            contentDescription = "BeatWave Logo",
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(22.dp),
-                            contentScale = androidx.compose.ui.layout.ContentScale.Fit
-                        )
-
-                        // Glass specular reflection pass
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .graphicsLayer {
-                                    translationX = shimmerOffset
-                                    translationY = shimmerOffset * 0.4f
-                                    alpha = 0.22f
-                                }
-                                .background(
-                                    Brush.linearGradient(
-                                        colors = listOf(
-                                            Color.Transparent,
-                                            Color.White.copy(alpha = 0.6f),
-                                            Color.Transparent
-                                        ),
-                                        start = Offset(0f, 0f),
-                                        end = Offset(80f, 80f)
-                                    )
-                                )
-                        )
-                    }
-                }
-
-                Spacer(Modifier.height(28.dp))
-
-                // Typography
                 Text(
-                    text = "BeatWave",
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp,
-                    color = Color.White
-                )
-
-                Spacer(Modifier.height(6.dp))
-
-                Text(
-                    text = "YOUR SOUND. ELEVATED.",
+                    text = "Tap to skip",
                     style = MaterialTheme.typography.labelSmall,
-                    letterSpacing = 2.4.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF8E8E93)
+                    color = Color.White.copy(alpha = 0.4f),
+                    letterSpacing = 1.2.sp
                 )
-
-                Spacer(Modifier.height(22.dp))
-
-                // Apple Music Harmonic Equalizer Visualizer
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.height(18.dp)
-                ) {
-                    listOf(bar1, bar2, bar3, bar4, bar5).forEach { barProgress ->
-                        Box(
-                            modifier = Modifier
-                                .width(3.dp)
-                                .height((18 * barProgress.coerceIn(0.2f, 1f)).dp)
-                                .clip(RoundedCornerShape(2.dp))
-                                .background(Color(0xFFFA2D48))
-                        )
-                    }
-                }
             }
         }
     }

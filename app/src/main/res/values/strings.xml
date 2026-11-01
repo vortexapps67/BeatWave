@@ -518,6 +518,18 @@
     <string name="app_icon_og">THE OG</string>
     <string name="app_icon_best">The Best One</string>
     <string name="app_icon_glass">Liquid Glass</string>
+    <string name="app_icon_kyoto_matcha">Kyoto Matcha</string>
+    <string name="app_icon_rose_gold">Rose Gold</string>
+    <string name="app_icon_nordic_slate">Nordic Slate</string>
+    <string name="app_icon_emerald_glass">Emerald Frosted Glass</string>
+    <string name="app_icon_mocha_espresso">Mocha Espresso</string>
+    <string name="app_icon_sunset_amber">Sunset Amber</string>
+    <string name="user_profile">Profile</string>
+    <string name="user_nickname">Nickname</string>
+    <string name="user_nickname_hint">Enter your nickname</string>
+    <string name="change_profile_picture">Change Profile Picture</string>
+    <string name="remove_profile_picture">Remove Picture</string>
+
     <string name="app_icon_classic">BeatWave Classic</string>
     <string name="app_icon_midnight">Midnight Stealth</string>
 

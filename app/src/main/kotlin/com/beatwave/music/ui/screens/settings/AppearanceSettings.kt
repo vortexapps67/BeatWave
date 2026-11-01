@@ -180,6 +180,12 @@ import com.beatwave.music.utils.rememberPreference
 import kotlin.math.roundToInt
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
 import com.beatwave.music.constants.LiquidGlassEngineKey
+import com.beatwave.music.constants.LiquidGlassSurfaceTintColorKey
+import com.beatwave.music.ui.component.ColorPickerDialog
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.CircleShape
 import com.beatwave.music.constants.LiquidGlassEngine
 import com.beatwave.music.constants.LyricsClickKey
 import com.beatwave.music.ui.utils.appTopBarWindowInsets
@@ -280,6 +286,8 @@ fun AppearanceSettings(
     val (lyricsFisheyeEffect, onLyricsFisheyeEffectChange) = rememberPreference(LyricsFisheyeEffectKey, defaultValue = true)
     val (liquidGlassEngine, onLiquidGlassEngineChange) = rememberEnumPreference(LiquidGlassEngineKey, defaultValue = LiquidGlassEngine.NEW_GLASS)
     var showLiquidGlassEngineDialog by rememberSaveable { mutableStateOf(false) }
+    val (surfaceTintColorInt, onSurfaceTintColorChange) = rememberPreference(LiquidGlassSurfaceTintColorKey, defaultValue = 0)
+    var showSurfaceTintDialog by rememberSaveable { mutableStateOf(false) }
     val (swipeLyrics, onSwipeLyricsChange) = rememberPreference(SwipeLyricsKey, defaultValue = false)
     val (enableLyricsThumbnailPlayPause, onEnableLyricsThumbnailPlayPauseChange) = rememberPreference(EnableLyricsThumbnailPlayPauseKey, defaultValue = false)
     val (oneTapFullscreenLyrics, onOneTapFullscreenLyricsChange) = rememberPreference(OneTapFullscreenLyricsKey, defaultValue = false)
@@ -420,7 +428,25 @@ fun AppearanceSettings(
         )
     }
 
-        if (showLiquidGlassEngineDialog) {
+            if (showSurfaceTintDialog) {
+        val adaptiveTintColor = if (MaterialTheme.colorScheme.surface.luminance() > 0.5f) Color(0xFFFAFAFA) else Color(0xFF4A4A4E)
+        val initialColor = if (surfaceTintColorInt == 0) adaptiveTintColor else Color(surfaceTintColorInt)
+        ColorPickerDialog(
+            initialColor = initialColor,
+            title = "Liquid Glass Tint Color",
+            onDismiss = { showSurfaceTintDialog = false },
+            onConfirm = { color ->
+                onSurfaceTintColorChange(color.toArgb())
+                showSurfaceTintDialog = false
+            },
+            onReset = {
+                onSurfaceTintColorChange(0)
+                showSurfaceTintDialog = false
+            }
+        )
+    }
+
+    if (showLiquidGlassEngineDialog) {
         EnumDialog(
             onDismiss = { showLiquidGlassEngineDialog = false },
             onSelect = {
@@ -656,6 +682,33 @@ fun AppearanceSettings(
                     title = { Text(stringResource(R.string.liquid_glass)) },
                     description = { Text("Customize blur, refraction, vibrancy and surface tints") },
                     onClick = { navController.navigate("settings/appearance/liquidglass") }
+                ),
+                                Material3SettingsItem(
+                    icon = painterResource(R.drawable.palette),
+                    title = { Text("Glass Tint Color") },
+                    description = {
+                        Text(
+                            when (surfaceTintColorInt) {
+                                0 -> "Default (Adaptive Clear)"
+                                0xFFE53935.toInt() -> "Subtle Ruby Red"
+                                0xFF00C853.toInt() -> "Emerald Jade"
+                                0xFF2979FF.toInt() -> "Sapphire Blue"
+                                0xFFAA00FF.toInt() -> "Amethyst Violet"
+                                0xFFFF6D00.toInt() -> "Sunset Amber"
+                                else -> "Custom Tint (#%06X)".format(0xFFFFFF and surfaceTintColorInt)
+                            }
+                        )
+                    },
+                    trailingContent = {
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clip(CircleShape)
+                                .background(if (surfaceTintColorInt == 0) Color.White.copy(alpha = 0.5f) else Color(surfaceTintColorInt))
+                                .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.4f), CircleShape)
+                        )
+                    },
+                    onClick = { showSurfaceTintDialog = true }
                 ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.gradient),
