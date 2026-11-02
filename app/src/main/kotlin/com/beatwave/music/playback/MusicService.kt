@@ -426,6 +426,10 @@ class MusicService :
     private var duckVolumeRestoreJob: Job? = null
 
     private lateinit var mediaSession: MediaLibrarySession
+    private lateinit var androidAutoLyrics: AndroidAutoLyrics
+    private lateinit var sessionPlayer: LyricsMetadataPlayer
+    private var lyricsTabRefreshJob: Job? = null
+    private var lastLyricsTabRefresh = 0L
 
     // Tracks if player has been properly initilized
     private val playerInitialized = MutableStateFlow(false)
@@ -654,9 +658,18 @@ class MusicService :
             toggleStartRadio = ::toggleStartRadio
             toggleLibrary = ::toggleLibrary
         }
+        androidAutoLyrics = AndroidAutoLyrics(
+            context = this,
+            scope = scope,
+            database = database,
+            positionMs = { player.currentPosition },
+            isPlaying = { player.isPlaying },
+        )
+        mediaLibrarySessionCallback.androidAutoLyrics = androidAutoLyrics
+        sessionPlayer = lyricsSessionPlayer(player)
         mediaSession =
             MediaLibrarySession
-                .Builder(this, player, mediaLibrarySessionCallback)
+                .Builder(this, sessionPlayer, mediaLibrarySessionCallback)
                 .setSessionActivity(
                     PendingIntent.getActivity(
                         this,
@@ -666,6 +679,11 @@ class MusicService :
                     ),
                 ).setBitmapLoader(CoilBitmapLoader(this, scope))
                 .build()
+        androidAutoLyrics.onChanged = {
+            sessionPlayer.invalidateLyricLine()
+            refreshLyricsTab()
+        }
+        androidAutoLyrics.start(currentMediaMetadata.map { it?.id })
         player.repeatMode = dataStore.get(RepeatModeKey, REPEAT_MODE_OFF)
 
         // Restore shuffle mode if remember option is enabled
@@ -1503,6 +1521,21 @@ class MusicService :
         stopSelf()
         currentMediaMetadata.value = null
         updateWidgetUI(false)
+    }
+
+    private fun lyricsSessionPlayer(player: Player) =
+        LyricsMetadataPlayer(player) { mediaId -> androidAutoLyrics.metadataLine(mediaId) }
+
+    // Android Auto throttles browse refreshes, so fast lines are coalesced into one
+    // refresh at most every LYRICS_TAB_REFRESH_MS; the list is built when it's fetched.
+    private fun refreshLyricsTab() {
+        if (lyricsTabRefreshJob?.isActive == true) return
+        val wait = LYRICS_TAB_REFRESH_MS - (SystemClock.elapsedRealtime() - lastLyricsTabRefresh)
+        lyricsTabRefreshJob = scope.launch {
+            if (wait > 0) delay(wait)
+            lastLyricsTabRefresh = SystemClock.elapsedRealtime()
+            mediaSession.notifyChildrenChanged(LYRICS, Int.MAX_VALUE, null)
+        }
     }
 
     private fun updateNotification() {
@@ -4454,7 +4487,8 @@ class MusicService :
         sleepTimer.player = player
 
         try {
-            (mediaSession as MediaSession).player = player
+            sessionPlayer = lyricsSessionPlayer(player)
+            (mediaSession as MediaSession).player = sessionPlayer
         } catch (e: Exception) {
             timber.log.Timber.e(e, "Failed to swap player in MediaSession")
         }
@@ -4610,6 +4644,8 @@ class MusicService :
         const val PLAYLIST = "playlist"
         const val YOUTUBE_PLAYLIST = "youtube_playlist"
         const val SEARCH = "search"
+        const val LYRICS = "lyrics"
+        private const val LYRICS_TAB_REFRESH_MS = 500L
         const val SHUFFLE_ACTION = "__shuffle__"
 
         const val CHANNEL_ID = "music_channel_01"

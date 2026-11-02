@@ -118,6 +118,7 @@ import com.beatwave.music.constants.ContentCountryKey
 import com.beatwave.music.constants.ContentLanguageKey
 import com.beatwave.music.constants.CountryCodeToName
 import com.beatwave.music.constants.DataSaverEnabledKey
+import com.beatwave.music.constants.AndroidAutoLyricsKey
 import com.beatwave.music.constants.EnableBetterLyricsKey
 import com.beatwave.music.constants.EnableKugouKey
 import com.beatwave.music.constants.EnableLrcLibKey
@@ -237,6 +238,7 @@ fun ContentSettings(
     val (enableKugou, onEnableKugouChange) = rememberPreference(key = EnableKugouKey, defaultValue = true)
     val (enableLrclib, onEnableLrclibChange) = rememberPreference(key = EnableLrcLibKey, defaultValue = true)
     val (enableBetterLyrics, onEnableBetterLyricsChange) = rememberPreference(key = EnableBetterLyricsKey, defaultValue = true)
+    val (androidAutoLyrics, onAndroidAutoLyricsChange) = rememberPreference(key = AndroidAutoLyricsKey, defaultValue = true)
     val (enableSimpMusic, onEnableSimpMusicChange) = rememberPreference(key = EnableSimpMusicKey, defaultValue = true)
     val (enableYouLyPlus, onEnableYouLyPlusChange) = rememberPreference(key = EnableYouLyPlusKey, defaultValue = true)
     val (enablePaxsenix, onEnablePaxsenixChange) = rememberPreference(key = EnablePaxsenixKey, defaultValue = true)
@@ -1189,6 +1191,27 @@ fun ContentSettings(
         Material3SettingsGroup(
             title = stringResource(R.string.lyrics),
             items = listOf(
+                Material3SettingsItem(
+                    icon = painterResource(R.drawable.lyrics),
+                    title = { Text(stringResource(R.string.android_auto_lyrics)) },
+                    description = { Text(stringResource(R.string.android_auto_lyrics_desc)) },
+                    trailingContent = {
+                        Switch(
+                            checked = androidAutoLyrics,
+                            onCheckedChange = onAndroidAutoLyricsChange,
+                            thumbContent = {
+                                Icon(
+                                    painter = painterResource(
+                                        id = if (androidAutoLyrics) R.drawable.check else R.drawable.close
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                                )
+                            }
+                        )
+                    },
+                    onClick = { onAndroidAutoLyricsChange(!androidAutoLyrics) }
+                ),
                 Material3SettingsItem(
                     icon = painterResource(R.drawable.lyrics),
                     title = { Text(stringResource(R.string.enable_lrclib)) },

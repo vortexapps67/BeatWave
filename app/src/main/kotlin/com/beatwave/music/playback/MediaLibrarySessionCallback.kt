@@ -14,6 +14,7 @@ import androidx.core.net.toUri
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.Download
 import androidx.media3.session.LibraryResult
@@ -73,6 +74,10 @@ constructor(
     var toggleLike: () -> Unit = {}
     var toggleStartRadio: () -> Unit = {}
     var toggleLibrary: () -> Unit = {}
+    var androidAutoLyrics: AndroidAutoLyrics? = null
+
+    // Android Auto shows only this many root items as tabs.
+    private var rootChildrenLimit = Int.MAX_VALUE
 
     override fun onConnect(
         session: MediaSession,
@@ -122,13 +127,17 @@ constructor(
         session: MediaLibrarySession,
         browser: MediaSession.ControllerInfo,
         params: MediaLibraryService.LibraryParams?,
-    ): ListenableFuture<LibraryResult<MediaItem>> =
-        Futures.immediateFuture(
+    ): ListenableFuture<LibraryResult<MediaItem>> {
+        params?.extras?.getInt(MediaConstants.EXTRAS_KEY_ROOT_CHILDREN_LIMIT, 0)
+            ?.takeIf { it > 0 }
+            ?.let { rootChildrenLimit = it }
+        return Futures.immediateFuture(
             LibraryResult.ofItem(
                 rootMediaItem(),
                 params.withContentStyleHints(),
             ),
         )
+    }
 
     override fun onGetChildren(
         session: MediaLibrarySession,
@@ -141,7 +150,9 @@ constructor(
         scope.future(Dispatchers.IO) {
             val children =
                 when (parentId) {
-                    MusicService.ROOT -> rootChildren()
+                    MusicService.ROOT -> rootTabs()
+
+                    MusicService.LYRICS -> lyricsChildren()
 
                     MusicService.SONG -> database.songsByCreateDateAsc().first()
                         .map { it.toMediaItem(parentId) }
@@ -388,8 +399,16 @@ constructor(
         mediaItems: MutableList<MediaItem>,
         startIndex: Int,
         startPositionMs: Long,
-    ): ListenableFuture<MediaItemsWithStartPosition> =
-        scope.future {
+    ): ListenableFuture<MediaItemsWithStartPosition> {
+        val lyricPath = mediaItems.firstOrNull()?.mediaId?.split("/")
+        if (lyricPath?.firstOrNull() == MusicService.LYRICS) {
+            seekToLyricLine(mediaSession.player, lyricPath)
+            // Failing keeps the queue as it is; the tap was only a seek.
+            return Futures.immediateFailedFuture(
+                UnsupportedOperationException("Lyric lines seek, they don't replace the queue"),
+            )
+        }
+        return scope.future {
             val defaultResult = MediaItemsWithStartPosition(emptyList(), startIndex, startPositionMs)
             val path = mediaItems.firstOrNull()?.mediaId?.split("/")
                 ?: return@future defaultResult
@@ -579,6 +598,7 @@ constructor(
                 else -> defaultResult
             }
         }
+    }
 
     private fun drawableUri(
         @DrawableRes id: Int,
@@ -638,12 +658,92 @@ constructor(
         ),
     )
 
+    /** Root tabs, plus Lyrics when it's on. Artists gives way if the car can't show them all. */
+    private fun rootTabs(): List<MediaItem> {
+        if (androidAutoLyrics?.enabled != true) return rootChildren()
+        val tabs = (rootChildren() + lyricsTabMediaItem()).toMutableList()
+        if (tabs.size > rootChildrenLimit) tabs.removeAll { it.mediaId == MusicService.ARTIST }
+        return tabs.take(rootChildrenLimit)
+    }
+
+    private fun lyricsTabMediaItem() = browsableMediaItem(
+        MusicService.LYRICS,
+        context.getString(R.string.lyrics),
+        null,
+        drawableUri(R.drawable.lyrics),
+        MediaMetadata.MEDIA_TYPE_FOLDER_MIXED,
+    )
+
+    /**
+     * A window of lines around the current one. It's rebuilt on every line change,
+     * so the current line stays near the top without the list needing to scroll.
+     */
+    private fun lyricsChildren(): List<MediaItem> {
+        val lyrics = androidAutoLyrics ?: return emptyList()
+        val songId = lyrics.songId
+            ?: return listOf(lyricsMessageItem(context.getString(R.string.android_auto_lyrics_no_song)))
+        if (lyrics.lines.isEmpty()) {
+            return listOf(lyricsMessageItem(context.getString(R.string.android_auto_lyrics_not_synced)))
+        }
+
+        val current = lyrics.currentIndex.coerceAtLeast(0)
+        val from = (current - AndroidAutoLyrics.TAB_LINES_BEFORE).coerceAtLeast(0)
+        val to = (from + AndroidAutoLyrics.TAB_LINES_TOTAL).coerceAtMost(lyrics.lines.size)
+        return (from until to).map { index ->
+            val line = lyrics.lines[index]
+            val text = line.text.trim().ifEmpty { "♪" }
+            val isCurrent = index == lyrics.currentIndex
+            lyricLineMediaItem(
+                id = "${MusicService.LYRICS}/$songId/${line.time}",
+                title = if (isCurrent) "♪ $text" else text,
+                iconUri = if (isCurrent) drawableUri(R.drawable.play) else null,
+                // The subtitle row is dimmer, so the next line reads as "coming up".
+                subtitle = if (isCurrent) lyrics.lines.getOrNull(index + 1)?.text?.trim() else null,
+            )
+        }
+    }
+
+    private fun lyricsMessageItem(message: String) =
+        lyricLineMediaItem(MusicService.LYRICS + "/", message, drawableUri(R.drawable.lyrics))
+
+    private fun lyricLineMediaItem(
+        id: String,
+        title: String,
+        iconUri: Uri?,
+        subtitle: String? = null,
+    ) = MediaItem
+        .Builder()
+        .setMediaId(id)
+        .setMediaMetadata(
+            MediaMetadata
+                .Builder()
+                .setTitle(title)
+                .setSubtitle(subtitle)
+                .setArtworkUri(iconUri)
+                .setIsPlayable(true)
+                .setIsBrowsable(false)
+                .setMediaType(MediaMetadata.MEDIA_TYPE_MUSIC)
+                .setExtras(playableMediaItemExtras())
+                .build(),
+        ).build()
+
+    /** mediaId is lyrics/<songId>/<timeMs>; only seeks if that song is still playing. */
+    private fun seekToLyricLine(player: Player, path: List<String>) {
+        val songId = path.getOrNull(1) ?: return
+        val timeMs = path.getOrNull(2)?.toLongOrNull() ?: return
+        if (player.currentMediaItem?.mediaId != songId) return
+        player.seekTo(timeMs)
+        if (!player.isPlaying) player.play()
+    }
+
     private suspend fun getMediaItem(mediaId: String): MediaItem? {
         val path = mediaId.split("/")
         val type = path.firstOrNull() ?: return null
 
         return when (type) {
             MusicService.ROOT -> rootMediaItem()
+
+            MusicService.LYRICS -> lyricsTabMediaItem()
 
             MusicService.SONG -> {
                 if (path.size == 1) {
