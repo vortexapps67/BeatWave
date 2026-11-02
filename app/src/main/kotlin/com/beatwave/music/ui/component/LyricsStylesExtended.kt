@@ -70,6 +70,7 @@ fun NeonPulseLyricsLine(
     agentTextAlign: TextAlign,
     showRomanized: Boolean = false,
     showTranslated: Boolean = false,
+    lyricsFontFamily: FontFamily = FontFamily.Default,
 ) {
     val arrangement = when (agentTextAlign) {
         TextAlign.Center -> Arrangement.Center
@@ -98,9 +99,18 @@ fun NeonPulseLyricsLine(
         label = "neonSweepOffset"
     )
 
-    val neonCyan = Color(0xFF00F5FF)
-    val neonMagenta = Color(0xFFFF007F)
-    val neonViolet = Color(0xFF9D00FF)
+    val baseAccent = if (expressiveAccent != Color.Unspecified && expressiveAccent.alpha > 0f) expressiveAccent else Color(0xFF00F5FF)
+    val neonCyan = baseAccent
+    val neonMagenta = Color(
+        red = (baseAccent.green * 0.85f + 0.15f).coerceIn(0f, 1f),
+        green = (baseAccent.blue * 0.85f + 0.15f).coerceIn(0f, 1f),
+        blue = (baseAccent.red * 0.85f + 0.15f).coerceIn(0f, 1f)
+    )
+    val neonViolet = Color(
+        red = (baseAccent.blue * 0.7f + 0.3f).coerceIn(0f, 1f),
+        green = (baseAccent.red * 0.7f).coerceIn(0f, 1f),
+        blue = (baseAccent.green * 0.9f + 0.1f).coerceIn(0f, 1f)
+    )
 
     val neonBrush = remember(sweepOffset, isActive) {
         if (isActive) {
@@ -229,6 +239,7 @@ fun SpotifyBounceLyricsLine(
     baseFontSize: Float,
     lineHeight: Float,
     agentTextAlign: TextAlign,
+    lyricsFontFamily: FontFamily = FontFamily.Default,
 ) {
     val arrangement = when (agentTextAlign) {
         TextAlign.Center -> Arrangement.Center
@@ -323,6 +334,8 @@ fun CinematicMinimalLyricsLine(
     baseFontSize: Float,
     lineHeight: Float,
     agentTextAlign: TextAlign,
+    expressiveAccent: Color = Color.Unspecified,
+    lyricsFontFamily: FontFamily = FontFamily.Default,
 ) {
     val luxuryIvory = Color(0xFFFAF7EE)
     val luxuryGold = Color(0xFFFFDFA6)
@@ -411,6 +424,8 @@ fun GradientSweepLyricsLine(
     baseFontSize: Float,
     lineHeight: Float,
     agentTextAlign: TextAlign,
+    expressiveAccent: Color = Color.Unspecified,
+    lyricsFontFamily: FontFamily = FontFamily.Default,
 ) {
     val arrangement = when (agentTextAlign) {
         TextAlign.Center -> Arrangement.Center
@@ -506,7 +521,7 @@ fun GradientSweepLyricsLine(
                 SpanStyle(
                     brush = sweepBrush,
                     fontWeight = FontWeight.ExtraBold,
-                    shadow = Shadow(color = Color(0xFF00F5FF).copy(alpha = 0.6f), blurRadius = 18f)
+                    shadow = Shadow(color = baseAccent.copy(alpha = 0.6f), blurRadius = 18f)
                 )
             } else {
                 SpanStyle(
@@ -542,6 +557,8 @@ fun RetroCassetteLyricsLine(
     baseFontSize: Float,
     lineHeight: Float,
     agentTextAlign: TextAlign,
+    expressiveAccent: Color = Color.Unspecified,
+    lyricsFontFamily: FontFamily = FontFamily.Default,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "cassetteBlink")
     val cursorAlpha by infiniteTransition.animateFloat(
@@ -619,6 +636,7 @@ fun FisheyeStickerLyricsLine(
     distanceFromCenter: Float = 0f,
     showRomanized: Boolean = false,
     showTranslated: Boolean = false,
+    lyricsFontFamily: FontFamily = FontFamily.Default,
 ) {
     val wordList = entry.words
     val hasWords = wordList != null && wordList.isNotEmpty()

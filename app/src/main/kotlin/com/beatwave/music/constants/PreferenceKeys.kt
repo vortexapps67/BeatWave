@@ -824,6 +824,18 @@ enum class LyricsAnimationStyle {
 
 val LyricsTextSizeKey = floatPreferencesKey("lyricsTextSize")
 val LyricsLineSpacingKey = floatPreferencesKey("lyricsLineSpacing")
+val LyricsCustomAccentColorKey = intPreferencesKey("lyricsCustomAccentColor")
+val LyricsFontStyleKey = stringPreferencesKey("lyricsFontStyle")
+enum class LyricsFontStyle {
+    SYSTEM_DEFAULT,
+    GOOGLE_SANS,
+    CHILLAX,
+    OUTFIT,
+    PLUS_JAKARTA,
+    LUXURY_SERIF,
+    RETRO_MONO,
+    HANDWRITTEN,
+}
 
 val PlayerVolumeKey = floatPreferencesKey("playerVolume")
 val RepeatModeKey = intPreferencesKey("repeatMode")

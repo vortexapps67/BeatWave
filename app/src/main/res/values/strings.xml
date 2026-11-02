@@ -632,6 +632,13 @@
     <string name="theme_preset_bordeaux_crimson">Bordeaux Crimson</string>
     <string name="theme_preset_tokyo_monolith">Tokyo Monolith</string>
     <string name="theme_preset_material_you">Dynamic Material You</string>
+    <string name="theme_preset_electric_aurora">Electric Aurora</string>
+    <string name="theme_preset_midnight_lilac">Midnight Lilac</string>
+    <string name="theme_preset_solar_flare">Solar Flare</string>
+    <string name="theme_preset_glacial_ice">Glacial Ice</string>
+    <string name="theme_preset_lava_magma">Lava Magma</string>
+    <string name="theme_preset_indigo_void">Indigo Void</string>
+    <string name="theme_preset_tuscan_terracotta">Tuscan Terracotta</string>
     <string name="export_audio">Export audio file</string>
     <string name="export_audio_in_progress">Exporting…</string>
     <string name="export_audio_saved">Saved. Cached tracks export without using data.</string>

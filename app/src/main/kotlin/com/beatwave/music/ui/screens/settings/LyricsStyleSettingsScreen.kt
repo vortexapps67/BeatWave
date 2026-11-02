@@ -71,6 +71,14 @@ import com.beatwave.music.LocalPlayerAwareWindowInsets
 import com.beatwave.music.R
 import com.beatwave.music.constants.LyricsAnimationStyle
 import com.beatwave.music.constants.LyricsAnimationStyleKey
+import com.beatwave.music.constants.LyricsCustomAccentColorKey
+import com.beatwave.music.constants.LyricsFontStyle
+import com.beatwave.music.constants.LyricsFontStyleKey
+import com.beatwave.music.ui.component.ColorPickerDialog
+import com.beatwave.music.ui.component.DefaultDialog
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.text.font.FontFamily
 import com.beatwave.music.constants.LyricsFisheyeEffectKey
 import com.beatwave.music.constants.LyricsGlowEffectKey
 import com.beatwave.music.constants.LyricsLineSpacingKey
@@ -129,6 +137,30 @@ fun LyricsStyleSettingsScreen(
         OneTapFullscreenLyricsKey,
         defaultValue = false
     )
+    val (lyricsCustomAccentColorInt, onLyricsCustomAccentColorChange) = rememberPreference(
+        LyricsCustomAccentColorKey,
+        defaultValue = 0
+    )
+    val (lyricsFontStyle, onLyricsFontStyleChange) = rememberEnumPreference(
+        LyricsFontStyleKey,
+        defaultValue = LyricsFontStyle.SYSTEM_DEFAULT
+    )
+    var showColorPaletteDialog by rememberSaveable { mutableStateOf(false) }
+    var showCustomColorPicker by rememberSaveable { mutableStateOf(false) }
+    var showFontDialog by rememberSaveable { mutableStateOf(false) }
+
+    val resolvedLyricsFontFamily = remember(lyricsFontStyle) {
+        when (lyricsFontStyle) {
+            LyricsFontStyle.SYSTEM_DEFAULT -> FontFamily.Default
+            LyricsFontStyle.GOOGLE_SANS -> com.beatwave.music.ui.theme.GoogleSansFontFamily
+            LyricsFontStyle.CHILLAX -> com.beatwave.music.ui.theme.ChillaxFontFamily
+            LyricsFontStyle.OUTFIT -> com.beatwave.music.ui.theme.OutfitFontFamily
+            LyricsFontStyle.PLUS_JAKARTA -> com.beatwave.music.ui.theme.PlusJakartaSansFontFamily
+            LyricsFontStyle.LUXURY_SERIF -> FontFamily.Serif
+            LyricsFontStyle.RETRO_MONO -> FontFamily.Monospace
+            LyricsFontStyle.HANDWRITTEN -> FontFamily.Cursive
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -171,7 +203,9 @@ fun LyricsStyleSettingsScreen(
                 selectedStyle = lyricsAnimationStyle,
                 fisheyeEnabled = lyricsFisheyeEffect,
                 lyricsTextSize = lyricsTextSize,
-                lyricsLineSpacing = lyricsLineSpacing
+                lyricsLineSpacing = lyricsLineSpacing,
+                customAccentColorInt = lyricsCustomAccentColorInt,
+                lyricsFontFamily = resolvedLyricsFontFamily
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -244,10 +278,20 @@ fun LyricsStyleSettingsScreen(
                     .background(AppleTokens.Card)
             ) {
                 newStyles.forEachIndexed { index, styleInfo ->
+                    val activeColor = if (lyricsCustomAccentColorInt != 0 && lyricsAnimationStyle == styleInfo.style) {
+                        Color(lyricsCustomAccentColorInt)
+                    } else styleInfo.accentColor
                     LyricsStyleSelectableRow(
                         info = styleInfo,
                         isSelected = lyricsAnimationStyle == styleInfo.style,
-                        onSelect = { onLyricsAnimationStyleChange(styleInfo.style) }
+                        onSelect = { onLyricsAnimationStyleChange(styleInfo.style) },
+                        onColorClick = {
+                            if (lyricsAnimationStyle != styleInfo.style) {
+                                onLyricsAnimationStyleChange(styleInfo.style)
+                            }
+                            showColorPaletteDialog = true
+                        },
+                        activeColor = activeColor
                     )
                     if (index < newStyles.size - 1) {
                         HorizontalDivider(
@@ -320,10 +364,20 @@ fun LyricsStyleSettingsScreen(
                     .background(AppleTokens.Card)
             ) {
                 classicStyles.forEachIndexed { index, styleInfo ->
+                    val activeColor = if (lyricsCustomAccentColorInt != 0 && lyricsAnimationStyle == styleInfo.style) {
+                        Color(lyricsCustomAccentColorInt)
+                    } else styleInfo.accentColor
                     LyricsStyleSelectableRow(
                         info = styleInfo,
                         isSelected = lyricsAnimationStyle == styleInfo.style,
-                        onSelect = { onLyricsAnimationStyleChange(styleInfo.style) }
+                        onSelect = { onLyricsAnimationStyleChange(styleInfo.style) },
+                        onColorClick = {
+                            if (lyricsAnimationStyle != styleInfo.style) {
+                                onLyricsAnimationStyleChange(styleInfo.style)
+                            }
+                            showColorPaletteDialog = true
+                        },
+                        activeColor = activeColor
                     )
                     if (index < classicStyles.size - 1) {
                         HorizontalDivider(
@@ -387,11 +441,215 @@ fun LyricsStyleSettingsScreen(
                             )
                         },
                         onClick = { onOneTapFullscreenLyricsChange(!oneTapFullscreenLyrics) }
+                    ),
+                    Material3SettingsItem(
+                        icon = painterResource(R.drawable.font),
+                        title = { Text("Lyrics Font Style") },
+                        description = {
+                            Text(
+                                when (lyricsFontStyle) {
+                                    LyricsFontStyle.SYSTEM_DEFAULT -> "System Default"
+                                    LyricsFontStyle.GOOGLE_SANS -> "Google Sans Flex"
+                                    LyricsFontStyle.CHILLAX -> "Chillax Modern"
+                                    LyricsFontStyle.OUTFIT -> "Outfit Geometric"
+                                    LyricsFontStyle.PLUS_JAKARTA -> "Plus Jakarta Sans"
+                                    LyricsFontStyle.LUXURY_SERIF -> "Luxury Serif"
+                                    LyricsFontStyle.RETRO_MONO -> "Retro Monospace"
+                                    LyricsFontStyle.HANDWRITTEN -> "Cursive Script"
+                                }
+                            )
+                        },
+                        onClick = { showFontDialog = true }
+                    ),
+                    Material3SettingsItem(
+                        icon = painterResource(R.drawable.palette),
+                        title = { Text("Lyrics Accent Color") },
+                        description = {
+                            Text(
+                                if (lyricsCustomAccentColorInt == 0) "Default (Style Accent)"
+                                else "#%06X (Custom Color)".format(0xFFFFFF and lyricsCustomAccentColorInt)
+                            )
+                        },
+                        trailingContent = {
+                            Box(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clip(CircleShape)
+                                    .background(if (lyricsCustomAccentColorInt == 0) Color.White.copy(alpha = 0.5f) else Color(lyricsCustomAccentColorInt))
+                                    .border(1.5.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), CircleShape)
+                            )
+                        },
+                        onClick = { showColorPaletteDialog = true }
                     )
                 )
             )
 
             Spacer(modifier = Modifier.height(40.dp))
+        }
+
+        if (showFontDialog) {
+            DefaultDialog(
+                onDismiss = { showFontDialog = false },
+                buttons = {
+                    androidx.compose.material3.TextButton(onClick = { showFontDialog = false }) {
+                        Text(stringResource(android.R.string.cancel))
+                    }
+                }
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    Text(
+                        text = "Choose Lyrics Font Style",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(14.dp))
+                    LyricsFontStyle.entries.forEach { style ->
+                        val isSelected = lyricsFontStyle == style
+                        val fontName = when (style) {
+                            LyricsFontStyle.SYSTEM_DEFAULT -> "System Default"
+                            LyricsFontStyle.GOOGLE_SANS -> "Google Sans Flex"
+                            LyricsFontStyle.CHILLAX -> "Chillax Modern"
+                            LyricsFontStyle.OUTFIT -> "Outfit Geometric"
+                            LyricsFontStyle.PLUS_JAKARTA -> "Plus Jakarta Sans"
+                            LyricsFontStyle.LUXURY_SERIF -> "Luxury Serif"
+                            LyricsFontStyle.RETRO_MONO -> "Retro Monospace"
+                            LyricsFontStyle.HANDWRITTEN -> "Cursive Script"
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable {
+                                    onLyricsFontStyleChange(style)
+                                    showFontDialog = false
+                                }
+                                .padding(vertical = 12.dp, horizontal = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(selected = isSelected, onClick = null)
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                text = fontName,
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                ),
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        if (showColorPaletteDialog) {
+            val paletteColors = listOf(
+                Pair("Style Default", Color.Transparent),
+                Pair("Cyber Cyan", Color(0xFF00F5FF)),
+                Pair("Neon Magenta", Color(0xFFFF007F)),
+                Pair("Electric Emerald", Color(0xFF00FF88)),
+                Pair("Cyber Gold", Color(0xFFFFD600)),
+                Pair("Sunset Amber", Color(0xFFFF6D00)),
+                Pair("Vivid Crimson", Color(0xFFFF1744)),
+                Pair("Royal Amethyst", Color(0xFFA855F7)),
+                Pair("Glacial Blue", Color(0xFF38BDF8)),
+                Pair("Tokyo Monolith", Color(0xFFFFFFFF))
+            )
+
+            DefaultDialog(
+                onDismiss = { showColorPaletteDialog = false },
+                buttons = {
+                    androidx.compose.material3.TextButton(onClick = { showColorPaletteDialog = false }) {
+                        Text(stringResource(android.R.string.cancel))
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    androidx.compose.material3.TextButton(onClick = {
+                        showColorPaletteDialog = false
+                        showCustomColorPicker = true
+                    }) {
+                        Text("Custom Color...", fontWeight = FontWeight.Bold)
+                    }
+                }
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    Text(
+                        text = "Customize Lyrics Color",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Text(
+                        text = "Choose an accent tone or pick your own custom shade",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                        modifier = Modifier.padding(top = 2.dp, bottom = 14.dp)
+                    )
+
+                    paletteColors.forEach { (name, col) ->
+                        val isDefault = col == Color.Transparent
+                        val isSelected = if (isDefault) lyricsCustomAccentColorInt == 0 else lyricsCustomAccentColorInt == col.toArgb()
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable {
+                                    if (isDefault) {
+                                        onLyricsCustomAccentColorChange(0)
+                                    } else {
+                                        onLyricsCustomAccentColorChange(col.toArgb())
+                                    }
+                                    showColorPaletteDialog = false
+                                }
+                                .padding(vertical = 10.dp, horizontal = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .clip(CircleShape)
+                                    .background(if (isDefault) Color.White.copy(alpha = 0.4f) else col)
+                                    .border(1.5.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.5f), CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(14.dp))
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                ),
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.weight(1f)
+                            )
+                            if (isSelected) {
+                                Icon(
+                                    painter = painterResource(R.drawable.check),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (showCustomColorPicker) {
+            val initial = if (lyricsCustomAccentColorInt != 0) Color(lyricsCustomAccentColorInt) else Color(0xFF00F5FF)
+            ColorPickerDialog(
+                initialColor = initial,
+                onDismiss = { showCustomColorPicker = false },
+                onColorSelected = { col ->
+                    onLyricsCustomAccentColorChange(col.toArgb())
+                    showCustomColorPicker = false
+                }
+            )
         }
     }
 }
@@ -408,7 +666,9 @@ private data class LyricsStyleInfo(
 private fun LyricsStyleSelectableRow(
     info: LyricsStyleInfo,
     isSelected: Boolean,
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
+    onColorClick: (() -> Unit)? = null,
+    activeColor: Color = info.accentColor
 ) {
     Row(
         modifier = Modifier
@@ -454,6 +714,26 @@ private fun LyricsStyleSelectableRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                 modifier = Modifier.padding(top = 2.dp)
             )
+        }
+
+        if (onColorClick != null) {
+            Spacer(modifier = Modifier.width(10.dp))
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .background(activeColor)
+                    .border(1.5.dp, Color.White.copy(alpha = 0.45f), CircleShape)
+                    .clickable(onClick = onColorClick),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.palette),
+                    contentDescription = "Change Color",
+                    tint = if (activeColor.luminance() > 0.5f) Color.Black else Color.White,
+                    modifier = Modifier.size(15.dp)
+                )
+            }
         }
     }
 }
@@ -540,7 +820,9 @@ private fun LiveLyricsInteractivePreview(
     selectedStyle: LyricsAnimationStyle,
     fisheyeEnabled: Boolean,
     lyricsTextSize: Float,
-    lyricsLineSpacing: Float
+    lyricsLineSpacing: Float,
+    customAccentColorInt: Int = 0,
+    lyricsFontFamily: FontFamily = FontFamily.Default
 ) {
     val density = LocalDensity.current.density
     val infiniteTransition = rememberInfiniteTransition(label = "previewClock")
@@ -698,6 +980,16 @@ private fun LiveLyricsInteractivePreview(
                         }
                     } else 0.5f
 
+                    val previewAccent = if (customAccentColorInt != 0) Color(customAccentColorInt) else when (selectedStyle) {
+                        LyricsAnimationStyle.NEON_PULSE -> Color(0xFF00F5FF)
+                        LyricsAnimationStyle.SPOTIFY_BOUNCE -> Color(0xFF1DB954)
+                        LyricsAnimationStyle.CINEMATIC_MINIMAL -> Color(0xFFFFDF9E)
+                        LyricsAnimationStyle.GRADIENT_SWEEP -> Color(0xFFFF007F)
+                        LyricsAnimationStyle.RETRO_CASSETTE -> Color(0xFFFFB000)
+                        LyricsAnimationStyle.FISHEYE -> Color.White
+                        else -> Color(0xFF00F5FF)
+                    }
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -709,7 +1001,8 @@ private fun LiveLyricsInteractivePreview(
                                 this.alpha = if (isActive) 1f else 0.45f * fisheyeAlpha
                                 this.scaleX = (if (isActive) 1.05f else 1f) * fisheyeScaleX
                                 this.scaleY = (if (isActive) 1.05f else 1f) * fisheyeScaleY
-                            }
+                            },
+                        contentAlignment = Alignment.Center
                     ) {
                         when (selectedStyle) {
                             LyricsAnimationStyle.FISHEYE -> {
@@ -717,12 +1010,13 @@ private fun LiveLyricsInteractivePreview(
                                     entry = entry,
                                     isActive = isActive,
                                     effectivePlaybackPosition = currentPlaybackMs,
-                                    expressiveAccent = Color.White,
+                                    expressiveAccent = previewAccent,
                                     baseFontSize = 18f,
                                     lineHeight = 24f,
                                     agentTextAlign = TextAlign.Center,
                                     agentAlignment = Alignment.CenterHorizontally,
-                                    distanceFromCenter = delta
+                                    distanceFromCenter = delta,
+                                    lyricsFontFamily = lyricsFontFamily
                                 )
                             }
                             LyricsAnimationStyle.NEON_PULSE -> {
@@ -730,10 +1024,11 @@ private fun LiveLyricsInteractivePreview(
                                     entry = entry,
                                     isActive = isActive,
                                     effectivePlaybackPosition = currentPlaybackMs,
-                                    expressiveAccent = Color(0xFF00F5FF),
+                                    expressiveAccent = previewAccent,
                                     baseFontSize = 20f,
                                     lineHeight = 26f,
-                                    agentTextAlign = TextAlign.Start
+                                    agentTextAlign = TextAlign.Center,
+                                    lyricsFontFamily = lyricsFontFamily
                                 )
                             }
                             LyricsAnimationStyle.SPOTIFY_BOUNCE -> {
@@ -741,10 +1036,11 @@ private fun LiveLyricsInteractivePreview(
                                     entry = entry,
                                     isActive = isActive,
                                     effectivePlaybackPosition = currentPlaybackMs,
-                                    expressiveAccent = Color(0xFF1DB954),
+                                    expressiveAccent = previewAccent,
                                     baseFontSize = 20f,
                                     lineHeight = 26f,
-                                    agentTextAlign = TextAlign.Start
+                                    agentTextAlign = TextAlign.Center,
+                                    lyricsFontFamily = lyricsFontFamily
                                 )
                             }
                             LyricsAnimationStyle.CINEMATIC_MINIMAL -> {
@@ -754,7 +1050,9 @@ private fun LiveLyricsInteractivePreview(
                                     effectivePlaybackPosition = currentPlaybackMs,
                                     baseFontSize = 20f,
                                     lineHeight = 26f,
-                                    agentTextAlign = TextAlign.Start
+                                    agentTextAlign = TextAlign.Center,
+                                    expressiveAccent = previewAccent,
+                                    lyricsFontFamily = lyricsFontFamily
                                 )
                             }
                             LyricsAnimationStyle.GRADIENT_SWEEP -> {
@@ -764,7 +1062,9 @@ private fun LiveLyricsInteractivePreview(
                                     effectivePlaybackPosition = currentPlaybackMs,
                                     baseFontSize = 20f,
                                     lineHeight = 26f,
-                                    agentTextAlign = TextAlign.Start
+                                    agentTextAlign = TextAlign.Center,
+                                    expressiveAccent = previewAccent,
+                                    lyricsFontFamily = lyricsFontFamily
                                 )
                             }
                             LyricsAnimationStyle.RETRO_CASSETTE -> {
@@ -774,7 +1074,9 @@ private fun LiveLyricsInteractivePreview(
                                     effectivePlaybackPosition = currentPlaybackMs,
                                     baseFontSize = 20f,
                                     lineHeight = 26f,
-                                    agentTextAlign = TextAlign.Start
+                                    agentTextAlign = TextAlign.Center,
+                                    expressiveAccent = previewAccent,
+                                    lyricsFontFamily = lyricsFontFamily
                                 )
                             }
                             else -> {

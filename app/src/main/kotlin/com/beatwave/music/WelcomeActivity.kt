@@ -352,66 +352,40 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                 ) {
                     Spacer(modifier = Modifier.height(80.dp))
 
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(14.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Surface(
-                            shape = RoundedCornerShape(18.dp),
-                            color = Color(0xFF1A1A1A).copy(alpha = 0.85f),
-                            border = androidx.compose.foundation.BorderStroke(1.2.dp, Color.White.copy(alpha = 0.25f)),
-                            shadowElevation = 0.dp,
-                            modifier = Modifier.size(58.dp)
-                        ) {
-                            Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(10.dp)) {
-                                androidx.compose.foundation.Image(
-                                    painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
-                                    contentDescription = "BeatWave Logo",
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentScale = androidx.compose.ui.layout.ContentScale.Fit
-                                )
-                            }
-                        }
-                        Column {
-                            Text(
-                                text = stringResource(com.beatwave.music.R.string.welcome_to),
-                                style = thinHeaderStyle,
-                                color = Color.White.copy(alpha = 0.75f)
-                            )
-                            Text(
-                                text = stringResource(com.beatwave.music.R.string.app_name).uppercase(),
-                                fontFamily = GoogleSansFlex,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 42.sp,
-                                color = Color.White,
-                                lineHeight = 46.sp
-                            )
-                        }
-                    }
+                    Spacer(modifier = Modifier.height(20.dp))
 
-                    val flavorSuffix = if (BuildConfig.FLAVOR.contains("gms", ignoreCase = true)) "Gms Edition" else "Foss Edition"
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(start = 2.dp)
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = flavorSuffix,
+                            text = stringResource(com.beatwave.music.R.string.welcome_to),
+                            style = thinHeaderStyle,
+                            color = Color.White.copy(alpha = 0.75f),
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = stringResource(com.beatwave.music.R.string.app_name).uppercase(),
                             fontFamily = GoogleSansFlex,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = Color.White.copy(alpha = 0.70f)
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 44.sp,
+                            color = Color.White,
+                            lineHeight = 48.sp,
+                            textAlign = TextAlign.Center,
+                            letterSpacing = 2.sp
                         )
 
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
+                        val flavorSuffix = if (BuildConfig.FLAVOR.contains("gms", ignoreCase = true)) "Gms Edition" else "Foss Edition"
                         Surface(
                             shape = CircleShape,
                             color = Color.White.copy(alpha = 0.12f),
                             border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.20f))
                         ) {
                             Text(
-                                text = "v${BuildConfig.VERSION_NAME}",
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                                text = "$flavorSuffix  •  v${BuildConfig.VERSION_NAME}",
+                                modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -1299,42 +1273,55 @@ fun BeatWaveSonicWaveformVisualizer(modifier: Modifier = Modifier) {
             )
         }
 
-        // Frosted Liquid Glass Card containing the Dancing BeatWave Visualizer
+        // Frosted Liquid Glass Card containing the Big BeatWave Logo & Dancing Visualizer
         Surface(
-            shape = RoundedCornerShape(32.dp),
-            color = Color(0xFF141414).copy(alpha = 0.75f),
+            shape = RoundedCornerShape(38.dp),
+            color = Color(0xFF141414).copy(alpha = 0.82f),
             border = androidx.compose.foundation.BorderStroke(
                 1.5.dp,
                 androidx.compose.ui.graphics.Brush.linearGradient(
                     listOf(
-                        Color.White.copy(alpha = 0.40f),
+                        Color.White.copy(alpha = 0.45f),
                         Color.White.copy(alpha = 0.08f)
                     )
                 )
             ),
             shadowElevation = 0.dp,
-            modifier = Modifier.size(190.dp)
+            modifier = Modifier.size(230.dp, 220.dp)
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp)
+                    .padding(20.dp)
             ) {
-                // Animated soundwave bars dancing cleanly with authentic BeatWave symmetry
+                // Prominent Big Official BeatWave Logo
+                androidx.compose.foundation.Image(
+                    painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
+                    contentDescription = "BeatWave Big Logo",
+                    modifier = Modifier.size(88.dp),
+                    contentScale = androidx.compose.ui.layout.ContentScale.Fit
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Smooth Dancing Equalizer Soundwave Bars
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalArrangement = Arrangement.spacedBy(4.5.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().height(100.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(38.dp)
+                        .padding(horizontal = 10.dp)
                 ) {
                     val barCount = 9
-                    // Symmetrical bell-curve profile: center bars taller
-                    val baseHeights = listOf(22f, 34f, 50f, 68f, 84f, 68f, 50f, 34f, 22f)
+                    val baseHeights = listOf(14f, 22f, 32f, 38f, 38f, 38f, 32f, 22f, 14f)
                     for (i in 0 until barCount) {
                         val factor = kotlin.math.sin(wavePhase + i * 0.65f).coerceIn(-1f, 1f)
                         val normalized = (factor + 1f) / 2f
                         val baseH = baseHeights[i]
-                        val dynamicH = (baseH * 0.55f + normalized * (baseH * 0.45f)).dp
+                        val dynamicH = (baseH * 0.40f + normalized * (baseH * 0.60f)).dp
                         Box(
                             modifier = Modifier
                                 .weight(1f)
@@ -1344,7 +1331,7 @@ fun BeatWaveSonicWaveformVisualizer(modifier: Modifier = Modifier) {
                                     androidx.compose.ui.graphics.Brush.verticalGradient(
                                         listOf(
                                             Color.White,
-                                            Color.White.copy(alpha = 0.70f)
+                                            Color.White.copy(alpha = 0.65f)
                                         )
                                     )
                                 )

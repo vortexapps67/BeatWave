@@ -243,9 +243,18 @@ fun rememberDevicePerformanceTier(): DevicePerformanceTier {
             am?.getMemoryInfo(memInfo)
             val totalRamGb = memInfo.totalMem / (1024.0 * 1024.0 * 1024.0)
             val cores = Runtime.getRuntime().availableProcessors()
+            val model = Build.MODEL.orEmpty()
+            val isBudgetChipset = model.contains("A14", ignoreCase = true) ||
+                model.contains("A13", ignoreCase = true) ||
+                model.contains("A12", ignoreCase = true) ||
+                model.contains("A15", ignoreCase = true) ||
+                model.contains("A04", ignoreCase = true) ||
+                model.contains("A05", ignoreCase = true) ||
+                model.contains("A23", ignoreCase = true) ||
+                model.contains("A24", ignoreCase = true)
             when {
-                totalRamGb < 3.5 || cores <= 4 -> DevicePerformanceTier.LOW
-                totalRamGb < 6.0 || cores <= 6 -> DevicePerformanceTier.MEDIUM
+                isBudgetChipset || totalRamGb < 5.0 || cores <= 4 -> DevicePerformanceTier.LOW
+                totalRamGb < 6.5 || cores <= 6 -> DevicePerformanceTier.MEDIUM
                 else -> DevicePerformanceTier.HIGH
             }
         } catch (_: Throwable) {
@@ -470,15 +479,16 @@ fun Modifier.liquidGlass(
     // Adaptive resolution scaling: Low-end devices process 1/16th to 1/25th of the pixels,
     // dramatically dropping GPU memory and fill-rate demands while maintaining silky smooth 60-120fps.
     val resolutionScale = when (deviceTier) {
-        DevicePerformanceTier.LOW -> backdropScale.coerceIn(0.18f, 0.28f)
-        DevicePerformanceTier.MEDIUM -> backdropScale.coerceIn(0.25f, 0.50f)
+        DevicePerformanceTier.LOW -> 0.15f
+        DevicePerformanceTier.MEDIUM -> backdropScale.coerceIn(0.25f, 0.45f)
         DevicePerformanceTier.HIGH -> backdropScale.coerceIn(0.05f, 1f)
     }
 
     // Pixel-sized effect parameters operate on the backdrop layer at its recorded
     // resolution, so they are pre-multiplied by the resolution scale to keep the
     // same visual size.
-    val blurPx = with(density) { blurRadiusDp.dp.toPx() } * resolutionScale
+    val rawBlurPx = with(density) { blurRadiusDp.dp.toPx() } * resolutionScale
+    val blurPx = if (deviceTier == DevicePerformanceTier.LOW) rawBlurPx.coerceAtMost(8f) else rawBlurPx
     val saturation = if (isNewGlass) 1f + 0.25f * config.vibrancy.coerceIn(0f, 2f) else glassSaturation(config.vibrancy)
     val effectiveLensMaxDp = if (isNewGlass) 26f else LENS_MAX_DP
     val lensHeightPx = with(density) { (config.lensHeight * effectiveLensMaxDp).dp.toPx() } * resolutionScale

@@ -508,14 +508,29 @@ fun Lyrics(
         }
     }
 
+    val (lyricsCustomAccentColorInt) = rememberPreference(LyricsCustomAccentColorKey, defaultValue = 0)
+    val (lyricsFontStyle) = rememberEnumPreference(LyricsFontStyleKey, defaultValue = LyricsFontStyle.SYSTEM_DEFAULT)
+    val resolvedLyricsFontFamily = remember(lyricsFontStyle) {
+        when (lyricsFontStyle) {
+            LyricsFontStyle.SYSTEM_DEFAULT -> androidx.compose.ui.text.font.FontFamily.Default
+            LyricsFontStyle.GOOGLE_SANS -> com.beatwave.music.ui.theme.GoogleSansFontFamily
+            LyricsFontStyle.CHILLAX -> com.beatwave.music.ui.theme.ChillaxFontFamily
+            LyricsFontStyle.OUTFIT -> com.beatwave.music.ui.theme.OutfitFontFamily
+            LyricsFontStyle.PLUS_JAKARTA -> com.beatwave.music.ui.theme.PlusJakartaSansFontFamily
+            LyricsFontStyle.LUXURY_SERIF -> androidx.compose.ui.text.font.FontFamily.Serif
+            LyricsFontStyle.RETRO_MONO -> androidx.compose.ui.text.font.FontFamily.Monospace
+            LyricsFontStyle.HANDWRITTEN -> androidx.compose.ui.text.font.FontFamily.Cursive
+        }
+    }
+
     // Use Material 3 expressive accents and keep glow/text colors unified
-    val expressiveAccent = when (playerBackground) {
+    val defaultExpressiveAccent = when (playerBackground) {
         PlayerBackgroundStyle.DEFAULT -> MaterialTheme.colorScheme.primary
         PlayerBackgroundStyle.BLUR, PlayerBackgroundStyle.GRADIENT, PlayerBackgroundStyle.GLOW_ANIMATED, PlayerBackgroundStyle.APPLE_MUSIC, PlayerBackgroundStyle.LIVE_MESH, PlayerBackgroundStyle.STATIC, PlayerBackgroundStyle.CUSTOM_GRADIENT -> {
-            // For animated or processed backgrounds, always use light colors regardless of theme
             Color.White
         }
     }
+    val expressiveAccent = if (lyricsCustomAccentColorInt != 0) Color(lyricsCustomAccentColorInt) else defaultExpressiveAccent
     val textColor = expressiveAccent
 
     var currentLineIndex by remember {
@@ -1764,7 +1779,8 @@ fun Lyrics(
                                 expressiveAccent = expressiveAccent,
                                 baseFontSize = lyricsTextSize,
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
-                                agentTextAlign = agentTextAlign
+                                agentTextAlign = agentTextAlign,
+                                lyricsFontFamily = resolvedLyricsFontFamily
                             )
                         } else if (lyricsAnimationStyle == LyricsAnimationStyle.SPOTIFY_BOUNCE) {
                             SpotifyBounceLyricsLine(
@@ -1774,7 +1790,8 @@ fun Lyrics(
                                 expressiveAccent = expressiveAccent,
                                 baseFontSize = lyricsTextSize,
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
-                                agentTextAlign = agentTextAlign
+                                agentTextAlign = agentTextAlign,
+                                lyricsFontFamily = resolvedLyricsFontFamily
                             )
                         } else if (lyricsAnimationStyle == LyricsAnimationStyle.CINEMATIC_MINIMAL) {
                             CinematicMinimalLyricsLine(
@@ -1783,7 +1800,9 @@ fun Lyrics(
                                 effectivePlaybackPosition = effectivePlaybackPosition,
                                 baseFontSize = lyricsTextSize,
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
-                                agentTextAlign = agentTextAlign
+                                agentTextAlign = agentTextAlign,
+                                expressiveAccent = expressiveAccent,
+                                lyricsFontFamily = resolvedLyricsFontFamily
                             )
                         } else if (lyricsAnimationStyle == LyricsAnimationStyle.GRADIENT_SWEEP) {
                             GradientSweepLyricsLine(
@@ -1792,7 +1811,9 @@ fun Lyrics(
                                 effectivePlaybackPosition = effectivePlaybackPosition,
                                 baseFontSize = lyricsTextSize,
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
-                                agentTextAlign = agentTextAlign
+                                agentTextAlign = agentTextAlign,
+                                expressiveAccent = expressiveAccent,
+                                lyricsFontFamily = resolvedLyricsFontFamily
                             )
                         } else if (lyricsAnimationStyle == LyricsAnimationStyle.RETRO_CASSETTE) {
                             RetroCassetteLyricsLine(
@@ -1801,7 +1822,9 @@ fun Lyrics(
                                 effectivePlaybackPosition = effectivePlaybackPosition,
                                 baseFontSize = lyricsTextSize,
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
-                                agentTextAlign = agentTextAlign
+                                agentTextAlign = agentTextAlign,
+                                expressiveAccent = expressiveAccent,
+                                lyricsFontFamily = resolvedLyricsFontFamily
                             )
                         } else if (lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE) {
                             FisheyeStickerLyricsLine(
@@ -1813,7 +1836,8 @@ fun Lyrics(
                                 lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
                                 agentTextAlign = agentTextAlign,
                                 agentAlignment = agentAlignment,
-                                distanceFromCenter = lineDelta
+                                distanceFromCenter = lineDelta,
+                                lyricsFontFamily = resolvedLyricsFontFamily
                             )
                         } else if (isActiveLine && lyricsGlowEffect) {
                             // Initial animation for glow fill from left to right

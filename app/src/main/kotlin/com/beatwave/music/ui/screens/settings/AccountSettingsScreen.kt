@@ -112,6 +112,9 @@ fun AccountSettingsScreen(
     val (accountEmail, _) = rememberPreference(AccountEmailKey, "")
     val (accountChannelHandle, _) = rememberPreference(AccountChannelHandleKey, "")
     val (innerTubeCookie, onInnerTubeCookieChange) = rememberPreference(InnerTubeCookieKey, "")
+    val (userNickname, onUserNicknameChange) = rememberPreference(UserNicknameKey, defaultValue = "")
+    val (userProfilePicUri, onUserProfilePicUriChange) = rememberPreference(UserProfilePicUriKey, defaultValue = "")
+    var showEditProfileDialog by rememberSaveable { mutableStateOf(false) }
     val (visitorData, _) = rememberPreference(VisitorDataKey, "")
     val (dataSyncId, _) = rememberPreference(DataSyncIdKey, "")
     val (savedAccountsJson, _) = rememberPreference(SavedAccountsKey, "")
@@ -237,6 +240,41 @@ fun AccountSettingsScreen(
                             if (isLoggedIn) navController.navigate("account")
                             else navController.navigate("login")
                         }
+                    ),
+                    Material3SettingsItem(
+                        icon = painterResource(R.drawable.person),
+                        title = {
+                            Text("Custom Nickname & Profile Photo")
+                        },
+                        description = {
+                            Text(
+                                if (userNickname.isNotBlank()) "Nickname: $userNickname"
+                                else "Tap to set custom nickname & choose profile photo"
+                            )
+                        },
+                        trailingContent = {
+                            val profileFile = remember(userProfilePicUri) {
+                                if (userProfilePicUri.isNotEmpty()) java.io.File(userProfilePicUri) else null
+                            }
+                            if (profileFile != null && profileFile.exists()) {
+                                AsyncImage(
+                                    model = profileFile,
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(36.dp)
+                                        .clip(CircleShape)
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(R.drawable.edit),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        },
+                        onClick = { showEditProfileDialog = true }
                     )
                 )
             )
@@ -585,6 +623,18 @@ fun AccountSettingsScreen(
                 }
             )
         }
+        if (showEditProfileDialog) {
+            UserProfileEditDialog(
+                currentNickname = userNickname,
+                currentProfilePicUri = userProfilePicUri,
+                onSave = { nick, pic ->
+                    onUserNicknameChange(nick)
+                    onUserProfilePicUriChange(pic)
+                },
+                onDismiss = { showEditProfileDialog = false }
+            )
+        }
+
         if (showLogoutDialog) {
             DefaultDialog(
                 onDismiss = { showLogoutDialog = false },
