@@ -2980,79 +2980,79 @@ class MainActivity : ComponentActivity() {
 
             androidx.compose.ui.viewinterop.AndroidView(
                 factory = { ctx ->
-                    android.view.TextureView(ctx).apply {
-                        isOpaque = false
-                        surfaceTextureListener = object : android.view.TextureView.SurfaceTextureListener {
-                            private var videoW = 0
-                            private var videoH = 0
+                    val textureView = android.view.TextureView(ctx)
+                    textureView.isOpaque = false
+                    textureView.surfaceTextureListener = object : android.view.TextureView.SurfaceTextureListener {
+                        private var videoW = 0
+                        private var videoH = 0
 
-                            private fun applyCenterCropTransform(view: android.view.TextureView) {
-                                val viewW = view.getWidth()
-                                val viewH = view.getHeight()
-                                if (viewW <= 0 || viewH <= 0 || videoW <= 0 || videoH <= 0) return
-                                val scaleX = viewW.toFloat() / videoW.toFloat()
-                                val scaleY = viewH.toFloat() / videoH.toFloat()
-                                val maxScale = maxOf(scaleX, scaleY)
-                                val matrix = android.graphics.Matrix()
-                                matrix.setScale(maxScale / scaleX, maxScale / scaleY, viewW / 2f, viewH / 2f)
-                                view.setTransform(matrix)
-                            }
-
-                            override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
-                                try {
-                                    val s = android.view.Surface(surface)
-                                    val mp = android.media.MediaPlayer().apply {
-                                        setSurface(s)
-                                        val afd = ctx.resources.openRawResourceFd(com.beatwave.music.R.raw.startup_animation)
-                                        setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                                        afd.close()
-                                        isLooping = false
-                                        setVolume(0f, 0f) // Fully muted
-                                        setOnCompletionListener {
-                                            isVisible = false
-                                        }
-                                        setOnErrorListener { _, _, _ ->
-                                            isVisible = false
-                                            true
-                                        }
-                                        setOnVideoSizeChangedListener { _, vWidth, vHeight ->
-                                            if (vWidth > 0 && vHeight > 0) {
-                                                videoW = vWidth
-                                                videoH = vHeight
-                                                applyCenterCropTransform(this@apply)
-                                            }
-                                        }
-                                        setOnPreparedListener { player ->
-                                            val vw = player.videoWidth
-                                            val vh = player.videoHeight
-                                            if (vw > 0 && vh > 0) {
-                                                videoW = vw
-                                                videoH = vh
-                                                applyCenterCropTransform(this@apply)
-                                            }
-                                            player.start()
-                                        }
-                                        prepareAsync()
-                                    }
-                                    activePlayer = mp
-                                } catch (e: Exception) {
-                                    isVisible = false
-                                }
-                            }
-
-                            override fun onSurfaceTextureSizeChanged(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
-                                applyCenterCropTransform(this@apply)
-                            }
-                            override fun onSurfaceTextureDestroyed(surface: android.graphics.SurfaceTexture): Boolean {
-                                try {
-                                    activePlayer?.release()
-                                } catch (_: Exception) {}
-                                activePlayer = null
-                                return true
-                            }
-                            override fun onSurfaceTextureUpdated(surface: android.graphics.SurfaceTexture) {}
+                        private fun applyCenterCropTransform() {
+                            val viewW = textureView.getWidth()
+                            val viewH = textureView.getHeight()
+                            if (viewW <= 0 || viewH <= 0 || videoW <= 0 || videoH <= 0) return
+                            val scaleX = viewW.toFloat() / videoW.toFloat()
+                            val scaleY = viewH.toFloat() / videoH.toFloat()
+                            val maxScale = maxOf(scaleX, scaleY)
+                            val matrix = android.graphics.Matrix()
+                            matrix.setScale(maxScale / scaleX, maxScale / scaleY, viewW / 2f, viewH / 2f)
+                            textureView.setTransform(matrix)
                         }
+
+                        override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
+                            try {
+                                val s = android.view.Surface(surface)
+                                val mp = android.media.MediaPlayer().apply {
+                                    setSurface(s)
+                                    val afd = ctx.resources.openRawResourceFd(com.beatwave.music.R.raw.startup_animation)
+                                    setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                                    afd.close()
+                                    isLooping = false
+                                    setVolume(0f, 0f) // Fully muted
+                                    setOnCompletionListener {
+                                        isVisible = false
+                                    }
+                                    setOnErrorListener { _, _, _ ->
+                                        isVisible = false
+                                        true
+                                    }
+                                    setOnVideoSizeChangedListener { _, vWidth, vHeight ->
+                                        if (vWidth > 0 && vHeight > 0) {
+                                            videoW = vWidth
+                                            videoH = vHeight
+                                            applyCenterCropTransform()
+                                        }
+                                    }
+                                    setOnPreparedListener { player ->
+                                        val vw = player.videoWidth
+                                        val vh = player.videoHeight
+                                        if (vw > 0 && vh > 0) {
+                                            videoW = vw
+                                            videoH = vh
+                                            applyCenterCropTransform()
+                                        }
+                                        player.start()
+                                    }
+                                    prepareAsync()
+                                }
+                                activePlayer = mp
+                            } catch (e: Exception) {
+                                isVisible = false
+                            }
+                        }
+
+                        override fun onSurfaceTextureSizeChanged(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
+                            applyCenterCropTransform()
+                        }
+                        override fun onSurfaceTextureDestroyed(surface: android.graphics.SurfaceTexture): Boolean {
+                            try {
+                                activePlayer?.release()
+                            } catch (_: Exception) {}
+                            activePlayer = null
+                            return true
+                        }
+                        override fun onSurfaceTextureUpdated(surface: android.graphics.SurfaceTexture) {}
                     }
+                    textureView
                 },
                 modifier = Modifier.fillMaxSize()
             )
