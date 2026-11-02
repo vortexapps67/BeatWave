@@ -433,6 +433,7 @@ fun GradientSweepLyricsLine(
         else -> Arrangement.Start
     }
 
+    val baseAccent = if (expressiveAccent != Color.Unspecified && expressiveAccent.alpha > 0f) expressiveAccent else Color(0xFF00F5FF)
     val infiniteTransition = rememberInfiniteTransition(label = "gradientSweep")
     val sweepOffset by infiniteTransition.animateFloat(
         initialValue = 0f,

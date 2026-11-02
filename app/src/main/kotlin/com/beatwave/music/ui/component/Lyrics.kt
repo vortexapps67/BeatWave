@@ -125,6 +125,9 @@ import com.beatwave.music.R
 import com.beatwave.music.constants.DarkModeKey
 import com.beatwave.music.constants.LyricsAnimationStyle
 import com.beatwave.music.constants.LyricsAnimationStyleKey
+import com.beatwave.music.constants.LyricsCustomAccentColorKey
+import com.beatwave.music.constants.LyricsFontStyle
+import com.beatwave.music.constants.LyricsFontStyleKey
 import com.beatwave.music.constants.LyricsClickKey
 import com.beatwave.music.constants.LyricsFisheyeEffectKey
 import com.beatwave.music.constants.LyricsGlowEffectKey
