@@ -774,20 +774,24 @@ fun FisheyeStickerLyricsLine(
                     (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
                 } else 0f
 
+                val wordScale = if (distanceFromCenter in -0.18f..0.18f) {
+                    if (relX == 0f) 1.28f else 1.08f
+                } else 1.0f
+
                 val wordRotZ = if (distanceFromCenter < -0.15f) {
-                    relX * 6.5f
+                    relX * 12.0f
                 } else if (distanceFromCenter > 0.15f) {
-                    -relX * 6.5f
+                    -relX * 12.0f
                 } else {
-                    relX * 4.0f
+                    relX * 8.5f
                 }
 
                 val wordTransY = if (distanceFromCenter < -0.15f) {
-                    kotlin.math.abs(relX) * 5.5f
+                    kotlin.math.abs(relX) * 9.5f
                 } else if (distanceFromCenter > 0.15f) {
-                    -kotlin.math.abs(relX) * 5.5f
+                    -kotlin.math.abs(relX) * 9.5f
                 } else {
-                    if (relX == 0f) -3.5f else 3.5f
+                    if (relX == 0f) -8.5f else 7.0f
                 }
 
                 val badgeBg = if (isActive) Color.White else Color.White.copy(alpha = 0.14f)
