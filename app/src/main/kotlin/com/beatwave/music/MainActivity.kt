@@ -2986,14 +2986,16 @@ class MainActivity : ComponentActivity() {
                             private var videoW = 0
                             private var videoH = 0
 
-                            private fun applyCenterCropTransform(viewW: Int, viewH: Int) {
+                            private fun applyCenterCropTransform(view: android.view.TextureView) {
+                                val viewW = view.getWidth()
+                                val viewH = view.getHeight()
                                 if (viewW <= 0 || viewH <= 0 || videoW <= 0 || videoH <= 0) return
                                 val scaleX = viewW.toFloat() / videoW.toFloat()
                                 val scaleY = viewH.toFloat() / videoH.toFloat()
                                 val maxScale = maxOf(scaleX, scaleY)
                                 val matrix = android.graphics.Matrix()
                                 matrix.setScale(maxScale / scaleX, maxScale / scaleY, viewW / 2f, viewH / 2f)
-                                setTransform(matrix)
+                                view.setTransform(matrix)
                             }
 
                             override fun onSurfaceTextureAvailable(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
@@ -3017,7 +3019,7 @@ class MainActivity : ComponentActivity() {
                                             if (vWidth > 0 && vHeight > 0) {
                                                 videoW = vWidth
                                                 videoH = vHeight
-                                                applyCenterCropTransform(this@apply.width, this@apply.height)
+                                                applyCenterCropTransform(this@apply)
                                             }
                                         }
                                         setOnPreparedListener { player ->
@@ -3026,7 +3028,7 @@ class MainActivity : ComponentActivity() {
                                             if (vw > 0 && vh > 0) {
                                                 videoW = vw
                                                 videoH = vh
-                                                applyCenterCropTransform(width, height)
+                                                applyCenterCropTransform(this@apply)
                                             }
                                             player.start()
                                         }
@@ -3039,7 +3041,7 @@ class MainActivity : ComponentActivity() {
                             }
 
                             override fun onSurfaceTextureSizeChanged(surface: android.graphics.SurfaceTexture, width: Int, height: Int) {
-                                applyCenterCropTransform(width, height)
+                                applyCenterCropTransform(this@apply)
                             }
                             override fun onSurfaceTextureDestroyed(surface: android.graphics.SurfaceTexture): Boolean {
                                 try {
