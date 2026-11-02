@@ -443,7 +443,7 @@ fun LyricsStyleSettingsScreen(
                         onClick = { onOneTapFullscreenLyricsChange(!oneTapFullscreenLyrics) }
                     ),
                     Material3SettingsItem(
-                        icon = painterResource(R.drawable.font),
+                        icon = painterResource(R.drawable.edit),
                         title = { Text("Lyrics Font Style") },
                         description = {
                             Text(
@@ -645,7 +645,8 @@ fun LyricsStyleSettingsScreen(
             ColorPickerDialog(
                 initialColor = initial,
                 onDismiss = { showCustomColorPicker = false },
-                onColorSelected = { col ->
+                title = "Custom Lyrics Color",
+                onConfirm = { col ->
                     onLyricsCustomAccentColorChange(col.toArgb())
                     showCustomColorPicker = false
                 }
