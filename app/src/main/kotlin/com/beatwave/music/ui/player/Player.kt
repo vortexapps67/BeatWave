@@ -187,6 +187,10 @@ import com.beatwave.music.constants.KeepScreenOn
 import com.beatwave.music.constants.OneTapFullscreenLyricsKey
 import com.beatwave.music.constants.PlayerBackgroundStyle
 import com.beatwave.music.constants.PlayerBackgroundStyleKey
+import com.beatwave.music.constants.EnableLivePlayerBackgroundKey
+import com.beatwave.music.constants.LiveBackgroundStyle
+import com.beatwave.music.constants.LiveBackgroundStyleKey
+import com.beatwave.music.ui.component.LivePlayerBackground
 import com.beatwave.music.constants.PlayerButtonsStyle
 import com.beatwave.music.constants.PlayerButtonsStyleKey
 import com.beatwave.music.constants.PlayerGradientAngleKey
@@ -378,6 +382,8 @@ fun BottomSheetPlayer(
         key = PlayerBackgroundStyleKey,
         defaultValue = PlayerBackgroundStyle.APPLE_MUSIC
     )
+    val (enableLiveBackground) = rememberPreference(EnableLivePlayerBackgroundKey, defaultValue = false)
+    val (liveBackgroundStyle) = rememberEnumPreference(LiveBackgroundStyleKey, defaultValue = LiveBackgroundStyle.COSMIC_AURORA)
     val playerButtonsStyle by rememberEnumPreference(
         key = PlayerButtonsStyleKey,
         defaultValue = PlayerButtonsStyle.DEFAULT
@@ -1235,9 +1241,15 @@ fun BottomSheetPlayer(
                         }
                     )
             ) {
-                // Secondary dynamic layers (Artwork Blur, Mesh, Canvas) render ON TOP 
-                // of the glass material base if enabled.
-                when (playerBackground) {
+                // Secondary dynamic layers (Live Background, Artwork Blur, Mesh, Canvas)
+                if (enableLiveBackground) {
+                    LivePlayerBackground(
+                        style = liveBackgroundStyle,
+                        albumColors = gradientColors,
+                        isPlaying = isPlaying,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else when (playerBackground) {
                     PlayerBackgroundStyle.BLUR -> {
                         AnimatedContent(
                             targetState = mediaMetadata?.thumbnailUrl,

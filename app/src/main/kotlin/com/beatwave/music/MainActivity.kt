@@ -2943,17 +2943,24 @@ class MainActivity : ComponentActivity() {
         }
 
         var isVisible by remember { mutableStateOf(true) }
+        var isRenderingFirstFrame by remember { mutableStateOf(false) }
 
         val alphaAnim by animateFloatAsState(
             targetValue = if (isVisible) 1f else 0f,
-            animationSpec = tween(durationMillis = 280, easing = FastOutSlowInEasing),
+            animationSpec = tween(durationMillis = 420, easing = androidx.compose.animation.core.LinearOutSlowInEasing),
             label = "splashAlpha",
             finishedListener = { if (!isVisible) safeDismiss() }
         )
 
+        val revealAlpha by animateFloatAsState(
+            targetValue = if (isRenderingFirstFrame) 1f else 0f,
+            animationSpec = tween(durationMillis = 180, easing = LinearEasing),
+            label = "videoReveal"
+        )
+
         // Safety timeout in case video ends
         LaunchedEffect(Unit) {
-            delay(3000L)
+            delay(3200L)
             if (isVisible) {
                 isVisible = false
             }
@@ -2963,7 +2970,7 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer {
-                    alpha = alphaAnim
+                    alpha = alphaAnim * revealAlpha
                 }
                 .background(Color.Black),
             contentAlignment = Alignment.Center
@@ -2981,7 +2988,7 @@ class MainActivity : ComponentActivity() {
             androidx.compose.ui.viewinterop.AndroidView(
                 factory = { ctx ->
                     val textureView = android.view.TextureView(ctx)
-                    textureView.isOpaque = false
+                    textureView.isOpaque = true
                     textureView.surfaceTextureListener = object : android.view.TextureView.SurfaceTextureListener {
                         private var videoW = 0
                         private var videoH = 0
@@ -3008,6 +3015,13 @@ class MainActivity : ComponentActivity() {
                                     afd.close()
                                     isLooping = false
                                     setVolume(0f, 0f) // Fully muted
+                                    setVideoScalingMode(android.media.MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
+                                    setOnInfoListener { _, what, _ ->
+                                        if (what == android.media.MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START) {
+                                            isRenderingFirstFrame = true
+                                        }
+                                        false
+                                    }
                                     setOnCompletionListener {
                                         isVisible = false
                                     }

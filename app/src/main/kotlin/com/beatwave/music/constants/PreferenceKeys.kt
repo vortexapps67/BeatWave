@@ -586,6 +586,18 @@ enum class PlayerBackgroundStyle {
     CUSTOM_GRADIENT,
 }
 
+/** 5 Distinct Live Animated Background Styles */
+enum class LiveBackgroundStyle {
+    COSMIC_AURORA,
+    LIQUID_MESH,
+    NEON_PULSE,
+    STARFIELD_NEBULA,
+    PRISM_WAVE,
+}
+
+val EnableLivePlayerBackgroundKey = booleanPreferencesKey("enableLivePlayerBackground")
+val LiveBackgroundStyleKey = stringPreferencesKey("liveBackgroundStyle")
+
 /** Shape + motion applied to the player artwork. */
 enum class PlayerArtworkStyle {
     CARD,

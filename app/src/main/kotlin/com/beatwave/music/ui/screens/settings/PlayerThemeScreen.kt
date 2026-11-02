@@ -81,6 +81,10 @@ import com.beatwave.music.constants.PlayerArtworkStyle
 import com.beatwave.music.constants.PlayerArtworkStyleKey
 import com.beatwave.music.constants.PlayerBackgroundStyle
 import com.beatwave.music.constants.PlayerBackgroundStyleKey
+import com.beatwave.music.constants.EnableLivePlayerBackgroundKey
+import com.beatwave.music.constants.LiveBackgroundStyle
+import com.beatwave.music.constants.LiveBackgroundStyleKey
+import com.beatwave.music.ui.component.LiveBackgroundStyleItemCard
 import com.beatwave.music.constants.PlayerButtonsStyle
 import com.beatwave.music.constants.PlayerButtonsStyleKey
 import com.beatwave.music.constants.MiniPlayerBackgroundStyleKey
@@ -131,6 +135,14 @@ fun PlayerThemeScreen(
 ) {
     val (artworkStyle, onArtworkStyleChange) = rememberEnumPreference(
         PlayerArtworkStyleKey, defaultValue = PlayerArtworkStyle.CARD
+    )
+    val (enableLiveBackground, onEnableLiveBackgroundChange) = rememberPreference(
+        EnableLivePlayerBackgroundKey,
+        defaultValue = false
+    )
+    val (liveBackgroundStyle, onLiveBackgroundStyleChange) = rememberEnumPreference(
+        LiveBackgroundStyleKey,
+        defaultValue = LiveBackgroundStyle.COSMIC_AURORA
     )
     val (background, onBackgroundChange) = rememberEnumPreference(
         PlayerBackgroundStyleKey, defaultValue = PlayerBackgroundStyle.APPLE_MUSIC
@@ -247,6 +259,39 @@ fun PlayerThemeScreen(
                         staticColor = Color(staticColorInt),
                         gradientStops = gradientStops,
                         gradientAngle = gradientAngle,
+                    )
+                }
+            }
+        }
+
+        SectionTitle("Live Animated Background")
+        SwitchPreference(
+            title = { Text("Enable Live Animated Background") },
+            description = if (enableLiveBackground) "60fps dynamic animated backdrop active on player" else "Off by default for pure clean player experience",
+            checked = enableLiveBackground,
+            onCheckedChange = onEnableLiveBackgroundChange,
+        )
+        if (enableLiveBackground) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 6.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                LiveBackgroundStyle.entries.forEach { liveStyle ->
+                    val (title, tagline) = when (liveStyle) {
+                        LiveBackgroundStyle.COSMIC_AURORA -> Pair("Cosmic Aurora", "Harmonic polar northern lights drifting smoothly")
+                        LiveBackgroundStyle.LIQUID_MESH -> Pair("Liquid Mesh", "Organic fluid metaballs blending with album palette")
+                        LiveBackgroundStyle.NEON_PULSE -> Pair("Cyberpunk Neon Pulse", "Radial energy rings and rhythmic pulse waves")
+                        LiveBackgroundStyle.STARFIELD_NEBULA -> Pair("Starfield Nebula", "Cosmic deep space with twinkling stellar dust")
+                        LiveBackgroundStyle.PRISM_WAVE -> Pair("Prism Spectral Wave", "Iridescent prismatic glass flares and light leaks")
+                    }
+                    LiveBackgroundStyleItemCard(
+                        style = liveStyle,
+                        title = title,
+                        tagline = tagline,
+                        isSelected = liveBackgroundStyle == liveStyle,
+                        onSelect = { onLiveBackgroundStyleChange(liveStyle) }
                     )
                 }
             }

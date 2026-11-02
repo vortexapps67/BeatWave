@@ -1262,27 +1262,27 @@ fun Lyrics(
                     val lineDelta = (index - activeLineIdx).toFloat()
                     val absDistance = kotlin.math.abs(lineDelta)
 
-                    // Dramatic spherical lens barrel magnification (punchy 1.45x center focus, rich depth)
+                    // Extreme spherical fishbowl barrel magnification (bold 1.78x center focus, sharp perspective taper)
                     val fisheyeScaleX = if (isFisheyeActive) {
-                        (0.68f + 0.68f / (1f + 0.40f * absDistance * absDistance)).coerceIn(0.65f, 1.45f)
+                        (0.50f + 1.28f / (1f + 0.95f * absDistance * absDistance)).coerceIn(0.48f, 1.78f)
                     } else 1f
 
                     val fisheyeScaleY = if (isFisheyeActive) {
-                        (0.70f + 0.65f / (1f + 0.40f * absDistance * absDistance)).coerceIn(0.68f, 1.40f)
+                        (0.52f + 1.20f / (1f + 0.95f * absDistance * absDistance)).coerceIn(0.50f, 1.72f)
                     } else 1f
 
                     val fisheyeRotationX = if (isFisheyeActive) {
                         // Dramatic cylindrical 3D barrel pitch
-                        (-lineDelta * 32f).coerceIn(-68f, 68f)
+                        (-lineDelta * 40f).coerceIn(-72f, 72f)
                     } else 0f
 
                     val fisheyeTranslationY = if (isFisheyeActive) {
                         val sign = if (lineDelta < 0) 1f else -1f
-                        (sign * (absDistance * absDistance * 6.0f)).coerceIn(-48f, 48f)
+                        (sign * (absDistance * absDistance * 8.0f)).coerceIn(-56f, 56f)
                     } else 0f
 
                     val fisheyeAlpha = if (isFisheyeActive) {
-                        (1f - (absDistance * 0.16f)).coerceIn(0.25f, 1f)
+                        (1f - (absDistance * 0.22f)).coerceIn(0.18f, 1f)
                     } else 1f
 
                     val fisheyePivotY = if (isFisheyeActive) {
@@ -1298,7 +1298,7 @@ fun Lyrics(
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 3.8f * density.density else 16f * density.density
+                                this.cameraDistance = if (isFisheyeActive) 2.8f * density.density else 16f * density.density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationX = fisheyeTranslationX

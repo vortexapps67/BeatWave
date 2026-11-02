@@ -400,10 +400,34 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         BeatWaveSonicWaveformVisualizer(
-                            modifier = Modifier.size(280.dp)
+                            modifier = Modifier.size(290.dp)
                         )
 
-                        Spacer(modifier = Modifier.height(32.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        // High-tech luxury feature pill row
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            listOf("✦ 3D Barrel Lyrics", "✦ Liquid Glass", "✦ Hi-Res Audio").forEach { tag ->
+                                Surface(
+                                    shape = RoundedCornerShape(20.dp),
+                                    color = Color.White.copy(alpha = 0.10f),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.20f))
+                                ) {
+                                    Text(
+                                        text = tag,
+                                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = Color.White.copy(alpha = 0.90f)
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         Text(
                             text = stringResource(com.beatwave.music.R.string.welcome_preparing_subtitle),
@@ -1207,87 +1231,134 @@ fun WelcomePagerScreen(onFinished: () -> Unit) {
 
 @Composable
 fun BeatWaveSonicWaveformVisualizer(modifier: Modifier = Modifier) {
-    val infiniteTransition = rememberInfiniteTransition(label = "beatwaveSonic")
-    val pulseScale by infiniteTransition.animateFloat(
-        initialValue = 0.94f,
-        targetValue = 1.06f,
+    val infiniteTransition = rememberInfiniteTransition(label = "beatwaveSonicWave")
+    
+    val wavePhase by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 6.28318f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1400, easing = FastOutSlowInEasing),
+            animation = tween(2400, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "sonicWavePhase"
+    )
+
+    val auraPulse by infiniteTransition.animateFloat(
+        initialValue = 0.88f,
+        targetValue = 1.12f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2200, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "pulseScale"
+        label = "auraPulse"
     )
+
+    val logoScale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.05f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1600, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "logoScale"
+    )
+
     val ringRotation by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
-            animation = tween(28000, easing = LinearEasing),
+            animation = tween(18000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         ),
-        label = "ringRotation"
-    )
-
-    // Single phase animation drives all waveform bars cleanly without composable loop calls
-    val wavePhase by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 6.2831855f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1600, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "wavePhase"
+        label = "sonicRingRotation"
     )
 
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        // Ambient Liquid Glass Sonic Rings - subtle frosted glow
+        // Luminous Breathing Chromatic Aura
         androidx.compose.foundation.Canvas(
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer {
-                    scaleX = pulseScale
-                    scaleY = pulseScale
+                    scaleX = auraPulse
+                    scaleY = auraPulse
+                }
+        ) {
+            val centerOffset = center
+            val auraRadius = size.minDimension * 0.52f
+
+            drawCircle(
+                brush = androidx.compose.ui.graphics.Brush.radialGradient(
+                    colors = listOf(
+                        Color(0xFF6366F1).copy(alpha = 0.35f),
+                        Color(0xFFEC4899).copy(alpha = 0.22f),
+                        Color(0xFF00F5FF).copy(alpha = 0.12f),
+                        Color.Transparent
+                    ),
+                    center = centerOffset,
+                    radius = auraRadius
+                ),
+                radius = auraRadius,
+                center = centerOffset
+            )
+        }
+
+        // Ambient Liquid Glass Sonic Rings with Orbital Accent Dots
+        androidx.compose.foundation.Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
                     rotationZ = ringRotation
                 }
         ) {
             val maxRadius = size.minDimension / 2f
 
             drawCircle(
-                color = Color.White.copy(alpha = 0.05f),
-                radius = maxRadius * 0.95f,
+                color = Color.White.copy(alpha = 0.06f),
+                radius = maxRadius * 0.96f,
                 style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.5.dp.toPx())
             )
 
             drawCircle(
-                color = Color.White.copy(alpha = 0.09f),
+                color = Color(0xFF6366F1).copy(alpha = 0.20f),
                 radius = maxRadius * 0.78f,
                 style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.dp.toPx())
             )
 
             drawCircle(
-                color = Color.White.copy(alpha = 0.15f),
-                radius = maxRadius * 0.60f,
+                color = Color.White.copy(alpha = 0.18f),
+                radius = maxRadius * 0.62f,
                 style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.5.dp.toPx())
             )
+
+            // Dynamic orbital energy dots
+            val radAngle1 = Math.toRadians(0.0).toFloat()
+            val radAngle2 = Math.toRadians(120.0).toFloat()
+            val radAngle3 = Math.toRadians(240.0).toFloat()
+            val rMid = maxRadius * 0.78f
+            drawCircle(Color(0xFF00F5FF), radius = 3.5.dp.toPx(), center = center + androidx.compose.ui.geometry.Offset((rMid * kotlin.math.cos(radAngle1)), (rMid * kotlin.math.sin(radAngle1))))
+            drawCircle(Color(0xFFFF007F), radius = 3.5.dp.toPx(), center = center + androidx.compose.ui.geometry.Offset((rMid * kotlin.math.cos(radAngle2)), (rMid * kotlin.math.sin(radAngle2))))
+            drawCircle(Color(0xFFFFD700), radius = 3.5.dp.toPx(), center = center + androidx.compose.ui.geometry.Offset((rMid * kotlin.math.cos(radAngle3)), (rMid * kotlin.math.sin(radAngle3))))
         }
 
         // Frosted Liquid Glass Card containing the Big BeatWave Logo & Dancing Visualizer
         Surface(
-            shape = RoundedCornerShape(38.dp),
-            color = Color(0xFF141414).copy(alpha = 0.82f),
+            shape = RoundedCornerShape(42.dp),
+            color = Color(0xFF101018).copy(alpha = 0.85f),
             border = androidx.compose.foundation.BorderStroke(
-                1.5.dp,
+                1.8.dp,
                 androidx.compose.ui.graphics.Brush.linearGradient(
                     listOf(
-                        Color.White.copy(alpha = 0.45f),
-                        Color.White.copy(alpha = 0.08f)
+                        Color.White.copy(alpha = 0.65f),
+                        Color(0xFF818CF8).copy(alpha = 0.40f),
+                        Color.White.copy(alpha = 0.12f)
                     )
                 )
             ),
             shadowElevation = 0.dp,
-            modifier = Modifier.size(230.dp, 220.dp)
+            modifier = Modifier.size(240.dp, 230.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -1296,24 +1367,29 @@ fun BeatWaveSonicWaveformVisualizer(modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .padding(20.dp)
             ) {
-                // Prominent Big Official BeatWave Logo
+                // Prominent Big Official BeatWave Logo with subtle breathing scale
                 androidx.compose.foundation.Image(
                     painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
                     contentDescription = "BeatWave Big Logo",
-                    modifier = Modifier.size(88.dp),
+                    modifier = Modifier
+                        .size(92.dp)
+                        .graphicsLayer {
+                            scaleX = logoScale
+                            scaleY = logoScale
+                        },
                     contentScale = androidx.compose.ui.layout.ContentScale.Fit
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Smooth Dancing Equalizer Soundwave Bars
+                // Smooth Dancing Equalizer Soundwave Bars with Gradient Shimmer
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.5.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(38.dp)
-                        .padding(horizontal = 10.dp)
+                        .padding(horizontal = 8.dp)
                 ) {
                     val barCount = 9
                     val baseHeights = listOf(14f, 22f, 32f, 38f, 38f, 38f, 32f, 22f, 14f)
@@ -1331,7 +1407,8 @@ fun BeatWaveSonicWaveformVisualizer(modifier: Modifier = Modifier) {
                                     androidx.compose.ui.graphics.Brush.verticalGradient(
                                         listOf(
                                             Color.White,
-                                            Color.White.copy(alpha = 0.65f)
+                                            Color(0xFF818CF8),
+                                            Color(0xFF38BDF8).copy(alpha = 0.75f)
                                         )
                                     )
                                 )

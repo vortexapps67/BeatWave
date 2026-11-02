@@ -642,19 +642,30 @@ fun FisheyeStickerLyricsLine(
     val wordList = entry.words
     val hasWords = wordList != null && wordList.isNotEmpty()
 
-    // Authentic black-and-white monochrome doodle glyphs matching video reference
+    // Authentic black-and-white monochrome doodle glyphs matching video reference (vastly expanded)
     fun getWordDoodle(rawWord: String): String? {
         val clean = rawWord.lowercase().trim().replace(Regex("[^a-z]"), "")
         return when {
-            clean in setOf("sun", "light", "shine", "day", "bright", "sunny", "morning") -> "☀\uFE0E"
-            clean in setOf("sky", "cloud", "clouds", "rain", "blue", "air", "high") -> "☁\uFE0E"
-            clean in setOf("see", "look", "eyes", "eye", "watch", "sight", "blind") -> "👁\uFE0E"
-            clean in setOf("cold", "ice", "freeze", "snow", "winter", "chilly") -> "❄\uFE0E"
-            clean in setOf("love", "heart", "baby", "kiss", "trust", "sweet", "darling") -> "♥\uFE0E"
-            clean in setOf("fire", "burn", "hot", "flame", "blaze", "wild") -> "⚡\uFE0E"
-            clean in setOf("night", "star", "dark", "moon", "midnight") -> "★\uFE0E"
-            clean in setOf("car", "drive", "road", "ride", "city", "speed") -> "▲\uFE0E"
-            clean in setOf("call", "phone", "talk", "hear", "voice", "sing", "song") -> "♫\uFE0E"
+            clean in setOf("sun", "light", "shine", "day", "bright", "sunny", "morning", "dawn", "glow", "summer") -> "☀\uFE0E"
+            clean in setOf("sky", "cloud", "clouds", "rain", "blue", "air", "high", "wind", "storm", "heaven") -> "☁\uFE0E"
+            clean in setOf("see", "look", "lookin", "eyes", "eye", "watch", "sight", "blind", "stare", "vision") -> "👁\uFE0E"
+            clean in setOf("cold", "ice", "freeze", "snow", "winter", "chilly", "frost", "frozen", "shiver") -> "❄\uFE0E"
+            clean in setOf("love", "heart", "baby", "babe", "kiss", "sweet", "darling", "forever", "honey", "hold") -> "♥\uFE0E"
+            clean in setOf("break", "broken", "pain", "hurt", "tear", "tears", "cry", "bleed", "alone", "sad") -> "💔\uFE0E"
+            clean in setOf("fire", "burn", "hot", "flame", "blaze", "wild", "spark", "energy", "power", "smoke") -> "⚡\uFE0E"
+            clean in setOf("night", "star", "stars", "dark", "moon", "midnight", "shadow", "sleep", "dream") -> "★\uFE0E"
+            clean in setOf("car", "drive", "road", "ride", "city", "speed", "fast", "wheels", "trip", "run") -> "▲\uFE0E"
+            clean in setOf("call", "phone", "talk", "hear", "voice", "sing", "song", "music", "beat", "sound", "tune", "dance") -> "♫\uFE0E"
+            clean in setOf("water", "ocean", "sea", "river", "wave", "waves", "drown", "swim", "deep", "tide") -> "≈\uFE0E"
+            clean in setOf("time", "clock", "hour", "minute", "second", "wait", "always", "never", "late") -> "⏱\uFE0E"
+            clean in setOf("king", "queen", "crown", "boss", "top", "rule", "royal", "champion", "glory") -> "👑\uFE0E"
+            clean in setOf("peace", "hand", "hands", "touch", "feel", "fingers", "free", "freedom") -> "✌\uFE0E"
+            clean in setOf("money", "cash", "rich", "pay", "bills", "dollar", "spend", "gold", "bank") -> "$\uFE0E"
+            clean in setOf("ghost", "spirit", "soul", "dead", "died", "die", "grave", "monster", "kill") -> "☠\uFE0E"
+            clean in setOf("smile", "laugh", "happy", "joy", "fun", "good", "crazy", "alive") -> "☻\uFE0E"
+            clean in setOf("space", "world", "planet", "alien", "universe", "fly", "gravity", "orbit") -> "✦\uFE0E"
+            clean in setOf("no", "stop", "bad", "wrong", "cant", "wont", "dont", "never", "hate") -> "✕\uFE0E"
+            clean.length > 3 && clean.hashCode() % 3 == 0 -> "✦\uFE0E"
             else -> null
         }
     }
@@ -683,18 +694,22 @@ fun FisheyeStickerLyricsLine(
                 val wordRotZ: Float
                 val wordTransY: Float
 
+                val wordScale = if (distanceFromCenter in -0.18f..0.18f) {
+                    if (relX == 0f) 1.28f else 1.08f
+                } else 1.0f
+
                 if (distanceFromCenter < -0.15f) {
-                    // Top lines bend in convex dome arch
-                    wordRotZ = relX * 6.5f
-                    wordTransY = kotlin.math.abs(relX) * 5.5f
+                    // Top lines bend aggressively in convex fishbowl dome arch
+                    wordRotZ = relX * 12.0f
+                    wordTransY = kotlin.math.abs(relX) * 9.5f
                 } else if (distanceFromCenter > 0.15f) {
-                    // Bottom lines bend in concave bowl arch
-                    wordRotZ = -relX * 6.5f
-                    wordTransY = -kotlin.math.abs(relX) * 5.5f
+                    // Bottom lines bend aggressively in concave fishbowl bowl arch
+                    wordRotZ = -relX * 12.0f
+                    wordTransY = -kotlin.math.abs(relX) * 9.5f
                 } else {
                     // Equator line: center word bulges forward, outer words tilt outward
-                    wordRotZ = relX * 4.0f
-                    wordTransY = if (relX == 0f) -3.5f else 3.5f
+                    wordRotZ = relX * 8.5f
+                    wordTransY = if (relX == 0f) -8.5f else 7.0f
                 }
 
                 val badgeBg = when {
@@ -717,6 +732,8 @@ fun FisheyeStickerLyricsLine(
                         .graphicsLayer {
                             this.rotationZ = wordRotZ
                             this.translationY = wordTransY
+                            this.scaleX = wordScale
+                            this.scaleY = wordScale
                         }
                         .padding(horizontal = 4.dp, vertical = 2.dp)
                         .clip(RoundedCornerShape(10.dp))
@@ -782,6 +799,8 @@ fun FisheyeStickerLyricsLine(
                         .graphicsLayer {
                             this.rotationZ = wordRotZ
                             this.translationY = wordTransY
+                            this.scaleX = wordScale
+                            this.scaleY = wordScale
                         }
                         .padding(horizontal = 4.dp, vertical = 2.dp)
                         .clip(RoundedCornerShape(10.dp))
