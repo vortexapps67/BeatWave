@@ -129,6 +129,7 @@ import com.beatwave.music.constants.ListenBrainzEnabledKey
 import com.beatwave.music.constants.ListenBrainzTokenKey
 import com.beatwave.music.constants.HistoryDuration
 import com.beatwave.music.constants.LastFMUseNowPlaying
+import com.beatwave.music.constants.MediaSessionConstants.CommandToggleCarLyrics
 import com.beatwave.music.constants.MediaSessionConstants.CommandToggleLike
 import com.beatwave.music.constants.MediaSessionConstants.CommandToggleRepeatMode
 import com.beatwave.music.constants.MediaSessionConstants.CommandToggleShuffle
@@ -426,6 +427,11 @@ class MusicService :
     private var duckVolumeRestoreJob: Job? = null
 
     private lateinit var mediaSession: MediaLibrarySession
+    private lateinit var androidAutoLyrics: AndroidAutoLyrics
+    private lateinit var sessionPlayer: LyricsMetadataPlayer
+    private var lastCarButtonState: Pair<Boolean, Boolean>? = null
+    private var lyricsTabRefreshJob: Job? = null
+    private var lastLyricsTabRefresh = 0L
 
     // Tracks if player has been properly initilized
     private val playerInitialized = MutableStateFlow(false)
@@ -654,9 +660,18 @@ class MusicService :
             toggleStartRadio = ::toggleStartRadio
             toggleLibrary = ::toggleLibrary
         }
+        androidAutoLyrics = AndroidAutoLyrics(
+            context = this,
+            scope = scope,
+            database = database,
+            positionMs = { player.currentPosition },
+            isPlaying = { player.isPlaying },
+        )
+        mediaLibrarySessionCallback.androidAutoLyrics = androidAutoLyrics
+        sessionPlayer = lyricsSessionPlayer(player)
         mediaSession =
             MediaLibrarySession
-                .Builder(this, player, mediaLibrarySessionCallback)
+                .Builder(this, sessionPlayer, mediaLibrarySessionCallback)
                 .setSessionActivity(
                     PendingIntent.getActivity(
                         this,
@@ -666,6 +681,21 @@ class MusicService :
                     ),
                 ).setBitmapLoader(CoilBitmapLoader(this, scope))
                 .build()
+        androidAutoLyrics.onChanged = {
+            sessionPlayer.invalidateLyricLine()
+            refreshLyricsTab()
+            // The last car button depends on these, so redraw the buttons when they flip.
+            val carButtonState = androidAutoLyrics.isInCar to androidAutoLyrics.enabled
+            if (carButtonState != lastCarButtonState) {
+                // The Lyrics tab comes and goes with the setting, so the car needs a fresh tab list.
+                if (carButtonState.second != lastCarButtonState?.second) {
+                    mediaSession.notifyChildrenChanged(ROOT, Int.MAX_VALUE, null)
+                }
+                lastCarButtonState = carButtonState
+                updateNotification()
+            }
+        }
+        androidAutoLyrics.start(currentMediaMetadata.map { it?.id })
         player.repeatMode = dataStore.get(RepeatModeKey, REPEAT_MODE_OFF)
 
         // Restore shuffle mode if remember option is enabled
@@ -1505,6 +1535,42 @@ class MusicService :
         updateWidgetUI(false)
     }
 
+    private fun lyricsSessionPlayer(player: Player) =
+        LyricsMetadataPlayer(player) { mediaId -> androidAutoLyrics.metadataLine(mediaId) }
+
+    // Android Auto throttles browse refreshes, so fast lines are coalesced into one
+    // refresh at most every LYRICS_TAB_REFRESH_MS; the list is built when it's fetched.
+    private fun refreshLyricsTab() {
+        if (lyricsTabRefreshJob?.isActive == true) return
+        val wait = LYRICS_TAB_REFRESH_MS - (SystemClock.elapsedRealtime() - lastLyricsTabRefresh)
+        lyricsTabRefreshJob = scope.launch {
+            if (wait > 0) delay(wait)
+            lastLyricsTabRefresh = SystemClock.elapsedRealtime()
+            mediaSession.notifyChildrenChanged(LYRICS, Int.MAX_VALUE, null)
+        }
+    }
+
+    /**
+     * In the car the radio button gives way to a lyrics on/off switch, since the car
+     * has no other way to reach that setting. The phone keeps the radio button.
+     */
+    private fun lastButton(): CommandButton {
+        if (::androidAutoLyrics.isInitialized && androidAutoLyrics.isInCar) {
+            val on = androidAutoLyrics.enabled
+            return CommandButton.Builder()
+                .setDisplayName(getString(if (on) R.string.android_auto_lyrics_hide else R.string.android_auto_lyrics_show))
+                .setIconResId(if (on) R.drawable.lyrics_active else R.drawable.lyrics)
+                .setSessionCommand(CommandToggleCarLyrics)
+                .build()
+        }
+        return CommandButton.Builder()
+            .setDisplayName(getString(R.string.start_radio))
+            .setIconResId(R.drawable.radio)
+            .setSessionCommand(CommandToggleStartRadio)
+            .setEnabled(currentSong.value != null)
+            .build()
+    }
+
     private fun updateNotification() {
         mediaSession.setCustomLayout(
             listOf(
@@ -1551,12 +1617,7 @@ class MusicService :
                     .setIconResId(if (player.shuffleModeEnabled) R.drawable.shuffle_on else R.drawable.shuffle)
                     .setSessionCommand(CommandToggleShuffle)
                     .build(),
-                CommandButton.Builder()
-                    .setDisplayName(getString(R.string.start_radio))
-                    .setIconResId(R.drawable.radio)
-                    .setSessionCommand(CommandToggleStartRadio)
-                    .setEnabled(currentSong.value != null)
-                    .build(),
+                lastButton(),
             ),
         )
     }
@@ -4454,7 +4515,8 @@ class MusicService :
         sleepTimer.player = player
 
         try {
-            (mediaSession as MediaSession).player = player
+            sessionPlayer = lyricsSessionPlayer(player)
+            (mediaSession as MediaSession).player = sessionPlayer
         } catch (e: Exception) {
             timber.log.Timber.e(e, "Failed to swap player in MediaSession")
         }
@@ -4610,6 +4672,8 @@ class MusicService :
         const val PLAYLIST = "playlist"
         const val YOUTUBE_PLAYLIST = "youtube_playlist"
         const val SEARCH = "search"
+        const val LYRICS = "lyrics"
+        private const val LYRICS_TAB_REFRESH_MS = 500L
         const val SHUFFLE_ACTION = "__shuffle__"
 
         const val CHANNEL_ID = "music_channel_01"

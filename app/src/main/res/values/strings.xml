@@ -435,6 +435,12 @@
     <string name="disable_screenshot_desc">When this option is on, screenshots and the app\'s view in Recents are disabled.</string>
     <string name="enable_lrclib">Enable LrcLib lyrics provider</string>
     <string name="enable_kugou">Enable KuGou lyrics provider</string>
+    <string name="android_auto_lyrics">Lyrics on Android Auto</string>
+    <string name="android_auto_lyrics_desc">Show the current line on the car screen and add a Lyrics tab. Tap a line to jump to it</string>
+    <string name="android_auto_lyrics_no_song">Nothing is playing</string>
+    <string name="android_auto_lyrics_not_synced">No synced lyrics for this song</string>
+    <string name="android_auto_lyrics_show">Show lyrics</string>
+    <string name="android_auto_lyrics_hide">Hide lyrics</string>
     <string name="hide_explicit">Hide explicit content</string>
 
     <string name="backup_restore">Backup and restore</string>
