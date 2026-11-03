@@ -439,6 +439,8 @@
     <string name="android_auto_lyrics_desc">Show the current line on the car screen and add a Lyrics tab. Tap a line to jump to it</string>
     <string name="android_auto_lyrics_no_song">Nothing is playing</string>
     <string name="android_auto_lyrics_not_synced">No synced lyrics for this song</string>
+    <string name="android_auto_lyrics_show">Show lyrics</string>
+    <string name="android_auto_lyrics_hide">Hide lyrics</string>
     <string name="hide_explicit">Hide explicit content</string>
 
     <string name="backup_restore">Backup and restore</string>

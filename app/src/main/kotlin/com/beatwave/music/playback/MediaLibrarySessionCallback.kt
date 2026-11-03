@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.core.net.toUri
+import androidx.datastore.preferences.core.edit
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -36,6 +37,7 @@ import com.music.innertube.models.SongItem
 import com.music.innertube.models.filterExplicit
 import com.music.innertube.models.filterVideoSongs
 import com.beatwave.music.R
+import com.beatwave.music.constants.AndroidAutoLyricsKey
 import com.beatwave.music.constants.HideExplicitKey
 import com.beatwave.music.constants.HideVideoSongsKey
 import com.beatwave.music.constants.DataSaverEnabledKey
@@ -58,6 +60,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.guava.future
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
@@ -84,6 +87,9 @@ constructor(
         controller: MediaSession.ControllerInfo,
     ): MediaSession.ConnectionResult {
         val connectionResult = super.onConnect(session, controller)
+        if (controller.packageName == AndroidAutoLyrics.ANDROID_AUTO_PACKAGE) {
+            androidAutoLyrics?.onCarControllerConnected(true)
+        }
         return MediaSession.ConnectionResult.accept(
             connectionResult.availableSessionCommands
                 .buildUpon()
@@ -92,9 +98,19 @@ constructor(
                 .add(MediaSessionConstants.CommandToggleLibrary)
                 .add(MediaSessionConstants.CommandToggleShuffle)
                 .add(MediaSessionConstants.CommandToggleRepeatMode)
+                .add(MediaSessionConstants.CommandToggleCarLyrics)
                 .build(),
             connectionResult.availablePlayerCommands,
         )
+    }
+
+    override fun onDisconnected(
+        session: MediaSession,
+        controller: MediaSession.ControllerInfo,
+    ) {
+        if (controller.packageName == AndroidAutoLyrics.ANDROID_AUTO_PACKAGE) {
+            androidAutoLyrics?.onCarControllerConnected(false)
+        }
     }
 
     override fun onCustomCommand(
@@ -111,6 +127,7 @@ constructor(
                 !session.player.shuffleModeEnabled
 
             MediaSessionConstants.ACTION_TOGGLE_REPEAT_MODE -> session.player.toggleRepeatMode()
+            MediaSessionConstants.ACTION_TOGGLE_CAR_LYRICS -> toggleCarLyrics()
         }
         return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
     }
@@ -675,8 +692,8 @@ constructor(
     )
 
     /**
-     * A window of lines around the current one. It's rebuilt on every line change,
-     * so the current line stays near the top without the list needing to scroll.
+     * One row: the current line as the title and the next one as the subtitle, which
+     * Android Auto draws smaller and dimmer. It's rebuilt on every line change.
      */
     private fun lyricsChildren(): List<MediaItem> {
         val lyrics = androidAutoLyrics ?: return emptyList()
@@ -686,31 +703,29 @@ constructor(
             return listOf(lyricsMessageItem(context.getString(R.string.android_auto_lyrics_not_synced)))
         }
 
-        val current = lyrics.currentIndex.coerceAtLeast(0)
-        val from = (current - AndroidAutoLyrics.TAB_LINES_BEFORE).coerceAtLeast(0)
-        val to = (from + AndroidAutoLyrics.TAB_LINES_TOTAL).coerceAtMost(lyrics.lines.size)
-        return (from until to).map { index ->
-            val line = lyrics.lines[index]
-            val text = line.text.trim().ifEmpty { "♪" }
-            val isCurrent = index == lyrics.currentIndex
+        val index = lyrics.currentIndex.coerceAtLeast(0)
+        val line = lyrics.lines[index]
+        return listOf(
             lyricLineMediaItem(
                 id = "${MusicService.LYRICS}/$songId/${line.time}",
-                title = if (isCurrent) "♪ $text" else text,
-                iconUri = if (isCurrent) drawableUri(R.drawable.play) else null,
-                // The subtitle row is dimmer, so the next line reads as "coming up".
-                subtitle = if (isCurrent) lyrics.lines.getOrNull(index + 1)?.text?.trim() else null,
-            )
-        }
+                title = line.text.trim().ifEmpty { "♪" },
+                iconUri = null,
+                subtitle = lyrics.lines.getOrNull(index + 1)?.text?.trim(),
+            ),
+        )
     }
 
+    // Not playable: Android Auto offers playable items as "For you" suggestions on the
+    // home screen, and a status message has no business there.
     private fun lyricsMessageItem(message: String) =
-        lyricLineMediaItem(MusicService.LYRICS + "/", message, drawableUri(R.drawable.lyrics))
+        lyricLineMediaItem(MusicService.LYRICS + "/", message, drawableUri(R.drawable.lyrics), playable = false)
 
     private fun lyricLineMediaItem(
         id: String,
         title: String,
         iconUri: Uri?,
         subtitle: String? = null,
+        playable: Boolean = true,
     ) = MediaItem
         .Builder()
         .setMediaId(id)
@@ -720,12 +735,18 @@ constructor(
                 .setTitle(title)
                 .setSubtitle(subtitle)
                 .setArtworkUri(iconUri)
-                .setIsPlayable(true)
+                .setIsPlayable(playable)
                 .setIsBrowsable(false)
                 .setMediaType(MediaMetadata.MEDIA_TYPE_MUSIC)
                 .setExtras(playableMediaItemExtras())
                 .build(),
         ).build()
+
+    private fun toggleCarLyrics() {
+        scope.launch {
+            context.dataStore.edit { it[AndroidAutoLyricsKey] = !(it[AndroidAutoLyricsKey] ?: true) }
+        }
+    }
 
     /** mediaId is lyrics/<songId>/<timeMs>; only seeks if that song is still playing. */
     private fun seekToLyricLine(player: Player, path: List<String>) {

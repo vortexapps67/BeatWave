@@ -129,6 +129,7 @@ import com.beatwave.music.constants.ListenBrainzEnabledKey
 import com.beatwave.music.constants.ListenBrainzTokenKey
 import com.beatwave.music.constants.HistoryDuration
 import com.beatwave.music.constants.LastFMUseNowPlaying
+import com.beatwave.music.constants.MediaSessionConstants.CommandToggleCarLyrics
 import com.beatwave.music.constants.MediaSessionConstants.CommandToggleLike
 import com.beatwave.music.constants.MediaSessionConstants.CommandToggleRepeatMode
 import com.beatwave.music.constants.MediaSessionConstants.CommandToggleShuffle
@@ -428,6 +429,7 @@ class MusicService :
     private lateinit var mediaSession: MediaLibrarySession
     private lateinit var androidAutoLyrics: AndroidAutoLyrics
     private lateinit var sessionPlayer: LyricsMetadataPlayer
+    private var lastCarButtonState: Pair<Boolean, Boolean>? = null
     private var lyricsTabRefreshJob: Job? = null
     private var lastLyricsTabRefresh = 0L
 
@@ -682,6 +684,16 @@ class MusicService :
         androidAutoLyrics.onChanged = {
             sessionPlayer.invalidateLyricLine()
             refreshLyricsTab()
+            // The last car button depends on these, so redraw the buttons when they flip.
+            val carButtonState = androidAutoLyrics.isInCar to androidAutoLyrics.enabled
+            if (carButtonState != lastCarButtonState) {
+                // The Lyrics tab comes and goes with the setting, so the car needs a fresh tab list.
+                if (carButtonState.second != lastCarButtonState?.second) {
+                    mediaSession.notifyChildrenChanged(ROOT, Int.MAX_VALUE, null)
+                }
+                lastCarButtonState = carButtonState
+                updateNotification()
+            }
         }
         androidAutoLyrics.start(currentMediaMetadata.map { it?.id })
         player.repeatMode = dataStore.get(RepeatModeKey, REPEAT_MODE_OFF)
@@ -1538,6 +1550,27 @@ class MusicService :
         }
     }
 
+    /**
+     * In the car the radio button gives way to a lyrics on/off switch, since the car
+     * has no other way to reach that setting. The phone keeps the radio button.
+     */
+    private fun lastButton(): CommandButton {
+        if (::androidAutoLyrics.isInitialized && androidAutoLyrics.isInCar) {
+            val on = androidAutoLyrics.enabled
+            return CommandButton.Builder()
+                .setDisplayName(getString(if (on) R.string.android_auto_lyrics_hide else R.string.android_auto_lyrics_show))
+                .setIconResId(if (on) R.drawable.lyrics_active else R.drawable.lyrics)
+                .setSessionCommand(CommandToggleCarLyrics)
+                .build()
+        }
+        return CommandButton.Builder()
+            .setDisplayName(getString(R.string.start_radio))
+            .setIconResId(R.drawable.radio)
+            .setSessionCommand(CommandToggleStartRadio)
+            .setEnabled(currentSong.value != null)
+            .build()
+    }
+
     private fun updateNotification() {
         mediaSession.setCustomLayout(
             listOf(
@@ -1584,12 +1617,7 @@ class MusicService :
                     .setIconResId(if (player.shuffleModeEnabled) R.drawable.shuffle_on else R.drawable.shuffle)
                     .setSessionCommand(CommandToggleShuffle)
                     .build(),
-                CommandButton.Builder()
-                    .setDisplayName(getString(R.string.start_radio))
-                    .setIconResId(R.drawable.radio)
-                    .setSessionCommand(CommandToggleStartRadio)
-                    .setEnabled(currentSong.value != null)
-                    .build(),
+                lastButton(),
             ),
         )
     }

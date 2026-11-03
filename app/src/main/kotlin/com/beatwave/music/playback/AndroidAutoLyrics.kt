@@ -15,6 +15,7 @@ import com.beatwave.music.db.entities.LyricsEntity.Companion.LYRICS_NOT_FOUND
 import com.beatwave.music.lyrics.LyricsEntry
 import com.beatwave.music.lyrics.LyricsUtils
 import com.beatwave.music.utils.dataStore
+import com.beatwave.music.utils.get
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Synced lyrics for Android Auto.
@@ -32,8 +34,8 @@ import kotlinx.coroutines.launch
  * A media app can't draw its own screen in the car, Android Auto only renders
  * what the media session publishes. So lyrics reach the car two ways:
  * the current line is swapped into the now playing metadata (see
- * [LyricsMetadataPlayer]), and the "Lyrics" browse tab lists a window of lines
- * around it, where tapping a line seeks to it.
+ * [LyricsMetadataPlayer]), and the "Lyrics" browse tab shows it with the next
+ * line below, where tapping it seeks to the start of the line.
  */
 class AndroidAutoLyrics(
     private val context: Context,
@@ -62,15 +64,38 @@ class AndroidAutoLyrics(
     private val isAutomotive = context.packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)
 
     /**
-     * Android Auto puts the phone in car mode while projecting. Only then does the
-     * lyric line replace the artist, so the phone's own notification stays normal.
+     * Only in the car does the lyric line replace the song info, so the phone's own
+     * notification stays normal. Newer Android Auto versions don't put the phone in
+     * car mode, so a connected Android Auto controller counts too.
      */
     @Volatile
     var isInCar = false
         private set
 
+    private val carControllers = AtomicInteger(0)
+
+    /** Called by the session callback when Android Auto connects to or leaves the session. */
+    fun onCarControllerConnected(connected: Boolean) {
+        if (connected) {
+            carControllers.incrementAndGet()
+        } else {
+            carControllers.updateAndGet { (it - 1).coerceAtLeast(0) }
+        }
+        scope.launch { updateInCar() }
+    }
+
     private fun checkInCar() =
-        isAutomotive || uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
+        isAutomotive ||
+            carControllers.get() > 0 ||
+            uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
+
+    private fun updateInCar() {
+        val inCar = checkInCar()
+        if (inCar != isInCar) {
+            isInCar = inCar
+            onChanged()
+        }
+    }
 
     /** The line to show in the now playing metadata for [mediaId], or null to leave it alone. */
     fun metadataLine(mediaId: String?): String? {
@@ -80,6 +105,10 @@ class AndroidAutoLyrics(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun start(songIds: Flow<String?>) {
+        // Read once up front: Android Auto can ask for the tabs before the flow below
+        // first emits, and would get a tab list without Lyrics.
+        enabled = context.dataStore.get(AndroidAutoLyricsKey, true)
+
         scope.launch {
             context.dataStore.data
                 .map { it[AndroidAutoLyricsKey] ?: true }
@@ -114,11 +143,7 @@ class AndroidAutoLyrics(
                 val ticking = enabled && lines.isNotEmpty() && isPlaying()
                 if (sinceCarCheck >= IDLE_MS) {
                     sinceCarCheck = 0
-                    val inCar = checkInCar()
-                    if (inCar != isInCar) {
-                        isInCar = inCar
-                        onChanged()
-                    }
+                    updateInCar()
                 }
                 if (ticking) tick(force = false)
                 val wait = if (ticking) TICK_MS else IDLE_MS
@@ -151,8 +176,7 @@ class AndroidAutoLyrics(
         private const val TICK_MS = 200L
         private const val IDLE_MS = 1000L
 
-        /** Lines in the Lyrics tab: one before the current line and the rest after it. */
-        const val TAB_LINES_BEFORE = 1
-        const val TAB_LINES_TOTAL = 8
+        /** Package of the Android Auto app, which connects to the session while projecting. */
+        const val ANDROID_AUTO_PACKAGE = "com.google.android.projection.gearhead"
     }
 }
