@@ -1182,7 +1182,10 @@ fun Lyrics(
                             )
                             else Color.Transparent
                         )
-                        .padding(horizontal = if (isFisheyeActive) 8.dp else 24.dp, vertical = (if (isFisheyeActive) 4 else 8 * lyricsLineSpacing).dp)
+                        .padding(
+                            horizontal = if (isFisheyeActive) 8.dp else 24.dp,
+                            vertical = if (isFisheyeActive) 4.dp else (8 * lyricsLineSpacing).dp
+                        )
                     
                     // Check if this line shares the same time as the currently active line
                     // This enables synchronized word-by-word animation for both main and background vocals
