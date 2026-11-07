@@ -589,6 +589,7 @@ object LyricsUtils {
             if (words != null && words.isNotEmpty()) {
                 // Strictly 1 to 3 words per line, targeting punchy 1-2 word lines
                 var i = 0
+                var chunkCount = 0
                 while (i < words.size) {
                     val remaining = words.size - i
                     val takeCount = when {
@@ -603,17 +604,26 @@ object LyricsUtils {
                             time = chunkStartTime,
                             text = chunkText,
                             words = chunkWords,
-                            agent = entry.agent,
+                            agent = if (chunkCount == 0) (entry.agent ?: "v1") else null,
                             isBackground = entry.isBackground
                         )
                     )
                     i += takeCount
+                    chunkCount++
                 }
             } else {
                 // Non-word-synced: break sentence into 1 to 3 words per line
                 val rawTokens = entry.text.trim().split(Regex("\\s+")).filter { it.isNotBlank() }
                 if (rawTokens.size <= 3) {
-                    result.add(entry)
+                    result.add(
+                        LyricsEntry(
+                            time = entry.time,
+                            text = entry.text,
+                            words = null,
+                            agent = entry.agent ?: "v1",
+                            isBackground = entry.isBackground
+                        )
+                    )
                 } else {
                     val chunks = ArrayList<List<String>>()
                     var i = 0
@@ -637,7 +647,7 @@ object LyricsUtils {
                                 time = chunkStartTime,
                                 text = chunkText,
                                 words = null,
-                                agent = entry.agent,
+                                agent = if (cIdx == 0) (entry.agent ?: "v1") else null,
                                 isBackground = entry.isBackground
                             )
                         )

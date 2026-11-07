@@ -950,7 +950,8 @@ fun Lyrics(
                     key = { index, item -> "$index-${item.time}" } // Add stable key
                 ) { index, item ->
                     val isSelected = selectedIndices.contains(index)
-                    if (lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1 && item.words?.isNotEmpty() == true) {
+                    val isFisheyeActive = lyricsFisheyeEffect || lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE
+                    if (!isFisheyeActive && lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1 && item.words?.isNotEmpty() == true) {
                         val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < effectiveLines.size) {
                             effectiveLines[displayedCurrentLineIndex].time
                         } else -1L
@@ -1030,7 +1031,7 @@ fun Lyrics(
                             }
                         )
                         return@itemsIndexed
-                    } else if (lyricsAnimationStyle == LyricsAnimationStyle.METRO_LYRICS) {
+                    } else if (!isFisheyeActive && lyricsAnimationStyle == LyricsAnimationStyle.METRO_LYRICS) {
                         val currentLineTime = if (displayedCurrentLineIndex >= 0 && displayedCurrentLineIndex < effectiveLines.size) {
                             effectiveLines[displayedCurrentLineIndex].time
                         } else -1L
@@ -1181,7 +1182,7 @@ fun Lyrics(
                             )
                             else Color.Transparent
                         )
-                        .padding(horizontal = 24.dp, vertical = (8 * lyricsLineSpacing).dp)
+                        .padding(horizontal = if (isFisheyeActive) 8.dp else 24.dp, vertical = (if (isFisheyeActive) 4 else 8 * lyricsLineSpacing).dp)
                     
                     // Check if this line shares the same time as the currently active line
                     // This enables synchronized word-by-word animation for both main and background vocals
@@ -1226,8 +1227,6 @@ fun Lyrics(
                         label = "standard_blur"
                     )
 
-                    val isFisheyeActive = lyricsFisheyeEffect || lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE
-
                     // Determine alignment based on agent for multi-singer support (Fisheye is always dead-center)
                     val agentAlignment = when {
                         isFisheyeActive -> Alignment.CenterHorizontally
@@ -1262,27 +1261,26 @@ fun Lyrics(
                     val lineDelta = (index - activeLineIdx).toFloat()
                     val absDistance = kotlin.math.abs(lineDelta)
 
-                    // Extreme spherical fishbowl barrel magnification (bold 1.78x center focus, sharp perspective taper)
+                    // Authentic luxury cylindrical 3D barrel perspective (matching reference)
                     val fisheyeScaleX = if (isFisheyeActive) {
-                        (0.50f + 1.28f / (1f + 0.95f * absDistance * absDistance)).coerceIn(0.48f, 1.78f)
+                        (0.65f + 0.65f / (1f + 0.75f * absDistance * absDistance)).coerceIn(0.60f, 1.30f)
                     } else 1f
 
                     val fisheyeScaleY = if (isFisheyeActive) {
-                        (0.52f + 1.20f / (1f + 0.95f * absDistance * absDistance)).coerceIn(0.50f, 1.72f)
+                        (0.65f + 0.65f / (1f + 0.75f * absDistance * absDistance)).coerceIn(0.60f, 1.30f)
                     } else 1f
 
                     val fisheyeRotationX = if (isFisheyeActive) {
-                        // Dramatic cylindrical 3D barrel pitch
-                        (-lineDelta * 40f).coerceIn(-72f, 72f)
+                        (-lineDelta * 26f).coerceIn(-58f, 58f)
                     } else 0f
 
                     val fisheyeTranslationY = if (isFisheyeActive) {
                         val sign = if (lineDelta < 0) 1f else -1f
-                        (sign * (absDistance * absDistance * 8.0f)).coerceIn(-56f, 56f)
+                        (sign * (absDistance * absDistance * 4.0f)).coerceIn(-32f, 32f)
                     } else 0f
 
                     val fisheyeAlpha = if (isFisheyeActive) {
-                        (1f - (absDistance * 0.22f)).coerceIn(0.18f, 1f)
+                        (1f - (absDistance * 0.18f)).coerceIn(0.20f, 1f)
                     } else 1f
 
                     val fisheyePivotY = if (isFisheyeActive) {
@@ -1298,7 +1296,7 @@ fun Lyrics(
                     Column(
                         modifier = itemModifier
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 2.8f * density.density else 16f * density.density
+                                this.cameraDistance = if (isFisheyeActive) 8f * density.density else 16f * density.density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationX = fisheyeTranslationX
@@ -1329,8 +1327,21 @@ fun Lyrics(
                         
                         val hasWordTimings = if (romanizeAsMain && isRomanizedAvailable) false else item.words?.isNotEmpty() == true
                         
-                        // Word-by-word animation styles
-                        if (hasWordTimings && lyricsAnimationStyle == LyricsAnimationStyle.NONE) {
+                        // Always render authentic luxury 3D barrel when Fisheye is active (matching reference)
+                        if (isFisheyeActive) {
+                            FisheyeStickerLyricsLine(
+                                entry = item,
+                                isActive = isActiveLine,
+                                effectivePlaybackPosition = effectivePlaybackPosition,
+                                expressiveAccent = expressiveAccent,
+                                baseFontSize = lyricsTextSize,
+                                lineHeight = lyricsTextSize * lyricsLineSpacing.coerceAtMost(1.3f),
+                                agentTextAlign = agentTextAlign,
+                                agentAlignment = agentAlignment,
+                                distanceFromCenter = lineDelta,
+                                lyricsFontFamily = resolvedLyricsFontFamily
+                            )
+                        } else if (hasWordTimings && lyricsAnimationStyle == LyricsAnimationStyle.NONE) {
                             val styledText = buildAnnotatedString {
                                 item.words?.forEachIndexed { wordIndex, word ->
                                     val wordStartMs = (word.startTime * 1000).toLong()

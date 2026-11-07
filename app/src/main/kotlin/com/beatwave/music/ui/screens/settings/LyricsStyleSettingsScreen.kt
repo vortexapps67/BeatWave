@@ -230,7 +230,7 @@ fun LyricsStyleSettingsScreen(
                 LyricsStyleInfo(
                     style = LyricsAnimationStyle.FISHEYE,
                     title = "Fisheye 3D Barrel",
-                    tagline = "Cylindrical rotating drum with sticker word badges & contextual emojis",
+                    tagline = "Cylindrical rotating drum with singer avatar, word underline bars & frosted pills",
                     badge = "HOT",
                     accentColor = Color(0xFFFF2D55)
                 ),
@@ -843,38 +843,36 @@ private fun LiveLyricsInteractivePreview(
         listOf(
             LyricsEntry(
                 time = 0L,
-                text = "Neon lights across the midnight sky",
+                text = "Where have you been?",
                 words = listOf(
-                    WordTimestamp(text = "Neon", startTime = 0.0, endTime = 0.7),
-                    WordTimestamp(text = "lights", startTime = 0.7, endTime = 1.4),
-                    WordTimestamp(text = "across", startTime = 1.4, endTime = 2.0),
-                    WordTimestamp(text = "the", startTime = 2.0, endTime = 2.5),
-                    WordTimestamp(text = "midnight", startTime = 2.5, endTime = 3.2),
-                    WordTimestamp(text = "sky", startTime = 3.2, endTime = 4.0)
+                    WordTimestamp(text = "Where", startTime = 0.0, endTime = 0.8),
+                    WordTimestamp(text = "have", startTime = 0.8, endTime = 1.6),
+                    WordTimestamp(text = "you", startTime = 1.6, endTime = 2.4),
+                    WordTimestamp(text = "been?", startTime = 2.4, endTime = 4.0)
                 )
             ),
             LyricsEntry(
                 time = 4000L,
-                text = "Rhythm pulsing in the heart of sound",
+                text = "Do you know when you're coming back?",
                 words = listOf(
-                    WordTimestamp(text = "Rhythm", startTime = 4.0, endTime = 4.8),
-                    WordTimestamp(text = "pulsing", startTime = 4.8, endTime = 5.8),
-                    WordTimestamp(text = "in", startTime = 5.8, endTime = 6.4),
-                    WordTimestamp(text = "the", startTime = 6.4, endTime = 6.8),
-                    WordTimestamp(text = "heart", startTime = 6.8, endTime = 7.5),
-                    WordTimestamp(text = "of", startTime = 7.5, endTime = 8.0),
-                    WordTimestamp(text = "sound", startTime = 8.0, endTime = 9.0)
+                    WordTimestamp(text = "Do", startTime = 4.0, endTime = 4.6),
+                    WordTimestamp(text = "you", startTime = 4.6, endTime = 5.2),
+                    WordTimestamp(text = "know", startTime = 5.2, endTime = 6.0),
+                    WordTimestamp(text = "when", startTime = 6.0, endTime = 6.8),
+                    WordTimestamp(text = "you're", startTime = 6.8, endTime = 7.6),
+                    WordTimestamp(text = "coming", startTime = 7.6, endTime = 8.4),
+                    WordTimestamp(text = "back?", startTime = 8.4, endTime = 9.5)
                 )
             ),
             LyricsEntry(
-                time = 9000L,
-                text = "Every beat echoes into tomorrow",
+                time = 9500L,
+                text = "I've been waiting all night long",
                 words = listOf(
-                    WordTimestamp(text = "Every", startTime = 9.0, endTime = 9.7),
-                    WordTimestamp(text = "beat", startTime = 9.7, endTime = 10.4),
-                    WordTimestamp(text = "echoes", startTime = 10.4, endTime = 11.2),
-                    WordTimestamp(text = "into", startTime = 11.2, endTime = 11.6),
-                    WordTimestamp(text = "tomorrow", startTime = 11.6, endTime = 12.0)
+                    WordTimestamp(text = "I've", startTime = 9.5, endTime = 10.0),
+                    WordTimestamp(text = "been", startTime = 10.0, endTime = 10.5),
+                    WordTimestamp(text = "waiting", startTime = 10.5, endTime = 11.0),
+                    WordTimestamp(text = "all", startTime = 11.0, endTime = 11.5),
+                    WordTimestamp(text = "night", startTime = 11.5, endTime = 12.0)
                 )
             )
         )
@@ -938,12 +936,19 @@ private fun LiveLyricsInteractivePreview(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            val visibleIndices = remember(activeIndex, previewLines.size) {
+                val start = (activeIndex - 1).coerceAtLeast(0)
+                val end = (activeIndex + 2).coerceAtMost(previewLines.size - 1)
+                (start..end).toList()
+            }
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                previewLines.forEachIndexed { index, entry ->
+                visibleIndices.forEach { index ->
+                    val entry = previewLines[index]
                     val isActive = index == activeIndex
                     val lineDistance = kotlin.math.abs(index - activeIndex).toFloat()
 
@@ -995,7 +1000,7 @@ private fun LiveLyricsInteractivePreview(
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer {
-                                this.cameraDistance = if (isFisheyeActive) 3.8f * density else 16f * density
+                                this.cameraDistance = if (isFisheyeActive) 8f * density else 16f * density
                                 this.transformOrigin = androidx.compose.ui.graphics.TransformOrigin(0.5f, fisheyePivotY)
                                 this.rotationX = fisheyeRotationX
                                 this.translationY = fisheyeTranslationY
@@ -1005,7 +1010,21 @@ private fun LiveLyricsInteractivePreview(
                             },
                         contentAlignment = Alignment.Center
                     ) {
-                        when (selectedStyle) {
+                        if (isFisheyeActive) {
+                            FisheyeStickerLyricsLine(
+                                entry = entry,
+                                isActive = isActive,
+                                effectivePlaybackPosition = currentPlaybackMs,
+                                expressiveAccent = previewAccent,
+                                baseFontSize = 18f,
+                                lineHeight = 24f,
+                                agentTextAlign = TextAlign.Center,
+                                agentAlignment = Alignment.CenterHorizontally,
+                                distanceFromCenter = delta,
+                                lyricsFontFamily = lyricsFontFamily
+                            )
+                        } else {
+                            when (selectedStyle) {
                             LyricsAnimationStyle.FISHEYE -> {
                                 FisheyeStickerLyricsLine(
                                     entry = entry,
@@ -1090,6 +1109,7 @@ private fun LiveLyricsInteractivePreview(
                                     lineHeight = 26.sp
                                 )
                             }
+                        }
                         }
                     }
                 }

@@ -16,6 +16,12 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.ui.res.painterResource
+import com.beatwave.music.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -619,10 +625,13 @@ fun RetroCassetteLyricsLine(
 
 
 /**
- * 6. FISHEYE STICKER CYLINDER:
- * True cylindrical 3D rotating drum barrel with word-level cutout sticker badges
- * and contextual doodle emojis (cloud, sun, snowflake, eye, heart, flame, star),
- * matching the authentic music video fisheye aesthetic.
+ * 6. FISHEYE 3D BARREL (CYLINDRICAL DRUM):
+ * Authentic high-fashion 3D cylindrical drum lyrics matching the reference:
+ * - Minimalist white singer avatar silhouette icon (👤) on phrase start
+ * - Dynamic focal words with individual rounded underline stroke bars directly beneath each word
+ * - Enormous, centered active line at focal center with bold underline bar
+ * - Receding distant lines encapsulated in frosted translucent capsules with vertical divider strokes (|)
+ * - 3D spherical / barrel curvature with convex top arch and concave bottom wrap.
  */
 @Composable
 fun FisheyeStickerLyricsLine(
@@ -641,196 +650,249 @@ fun FisheyeStickerLyricsLine(
 ) {
     val wordList = entry.words
     val hasWords = wordList != null && wordList.isNotEmpty()
+    val isNearCenter = distanceFromCenter < 1.35f
+    val isFocalCenter = kotlin.math.abs(distanceFromCenter) < 0.22f
+    val showSingerIcon = entry.agent != null && !entry.isBackground
 
-    // Authentic black-and-white monochrome doodle glyphs matching video reference (vastly expanded)
-    fun getWordDoodle(rawWord: String): String? {
-        val clean = rawWord.lowercase().trim().replace(Regex("[^a-z]"), "")
-        return when {
-            clean in setOf("sun", "light", "shine", "day", "bright", "sunny", "morning", "dawn", "glow", "summer") -> "☀\uFE0E"
-            clean in setOf("sky", "cloud", "clouds", "rain", "blue", "air", "high", "wind", "storm", "heaven") -> "☁\uFE0E"
-            clean in setOf("see", "look", "lookin", "eyes", "eye", "watch", "sight", "blind", "stare", "vision") -> "👁\uFE0E"
-            clean in setOf("cold", "ice", "freeze", "snow", "winter", "chilly", "frost", "frozen", "shiver") -> "❄\uFE0E"
-            clean in setOf("love", "heart", "baby", "babe", "kiss", "sweet", "darling", "forever", "honey", "hold") -> "♥\uFE0E"
-            clean in setOf("break", "broken", "pain", "hurt", "tear", "tears", "cry", "bleed", "alone", "sad") -> "💔\uFE0E"
-            clean in setOf("fire", "burn", "hot", "flame", "blaze", "wild", "spark", "energy", "power", "smoke") -> "⚡\uFE0E"
-            clean in setOf("night", "star", "stars", "dark", "moon", "midnight", "shadow", "sleep", "dream") -> "★\uFE0E"
-            clean in setOf("car", "drive", "road", "ride", "city", "speed", "fast", "wheels", "trip", "run") -> "▲\uFE0E"
-            clean in setOf("call", "phone", "talk", "hear", "voice", "sing", "song", "music", "beat", "sound", "tune", "dance") -> "♫\uFE0E"
-            clean in setOf("water", "ocean", "sea", "river", "wave", "waves", "drown", "swim", "deep", "tide") -> "≈\uFE0E"
-            clean in setOf("time", "clock", "hour", "minute", "second", "wait", "always", "never", "late") -> "⏱\uFE0E"
-            clean in setOf("king", "queen", "crown", "boss", "top", "rule", "royal", "champion", "glory") -> "👑\uFE0E"
-            clean in setOf("peace", "hand", "hands", "touch", "feel", "fingers", "free", "freedom") -> "✌\uFE0E"
-            clean in setOf("money", "cash", "rich", "pay", "bills", "dollar", "spend", "gold", "bank") -> "$\uFE0E"
-            clean in setOf("ghost", "spirit", "soul", "dead", "died", "die", "grave", "monster", "kill") -> "☠\uFE0E"
-            clean in setOf("smile", "laugh", "happy", "joy", "fun", "good", "crazy", "alive") -> "☻\uFE0E"
-            clean in setOf("space", "world", "planet", "alien", "universe", "fly", "gravity", "orbit") -> "✦\uFE0E"
-            clean in setOf("no", "stop", "bad", "wrong", "cant", "wont", "dont", "never", "hate") -> "✕\uFE0E"
-            clean.length > 3 && clean.hashCode() % 3 == 0 -> "✦\uFE0E"
-            else -> null
-        }
-    }
+    val accent = if (expressiveAccent != Color.Unspecified && expressiveAccent.alpha > 0f) expressiveAccent else Color.White
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 2.dp),
+            .padding(horizontal = 8.dp, vertical = 2.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (hasWords) {
-            val totalWords = wordList!!.size
-            wordList.forEachIndexed { wordIndex, word ->
-                val wordStartMs = (word.startTime * 1000).toLong()
-                val wordEndMs = (word.endTime * 1000).toLong()
-                val isWordActive = isActive && effectivePlaybackPosition >= wordStartMs && effectivePlaybackPosition <= wordEndMs
-                val hasWordPassed = isActive && effectivePlaybackPosition > wordEndMs
+        // Singer avatar silhouette icon (👤) on phrase start (left side)
+        if (showSingerIcon) {
+            val iconAlpha = when {
+                isFocalCenter -> 1.0f
+                isActive -> 0.90f
+                distanceFromCenter < 0f -> 0.75f
+                else -> 0.50f
+            }
+            Icon(
+                painter = painterResource(R.drawable.person),
+                contentDescription = null,
+                tint = Color.White.copy(alpha = iconAlpha),
+                modifier = Modifier
+                    .size(if (isFocalCenter) 26.dp else 22.dp)
+                    .padding(end = 6.dp)
+            )
+        }
 
-                // Relative horizontal placement across 1-3 words: left (-1), center (0), right (+1)
-                val relX = if (totalWords > 1) {
-                    (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
-                } else 0f
+        if (isNearCenter) {
+            // Focal Lines (past, center, and immediate upcoming line):
+            // Words with individual rounded underline indicator strokes directly beneath each word!
+            if (hasWords) {
+                val totalWords = wordList!!.size
+                wordList.forEachIndexed { wordIndex, word ->
+                    val wordStartMs = (word.startTime * 1000).toLong()
+                    val wordEndMs = (word.endTime * 1000).toLong()
+                    val isWordActive = isActive && effectivePlaybackPosition >= wordStartMs && effectivePlaybackPosition <= wordEndMs
+                    val hasWordPassed = isActive && effectivePlaybackPosition > wordEndMs
 
-                // Dramatic 3D spherical / barrel intra-line curvature transforms
-                val wordRotZ: Float
-                val wordTransY: Float
+                    // Relative horizontal placement across words: left (-1), center (0), right (+1)
+                    val relX = if (totalWords > 1) {
+                        (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
+                    } else 0f
 
-                val wordScale = if (distanceFromCenter in -0.18f..0.18f) {
-                    if (relX == 0f) 1.28f else 1.08f
-                } else 1.0f
+                    // 3D cylindrical drum perspective transforms
+                    val wordRotZ = if (distanceFromCenter < -0.15f) {
+                        relX * 10.0f
+                    } else if (distanceFromCenter > 0.15f) {
+                        -relX * 10.0f
+                    } else {
+                        relX * 6.0f
+                    }
 
-                if (distanceFromCenter < -0.15f) {
-                    // Top lines bend aggressively in convex fishbowl dome arch
-                    wordRotZ = relX * 12.0f
-                    wordTransY = kotlin.math.abs(relX) * 9.5f
-                } else if (distanceFromCenter > 0.15f) {
-                    // Bottom lines bend aggressively in concave fishbowl bowl arch
-                    wordRotZ = -relX * 12.0f
-                    wordTransY = -kotlin.math.abs(relX) * 9.5f
-                } else {
-                    // Equator line: center word bulges forward, outer words tilt outward
-                    wordRotZ = relX * 8.5f
-                    wordTransY = if (relX == 0f) -8.5f else 7.0f
-                }
+                    val wordTransY = if (distanceFromCenter < -0.15f) {
+                        kotlin.math.abs(relX) * 7.0f
+                    } else if (distanceFromCenter > 0.15f) {
+                        -kotlin.math.abs(relX) * 7.0f
+                    } else {
+                        if (relX == 0f) -4.0f else 4.0f
+                    }
 
-                val badgeBg = when {
-                    isWordActive -> Color.White
-                    hasWordPassed -> Color.White.copy(alpha = 0.90f)
-                    isActive -> Color.White.copy(alpha = 0.22f)
-                    else -> Color.White.copy(alpha = 0.12f)
-                }
+                    val wordScale = if (isFocalCenter) {
+                        if (relX == 0f) 1.25f else 1.10f
+                    } else 1.0f
 
-                val textColor = when {
-                    isWordActive || hasWordPassed -> Color.Black
-                    isActive -> Color.White
-                    else -> Color.White.copy(alpha = 0.70f)
-                }
+                    val wordTextColor = when {
+                        isWordActive -> Color.White
+                        hasWordPassed -> Color.White.copy(alpha = 0.95f)
+                        isActive -> Color.White.copy(alpha = 0.85f)
+                        else -> Color.White.copy(alpha = 0.65f)
+                    }
 
-                val doodle = getWordDoodle(word.text)
+                    val underlineColor = when {
+                        isWordActive -> if (accent != Color.White) accent else Color.White
+                        hasWordPassed -> Color.White.copy(alpha = 0.85f)
+                        isActive -> (if (accent != Color.White) accent else Color.White).copy(alpha = 0.70f)
+                        else -> Color.White.copy(alpha = 0.35f)
+                    }
 
-                Box(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            this.rotationZ = wordRotZ
-                            this.translationY = wordTransY
-                            this.scaleX = wordScale
-                            this.scaleY = wordScale
-                        }
-                        .padding(horizontal = 4.dp, vertical = 2.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(badgeBg)
-                        .padding(horizontal = 14.dp, vertical = 6.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    val wordFontSize = when {
+                        isFocalCenter -> baseFontSize * 1.35f
+                        isActive -> baseFontSize * 1.15f
+                        else -> baseFontSize * 1.0f
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                this.rotationZ = wordRotZ
+                                this.translationY = wordTransY
+                                this.scaleX = wordScale
+                                this.scaleY = wordScale
+                            }
+                            .padding(horizontal = 4.dp)
+                            .width(IntrinsicSize.Min)
                     ) {
-                        if (doodle != null) {
-                            Text(
-                                text = doodle,
-                                fontSize = (baseFontSize * 0.90f).sp,
-                                fontWeight = FontWeight.Bold,
-                                color = textColor
-                            )
-                        }
                         Text(
                             text = word.text,
-                            fontSize = (baseFontSize * 1.05f).sp,
-                            fontWeight = if (isWordActive || hasWordPassed) FontWeight.Black else FontWeight.ExtraBold,
-                            color = textColor,
+                            fontFamily = lyricsFontFamily,
+                            fontSize = wordFontSize.sp,
+                            fontWeight = if (isWordActive || isFocalCenter) FontWeight.Black else FontWeight.Bold,
+                            color = wordTextColor,
                             letterSpacing = (-0.4).sp,
-                            lineHeight = (baseFontSize * 1.25f).sp
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(3.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(if (isFocalCenter) 4.dp else 3.dp)
+                                .clip(RoundedCornerShape(2.dp))
+                                .background(underlineColor)
+                        )
+                    }
+                }
+            } else {
+                // Non-word-synced lines: split into words, render each with underline bar
+                val words = remember(entry.text) {
+                    entry.text.split(Regex("\\s+")).filter { it.isNotBlank() }
+                }
+                val totalWords = words.size
+                words.forEachIndexed { wordIndex, wordText ->
+                    val relX = if (totalWords > 1) {
+                        (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
+                    } else 0f
+
+                    val wordRotZ = if (distanceFromCenter < -0.15f) {
+                        relX * 10.0f
+                    } else if (distanceFromCenter > 0.15f) {
+                        -relX * 10.0f
+                    } else {
+                        relX * 6.0f
+                    }
+
+                    val wordTransY = if (distanceFromCenter < -0.15f) {
+                        kotlin.math.abs(relX) * 7.0f
+                    } else if (distanceFromCenter > 0.15f) {
+                        -kotlin.math.abs(relX) * 7.0f
+                    } else {
+                        if (relX == 0f) -4.0f else 4.0f
+                    }
+
+                    val wordScale = if (isFocalCenter) {
+                        if (relX == 0f) 1.25f else 1.10f
+                    } else 1.0f
+
+                    val wordTextColor = when {
+                        isActive -> Color.White
+                        else -> Color.White.copy(alpha = 0.65f)
+                    }
+
+                    val underlineColor = when {
+                        isActive -> if (accent != Color.White) accent else Color.White
+                        else -> Color.White.copy(alpha = 0.35f)
+                    }
+
+                    val wordFontSize = when {
+                        isFocalCenter -> baseFontSize * 1.35f
+                        isActive -> baseFontSize * 1.15f
+                        else -> baseFontSize * 1.0f
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                this.rotationZ = wordRotZ
+                                this.translationY = wordTransY
+                                this.scaleX = wordScale
+                                this.scaleY = wordScale
+                            }
+                            .padding(horizontal = 4.dp)
+                            .width(IntrinsicSize.Min)
+                    ) {
+                        Text(
+                            text = wordText,
+                            fontFamily = lyricsFontFamily,
+                            fontSize = wordFontSize.sp,
+                            fontWeight = if (isActive || isFocalCenter) FontWeight.Black else FontWeight.Bold,
+                            color = wordTextColor,
+                            letterSpacing = (-0.4).sp,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(3.dp))
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(if (isFocalCenter) 4.dp else 3.dp)
+                                .clip(RoundedCornerShape(2.dp))
+                                .background(underlineColor)
                         )
                     }
                 }
             }
         } else {
-            val words = remember(entry.text) {
-                entry.text.split(Regex("\\s+")).filter { it.isNotBlank() }
+            // Receding lines (wrapping around the bottom of the drum cylinder):
+            // Sleek frosted translucent pill capsule with vertical dividers between words!
+            val words = remember(entry.text, wordList) {
+                if (hasWords) wordList!!.map { it.text }
+                else entry.text.split(Regex("\\s+")).filter { it.isNotBlank() }
             }
-            val totalWords = words.size
-            words.forEachIndexed { wordIndex, wordText ->
-                val relX = if (totalWords > 1) {
-                    (wordIndex - (totalWords - 1) / 2.0f) / ((totalWords - 1) / 2.0f).coerceAtLeast(1.0f)
-                } else 0f
 
-                val wordScale = if (distanceFromCenter in -0.18f..0.18f) {
-                    if (relX == 0f) 1.28f else 1.08f
-                } else 1.0f
+            val alphaFalloff = (0.75f - (distanceFromCenter * 0.12f)).coerceIn(0.20f, 0.70f)
+            val pillScale = (1.0f - (distanceFromCenter * 0.06f)).coerceIn(0.70f, 0.95f)
 
-                val wordRotZ = if (distanceFromCenter < -0.15f) {
-                    relX * 12.0f
-                } else if (distanceFromCenter > 0.15f) {
-                    -relX * 12.0f
-                } else {
-                    relX * 8.5f
-                }
-
-                val wordTransY = if (distanceFromCenter < -0.15f) {
-                    kotlin.math.abs(relX) * 9.5f
-                } else if (distanceFromCenter > 0.15f) {
-                    -kotlin.math.abs(relX) * 9.5f
-                } else {
-                    if (relX == 0f) -8.5f else 7.0f
-                }
-
-                val badgeBg = if (isActive) Color.White else Color.White.copy(alpha = 0.14f)
-                val textColor = if (isActive) Color.Black else Color.White.copy(alpha = 0.72f)
-                val doodle = getWordDoodle(wordText)
-
-                Box(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            this.rotationZ = wordRotZ
-                            this.translationY = wordTransY
-                            this.scaleX = wordScale
-                            this.scaleY = wordScale
-                        }
-                        .padding(horizontal = 4.dp, vertical = 2.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(badgeBg)
-                        .padding(horizontal = 14.dp, vertical = 6.dp),
-                    contentAlignment = Alignment.Center
+            Box(
+                modifier = Modifier
+                    .graphicsLayer {
+                        this.scaleX = pillScale
+                        this.scaleY = pillScale
+                    }
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Color.White.copy(alpha = 0.12f))
+                    .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(14.dp))
+                    .padding(horizontal = 14.dp, vertical = 6.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        if (doodle != null) {
-                            Text(
-                                text = doodle,
-                                fontSize = (baseFontSize * 0.90f).sp,
-                                fontWeight = FontWeight.Bold,
-                                color = textColor
+                    words.forEachIndexed { idx, wordText ->
+                        if (idx > 0) {
+                            // Delicate vertical separator line |
+                            Box(
+                                modifier = Modifier
+                                    .width(1.dp)
+                                    .height(13.dp)
+                                    .background(Color.White.copy(alpha = 0.28f))
                             )
                         }
                         Text(
                             text = wordText,
-                            fontSize = (baseFontSize * 1.05f).sp,
-                            fontWeight = if (isActive) FontWeight.Black else FontWeight.ExtraBold,
-                            color = textColor,
-                            letterSpacing = (-0.4).sp,
-                            lineHeight = (baseFontSize * 1.25f).sp
+                            fontFamily = lyricsFontFamily,
+                            fontSize = (baseFontSize * 0.88f).sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White.copy(alpha = alphaFalloff),
+                            letterSpacing = (-0.3).sp,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
