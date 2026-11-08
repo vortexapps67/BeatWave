@@ -572,6 +572,12 @@ object LyricsUtils {
             }.toList()
     }
 
+    private fun splitJoinedWordTokens(raw: String): List<String> {
+        val spaced = raw.replace(Regex("(?<=[a-z])(?=[A-Z])"), " ")
+            .replace(Regex("(?<=[,\.!\?])(?=[a-zA-Z])"), " ")
+        return spaced.split(Regex("\\s+")).filter { it.isNotBlank() }
+    }
+
     fun chunkLinesForFisheye(lines: List<LyricsEntry>): List<LyricsEntry> {
         if (lines.isEmpty()) return lines
         val result = ArrayList<LyricsEntry>(lines.size * 3)
@@ -587,16 +593,33 @@ object LyricsUtils {
 
             val words = entry.words
             if (words != null && words.isNotEmpty()) {
-                // Strictly 1 to 3 words per line, targeting punchy 1-2 word lines
+                // Expand any joined/unspaced tokens into clean individual words
+                val normalizedWords = words.flatMap { w ->
+                    val tokens = splitJoinedWordTokens(w.text)
+                    if (tokens.size > 1) {
+                        val duration = (w.endTime - w.startTime) / tokens.size
+                        tokens.mapIndexed { idx, tok ->
+                            WordTimestamp(
+                                text = tok,
+                                startTime = w.startTime + (idx * duration),
+                                endTime = w.startTime + ((idx + 1) * duration)
+                            )
+                        }
+                    } else {
+                        listOf(w)
+                    }
+                }
+
+                // Strictly 1 to 3 words per line, targeting punchy lines
                 var i = 0
                 var chunkCount = 0
-                while (i < words.size) {
-                    val remaining = words.size - i
+                while (i < normalizedWords.size) {
+                    val remaining = normalizedWords.size - i
                     val takeCount = when {
                         remaining >= 3 -> 3
                         else -> remaining
                     }
-                    val chunkWords = words.subList(i, i + takeCount)
+                    val chunkWords = normalizedWords.subList(i, i + takeCount)
                     val chunkStartTime = (chunkWords.first().startTime * 1000).toLong().coerceAtLeast(entry.time)
                     val chunkText = chunkWords.joinToString(" ") { it.text }
                     result.add(
@@ -613,12 +636,12 @@ object LyricsUtils {
                 }
             } else {
                 // Non-word-synced: break sentence into 1 to 3 words per line
-                val rawTokens = entry.text.trim().split(Regex("\\s+")).filter { it.isNotBlank() }
+                val rawTokens = splitJoinedWordTokens(entry.text)
                 if (rawTokens.size <= 3) {
                     result.add(
                         LyricsEntry(
                             time = entry.time,
-                            text = entry.text,
+                            text = rawTokens.joinToString(" "),
                             words = null,
                             agent = entry.agent ?: "v1",
                             isBackground = entry.isBackground

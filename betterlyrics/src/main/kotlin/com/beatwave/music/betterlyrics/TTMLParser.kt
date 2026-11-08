@@ -101,12 +101,13 @@ object TTMLParser {
                                         // Regular word span
                                         val wordBegin = span.getAttribute("begin")
                                         val wordEnd = span.getAttribute("end")
-                                        val wordText = span.textContent?.trim() ?: ""
+                                        val rawSpanText = span.textContent ?: ""
+                                        val wordText = rawSpanText.trim()
                                         
                                         if (wordText.isNotEmpty() && wordBegin.isNotEmpty() && wordEnd.isNotEmpty()) {
                                             val nextSibling = node.nextSibling
-                                            val hasTrailingSpace = nextSibling?.nodeType == Node.TEXT_NODE && 
-                                                nextSibling.textContent?.contains(Regex("\\s")) == true
+                                            val hasTrailingSpace = rawSpanText.endsWith(" ") || rawSpanText.endsWith("\t") || rawSpanText.endsWith("\n") ||
+                                                (nextSibling?.nodeType == Node.TEXT_NODE && nextSibling.textContent?.contains(Regex("\\s")) == true)
                                             
                                             spanInfos.add(
                                                 SpanInfo(
@@ -175,12 +176,13 @@ object TTMLParser {
                     
                     val wordBegin = innerSpan.getAttribute("begin")
                     val wordEnd = innerSpan.getAttribute("end")
-                    val wordText = innerSpan.textContent?.trim() ?: ""
+                    val rawSpanText = innerSpan.textContent ?: ""
+                    val wordText = rawSpanText.trim()
                     
                     if (wordText.isNotEmpty() && wordBegin.isNotEmpty() && wordEnd.isNotEmpty()) {
                         val nextSibling = node.nextSibling
-                        val hasTrailingSpace = nextSibling?.nodeType == Node.TEXT_NODE && 
-                            nextSibling.textContent?.contains(Regex("\\s")) == true
+                        val hasTrailingSpace = rawSpanText.endsWith(" ") || rawSpanText.endsWith("\t") || rawSpanText.endsWith("\n") ||
+                            (nextSibling?.nodeType == Node.TEXT_NODE && nextSibling.textContent?.contains(Regex("\\s")) == true)
                         
                         spanInfos.add(
                             SpanInfo(

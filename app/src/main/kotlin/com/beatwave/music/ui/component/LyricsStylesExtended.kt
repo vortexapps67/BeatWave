@@ -44,6 +44,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -660,24 +663,31 @@ fun FisheyeStickerLyricsLine(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 2.dp),
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Singer avatar silhouette icon (👤) on phrase start (left side)
         if (showSingerIcon) {
             val iconAlpha = when {
                 isFocalCenter -> 1.0f
-                isActive -> 0.90f
-                distanceFromCenter < 0f -> 0.75f
-                else -> 0.50f
+                isActive -> 0.95f
+                distanceFromCenter < 0f -> 0.85f
+                else -> 0.55f
             }
+            val iconRotZ = if (distanceFromCenter < -0.15f) -7.5f else if (distanceFromCenter > 0.15f) 6.5f else 0f
+            val iconTransY = if (distanceFromCenter < -0.15f) 9.0f else if (distanceFromCenter > 0.15f) -7.0f else 0f
+
             Icon(
                 painter = painterResource(R.drawable.person),
                 contentDescription = null,
                 tint = Color.White.copy(alpha = iconAlpha),
                 modifier = Modifier
-                    .size(if (isFocalCenter) 26.dp else 22.dp)
-                    .padding(end = 6.dp)
+                    .graphicsLayer {
+                        rotationZ = iconRotZ
+                        translationY = iconTransY
+                    }
+                    .size(if (isFocalCenter) 28.dp else 24.dp)
+                    .padding(end = 4.dp)
             )
         }
 
@@ -699,47 +709,48 @@ fun FisheyeStickerLyricsLine(
 
                     // 3D cylindrical drum perspective transforms
                     val wordRotZ = if (distanceFromCenter < -0.15f) {
-                        relX * 10.0f
+                        relX * 7.5f
                     } else if (distanceFromCenter > 0.15f) {
-                        -relX * 10.0f
+                        -relX * 6.5f
                     } else {
-                        relX * 6.0f
+                        relX * 4.0f
                     }
 
                     val wordTransY = if (distanceFromCenter < -0.15f) {
-                        kotlin.math.abs(relX) * 7.0f
+                        kotlin.math.abs(relX) * 9.0f
                     } else if (distanceFromCenter > 0.15f) {
                         -kotlin.math.abs(relX) * 7.0f
                     } else {
-                        if (relX == 0f) -4.0f else 4.0f
+                        0f
                     }
 
                     val wordScale = if (isFocalCenter) {
-                        if (relX == 0f) 1.25f else 1.10f
+                        if (relX == 0f) 1.35f else 1.15f
                     } else 1.0f
 
                     val wordTextColor = when {
                         isWordActive -> Color.White
                         hasWordPassed -> Color.White.copy(alpha = 0.95f)
-                        isActive -> Color.White.copy(alpha = 0.85f)
+                        isActive -> Color.White.copy(alpha = 0.90f)
+                        distanceFromCenter < 0f -> Color.White.copy(alpha = 0.85f)
                         else -> Color.White.copy(alpha = 0.65f)
                     }
 
                     val underlineColor = when {
                         isWordActive -> if (accent != Color.White) accent else Color.White
                         hasWordPassed -> Color.White.copy(alpha = 0.85f)
-                        isActive -> (if (accent != Color.White) accent else Color.White).copy(alpha = 0.70f)
-                        else -> Color.White.copy(alpha = 0.35f)
+                        isActive -> (if (accent != Color.White) accent else Color.White).copy(alpha = 0.80f)
+                        distanceFromCenter < 0f -> Color.White.copy(alpha = 0.65f)
+                        else -> Color.White.copy(alpha = 0.40f)
                     }
 
                     val wordFontSize = when {
-                        isFocalCenter -> baseFontSize * 1.35f
-                        isActive -> baseFontSize * 1.15f
-                        else -> baseFontSize * 1.0f
+                        isFocalCenter -> (baseFontSize * 1.45f).coerceAtLeast(36f)
+                        isActive -> baseFontSize * 1.18f
+                        else -> baseFontSize * 1.05f
                     }
 
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Box(
                         modifier = Modifier
                             .graphicsLayer {
                                 this.rotationZ = wordRotZ
@@ -747,8 +758,6 @@ fun FisheyeStickerLyricsLine(
                                 this.scaleX = wordScale
                                 this.scaleY = wordScale
                             }
-                            .padding(horizontal = 4.dp)
-                            .width(IntrinsicSize.Min)
                     ) {
                         Text(
                             text = word.text,
@@ -757,22 +766,28 @@ fun FisheyeStickerLyricsLine(
                             fontWeight = if (isWordActive || isFocalCenter) FontWeight.Black else FontWeight.Bold,
                             color = wordTextColor,
                             letterSpacing = (-0.4).sp,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(3.dp))
-                        Box(
+                            textAlign = TextAlign.Center,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(if (isFocalCenter) 4.dp else 3.dp)
-                                .clip(RoundedCornerShape(2.dp))
-                                .background(underlineColor)
+                                .drawBehind {
+                                    val barHeight = if (isFocalCenter) 5.dp.toPx() else 3.5.dp.toPx()
+                                    val barTop = size.height + (if (isFocalCenter) 7.dp.toPx() else 5.dp.toPx())
+                                    drawRoundRect(
+                                        color = underlineColor,
+                                        topLeft = Offset(0f, barTop),
+                                        size = Size(size.width, barHeight),
+                                        cornerRadius = CornerRadius(barHeight / 2f, barHeight / 2f)
+                                    )
+                                }
+                                .padding(bottom = if (isFocalCenter) 16.dp else 12.dp)
                         )
                     }
                 }
             } else {
                 // Non-word-synced lines: split into words, render each with underline bar
                 val words = remember(entry.text) {
-                    entry.text.split(Regex("\\s+")).filter { it.isNotBlank() }
+                    val raw = entry.text.replace(Regex("(?<=[a-z])(?=[A-Z])"), " ")
+                        .replace(Regex("(?<=[,\\.!\\?])(?=[a-zA-Z])"), " ")
+                    raw.split(Regex("\\s+")).filter { it.isNotBlank() }
                 }
                 val totalWords = words.size
                 words.forEachIndexed { wordIndex, wordText ->
@@ -781,43 +796,44 @@ fun FisheyeStickerLyricsLine(
                     } else 0f
 
                     val wordRotZ = if (distanceFromCenter < -0.15f) {
-                        relX * 10.0f
+                        relX * 7.5f
                     } else if (distanceFromCenter > 0.15f) {
-                        -relX * 10.0f
+                        -relX * 6.5f
                     } else {
-                        relX * 6.0f
+                        relX * 4.0f
                     }
 
                     val wordTransY = if (distanceFromCenter < -0.15f) {
-                        kotlin.math.abs(relX) * 7.0f
+                        kotlin.math.abs(relX) * 9.0f
                     } else if (distanceFromCenter > 0.15f) {
                         -kotlin.math.abs(relX) * 7.0f
                     } else {
-                        if (relX == 0f) -4.0f else 4.0f
+                        0f
                     }
 
                     val wordScale = if (isFocalCenter) {
-                        if (relX == 0f) 1.25f else 1.10f
+                        if (relX == 0f) 1.35f else 1.15f
                     } else 1.0f
 
                     val wordTextColor = when {
                         isActive -> Color.White
+                        distanceFromCenter < 0f -> Color.White.copy(alpha = 0.85f)
                         else -> Color.White.copy(alpha = 0.65f)
                     }
 
                     val underlineColor = when {
                         isActive -> if (accent != Color.White) accent else Color.White
-                        else -> Color.White.copy(alpha = 0.35f)
+                        distanceFromCenter < 0f -> Color.White.copy(alpha = 0.65f)
+                        else -> Color.White.copy(alpha = 0.40f)
                     }
 
                     val wordFontSize = when {
-                        isFocalCenter -> baseFontSize * 1.35f
-                        isActive -> baseFontSize * 1.15f
-                        else -> baseFontSize * 1.0f
+                        isFocalCenter -> (baseFontSize * 1.45f).coerceAtLeast(36f)
+                        isActive -> baseFontSize * 1.18f
+                        else -> baseFontSize * 1.05f
                     }
 
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Box(
                         modifier = Modifier
                             .graphicsLayer {
                                 this.rotationZ = wordRotZ
@@ -825,8 +841,6 @@ fun FisheyeStickerLyricsLine(
                                 this.scaleX = wordScale
                                 this.scaleY = wordScale
                             }
-                            .padding(horizontal = 4.dp)
-                            .width(IntrinsicSize.Min)
                     ) {
                         Text(
                             text = wordText,
@@ -835,15 +849,19 @@ fun FisheyeStickerLyricsLine(
                             fontWeight = if (isActive || isFocalCenter) FontWeight.Black else FontWeight.Bold,
                             color = wordTextColor,
                             letterSpacing = (-0.4).sp,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(3.dp))
-                        Box(
+                            textAlign = TextAlign.Center,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(if (isFocalCenter) 4.dp else 3.dp)
-                                .clip(RoundedCornerShape(2.dp))
-                                .background(underlineColor)
+                                .drawBehind {
+                                    val barHeight = if (isFocalCenter) 5.dp.toPx() else 3.5.dp.toPx()
+                                    val barTop = size.height + (if (isFocalCenter) 7.dp.toPx() else 5.dp.toPx())
+                                    drawRoundRect(
+                                        color = underlineColor,
+                                        topLeft = Offset(0f, barTop),
+                                        size = Size(size.width, barHeight),
+                                        cornerRadius = CornerRadius(barHeight / 2f, barHeight / 2f)
+                                    )
+                                }
+                                .padding(bottom = if (isFocalCenter) 16.dp else 12.dp)
                         )
                     }
                 }
@@ -853,11 +871,15 @@ fun FisheyeStickerLyricsLine(
             // Sleek frosted translucent pill capsule with vertical dividers between words!
             val words = remember(entry.text, wordList) {
                 if (hasWords) wordList!!.map { it.text }
-                else entry.text.split(Regex("\\s+")).filter { it.isNotBlank() }
+                else {
+                    val raw = entry.text.replace(Regex("(?<=[a-z])(?=[A-Z])"), " ")
+                        .replace(Regex("(?<=[,\\.!\\?])(?=[a-zA-Z])"), " ")
+                    raw.split(Regex("\\s+")).filter { it.isNotBlank() }
+                }
             }
 
-            val alphaFalloff = (0.75f - (distanceFromCenter * 0.12f)).coerceIn(0.20f, 0.70f)
-            val pillScale = (1.0f - (distanceFromCenter * 0.06f)).coerceIn(0.70f, 0.95f)
+            val alphaFalloff = (0.75f - (distanceFromCenter * 0.12f)).coerceIn(0.20f, 0.65f)
+            val pillScale = (1.0f - (distanceFromCenter * 0.06f)).coerceIn(0.68f, 0.90f)
 
             Box(
                 modifier = Modifier
@@ -865,15 +887,15 @@ fun FisheyeStickerLyricsLine(
                         this.scaleX = pillScale
                         this.scaleY = pillScale
                     }
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(16.dp))
                     .background(Color.White.copy(alpha = 0.12f))
-                    .border(1.dp, Color.White.copy(alpha = 0.08f), RoundedCornerShape(14.dp))
-                    .padding(horizontal = 14.dp, vertical = 6.dp),
+                    .border(1.dp, Color.White.copy(alpha = 0.12f), RoundedCornerShape(16.dp))
+                    .padding(horizontal = 16.dp, vertical = 7.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     words.forEachIndexed { idx, wordText ->
                         if (idx > 0) {
@@ -882,13 +904,13 @@ fun FisheyeStickerLyricsLine(
                                 modifier = Modifier
                                     .width(1.dp)
                                     .height(13.dp)
-                                    .background(Color.White.copy(alpha = 0.28f))
+                                    .background(Color.White.copy(alpha = 0.35f))
                             )
                         }
                         Text(
                             text = wordText,
                             fontFamily = lyricsFontFamily,
-                            fontSize = (baseFontSize * 0.88f).sp,
+                            fontSize = (baseFontSize * 0.90f).sp,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White.copy(alpha = alphaFalloff),
                             letterSpacing = (-0.3).sp,
