@@ -786,7 +786,7 @@ fun FisheyeStickerLyricsLine(
                 // Non-word-synced lines: split into words, render each with underline bar
                 val words = remember(entry.text) {
                     val raw = entry.text.replace(Regex("(?<=[a-z])(?=[A-Z])"), " ")
-                        .replace(Regex("(?<=[,\\.!\\?])(?=[a-zA-Z])"), " ")
+                        .replace(Regex("(?<=[,.!?])(?=[a-zA-Z])"), " ")
                     raw.split(Regex("\\s+")).filter { it.isNotBlank() }
                 }
                 val totalWords = words.size
@@ -873,7 +873,7 @@ fun FisheyeStickerLyricsLine(
                 if (hasWords) wordList!!.map { it.text }
                 else {
                     val raw = entry.text.replace(Regex("(?<=[a-z])(?=[A-Z])"), " ")
-                        .replace(Regex("(?<=[,\\.!\\?])(?=[a-zA-Z])"), " ")
+                        .replace(Regex("(?<=[,.!?])(?=[a-zA-Z])"), " ")
                     raw.split(Regex("\\s+")).filter { it.isNotBlank() }
                 }
             }

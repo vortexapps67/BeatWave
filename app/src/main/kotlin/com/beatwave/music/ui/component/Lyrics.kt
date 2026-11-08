@@ -754,22 +754,6 @@ fun Lyrics(
             .fillMaxSize()
             .padding(bottom = 12.dp)
     ) {
-        if (isFisheyeMode) {
-            // Dark luxury cinema vignette backdrop matching reference aesthetic
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(
-                                Color(0x44000000),
-                                Color(0xDD08080E),
-                                Color(0xFA040406)
-                            )
-                        )
-                    )
-            )
-        }
 
         // Status UI for translation
         Box(
