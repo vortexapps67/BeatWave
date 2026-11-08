@@ -574,7 +574,7 @@ object LyricsUtils {
 
     private fun splitJoinedWordTokens(raw: String): List<String> {
         val spaced = raw.replace(Regex("(?<=[a-z])(?=[A-Z])"), " ")
-            .replace(Regex("(?<=[,\.!\?])(?=[a-zA-Z])"), " ")
+            .replace(Regex("(?<=[,.!?])(?=[a-zA-Z])"), " ")
         return spaced.split(Regex("\\s+")).filter { it.isNotBlank() }
     }
 
