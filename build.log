@@ -1,0 +1,1202 @@
+Downloading https://services.gradle.org/distributions/gradle-9.4.1-bin.zip
+.............10%.............20%.............30%.............40%.............50%.............60%..............70%.............80%.............90%.............100%
+
+Welcome to Gradle 9.4.1!
+
+Here are the highlights of this release:
+ - Java 26 support
+ - Non-class-based JVM tests
+ - Enhanced console progress bar
+
+For more details see https://docs.gradle.org/9.4.1/release-notes.html
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: assembleUniversalGmsRelease
+
+> Configure project :app
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: API 'applicationVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling applicationVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'testVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling testVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'unitTestVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling unitTestVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+w: file:///home/runner/work/BeatWave/BeatWave/app/build.gradle.kts:39:1: 'fun Project.android(configure: Action<BaseAppModuleExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.ApplicationExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :artistvideo
+w: file:///home/runner/work/BeatWave/BeatWave/artistvideo/build.gradle.kts:7:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :betterlyrics
+w: file:///home/runner/work/BeatWave/BeatWave/betterlyrics/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :innertube
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :jiosaavn
+w: file:///home/runner/work/BeatWave/BeatWave/jiosaavn/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :kizzy
+w: file:///home/runner/work/BeatWave/BeatWave/kizzy/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :kugou
+w: file:///home/runner/work/BeatWave/BeatWave/kugou/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :lastfm
+w: file:///home/runner/work/BeatWave/BeatWave/lastfm/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :lrclib
+w: file:///home/runner/work/BeatWave/BeatWave/lrclib/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :musixmatchlyrics
+w: file:///home/runner/work/BeatWave/BeatWave/musixmatchlyrics/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :paxsenixlyrics
+w: file:///home/runner/work/BeatWave/BeatWave/paxsenixlyrics/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :shazamkit
+w: file:///home/runner/work/BeatWave/BeatWave/shazamkit/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :simpmusic
+w: file:///home/runner/work/BeatWave/BeatWave/simpmusic/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :spine
+w: file:///home/runner/work/BeatWave/BeatWave/spine/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :spotify
+w: file:///home/runner/work/BeatWave/BeatWave/spotify/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Configure project :youlyplus
+w: file:///home/runner/work/BeatWave/BeatWave/youlyplus/build.gradle.kts:6:1: 'fun Project.android(configure: Action<LibraryExtension>): Unit' is deprecated. Replaced by com.android.build.api.dsl.LibraryExtension.
+This class is not used for the public extensions in AGP when android.newDsl=true, which is the default in AGP 9.0, and will be removed in AGP 10.0.
+
+> Task :applecanvas:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :canvas:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :vivimusiccanvas:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :canvas:processResources NO-SOURCE
+> Task :applecanvas:processResources NO-SOURCE
+> Task :vivimusiccanvas:processResources NO-SOURCE
+> Task :app:preBuild UP-TO-DATE
+> Task :artistvideo:preBuild UP-TO-DATE
+> Task :betterlyrics:preBuild UP-TO-DATE
+> Task :app:preUniversalGmsReleaseBuild UP-TO-DATE
+> Task :artistvideo:preReleaseBuild UP-TO-DATE
+> Task :betterlyrics:preReleaseBuild UP-TO-DATE
+> Task :betterlyrics:mergeReleaseJniLibFolders
+> Task :artistvideo:mergeReleaseJniLibFolders
+> Task :app:mergeUniversalGmsReleaseJniLibFolders
+> Task :innertube:preBuild UP-TO-DATE
+> Task :betterlyrics:mergeReleaseNativeLibs NO-SOURCE
+> Task :innertube:preReleaseBuild UP-TO-DATE
+> Task :artistvideo:mergeReleaseNativeLibs NO-SOURCE
+> Task :artistvideo:copyReleaseJniLibsProjectOnly
+> Task :jiosaavn:preBuild UP-TO-DATE
+> Task :jiosaavn:preReleaseBuild UP-TO-DATE
+> Task :betterlyrics:copyReleaseJniLibsProjectOnly
+> Task :kizzy:preBuild UP-TO-DATE
+> Task :kizzy:preReleaseBuild UP-TO-DATE
+> Task :innertube:mergeReleaseJniLibFolders
+> Task :innertube:mergeReleaseNativeLibs NO-SOURCE
+> Task :kizzy:mergeReleaseJniLibFolders
+> Task :jiosaavn:mergeReleaseJniLibFolders
+> Task :innertube:copyReleaseJniLibsProjectOnly
+> Task :kugou:preBuild UP-TO-DATE
+> Task :kugou:preReleaseBuild UP-TO-DATE
+> Task :kizzy:mergeReleaseNativeLibs NO-SOURCE
+> Task :jiosaavn:mergeReleaseNativeLibs NO-SOURCE
+> Task :kizzy:copyReleaseJniLibsProjectOnly
+> Task :lastfm:preBuild UP-TO-DATE
+> Task :lastfm:preReleaseBuild UP-TO-DATE
+> Task :jiosaavn:copyReleaseJniLibsProjectOnly
+> Task :lrclib:preBuild UP-TO-DATE
+> Task :lrclib:preReleaseBuild UP-TO-DATE
+> Task :kugou:mergeReleaseJniLibFolders
+> Task :lastfm:mergeReleaseJniLibFolders
+> Task :lastfm:mergeReleaseNativeLibs NO-SOURCE
+> Task :lrclib:mergeReleaseJniLibFolders
+> Task :kugou:mergeReleaseNativeLibs NO-SOURCE
+> Task :lrclib:mergeReleaseNativeLibs NO-SOURCE
+> Task :lastfm:copyReleaseJniLibsProjectOnly
+> Task :musixmatchlyrics:preBuild UP-TO-DATE
+> Task :musixmatchlyrics:preReleaseBuild UP-TO-DATE
+> Task :kugou:copyReleaseJniLibsProjectOnly
+> Task :paxsenixlyrics:preBuild UP-TO-DATE
+> Task :paxsenixlyrics:preReleaseBuild UP-TO-DATE
+> Task :lrclib:copyReleaseJniLibsProjectOnly
+> Task :shazamkit:preBuild UP-TO-DATE
+> Task :shazamkit:preReleaseBuild UP-TO-DATE
+> Task :musixmatchlyrics:mergeReleaseJniLibFolders
+> Task :musixmatchlyrics:mergeReleaseNativeLibs NO-SOURCE
+> Task :musixmatchlyrics:copyReleaseJniLibsProjectOnly
+> Task :simpmusic:preBuild UP-TO-DATE
+> Task :simpmusic:preReleaseBuild UP-TO-DATE
+> Task :paxsenixlyrics:mergeReleaseJniLibFolders
+> Task :shazamkit:mergeReleaseJniLibFolders
+> Task :shazamkit:mergeReleaseNativeLibs NO-SOURCE
+> Task :paxsenixlyrics:mergeReleaseNativeLibs NO-SOURCE
+> Task :paxsenixlyrics:copyReleaseJniLibsProjectOnly
+> Task :shazamkit:copyReleaseJniLibsProjectOnly
+> Task :spine:preBuild UP-TO-DATE
+> Task :spine:preReleaseBuild UP-TO-DATE
+> Task :spotify:preBuild UP-TO-DATE
+> Task :simpmusic:mergeReleaseJniLibFolders
+> Task :spotify:preReleaseBuild UP-TO-DATE
+> Task :simpmusic:mergeReleaseNativeLibs NO-SOURCE
+> Task :simpmusic:copyReleaseJniLibsProjectOnly
+> Task :youlyplus:preBuild UP-TO-DATE
+> Task :youlyplus:preReleaseBuild UP-TO-DATE
+> Task :spotify:mergeReleaseJniLibFolders
+> Task :spine:mergeReleaseJniLibFolders
+> Task :youlyplus:mergeReleaseJniLibFolders
+> Task :spotify:mergeReleaseNativeLibs NO-SOURCE
+> Task :spine:mergeReleaseNativeLibs NO-SOURCE
+> Task :spotify:copyReleaseJniLibsProjectOnly
+> Task :youlyplus:mergeReleaseNativeLibs NO-SOURCE
+> Task :spine:copyReleaseJniLibsProjectOnly
+> Task :youlyplus:copyReleaseJniLibsProjectOnly
+> Task :artistvideo:prepareReleaseArtProfile
+> Task :betterlyrics:prepareReleaseArtProfile
+> Task :kizzy:prepareReleaseArtProfile
+> Task :jiosaavn:prepareReleaseArtProfile
+> Task :innertube:prepareReleaseArtProfile
+> Task :kugou:prepareReleaseArtProfile
+> Task :lastfm:prepareReleaseArtProfile
+> Task :lrclib:prepareReleaseArtProfile
+> Task :paxsenixlyrics:prepareReleaseArtProfile
+> Task :shazamkit:prepareReleaseArtProfile
+> Task :musixmatchlyrics:prepareReleaseArtProfile
+> Task :simpmusic:prepareReleaseArtProfile
+> Task :spotify:prepareReleaseArtProfile
+> Task :spine:prepareReleaseArtProfile
+> Task :innertube:generateReleaseResources
+> Task :youlyplus:prepareReleaseArtProfile
+> Task :innertube:processReleaseNavigationResources
+> Task :innertube:javaPreCompileRelease
+> Task :innertube:packageReleaseResources
+> Task :kugou:generateReleaseResources
+> Task :kugou:packageReleaseResources
+> Task :kugou:processReleaseNavigationResources
+> Task :innertube:parseReleaseLocalResources
+> Task :kugou:parseReleaseLocalResources
+> Task :kugou:generateReleaseRFile
+> Task :innertube:generateReleaseRFile
+> Task :app:mergeUniversalGmsReleaseArtProfile
+> Task :app:expandUniversalGmsReleaseL8ArtProfileWildcards
+> Task :kugou:javaPreCompileRelease
+> Task :lrclib:generateReleaseResources
+> Task :lrclib:packageReleaseResources
+> Task :lrclib:processReleaseNavigationResources
+> Task :lrclib:parseReleaseLocalResources
+> Task :lrclib:generateReleaseRFile
+
+> Task :canvas:compileKotlin
+w: file:///home/runner/work/BeatWave/BeatWave/canvas/src/main/kotlin/com/beatwave/music/canvas/TidalCanvasProvider.kt:175:72 Unnecessary safe call on a non-null receiver of type 'JsonObject'.
+
+> Task :kugou:compileReleaseKotlin
+> Task :kugou:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lrclib:compileReleaseKotlin
+> Task :canvas:compileJava NO-SOURCE
+> Task :canvas:classes UP-TO-DATE
+> Task :kugou:mergeReleaseGeneratedProguardFiles
+> Task :lrclib:javaPreCompileRelease
+> Task :lrclib:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lrclib:mergeReleaseGeneratedProguardFiles
+> Task :lrclib:exportReleaseConsumerProguardFiles
+> Task :kugou:exportReleaseConsumerProguardFiles
+> Task :kizzy:processReleaseNavigationResources
+> Task :kizzy:generateReleaseResources
+> Task :kizzy:javaPreCompileRelease
+> Task :lastfm:generateReleaseResources
+> Task :kizzy:packageReleaseResources
+> Task :lastfm:packageReleaseResources
+> Task :lastfm:processReleaseNavigationResources
+> Task :canvas:jar
+> Task :kizzy:parseReleaseLocalResources
+> Task :lastfm:parseReleaseLocalResources
+> Task :kizzy:generateReleaseRFile
+> Task :vivimusiccanvas:compileKotlin
+> Task :vivimusiccanvas:compileJava NO-SOURCE
+> Task :vivimusiccanvas:classes UP-TO-DATE
+> Task :vivimusiccanvas:jar
+> Task :lastfm:generateReleaseRFile
+> Task :applecanvas:compileKotlin
+> Task :applecanvas:compileJava NO-SOURCE
+> Task :applecanvas:classes UP-TO-DATE
+> Task :applecanvas:jar
+> Task :lastfm:compileReleaseKotlin
+> Task :lastfm:javaPreCompileRelease
+> Task :lastfm:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lastfm:mergeReleaseGeneratedProguardFiles
+> Task :lastfm:exportReleaseConsumerProguardFiles
+> Task :betterlyrics:generateReleaseResources
+> Task :betterlyrics:packageReleaseResources
+> Task :betterlyrics:processReleaseNavigationResources
+> Task :app:mergeUniversalGmsReleaseNativeLibs
+> Task :betterlyrics:parseReleaseLocalResources
+> Task :betterlyrics:generateReleaseRFile
+
+> Task :app:stripUniversalGmsReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libquickjs.so. Run with --info option to learn more.
+
+> Task :app:extractUniversalGmsReleaseNativeSymbolTables
+> Task :app:mergeUniversalGmsReleaseNativeDebugMetadata NO-SOURCE
+> Task :betterlyrics:javaPreCompileRelease
+> Task :paxsenixlyrics:generateReleaseResources
+> Task :paxsenixlyrics:packageReleaseResources
+> Task :paxsenixlyrics:processReleaseNavigationResources
+> Task :paxsenixlyrics:parseReleaseLocalResources
+> Task :paxsenixlyrics:generateReleaseRFile
+> Task :paxsenixlyrics:javaPreCompileRelease
+> Task :simpmusic:generateReleaseResources
+> Task :simpmusic:packageReleaseResources
+> Task :simpmusic:processReleaseNavigationResources
+> Task :simpmusic:parseReleaseLocalResources
+> Task :simpmusic:generateReleaseRFile
+> Task :kizzy:compileReleaseKotlin
+> Task :kizzy:compileReleaseJavaWithJavac NO-SOURCE
+> Task :kizzy:mergeReleaseGeneratedProguardFiles
+> Task :kizzy:exportReleaseConsumerProguardFiles
+> Task :simpmusic:javaPreCompileRelease
+> Task :youlyplus:generateReleaseResources
+> Task :youlyplus:packageReleaseResources
+> Task :youlyplus:processReleaseNavigationResources
+> Task :youlyplus:parseReleaseLocalResources
+> Task :youlyplus:generateReleaseRFile
+> Task :simpmusic:compileReleaseKotlin
+> Task :simpmusic:compileReleaseJavaWithJavac NO-SOURCE
+> Task :simpmusic:mergeReleaseGeneratedProguardFiles
+> Task :simpmusic:exportReleaseConsumerProguardFiles
+> Task :youlyplus:javaPreCompileRelease
+> Task :shazamkit:generateReleaseResources
+> Task :shazamkit:packageReleaseResources
+> Task :shazamkit:processReleaseNavigationResources
+> Task :shazamkit:parseReleaseLocalResources
+> Task :shazamkit:generateReleaseRFile
+> Task :youlyplus:compileReleaseKotlin
+> Task :youlyplus:compileReleaseJavaWithJavac NO-SOURCE
+> Task :youlyplus:mergeReleaseGeneratedProguardFiles
+> Task :youlyplus:exportReleaseConsumerProguardFiles
+> Task :shazamkit:javaPreCompileRelease
+> Task :artistvideo:generateReleaseResources
+> Task :betterlyrics:compileReleaseKotlin
+> Task :betterlyrics:compileReleaseJavaWithJavac NO-SOURCE
+> Task :artistvideo:packageReleaseResources
+> Task :betterlyrics:mergeReleaseGeneratedProguardFiles
+> Task :betterlyrics:exportReleaseConsumerProguardFiles
+> Task :artistvideo:processReleaseNavigationResources
+> Task :artistvideo:parseReleaseLocalResources
+> Task :betterlyrics:bundleLibCompileToJarRelease
+> Task :artistvideo:generateReleaseRFile
+> Task :innertube:compileReleaseKotlin
+> Task :paxsenixlyrics:compileReleaseKotlin
+> Task :paxsenixlyrics:compileReleaseJavaWithJavac NO-SOURCE
+> Task :paxsenixlyrics:mergeReleaseGeneratedProguardFiles
+> Task :paxsenixlyrics:exportReleaseConsumerProguardFiles
+> Task :artistvideo:javaPreCompileRelease
+> Task :musixmatchlyrics:generateReleaseResources
+> Task :musixmatchlyrics:packageReleaseResources
+> Task :musixmatchlyrics:processReleaseNavigationResources
+> Task :musixmatchlyrics:parseReleaseLocalResources
+> Task :musixmatchlyrics:generateReleaseRFile
+> Task :shazamkit:compileReleaseKotlin
+> Task :shazamkit:compileReleaseJavaWithJavac NO-SOURCE
+> Task :shazamkit:mergeReleaseGeneratedProguardFiles
+> Task :shazamkit:exportReleaseConsumerProguardFiles
+> Task :musixmatchlyrics:javaPreCompileRelease
+> Task :jiosaavn:generateReleaseResources
+> Task :jiosaavn:packageReleaseResources
+> Task :jiosaavn:processReleaseNavigationResources
+> Task :jiosaavn:parseReleaseLocalResources
+> Task :jiosaavn:generateReleaseRFile
+> Task :musixmatchlyrics:compileReleaseKotlin
+> Task :musixmatchlyrics:compileReleaseJavaWithJavac NO-SOURCE
+> Task :jiosaavn:compileReleaseKotlin
+> Task :musixmatchlyrics:mergeReleaseGeneratedProguardFiles
+> Task :musixmatchlyrics:exportReleaseConsumerProguardFiles
+> Task :jiosaavn:javaPreCompileRelease
+> Task :artistvideo:compileReleaseKotlin
+> Task :artistvideo:compileReleaseJavaWithJavac NO-SOURCE
+> Task :artistvideo:mergeReleaseGeneratedProguardFiles
+> Task :artistvideo:exportReleaseConsumerProguardFiles
+> Task :spotify:generateReleaseResources
+> Task :jiosaavn:compileReleaseJavaWithJavac NO-SOURCE
+> Task :spotify:processReleaseNavigationResources
+> Task :jiosaavn:mergeReleaseGeneratedProguardFiles
+> Task :spotify:javaPreCompileRelease
+> Task :jiosaavn:exportReleaseConsumerProguardFiles
+> Task :spotify:packageReleaseResources
+> Task :spine:processReleaseNavigationResources
+> Task :spine:generateReleaseResources
+> Task :spine:javaPreCompileRelease
+> Task :spine:packageReleaseResources
+> Task :spotify:parseReleaseLocalResources
+> Task :spine:parseReleaseLocalResources
+> Task :spotify:generateReleaseRFile
+> Task :spine:generateReleaseRFile
+> Task :app:checkUniversalGmsReleaseDuplicateClasses
+> Task :app:generateUniversalGmsReleaseBuildConfig
+> Task :app:protobufDummy UP-TO-DATE
+> Task :app:extractGmsProto
+> Task :artistvideo:bundleLibRuntimeToJarRelease
+> Task :artistvideo:processReleaseJavaRes
+> Task :artistvideo:createFullJarRelease
+> Task :betterlyrics:bundleLibRuntimeToJarRelease
+> Task :betterlyrics:processReleaseJavaRes
+> Task :betterlyrics:createFullJarRelease
+> Task :jiosaavn:bundleLibRuntimeToJarRelease
+> Task :jiosaavn:processReleaseJavaRes
+> Task :jiosaavn:createFullJarRelease
+> Task :kizzy:bundleLibRuntimeToJarRelease
+> Task :kizzy:processReleaseJavaRes
+> Task :kizzy:createFullJarRelease
+> Task :kugou:bundleLibRuntimeToJarRelease
+> Task :kugou:processReleaseJavaRes
+> Task :kugou:createFullJarRelease
+> Task :lastfm:bundleLibRuntimeToJarRelease
+> Task :lastfm:processReleaseJavaRes
+> Task :lastfm:createFullJarRelease
+> Task :lrclib:bundleLibRuntimeToJarRelease
+> Task :lrclib:processReleaseJavaRes
+> Task :lrclib:createFullJarRelease
+> Task :musixmatchlyrics:bundleLibRuntimeToJarRelease
+> Task :musixmatchlyrics:processReleaseJavaRes
+> Task :musixmatchlyrics:createFullJarRelease
+> Task :paxsenixlyrics:bundleLibRuntimeToJarRelease
+> Task :paxsenixlyrics:processReleaseJavaRes
+> Task :paxsenixlyrics:createFullJarRelease
+> Task :shazamkit:bundleLibRuntimeToJarRelease
+> Task :shazamkit:processReleaseJavaRes
+> Task :shazamkit:createFullJarRelease
+> Task :simpmusic:bundleLibRuntimeToJarRelease
+> Task :simpmusic:processReleaseJavaRes
+> Task :simpmusic:createFullJarRelease
+> Task :youlyplus:bundleLibRuntimeToJarRelease
+> Task :youlyplus:processReleaseJavaRes
+> Task :youlyplus:createFullJarRelease
+> Task :app:extractProto
+> Task :app:extractReleaseProto
+> Task :app:extractUniversalGmsProto
+> Task :app:extractUniversalGmsReleaseProto
+> Task :app:extractUniversalProto
+> Task :app:extractUniversalGmsReleaseSupportedLocales
+> Task :app:mapUniversalGmsReleaseSourceSetPaths
+> Task :artistvideo:extractReleaseSupportedLocales
+> Task :betterlyrics:extractReleaseSupportedLocales
+> Task :innertube:extractReleaseSupportedLocales
+> Task :jiosaavn:extractReleaseSupportedLocales
+> Task :kizzy:extractReleaseSupportedLocales
+> Task :kugou:extractReleaseSupportedLocales
+> Task :lastfm:extractReleaseSupportedLocales
+> Task :lrclib:extractReleaseSupportedLocales
+> Task :musixmatchlyrics:extractReleaseSupportedLocales
+> Task :paxsenixlyrics:extractReleaseSupportedLocales
+> Task :shazamkit:extractReleaseSupportedLocales
+> Task :simpmusic:extractReleaseSupportedLocales
+> Task :spine:extractReleaseSupportedLocales
+> Task :spotify:extractReleaseSupportedLocales
+> Task :youlyplus:extractReleaseSupportedLocales
+> Task :app:generateUniversalGmsReleaseLocaleConfig
+> Task :app:generateUniversalGmsReleaseResources
+
+> Task :spine:compileReleaseKotlin
+w: file:///home/runner/work/BeatWave/BeatWave/spine/src/main/kotlin/com/music/spine/ModuleManager.kt:168:62 Unnecessary safe call on a non-null receiver of type 'String'.
+w: file:///home/runner/work/BeatWave/BeatWave/spine/src/main/kotlin/com/music/spine/QuickJsExecutor.kt:366:49 Unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+
+> Task :spine:compileReleaseJavaWithJavac NO-SOURCE
+> Task :spine:mergeReleaseGeneratedProguardFiles
+> Task :spine:exportReleaseConsumerProguardFiles
+> Task :spine:bundleLibRuntimeToJarRelease
+> Task :spine:processReleaseJavaRes
+> Task :spine:createFullJarRelease
+> Task :app:processUniversalGmsReleaseNavigationResources
+> Task :artistvideo:bundleLibCompileToJarRelease
+> Task :jiosaavn:bundleLibCompileToJarRelease
+> Task :kizzy:bundleLibCompileToJarRelease
+> Task :kugou:bundleLibCompileToJarRelease
+> Task :lastfm:bundleLibCompileToJarRelease
+> Task :lrclib:bundleLibCompileToJarRelease
+> Task :musixmatchlyrics:bundleLibCompileToJarRelease
+> Task :paxsenixlyrics:bundleLibCompileToJarRelease
+> Task :shazamkit:bundleLibCompileToJarRelease
+> Task :simpmusic:bundleLibCompileToJarRelease
+> Task :spine:bundleLibCompileToJarRelease
+> Task :youlyplus:bundleLibCompileToJarRelease
+> Task :spotify:compileReleaseKotlin
+> Task :spotify:compileReleaseJavaWithJavac NO-SOURCE
+> Task :spotify:mergeReleaseGeneratedProguardFiles
+> Task :app:packageUniversalGmsReleaseResources
+> Task :spotify:exportReleaseConsumerProguardFiles
+> Task :spotify:processReleaseJavaRes
+> Task :spotify:bundleLibRuntimeToJarRelease
+> Task :spotify:createFullJarRelease
+> Task :spotify:bundleLibCompileToJarRelease
+> Task :app:javaPreCompileUniversalGmsRelease
+> Task :app:parseUniversalGmsReleaseLocalResources
+> Task :betterlyrics:writeReleaseAarMetadata
+> Task :artistvideo:writeReleaseAarMetadata
+> Task :innertube:writeReleaseAarMetadata
+> Task :jiosaavn:writeReleaseAarMetadata
+> Task :kizzy:writeReleaseAarMetadata
+> Task :lastfm:writeReleaseAarMetadata
+> Task :kugou:writeReleaseAarMetadata
+> Task :lrclib:writeReleaseAarMetadata
+> Task :musixmatchlyrics:writeReleaseAarMetadata
+> Task :paxsenixlyrics:writeReleaseAarMetadata
+> Task :shazamkit:writeReleaseAarMetadata
+> Task :simpmusic:writeReleaseAarMetadata
+> Task :spotify:writeReleaseAarMetadata
+> Task :spine:writeReleaseAarMetadata
+> Task :youlyplus:writeReleaseAarMetadata
+> Task :app:compileUniversalGmsReleaseNavigationResources
+> Task :app:generateUniversalGmsReleaseRFile
+> Task :app:createUniversalGmsReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksUniversalGmsRelease
+> Task :artistvideo:extractDeepLinksRelease
+> Task :app:checkUniversalGmsReleaseAarMetadata
+> Task :betterlyrics:extractDeepLinksRelease
+> Task :betterlyrics:processReleaseManifest
+> Task :artistvideo:processReleaseManifest
+> Task :innertube:extractDeepLinksRelease
+> Task :jiosaavn:extractDeepLinksRelease
+> Task :innertube:processReleaseManifest
+> Task :kizzy:extractDeepLinksRelease
+> Task :kizzy:processReleaseManifest
+> Task :jiosaavn:processReleaseManifest
+> Task :kugou:extractDeepLinksRelease
+> Task :lastfm:extractDeepLinksRelease
+> Task :kugou:processReleaseManifest
+> Task :lrclib:extractDeepLinksRelease
+> Task :lastfm:processReleaseManifest
+> Task :musixmatchlyrics:extractDeepLinksRelease
+> Task :lrclib:processReleaseManifest
+> Task :paxsenixlyrics:extractDeepLinksRelease
+> Task :musixmatchlyrics:processReleaseManifest
+> Task :shazamkit:extractDeepLinksRelease
+> Task :paxsenixlyrics:processReleaseManifest
+> Task :simpmusic:extractDeepLinksRelease
+> Task :shazamkit:processReleaseManifest
+> Task :simpmusic:processReleaseManifest
+> Task :spine:extractDeepLinksRelease
+> Task :spotify:extractDeepLinksRelease
+> Task :spine:processReleaseManifest
+> Task :youlyplus:extractDeepLinksRelease
+
+> Task :spotify:processReleaseManifest
+package="com.music.spotify" found in source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/spotify/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.music.spotify" from the source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/spotify/src/main/AndroidManifest.xml.
+
+> Task :youlyplus:processReleaseManifest
+package="com.music.youlyplus" found in source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/youlyplus/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.music.youlyplus" from the source AndroidManifest.xml: /home/runner/work/BeatWave/BeatWave/youlyplus/src/main/AndroidManifest.xml.
+
+> Task :artistvideo:mapReleaseSourceSetPaths
+> Task :artistvideo:compileReleaseLibraryResources
+> Task :betterlyrics:mapReleaseSourceSetPaths
+> Task :betterlyrics:compileReleaseLibraryResources
+> Task :innertube:mapReleaseSourceSetPaths
+> Task :innertube:compileReleaseLibraryResources
+> Task :jiosaavn:mapReleaseSourceSetPaths
+> Task :jiosaavn:compileReleaseLibraryResources
+> Task :kizzy:mapReleaseSourceSetPaths
+> Task :kizzy:compileReleaseLibraryResources
+> Task :kugou:mapReleaseSourceSetPaths
+> Task :kugou:compileReleaseLibraryResources
+> Task :lastfm:mapReleaseSourceSetPaths
+> Task :lastfm:compileReleaseLibraryResources
+> Task :lrclib:mapReleaseSourceSetPaths
+> Task :lrclib:compileReleaseLibraryResources
+> Task :musixmatchlyrics:mapReleaseSourceSetPaths
+> Task :musixmatchlyrics:compileReleaseLibraryResources
+> Task :paxsenixlyrics:mapReleaseSourceSetPaths
+> Task :paxsenixlyrics:compileReleaseLibraryResources
+> Task :shazamkit:mapReleaseSourceSetPaths
+> Task :shazamkit:compileReleaseLibraryResources
+> Task :simpmusic:mapReleaseSourceSetPaths
+> Task :simpmusic:compileReleaseLibraryResources
+> Task :spine:mapReleaseSourceSetPaths
+> Task :spine:compileReleaseLibraryResources
+> Task :spotify:mapReleaseSourceSetPaths
+> Task :spotify:compileReleaseLibraryResources
+> Task :youlyplus:mapReleaseSourceSetPaths
+> Task :youlyplus:compileReleaseLibraryResources
+> Task :app:extractProguardFiles
+> Task :app:mergeUniversalGmsReleaseStartupProfile
+> Task :app:generateUniversalGmsReleaseAssets UP-TO-DATE
+> Task :artistvideo:generateReleaseAssets UP-TO-DATE
+> Task :artistvideo:mergeReleaseAssets
+> Task :betterlyrics:generateReleaseAssets UP-TO-DATE
+> Task :betterlyrics:mergeReleaseAssets
+> Task :innertube:generateReleaseAssets UP-TO-DATE
+> Task :innertube:mergeReleaseAssets
+> Task :jiosaavn:generateReleaseAssets UP-TO-DATE
+> Task :jiosaavn:mergeReleaseAssets
+> Task :kizzy:generateReleaseAssets UP-TO-DATE
+> Task :kizzy:mergeReleaseAssets
+> Task :kugou:generateReleaseAssets UP-TO-DATE
+> Task :kugou:mergeReleaseAssets
+> Task :lastfm:generateReleaseAssets UP-TO-DATE
+> Task :lastfm:mergeReleaseAssets
+> Task :lrclib:generateReleaseAssets UP-TO-DATE
+> Task :lrclib:mergeReleaseAssets
+> Task :musixmatchlyrics:generateReleaseAssets UP-TO-DATE
+> Task :musixmatchlyrics:mergeReleaseAssets
+> Task :paxsenixlyrics:generateReleaseAssets UP-TO-DATE
+> Task :paxsenixlyrics:mergeReleaseAssets
+> Task :shazamkit:generateReleaseAssets UP-TO-DATE
+> Task :shazamkit:mergeReleaseAssets
+> Task :simpmusic:generateReleaseAssets UP-TO-DATE
+> Task :simpmusic:mergeReleaseAssets
+> Task :spine:generateReleaseAssets UP-TO-DATE
+> Task :app:processUniversalGmsReleaseMainManifest
+> Task :spine:mergeReleaseAssets
+> Task :spotify:generateReleaseAssets UP-TO-DATE
+> Task :spotify:mergeReleaseAssets
+> Task :youlyplus:generateReleaseAssets UP-TO-DATE
+> Task :youlyplus:mergeReleaseAssets
+> Task :app:processUniversalGmsReleaseManifest
+> Task :app:processUniversalGmsReleaseManifestForPackage
+> Task :app:mergeUniversalGmsReleaseAssets
+> Task :app:compressUniversalGmsReleaseAssets
+> Task :artistvideo:extractProguardFiles
+> Task :app:extractUniversalGmsReleaseVersionControlInfo
+> Task :artistvideo:prepareLintJarForPublish
+> Task :betterlyrics:extractProguardFiles
+
+> Task :innertube:compileReleaseKotlin
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/src/main/kotlin/com/music/innertube/YouTube.kt:268:32 Unnecessary safe call on a non-null receiver of type 'Tabs.Tab.TabRenderer'.
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/src/main/kotlin/com/music/innertube/YouTube.kt:285:32 Unnecessary safe call on a non-null receiver of type 'Tabs.Tab.TabRenderer'.
+w: file:///home/runner/work/BeatWave/BeatWave/innertube/src/main/kotlin/com/music/innertube/pages/RelatedPage.kt:119:58 Unnecessary safe call on a non-null receiver of type 'Runs'.
+
+> Task :innertube:compileReleaseJavaWithJavac NO-SOURCE
+> Task :innertube:mergeReleaseGeneratedProguardFiles
+> Task :innertube:exportReleaseConsumerProguardFiles
+> Task :innertube:bundleLibRuntimeToJarRelease
+> Task :innertube:processReleaseJavaRes
+> Task :innertube:createFullJarRelease
+> Task :betterlyrics:generateReleaseLintModel
+> Task :innertube:bundleLibCompileToJarRelease
+> Task :app:extractIncludeUniversalGmsReleaseProto
+> Task :app:generateUniversalGmsReleaseProto
+> Task :betterlyrics:prepareLintJarForPublish
+> Task :innertube:extractProguardFiles
+> Task :innertube:generateReleaseLintModel
+> Task :innertube:prepareLintJarForPublish
+> Task :jiosaavn:extractProguardFiles
+> Task :jiosaavn:generateReleaseLintModel
+> Task :jiosaavn:prepareLintJarForPublish
+> Task :kizzy:extractProguardFiles
+> Task :kizzy:generateReleaseLintModel
+> Task :kizzy:prepareLintJarForPublish
+> Task :kugou:extractProguardFiles
+> Task :kugou:generateReleaseLintModel
+> Task :kugou:prepareLintJarForPublish
+> Task :artistvideo:generateReleaseLintModel
+> Task :lastfm:extractProguardFiles
+> Task :lastfm:prepareLintJarForPublish
+> Task :lrclib:extractProguardFiles
+> Task :lastfm:generateReleaseLintModel
+> Task :lrclib:prepareLintJarForPublish
+> Task :lrclib:generateReleaseLintModel
+> Task :musixmatchlyrics:extractProguardFiles
+> Task :musixmatchlyrics:prepareLintJarForPublish
+> Task :paxsenixlyrics:extractProguardFiles
+> Task :musixmatchlyrics:generateReleaseLintModel
+> Task :paxsenixlyrics:generateReleaseLintModel
+> Task :paxsenixlyrics:prepareLintJarForPublish
+> Task :shazamkit:prepareLintJarForPublish
+> Task :shazamkit:extractProguardFiles
+> Task :simpmusic:extractProguardFiles
+> Task :simpmusic:generateReleaseLintModel
+> Task :shazamkit:generateReleaseLintModel
+> Task :simpmusic:prepareLintJarForPublish
+> Task :spine:extractProguardFiles
+> Task :spine:prepareLintJarForPublish
+> Task :spotify:extractProguardFiles
+> Task :spotify:generateReleaseLintModel
+> Task :spotify:prepareLintJarForPublish
+
+> Task :app:mergeUniversalGmsReleaseResources
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:504:4: Failed to flatten XML for resource 'add_to_queue' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:504:4: string/add_to_queue does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml:185:50: Failed to flatten XML for resource 'album_description_placeholder' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:26:4: string/album_description_placeholder does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:519:4: Failed to flatten XML for resource 'app_icon' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:519:4: string/app_icon does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:516:4: Failed to flatten XML for resource 'app_icon_change_warning' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:516:4: string/app_icon_change_warning does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:520:4: Failed to flatten XML for resource 'app_icon_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:520:4: string/app_icon_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:58:4: Failed to flatten XML for resource 'app_icon_og' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:58:4: string/app_icon_og does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:296:4: Failed to flatten XML for resource 'app_info_section' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:296:4: string/app_info_section does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:46:4: Failed to flatten XML for resource 'app_up_to_date' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:46:4: string/app_up_to_date does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:43:4: Failed to flatten XML for resource 'app_updates_subtitle' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:43:4: string/app_updates_subtitle does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:456:4: Failed to flatten XML for resource 'app_updates_title' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:456:4: string/app_updates_title does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:288:4: Failed to flatten XML for resource 'app_version' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:288:4: string/app_version does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:806:4: Failed to flatten XML for resource 'apple_music_ui_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:806:4: string/apple_music_ui_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:944:4: Failed to flatten XML for resource 'artist_name' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:944:4: string/artist_name does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:258:4: Failed to flatten XML for resource 'auto_load_more_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:258:4: string/auto_load_more_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:403:4: Failed to flatten XML for resource 'auto_skip_next_on_error' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:403:4: string/auto_skip_next_on_error does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:11:4: Failed to flatten XML for resource 'auto_update_check_subtitle' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:11:4: string/auto_update_check_subtitle does not contain a valid string resource.
+/home/runner/.gradle/caches/9.4.1/transforms/c44cc5c4c3ba6dc48e801f3119e43d19/transformed/material-1.4.0/res/values-fr/values-fr.xml:6:4: Failed to flatten XML for resource 'bluetooth_permission_required' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/.gradle/caches/9.4.1/transforms/c44cc5c4c3ba6dc48e801f3119e43d19/transformed/material-1.4.0/res/values-fr/values-fr.xml:6:4: string/bluetooth_permission_required does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:18:4: Failed to flatten XML for resource 'change_card_image' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:18:4: string/change_card_image does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:337:4: Failed to flatten XML for resource 'clear_downloaded_updates_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:337:4: string/clear_downloaded_updates_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:336:4: Failed to flatten XML for resource 'clear_image_cache' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:336:4: string/clear_image_cache does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:427:4: Failed to flatten XML for resource 'clear_listen_history' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:427:4: string/clear_listen_history does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:933:4: Failed to flatten XML for resource 'clear_listen_history_confirm' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:933:4: string/clear_listen_history_confirm does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:431:4: Failed to flatten XML for resource 'clear_search_history' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:431:4: string/clear_search_history does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:417:4: Failed to flatten XML for resource 'clear_search_history_confirm' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:417:4: string/clear_search_history_confirm does not contain a valid string resource.
+/home/runner/.gradle/caches/9.4.1/transforms/4c1730297580444e1bab9c7fdd97aa0b/transformed/ui/res/values-fr/values-fr.xml:6:4: Failed to flatten XML for resource 'default_open_tab' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/.gradle/caches/9.4.1/transforms/4c1730297580444e1bab9c7fdd97aa0b/transformed/ui/res/values-fr/values-fr.xml:6:4: string/default_open_tab does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:435:4: Failed to flatten XML for resource 'disable_screenshot' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:435:4: string/disable_screenshot does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1284:4: Failed to flatten XML for resource 'disable_screenshot_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+
+> Task :youlyplus:extractProguardFiles
+> Task :youlyplus:generateReleaseLintModel
+> Task :youlyplus:prepareLintJarForPublish
+> Task :innertube:checkReleaseAarMetadata
+> Task :innertube:stripReleaseDebugSymbols NO-SOURCE
+> Task :innertube:copyReleaseJniLibsProjectAndLocalJars
+> Task :innertube:extractDeepLinksForAarRelease
+> Task :spine:generateReleaseLintModel
+> Task :innertube:mergeReleaseConsumerProguardFiles
+> Task :innertube:mergeReleaseJavaResource
+> Task :kugou:checkReleaseAarMetadata
+> Task :kugou:stripReleaseDebugSymbols NO-SOURCE
+> Task :kugou:copyReleaseJniLibsProjectAndLocalJars
+> Task :kugou:extractDeepLinksForAarRelease
+
+> Task :app:mergeUniversalGmsReleaseResources FAILED
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1284:4: string/disable_screenshot_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:966:4: Failed to flatten XML for resource 'discord_information' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:966:4: string/discord_information does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:555:4: Failed to flatten XML for resource 'diy_cannot_add' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:555:4: string/diy_cannot_add does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:563:4: Failed to flatten XML for resource 'diy_limit_reached' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:563:4: string/diy_limit_reached does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:569:4: Failed to flatten XML for resource 'diy_low_resolution' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:569:4: string/diy_low_resolution does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:568:4: Failed to flatten XML for resource 'diy_mock_artist' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:568:4: string/diy_mock_artist does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:501:4: Failed to flatten XML for resource 'edit_artist' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:501:4: string/edit_artist does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:634:4: Failed to flatten XML for resource 'eight_d_headphones_hint' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:634:4: string/eight_d_headphones_hint does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:460:4: Failed to flatten XML for resource 'enable_saavn_streaming_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:460:4: string/enable_saavn_streaming_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:661:4: Failed to flatten XML for resource 'error_artist_name_empty' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:661:4: string/error_artist_name_empty does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:190:4: Failed to flatten XML for resource 'error_song_artist_empty' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:190:4: string/error_song_artist_empty does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:600:4: Failed to flatten XML for resource 'error_timeout' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:600:4: string/error_timeout does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:622:4: Failed to flatten XML for resource 'export_audio_failed' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:622:4: string/export_audio_failed does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1021:4: Failed to flatten XML for resource 'failed_to_download_version_error' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1021:4: string/failed_to_download_version_error does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml:889:56: Failed to flatten XML for resource 'fullscreen_lyrics_collapse_top_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:291:4: string/fullscreen_lyrics_collapse_top_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:325:4: Failed to flatten XML for resource 'grid_columns_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:325:4: string/grid_columns_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:332:4: Failed to flatten XML for resource 'home_background_video_warning' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:332:4: string/home_background_video_warning does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:45:4: Failed to flatten XML for resource 'home_card_corner_radius' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:45:4: string/home_card_corner_radius does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:46:4: Failed to flatten XML for resource 'home_feed_order' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:46:4: string/home_feed_order does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:47:4: Failed to flatten XML for resource 'home_feed_order_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:47:4: string/home_feed_order_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:330:4: Failed to flatten XML for resource 'home_feed_order_reset' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:330:4: string/home_feed_order_reset does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:328:4: Failed to flatten XML for resource 'home_grid_columns' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:328:4: string/home_grid_columns does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:327:4: Failed to flatten XML for resource 'home_hero_card_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:327:4: string/home_hero_card_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:19:4: Failed to flatten XML for resource 'installed_date_title' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:19:4: string/installed_date_title does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:383:4: Failed to flatten XML for resource 'keep_listening' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:383:4: string/keep_listening does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:85:4: Failed to flatten XML for resource 'library_album_empty' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:85:4: string/library_album_empty does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1187:4: Failed to flatten XML for resource 'library_artist_empty' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1187:4: string/library_artist_empty does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:84:4: Failed to flatten XML for resource 'library_playlist_empty' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:84:4: string/library_playlist_empty does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:472:4: Failed to flatten XML for resource 'library_song_empty' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:472:4: string/library_song_empty does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:511:4: Failed to flatten XML for resource 'liquid_glass_puck_color_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:511:4: string/liquid_glass_puck_color_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1262:4: Failed to flatten XML for resource 'liquid_glass_puck_opacity_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1262:4: string/liquid_glass_puck_opacity_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:507:4: Failed to flatten XML for resource 'liquid_glass_style_liquid_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:507:4: string/liquid_glass_style_liquid_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1205:4: Failed to flatten XML for resource 'liquid_glass_style_transparent_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1205:4: string/liquid_glass_style_transparent_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:49:4: Failed to flatten XML for resource 'listen_history' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:49:4: string/listen_history does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:784:4: Failed to flatten XML for resource 'listen_together_host_controls' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:784:4: string/listen_together_host_controls does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:742:4: Failed to flatten XML for resource 'listen_together_locked' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:742:4: string/listen_together_locked does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:762:4: Failed to flatten XML for resource 'listen_together_smart_resync_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:762:4: string/listen_together_smart_resync_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1116:4: Failed to flatten XML for resource 'lossless_fallback_to_standard_audio' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1116:4: string/lossless_fallback_to_standard_audio does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:307:4: Failed to flatten XML for resource 'lyrics_swipe_to_change_song_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:307:4: string/lyrics_swipe_to_change_song_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:79:4: Failed to flatten XML for resource 'max_image_cache_size' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:79:4: string/max_image_cache_size does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:514:4: Failed to flatten XML for resource 'mini_bar_tab_style_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:514:4: string/mini_bar_tab_style_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:322:4: Failed to flatten XML for resource 'mini_player_waveform' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:322:4: string/mini_player_waveform does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:63:4: Failed to flatten XML for resource 'more_options' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:63:4: string/more_options does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml:1511:51: Failed to flatten XML for resource 'one_tap_fullscreen_lyrics_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:652:4: string/one_tap_fullscreen_lyrics_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:381:4: Failed to flatten XML for resource 'pause_listen_history' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:381:4: string/pause_listen_history does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:4:4: Failed to flatten XML for resource 'pause_search_history' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:4:4: string/pause_search_history does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:397:4: Failed to flatten XML for resource 'persistent_queue' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:397:4: string/persistent_queue does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:316:4: Failed to flatten XML for resource 'persistent_queue_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:316:4: string/persistent_queue_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:582:4: Failed to flatten XML for resource 'player_icon_like' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:582:4: string/player_icon_like does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:312:4: Failed to flatten XML for resource 'player_icons_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:312:4: string/player_icons_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:544:4: Failed to flatten XML for resource 'preset_apply_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:544:4: string/preset_apply_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:538:4: Failed to flatten XML for resource 'preset_category_background' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:538:4: string/preset_category_background does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:537:4: Failed to flatten XML for resource 'preset_import_failed' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:537:4: string/preset_import_failed does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:531:4: Failed to flatten XML for resource 'preset_save_current' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:531:4: string/preset_save_current does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:523:4: Failed to flatten XML for resource 'preset_thumbnail_failed' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:523:4: string/preset_thumbnail_failed does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:516:4: Failed to flatten XML for resource 'pure_black_hero_background_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:516:4: string/pure_black_hero_background_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:277:4: Failed to flatten XML for resource 'queue' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:277:4: string/queue does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:122:4: Failed to flatten XML for resource 'remove_from_history' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:122:4: string/remove_from_history does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:247:4: Failed to flatten XML for resource 'remove_from_queue' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:247:4: string/remove_from_queue does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:192:4: Failed to flatten XML for resource 'sample_rate' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:192:4: string/sample_rate does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:493:4: Failed to flatten XML for resource 'search_prompt_template_artist' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:493:4: string/search_prompt_template_artist does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:44:4: Failed to flatten XML for resource 'show_mood_filters' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:44:4: string/show_mood_filters does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml:1858:43: Failed to flatten XML for resource 'show_mood_filters_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:96:4: string/show_mood_filters_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:162:4: Failed to flatten XML for resource 'sort_by_create_date' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:162:4: string/sort_by_create_date does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:159:4: Failed to flatten XML for resource 'sort_by_play_time' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:159:4: string/sort_by_play_time does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:326:4: Failed to flatten XML for resource 'speed_dial_card_height' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:326:4: string/speed_dial_card_height does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1126:4: Failed to flatten XML for resource 'speed_dial_columns' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1126:4: string/speed_dial_columns does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml:1960:45: Failed to flatten XML for resource 'stop_music_on_task_clear' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:407:4: string/stop_music_on_task_clear does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:363:4: Failed to flatten XML for resource 'switch_channel_action_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:363:4: string/switch_channel_action_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:350:4: Failed to flatten XML for resource 'theme_category_home_background' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:350:4: string/theme_category_home_background does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:347:4: Failed to flatten XML for resource 'theme_category_library_background' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:347:4: string/theme_category_library_background does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:294:4: Failed to flatten XML for resource 'theme_desc' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:294:4: string/theme_desc does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:716:4: Failed to flatten XML for resource 'today' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:716:4: string/today does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:30:4: Failed to flatten XML for resource 'update_notifications_subtitle' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/updater_strings.xml:30:4: string/update_notifications_subtitle does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:432:4: Failed to flatten XML for resource 'use_first_song_image' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:432:4: string/use_first_song_image does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:133:4: Failed to flatten XML for resource 'view_album' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/strings.xml:133:4: string/view_album does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1085:4: Failed to flatten XML for resource 'view_artist' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:1085:4: string/view_artist does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml:2128:41: Failed to flatten XML for resource 'view_version_history' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:364:4: string/view_version_history does not contain a valid string resource.
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:994:4: Failed to flatten XML for resource 'your_app_getting_better' with error: Invalid unicode escape sequence in string
+"{str}"
+/home/runner/work/BeatWave/BeatWave/app/src/main/res/values-fr/vivi_strings.xml:994:4: string/your_app_getting_better does not contain a valid string resource.
+
+> Task :kugou:extractReleaseAnnotations
+> Task :innertube:extractReleaseAnnotations
+> Task :app:kspUniversalGmsReleaseKotlin
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1794899161324.json
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:mergeUniversalGmsReleaseResources'.
+> A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+   > Resource compilation failed (Failed to compile values resource file /home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml. Cause: java.lang.IllegalStateException: Can not extract resource from com.android.aaptcompiler.ParsedResource@438b0e9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4e014866.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4c2f332f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@575a21f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@440be5a0.,Can not extract resource from com.android.aaptcompiler.ParsedResource@8dc73f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@358e3a4a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1d4313be.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6fed353.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6824488c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2cbc63a8.,Can not extract resource from com.android.aaptcompiler.ParsedResource@29675b62.,Can not extract resource from com.android.aaptcompiler.ParsedResource@59737156.,Can not extract resource from com.android.aaptcompiler.ParsedResource@13d932dc.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5cb7a22c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4f185e93.,Can not extract resource from com.android.aaptcompiler.ParsedResource@d236fe7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5736e34d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@36719d45.,Can not extract resource from com.android.aaptcompiler.ParsedResource@3b10b1de.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2ddaad0c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4d960f71.,Can not extract resource from com.android.aaptcompiler.ParsedResource@77b72833.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4917e95a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@315d8fb9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4c4de364.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2f5bc6e.,Can not extract resource from com.android.aaptcompiler.ParsedResource@74dec853.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2923b136.,Can not extract resource from com.android.aaptcompiler.ParsedResource@ad621b5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@25efea4d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@277132f3.,Can not extract resource from com.android.aaptcompiler.ParsedResource@13ef8d2a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@280fcd6b.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7268e7a5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5ca0a5b1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@33c9f5d2.,Can not extract resource from com.android.aaptcompiler.ParsedResource@657b1255.,Can not extract resource from com.android.aaptcompiler.ParsedResource@501b8490.,Can not extract resource from com.android.aaptcompiler.ParsedResource@9cf2e0f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@75542d81.,Can not extract resource from com.android.aaptcompiler.ParsedResource@480060c4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@44b35250.,Can not extract resource from com.android.aaptcompiler.ParsedResource@347ca39f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6010a8b4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2b5df232.,Can not extract resource from com.android.aaptcompiler.ParsedResource@752214db.,Can not extract resource from com.android.aaptcompiler.ParsedResource@241331bb.,Can not extract resource from com.android.aaptcompiler.ParsedResource@41237885.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5abcef1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@60ca9653.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5d69ed18.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7545160.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5c53db3d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@681fa6ea.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7a0c87dc.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5ff606ac.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1dbeb45c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@80379f7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@162f2d4c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@79038a43.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1177dd6b.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2a8c273.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6d82da27.,Can not extract resource from com.android.aaptcompiler.ParsedResource@8360446.,Can not extract resource from com.android.aaptcompiler.ParsedResource@27851cae.,Can not extract resource from com.android.aaptcompiler.ParsedResource@63faf977.,Can not extract resource from com.android.aaptcompiler.ParsedResource@185254cd.,Can not extract resource from com.android.aaptcompiler.ParsedResource@20fe77b5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2f916f68.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1b940aac.,Can not extract resource from com.android.aaptcompiler.ParsedResource@11ead12f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@42fa4f78.,Can not extract resource from com.android.aaptcompiler.ParsedResource@66348260.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5dce2560.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1aeae45f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@afbe9f5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@481e5d48.,Can not extract resource from com.android.aaptcompiler.ParsedResource@64d7940e.,Can not extract resource from com.android.aaptcompiler.ParsedResource@29524cd7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7cb3bc49.,Can not extract resource from com.android.aaptcompiler.ParsedResource@46fd5a8a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1e52d1bf.,Can not extract resource from com.android.aaptcompiler.ParsedResource@25dd1256.,Can not extract resource from com.android.aaptcompiler.ParsedResource@446da350.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6868885d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@603f73c6.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2d3d8235.,Can not extract resource from com.android.aaptcompiler.ParsedResource@463c3e1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@28659950.,Can not extract resource from com.android.aaptcompiler.ParsedResource@33df6ed9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@72b27ebd.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6854d7c1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6c7f6c82.,Can not extract resource from com.android.aaptcompiler.ParsedResource@249e7e72.,Can not extract resource from com.android.aaptcompiler.ParsedResource@45b8bbca.,Can not extract resource from com.android.aaptcompiler.ParsedResource@b9c9663.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1c90f0ee.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4baa70e0.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4bccf4b4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@240c5c20.,Can not extract resource from com.android.aaptcompiler.ParsedResource@3f80dfcf.,Can not extract resource from com.android.aaptcompiler.ParsedResource@27b585af.,Can not extract resource from com.android.aaptcompiler.ParsedResource@bf0bcb9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4ddb0cbb.). Check logs for more details.
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:mergeUniversalGmsReleaseResources'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:135)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:288)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:133)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:121)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.DefaultNodeExecutor.executeLocalTaskNode(DefaultNodeExecutor.java:55)
+	at org.gradle.execution.plan.DefaultNodeExecutor.execute(DefaultNodeExecutor.java:34)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:355)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:343)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:84)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:339)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:328)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:47)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing com.android.build.gradle.internal.res.ResourceCompilerRunnable
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:289)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$withoutLocks$2(DefaultWorkerLeaseService.java:350)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:348)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:332)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:337)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:267)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:244)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:227)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:210)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:176)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:167)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:47)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:137)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:134)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:134)
+	at org.gradle.internal.execution.steps.ExecuteStep$Mutable.execute(ExecuteStep.java:80)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:51)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:29)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.executeMutable(RemovePreviousOutputsStep.java:39)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:42)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:24)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.executeMutable(ResolveInputChangesStep.java:28)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:76)
+	at org.gradle.internal.Either$Right.fold(Either.java:176)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:74)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:49)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.executeMutable(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:70)
+	at org.gradle.internal.execution.steps.ResolveMutableCachingStateStep.executeDelegate(ResolveMutableCachingStateStep.java:32)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:69)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:37)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:63)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.executeMutable(ResolveChangesStep.java:34)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:79)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.executeDelegate(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:99)
+	at org.gradle.internal.execution.steps.ValidateStep$Mutable.execute(ValidateStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.executeMutable(CaptureMutableStateBeforeExecutionStep.java:86)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:65)
+	at org.gradle.internal.execution.steps.CaptureMutableStateBeforeExecutionStep.execute(CaptureMutableStateBeforeExecutionStep.java:45)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeWithNonEmptySources(SkipEmptyMutableWorkStep.java:210)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:85)
+	at org.gradle.internal.execution.steps.SkipEmptyMutableWorkStep.executeMutable(SkipEmptyMutableWorkStep.java:53)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.executeMutable(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:77)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.executeMutable(HandleStaleOutputsStep.java:43)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$executeMutable$0(AssignMutableWorkspaceStep.java:34)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:305)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:30)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.executeMutable(AssignMutableWorkspaceStep.java:21)
+	at org.gradle.internal.execution.steps.MutableStep.execute(MutableStep.java:26)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:56)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:38)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:68)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:132)
+	... 30 more
+Caused by: com.android.aaptcompiler.ResourceCompilationException: Resource compilation failed (Failed to compile values resource file /home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml. Cause: java.lang.IllegalStateException: Can not extract resource from com.android.aaptcompiler.ParsedResource@438b0e9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4e014866.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4c2f332f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@575a21f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@440be5a0.,Can not extract resource from com.android.aaptcompiler.ParsedResource@8dc73f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@358e3a4a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1d4313be.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6fed353.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6824488c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2cbc63a8.,Can not extract resource from com.android.aaptcompiler.ParsedResource@29675b62.,Can not extract resource from com.android.aaptcompiler.ParsedResource@59737156.,Can not extract resource from com.android.aaptcompiler.ParsedResource@13d932dc.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5cb7a22c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4f185e93.,Can not extract resource from com.android.aaptcompiler.ParsedResource@d236fe7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5736e34d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@36719d45.,Can not extract resource from com.android.aaptcompiler.ParsedResource@3b10b1de.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2ddaad0c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4d960f71.,Can not extract resource from com.android.aaptcompiler.ParsedResource@77b72833.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4917e95a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@315d8fb9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4c4de364.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2f5bc6e.,Can not extract resource from com.android.aaptcompiler.ParsedResource@74dec853.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2923b136.,Can not extract resource from com.android.aaptcompiler.ParsedResource@ad621b5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@25efea4d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@277132f3.,Can not extract resource from com.android.aaptcompiler.ParsedResource@13ef8d2a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@280fcd6b.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7268e7a5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5ca0a5b1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@33c9f5d2.,Can not extract resource from com.android.aaptcompiler.ParsedResource@657b1255.,Can not extract resource from com.android.aaptcompiler.ParsedResource@501b8490.,Can not extract resource from com.android.aaptcompiler.ParsedResource@9cf2e0f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@75542d81.,Can not extract resource from com.android.aaptcompiler.ParsedResource@480060c4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@44b35250.,Can not extract resource from com.android.aaptcompiler.ParsedResource@347ca39f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6010a8b4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2b5df232.,Can not extract resource from com.android.aaptcompiler.ParsedResource@752214db.,Can not extract resource from com.android.aaptcompiler.ParsedResource@241331bb.,Can not extract resource from com.android.aaptcompiler.ParsedResource@41237885.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5abcef1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@60ca9653.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5d69ed18.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7545160.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5c53db3d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@681fa6ea.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7a0c87dc.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5ff606ac.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1dbeb45c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@80379f7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@162f2d4c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@79038a43.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1177dd6b.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2a8c273.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6d82da27.,Can not extract resource from com.android.aaptcompiler.ParsedResource@8360446.,Can not extract resource from com.android.aaptcompiler.ParsedResource@27851cae.,Can not extract resource from com.android.aaptcompiler.ParsedResource@63faf977.,Can not extract resource from com.android.aaptcompiler.ParsedResource@185254cd.,Can not extract resource from com.android.aaptcompiler.ParsedResource@20fe77b5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2f916f68.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1b940aac.,Can not extract resource from com.android.aaptcompiler.ParsedResource@11ead12f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@42fa4f78.,Can not extract resource from com.android.aaptcompiler.ParsedResource@66348260.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5dce2560.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1aeae45f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@afbe9f5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@481e5d48.,Can not extract resource from com.android.aaptcompiler.ParsedResource@64d7940e.,Can not extract resource from com.android.aaptcompiler.ParsedResource@29524cd7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7cb3bc49.,Can not extract resource from com.android.aaptcompiler.ParsedResource@46fd5a8a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1e52d1bf.,Can not extract resource from com.android.aaptcompiler.ParsedResource@25dd1256.,Can not extract resource from com.android.aaptcompiler.ParsedResource@446da350.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6868885d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@603f73c6.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2d3d8235.,Can not extract resource from com.android.aaptcompiler.ParsedResource@463c3e1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@28659950.,Can not extract resource from com.android.aaptcompiler.ParsedResource@33df6ed9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@72b27ebd.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6854d7c1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6c7f6c82.,Can not extract resource from com.android.aaptcompiler.ParsedResource@249e7e72.,Can not extract resource from com.android.aaptcompiler.ParsedResource@45b8bbca.,Can not extract resource from com.android.aaptcompiler.ParsedResource@b9c9663.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1c90f0ee.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4baa70e0.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4bccf4b4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@240c5c20.,Can not extract resource from com.android.aaptcompiler.ParsedResource@3f80dfcf.,Can not extract resource from com.android.aaptcompiler.ParsedResource@27b585af.,Can not extract resource from com.android.aaptcompiler.ParsedResource@bf0bcb9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4ddb0cbb.). Check logs for more details.
+	at com.android.aaptcompiler.ResourceCompiler.compileResource(ResourceCompiler.kt:120)
+	at com.android.build.gradle.internal.res.ResourceCompilerRunnable$Companion.compileSingleResource(ResourceCompilerRunnable.kt:33)
+	at com.android.build.gradle.internal.res.ResourceCompilerRunnable.run(ResourceCompilerRunnable.kt:13)
+	at com.android.build.gradle.internal.profile.ProfileAwareWorkAction.execute(ProfileAwareWorkAction.kt:66)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:68)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:64)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:61)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:102)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:61)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:58)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:176)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:30)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.lambda$withLocksAcquired$0(DefaultWorkerLeaseService.java:275)
+	at org.gradle.internal.work.ResourceLockStatistics$1.measure(ResourceLockStatistics.java:43)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocksAcquired(DefaultWorkerLeaseService.java:273)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:265)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:128)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:133)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	... 2 more
+Caused by: com.android.aaptcompiler.ResourceCompilationException: Failed to compile values resource file /home/runner/work/BeatWave/BeatWave/app/build/intermediates/incremental/universalGmsRelease/mergeUniversalGmsReleaseResources/merged.dir/values-fr/values-fr.xml
+	at com.android.aaptcompiler.ResourceCompiler.compileTable(ResourceCompiler.kt:179)
+	at com.android.aaptcompiler.ResourceCompiler.access$compileTable(ResourceCompiler.kt:1)
+	at com.android.aaptcompiler.ResourceCompiler$getCompileMethod$1.invoke(ResourceCompiler.kt:130)
+	at com.android.aaptcompiler.ResourceCompiler$getCompileMethod$1.invoke(ResourceCompiler.kt:130)
+	at com.android.aaptcompiler.ResourceCompiler.compileResource(ResourceCompiler.kt:116)
+	... 34 more
+Caused by: java.lang.IllegalStateException: Can not extract resource from com.android.aaptcompiler.ParsedResource@438b0e9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4e014866.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4c2f332f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@575a21f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@440be5a0.,Can not extract resource from com.android.aaptcompiler.ParsedResource@8dc73f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@358e3a4a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1d4313be.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6fed353.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6824488c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2cbc63a8.,Can not extract resource from com.android.aaptcompiler.ParsedResource@29675b62.,Can not extract resource from com.android.aaptcompiler.ParsedResource@59737156.,Can not extract resource from com.android.aaptcompiler.ParsedResource@13d932dc.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5cb7a22c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4f185e93.,Can not extract resource from com.android.aaptcompiler.ParsedResource@d236fe7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5736e34d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@36719d45.,Can not extract resource from com.android.aaptcompiler.ParsedResource@3b10b1de.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2ddaad0c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4d960f71.,Can not extract resource from com.android.aaptcompiler.ParsedResource@77b72833.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4917e95a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@315d8fb9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4c4de364.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2f5bc6e.,Can not extract resource from com.android.aaptcompiler.ParsedResource@74dec853.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2923b136.,Can not extract resource from com.android.aaptcompiler.ParsedResource@ad621b5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@25efea4d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@277132f3.,Can not extract resource from com.android.aaptcompiler.ParsedResource@13ef8d2a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@280fcd6b.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7268e7a5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5ca0a5b1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@33c9f5d2.,Can not extract resource from com.android.aaptcompiler.ParsedResource@657b1255.,Can not extract resource from com.android.aaptcompiler.ParsedResource@501b8490.,Can not extract resource from com.android.aaptcompiler.ParsedResource@9cf2e0f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@75542d81.,Can not extract resource from com.android.aaptcompiler.ParsedResource@480060c4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@44b35250.,Can not extract resource from com.android.aaptcompiler.ParsedResource@347ca39f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6010a8b4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2b5df232.,Can not extract resource from com.android.aaptcompiler.ParsedResource@752214db.,Can not extract resource from com.android.aaptcompiler.ParsedResource@241331bb.,Can not extract resource from com.android.aaptcompiler.ParsedResource@41237885.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5abcef1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@60ca9653.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5d69ed18.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7545160.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5c53db3d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@681fa6ea.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7a0c87dc.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5ff606ac.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1dbeb45c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@80379f7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@162f2d4c.,Can not extract resource from com.android.aaptcompiler.ParsedResource@79038a43.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1177dd6b.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2a8c273.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6d82da27.,Can not extract resource from com.android.aaptcompiler.ParsedResource@8360446.,Can not extract resource from com.android.aaptcompiler.ParsedResource@27851cae.,Can not extract resource from com.android.aaptcompiler.ParsedResource@63faf977.,Can not extract resource from com.android.aaptcompiler.ParsedResource@185254cd.,Can not extract resource from com.android.aaptcompiler.ParsedResource@20fe77b5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2f916f68.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1b940aac.,Can not extract resource from com.android.aaptcompiler.ParsedResource@11ead12f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@42fa4f78.,Can not extract resource from com.android.aaptcompiler.ParsedResource@66348260.,Can not extract resource from com.android.aaptcompiler.ParsedResource@5dce2560.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1aeae45f.,Can not extract resource from com.android.aaptcompiler.ParsedResource@afbe9f5.,Can not extract resource from com.android.aaptcompiler.ParsedResource@481e5d48.,Can not extract resource from com.android.aaptcompiler.ParsedResource@64d7940e.,Can not extract resource from com.android.aaptcompiler.ParsedResource@29524cd7.,Can not extract resource from com.android.aaptcompiler.ParsedResource@7cb3bc49.,Can not extract resource from com.android.aaptcompiler.ParsedResource@46fd5a8a.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1e52d1bf.,Can not extract resource from com.android.aaptcompiler.ParsedResource@25dd1256.,Can not extract resource from com.android.aaptcompiler.ParsedResource@446da350.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6868885d.,Can not extract resource from com.android.aaptcompiler.ParsedResource@603f73c6.,Can not extract resource from com.android.aaptcompiler.ParsedResource@2d3d8235.,Can not extract resource from com.android.aaptcompiler.ParsedResource@463c3e1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@28659950.,Can not extract resource from com.android.aaptcompiler.ParsedResource@33df6ed9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@72b27ebd.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6854d7c1.,Can not extract resource from com.android.aaptcompiler.ParsedResource@6c7f6c82.,Can not extract resource from com.android.aaptcompiler.ParsedResource@249e7e72.,Can not extract resource from com.android.aaptcompiler.ParsedResource@45b8bbca.,Can not extract resource from com.android.aaptcompiler.ParsedResource@b9c9663.,Can not extract resource from com.android.aaptcompiler.ParsedResource@1c90f0ee.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4baa70e0.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4bccf4b4.,Can not extract resource from com.android.aaptcompiler.ParsedResource@240c5c20.,Can not extract resource from com.android.aaptcompiler.ParsedResource@3f80dfcf.,Can not extract resource from com.android.aaptcompiler.ParsedResource@27b585af.,Can not extract resource from com.android.aaptcompiler.ParsedResource@bf0bcb9.,Can not extract resource from com.android.aaptcompiler.ParsedResource@4ddb0cbb.
+	at com.android.aaptcompiler.TableExtractor.extractResourceValues(TableExtractor.kt:248)
+	at com.android.aaptcompiler.TableExtractor.extract(TableExtractor.kt:162)
+	at com.android.aaptcompiler.ResourceCompiler.compileTable(ResourceCompiler.kt:175)
+	... 38 more
+
+
+BUILD FAILED in 4m 24s
+445 actionable tasks: 445 executed
+Configuration cache entry stored.
