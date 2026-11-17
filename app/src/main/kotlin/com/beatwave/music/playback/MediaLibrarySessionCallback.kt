@@ -11,9 +11,11 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.core.net.toUri
+import androidx.datastore.preferences.core.edit
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.offline.Download
 import androidx.media3.session.LibraryResult
@@ -35,6 +37,7 @@ import com.music.innertube.models.SongItem
 import com.music.innertube.models.filterExplicit
 import com.music.innertube.models.filterVideoSongs
 import com.beatwave.music.R
+import com.beatwave.music.constants.AndroidAutoLyricsKey
 import com.beatwave.music.constants.HideExplicitKey
 import com.beatwave.music.constants.HideVideoSongsKey
 import com.beatwave.music.constants.DataSaverEnabledKey
@@ -57,6 +60,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.guava.future
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import javax.inject.Inject
 
@@ -73,12 +77,19 @@ constructor(
     var toggleLike: () -> Unit = {}
     var toggleStartRadio: () -> Unit = {}
     var toggleLibrary: () -> Unit = {}
+    var androidAutoLyrics: AndroidAutoLyrics? = null
+
+    // Android Auto shows only this many root items as tabs.
+    private var rootChildrenLimit = Int.MAX_VALUE
 
     override fun onConnect(
         session: MediaSession,
         controller: MediaSession.ControllerInfo,
     ): MediaSession.ConnectionResult {
         val connectionResult = super.onConnect(session, controller)
+        if (controller.packageName == AndroidAutoLyrics.ANDROID_AUTO_PACKAGE) {
+            androidAutoLyrics?.onCarControllerConnected(true)
+        }
         return MediaSession.ConnectionResult.accept(
             connectionResult.availableSessionCommands
                 .buildUpon()
@@ -87,9 +98,19 @@ constructor(
                 .add(MediaSessionConstants.CommandToggleLibrary)
                 .add(MediaSessionConstants.CommandToggleShuffle)
                 .add(MediaSessionConstants.CommandToggleRepeatMode)
+                .add(MediaSessionConstants.CommandToggleCarLyrics)
                 .build(),
             connectionResult.availablePlayerCommands,
         )
+    }
+
+    override fun onDisconnected(
+        session: MediaSession,
+        controller: MediaSession.ControllerInfo,
+    ) {
+        if (controller.packageName == AndroidAutoLyrics.ANDROID_AUTO_PACKAGE) {
+            androidAutoLyrics?.onCarControllerConnected(false)
+        }
     }
 
     override fun onCustomCommand(
@@ -106,6 +127,7 @@ constructor(
                 !session.player.shuffleModeEnabled
 
             MediaSessionConstants.ACTION_TOGGLE_REPEAT_MODE -> session.player.toggleRepeatMode()
+            MediaSessionConstants.ACTION_TOGGLE_CAR_LYRICS -> toggleCarLyrics()
         }
         return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
     }
@@ -122,13 +144,17 @@ constructor(
         session: MediaLibrarySession,
         browser: MediaSession.ControllerInfo,
         params: MediaLibraryService.LibraryParams?,
-    ): ListenableFuture<LibraryResult<MediaItem>> =
-        Futures.immediateFuture(
+    ): ListenableFuture<LibraryResult<MediaItem>> {
+        params?.extras?.getInt(MediaConstants.EXTRAS_KEY_ROOT_CHILDREN_LIMIT, 0)
+            ?.takeIf { it > 0 }
+            ?.let { rootChildrenLimit = it }
+        return Futures.immediateFuture(
             LibraryResult.ofItem(
                 rootMediaItem(),
                 params.withContentStyleHints(),
             ),
         )
+    }
 
     override fun onGetChildren(
         session: MediaLibrarySession,
@@ -141,7 +167,9 @@ constructor(
         scope.future(Dispatchers.IO) {
             val children =
                 when (parentId) {
-                    MusicService.ROOT -> rootChildren()
+                    MusicService.ROOT -> rootTabs()
+
+                    MusicService.LYRICS -> lyricsChildren()
 
                     MusicService.SONG -> database.songsByCreateDateAsc().first()
                         .map { it.toMediaItem(parentId) }
@@ -388,8 +416,16 @@ constructor(
         mediaItems: MutableList<MediaItem>,
         startIndex: Int,
         startPositionMs: Long,
-    ): ListenableFuture<MediaItemsWithStartPosition> =
-        scope.future {
+    ): ListenableFuture<MediaItemsWithStartPosition> {
+        val lyricPath = mediaItems.firstOrNull()?.mediaId?.split("/")
+        if (lyricPath?.firstOrNull() == MusicService.LYRICS) {
+            seekToLyricLine(mediaSession.player, lyricPath)
+            // Failing keeps the queue as it is; the tap was only a seek.
+            return Futures.immediateFailedFuture(
+                UnsupportedOperationException("Lyric lines seek, they don't replace the queue"),
+            )
+        }
+        return scope.future {
             val defaultResult = MediaItemsWithStartPosition(emptyList(), startIndex, startPositionMs)
             val path = mediaItems.firstOrNull()?.mediaId?.split("/")
                 ?: return@future defaultResult
@@ -579,6 +615,7 @@ constructor(
                 else -> defaultResult
             }
         }
+    }
 
     private fun drawableUri(
         @DrawableRes id: Int,
@@ -638,12 +675,96 @@ constructor(
         ),
     )
 
+    /** Root tabs, plus Lyrics when it's on. Artists gives way if the car can't show them all. */
+    private fun rootTabs(): List<MediaItem> {
+        if (androidAutoLyrics?.enabled != true) return rootChildren()
+        val tabs = (rootChildren() + lyricsTabMediaItem()).toMutableList()
+        if (tabs.size > rootChildrenLimit) tabs.removeAll { it.mediaId == MusicService.ARTIST }
+        return tabs.take(rootChildrenLimit)
+    }
+
+    private fun lyricsTabMediaItem() = browsableMediaItem(
+        MusicService.LYRICS,
+        context.getString(R.string.lyrics),
+        null,
+        drawableUri(R.drawable.lyrics),
+        MediaMetadata.MEDIA_TYPE_FOLDER_MIXED,
+    )
+
+    /**
+     * One row: the current line as the title and the next one as the subtitle, which
+     * Android Auto draws smaller and dimmer. It's rebuilt on every line change.
+     */
+    private fun lyricsChildren(): List<MediaItem> {
+        val lyrics = androidAutoLyrics ?: return emptyList()
+        val songId = lyrics.songId
+            ?: return listOf(lyricsMessageItem(context.getString(R.string.android_auto_lyrics_no_song)))
+        if (lyrics.lines.isEmpty()) {
+            return listOf(lyricsMessageItem(context.getString(R.string.android_auto_lyrics_not_synced)))
+        }
+
+        val index = lyrics.currentIndex.coerceAtLeast(0)
+        val line = lyrics.lines[index]
+        return listOf(
+            lyricLineMediaItem(
+                id = "${MusicService.LYRICS}/$songId/${line.time}",
+                title = line.text.trim().ifEmpty { "♪" },
+                iconUri = null,
+                subtitle = lyrics.lines.getOrNull(index + 1)?.text?.trim(),
+            ),
+        )
+    }
+
+    // Not playable: Android Auto offers playable items as "For you" suggestions on the
+    // home screen, and a status message has no business there.
+    private fun lyricsMessageItem(message: String) =
+        lyricLineMediaItem(MusicService.LYRICS + "/", message, drawableUri(R.drawable.lyrics), playable = false)
+
+    private fun lyricLineMediaItem(
+        id: String,
+        title: String,
+        iconUri: Uri?,
+        subtitle: String? = null,
+        playable: Boolean = true,
+    ) = MediaItem
+        .Builder()
+        .setMediaId(id)
+        .setMediaMetadata(
+            MediaMetadata
+                .Builder()
+                .setTitle(title)
+                .setSubtitle(subtitle)
+                .setArtworkUri(iconUri)
+                .setIsPlayable(playable)
+                .setIsBrowsable(false)
+                .setMediaType(MediaMetadata.MEDIA_TYPE_MUSIC)
+                .setExtras(playableMediaItemExtras())
+                .build(),
+        ).build()
+
+    private fun toggleCarLyrics() {
+        scope.launch {
+            context.dataStore.edit { it[AndroidAutoLyricsKey] = !(it[AndroidAutoLyricsKey] ?: true) }
+        }
+    }
+
+    /** mediaId is lyrics/<songId>/<timeMs>; only seeks if that song is still playing. */
+    private fun seekToLyricLine(player: Player, path: List<String>) {
+        val songId = path.getOrNull(1) ?: return
+        val timeMs = path.getOrNull(2)?.toLongOrNull() ?: return
+        if (player.currentMediaItem?.mediaId != songId) return
+        player.seekTo(timeMs)
+        if (!player.isPlaying) player.play()
+    }
+
     private suspend fun getMediaItem(mediaId: String): MediaItem? {
         val path = mediaId.split("/")
         val type = path.firstOrNull() ?: return null
 
         return when (type) {
             MusicService.ROOT -> rootMediaItem()
+
+            MusicService.LYRICS -> lyricsTabMediaItem()
 
             MusicService.SONG -> {
                 if (path.size == 1) {

@@ -67,6 +67,7 @@ import java.net.URI
 import java.io.IOException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runInterruptible
 
 /** Higher first. Ranks Tidal search-result candidates so the matcher below tries
  *  the best-quality candidate first instead of Tidal's own (unordered w.r.t.
@@ -963,7 +964,10 @@ object YTPlayerUtils {
                         val metaSessionId = YouTube.dataSyncId
                         if (METADATA_CLIENT.useWebPoTokens && metaSessionId != null) {
                             try {
-                                metaPoToken = poTokenGenerator.getWebClientPoToken(videoId, metaSessionId)
+                                // Interruptible, so cancelling this job below really stops it.
+                                metaPoToken = runInterruptible {
+                                    poTokenGenerator.getWebClientPoToken(videoId, metaSessionId)
+                                }
                             } catch (e: Exception) {
                                 Timber.tag(logTag).e(e, "Metadata PoToken generation failed")
                             }
@@ -982,7 +986,13 @@ object YTPlayerUtils {
                     null
                 }
             }
-            mainDeferred.await() to kotlinx.coroutines.withTimeoutOrNull(400L) { metaDeferred.await() }
+            val main = mainDeferred.await()
+            // coroutineScope waits for every child, so a metadata fetch that is still
+            // running would hold up playback. Past the timeout its result is dropped
+            // anyway, so cancel it.
+            val meta = kotlinx.coroutines.withTimeoutOrNull(400L) { metaDeferred.await() }
+            if (meta == null) metaDeferred.cancel()
+            main to meta
         }
 
         // Debug uploaded track response
