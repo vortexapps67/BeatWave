@@ -30,11 +30,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.datastore.preferences.core.edit
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -62,6 +57,7 @@ import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
@@ -114,6 +110,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -2886,44 +2883,15 @@ class MainActivity : ComponentActivity() {
             label = "emblemAlpha"
         )
 
-        val infiniteTransition = rememberInfiniteTransition(label = "pulseRing")
-        val pulseScale1 by infiniteTransition.animateFloat(
-            initialValue = 0.95f,
-            targetValue = 1.38f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1200, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "pulse1"
-        )
-        val pulseAlpha1 by infiniteTransition.animateFloat(
-            initialValue = 0.6f,
-            targetValue = 0f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1200, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "pulseAlpha1"
+        // Fills over the time the splash is on screen, so it reads as loading.
+        val loadProgress by animateFloatAsState(
+            targetValue = if (emblemEntered) 1f else 0f,
+            animationSpec = tween(durationMillis = 850, easing = FastOutSlowInEasing),
+            label = "splashProgress"
         )
 
-        val pulseScale2 by infiniteTransition.animateFloat(
-            initialValue = 0.95f,
-            targetValue = 1.65f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1600, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "pulse2"
-        )
-        val pulseAlpha2 by infiniteTransition.animateFloat(
-            initialValue = 0.4f,
-            targetValue = 0f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1600, easing = LinearEasing),
-                repeatMode = RepeatMode.Restart
-            ),
-            label = "pulseAlpha2"
-        )
+        val primary = MaterialTheme.colorScheme.primary
+        val onBackground = MaterialTheme.colorScheme.onBackground
 
         Box(
             modifier = Modifier
@@ -2942,29 +2910,7 @@ class MainActivity : ComponentActivity() {
                 },
             contentAlignment = Alignment.Center
         ) {
-            // Expanding Sonic Ripples
-            Box(
-                modifier = Modifier
-                    .size(150.dp)
-                    .graphicsLayer {
-                        scaleX = pulseScale2
-                        scaleY = pulseScale2
-                        alpha = pulseAlpha2 * emblemAlpha
-                    }
-                    .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
-            )
-            Box(
-                modifier = Modifier
-                    .size(150.dp)
-                    .graphicsLayer {
-                        scaleX = pulseScale1
-                        scaleY = pulseScale1
-                        alpha = pulseAlpha1 * emblemAlpha
-                    }
-                    .border(2.5.dp, MaterialTheme.colorScheme.primary, CircleShape)
-            )
-
-            // Center BeatWave Emblem Card
+            // Center BeatWave emblem: one app-icon tile with a soft glow, no rings behind it
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -2974,44 +2920,70 @@ class MainActivity : ComponentActivity() {
                     alpha = emblemAlpha
                 }
             ) {
-                Surface(
-                    shape = CircleShape,
-                    color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.95f),
-                    border = androidx.compose.foundation.BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)),
-                    shadowElevation = 0.dp,
-                    modifier = Modifier.size(108.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.padding(18.dp)
-                    ) {
-                        Image(
-                            painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
-                            contentDescription = "BeatWave Logo",
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = androidx.compose.ui.layout.ContentScale.Fit
+                val tileShape = RoundedCornerShape(28.dp)
+                Box(
+                    modifier = Modifier
+                        .size(112.dp)
+                        .shadow(
+                            elevation = 28.dp,
+                            shape = tileShape,
+                            ambientColor = primary,
+                            spotColor = primary
                         )
-                    }
+                        .clip(tileShape)
+                        .background(Color.Black)
+                        .border(1.5.dp, primary.copy(alpha = 0.7f), tileShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(com.beatwave.music.R.drawable.beatwave_logo),
+                        contentDescription = "BeatWave Logo",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = androidx.compose.ui.layout.ContentScale.Crop
+                    )
                 }
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(32.dp))
 
                 Text(
                     text = "BEATWAVE",
                     style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = 4.sp,
-                    color = MaterialTheme.colorScheme.primary
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 6.sp,
+                    color = onBackground
                 )
 
-                Spacer(Modifier.height(6.dp))
+                Spacer(Modifier.height(10.dp))
 
-                Text(
-                    text = "SOUND IN MOTION",
-                    style = MaterialTheme.typography.labelSmall,
-                    letterSpacing = 2.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(Modifier.width(28.dp).height(1.dp).background(primary.copy(alpha = 0.7f)))
+                    Text(
+                        text = "SOUND IN MOTION",
+                        style = MaterialTheme.typography.labelSmall,
+                        letterSpacing = 3.sp,
+                        color = onBackground.copy(alpha = 0.7f),
+                        modifier = Modifier.padding(horizontal = 10.dp)
+                    )
+                    Box(Modifier.width(28.dp).height(1.dp).background(primary.copy(alpha = 0.7f)))
+                }
+
+                Spacer(Modifier.height(40.dp))
+
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(4.dp)
+                        .clip(CircleShape)
+                        .background(onBackground.copy(alpha = 0.12f))
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .fillMaxWidth(loadProgress)
+                            .clip(CircleShape)
+                            .background(primary)
+                    )
+                }
             }
         }
     }
