@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Upstream InnerTune strings -->
+<!-- Do not add new features here -->
+<!-- Try to re-use strings here, but be careful on its usage e.g. verb vs noun -->
+<!-- "InnerTune" is replaced with "BeatWave" -->
+<!-- Translators: Do not modify this file for translations, use InnerTune's Weblate instead. -->
+
+<resources>
+    <!-- Bottom navigation -->
+    <string name="home">Hasiera</string>
+    <string name="music">Musika</string>
+    <string name="songs">Abestiak</string>
+    <string name="artists">Artistak</string>
+    <string name="albums">Albumak</string>
+    <string name="playlists">Erreprodukzio-zerrendak</string>
+
+    <!-- Top bar -->
+    <plurals name="n_selected">
+        <item quantity="other">%d hautatuta</item>
+    </plurals>
+
+    <!-- Home -->
+    <string name="good_morning">Egun on</string>
+    <string name="good_afternoon">Arratsalde on</string>
+    <string name="good_evening">Arratsalde on</string>
+    <string name="good_night">Gabon</string>
+    <string name="history">Historia</string>
+    <string name="stats">Estatistikak</string>
+    <string name="mood_and_genres">Aldarteak eta generoak</string>
+    <string name="account">Kontua</string>
+    <string name="quick_picks">Hautaketa azkarrak</string>
+    <string name="quick_picks_empty">Entzun abestiak zure hautaketa azkarrak sortzeko</string>
+    <string name="forgotten_favorites">Ahaztutako gogokoak</string>
+    <string name="keep_listening">Jarraitu entzuten</string>
+    <string name="recently_played">Azkenaldian entzunak</string>
+    <string name="recently_added">Azkenaldian gehituak</string>
+    <string name="home_section_hero">Txartel nabarmendua</string>
+    <string name="home_section_community">Komunitatetik</string>
+    <string name="home_section_daily_discover">Eguneko aurkikuntzak</string>
+    <string name="home_section_account_playlists">Zure erreprodukzio-zerrendak</string>
+    <string name="home_section_forgotten_favorites">Ahaztutako gogokoak</string>
+    <string name="show_mood_filters">Aldarte-iragazkiak</string>
+    <string name="show_mood_filters_desc">Erakutsi Energia, Lasaitasuna eta beste iragazki batzuk Hasieraren goialdean</string>
+    <string name="home_feed_order">Antolatu hasierako jarioa (Beta)</string>
+    <string name="home_feed_order_desc">Arrastatu atalak agertzeko ordena aukeratzeko. Zure gomendioekin agertu eta desagertzen diren atalak hemen antolatzen dituzunen ondoren agertuko dira beti.</string>
+    <string name="home_feed_order_reset">Berrezarri ordena lehenetsia</string>
+
+    <string name="listen_now">Entzun orain</string>
+    <string name="your_youtube_playlists">Zure YouTubeko erreprodukzio-zerrendak</string>
+    <string name="similar_to">Honen antzekoak:</string>
+    <string name="new_release_albums">Album berriak</string>
+
+    <!-- History -->
+    <string name="today">Gaur</string>
+    <string name="yesterday">Atzo</string>
+    <string name="this_week">Aste honetan</string>
+    <string name="last_week">Joan den astean</string>
+
+    <!-- Stats -->
+    <string name="most_played_songs">Gehien entzundako abestiak</string>
+    <string name="most_played_artists">Gehien entzundako artistak</string>
+    <string name="most_played_albums">Gehien entzundako albumak</string>
+
+    <!-- Search -->
+    <string name="search">Bilatu</string>
+    <string name="search_yt_music">Bilatu YouTube Music-en…</string>
+    <string name="search_library">Bilatu liburutegian…</string>
+    <string name="filter_library">Liburutegia</string>
+    <string name="filter_liked">Gogokoak</string>
+    <string name="filter_downloaded">Deskargatuak</string>
+    <string name="filter_all">Denak</string>
+    <string name="filter_songs">Abestiak</string>
+    <string name="filter_videos">Bideoak</string>
+    <string name="filter_albums">Albumak</string>
+    <string name="filter_artists">Artistak</string>
+    <string name="filter_playlists">Erreprodukzio-zerrendak</string>
+    <string name="filter_community_playlists">Komunitatearen zerrendak</string>
+    <string name="filter_featured_playlists">Zerrenda nabarmenduak</string>
+    <string name="filter_bookmarked">Laster-markatuak</string>
+    <string name="no_results_found">Ez da emaitzarik aurkitu</string>
+
+    <!-- Library -->
+    <string name="library_song_empty">Liburutegiko abestiak hemen agertuko dira</string>
+    <string name="library_artist_empty">Liburutegiko artistak hemen agertuko dira</string>
+    <string name="library_album_empty">Liburutegiko albumak hemen agertuko dira</string>
+    <string name="library_playlist_empty">Zure erreprodukzio-zerrendak hemen agertuko dira</string>
+
+    <!-- Artist screen -->
+    <string name="from_your_library">Zure liburutegitik</string>
+
+    <!-- Album screen -->
+    <string name="other_versions">Beste bertsio batzuk</string>
+    <string name="album_description_placeholder">Albumaren behin-behineko deskribapena da hau. Gozatu beheko abestiak entzuten!</string>
+
+    <!-- Playlist -->
+    <string name="liked_songs">Gogoko abestiak</string>
+    <string name="downloaded_songs">Deskargatutako abestiak</string>
+    <string name="playlist_is_empty">Erreprodukzio-zerrenda hutsik dago</string>
+    <string name="remove_download_playlist_confirm">Ziur \"%s\" zerrendako abesti guztiak deskargatutako abestien biltegitik kendu nahi dituzula?</string>
+    <string name="delete_playlist_confirm">Ziur \"%s\" erreprodukzio-zerrenda ezabatu nahi duzula?</string>
+    <string name="you_might_also_like">Lotutako zerrendak</string>
+
+    <!-- Button -->
+    <string name="retry">Saiatu berriro</string>
+    <string name="radio">Irratia</string>
+    <string name="shuffle">Ausaz</string>
+    <string name="shuffle_content_desc">Ausaz</string>
+    <string name="shuffle_label">Ausaz</string>
+    <string name="reset">Berrezarri</string>
+
+    <!-- Menu -->
+    <string name="details">Xehetasunak</string>
+    <string name="edit">Editatu</string>
+    <string name="start_radio">Abiatu irratia</string>
+    <string name="play">Erreproduzitu</string>
+    <string name="pause">Pausatu</string>
+    <string name="play_next">Erreproduzitu hurrengo</string>
+    <string name="add_to_queue">Gehitu ilarara</string>
+    <string name="add_to_library">Gehitu liburutegira</string>
+    <string name="add_all_to_library">Gehitu dena liburutegira</string>
+    <string name="remove_from_library">Kendu liburutegitik</string>
+    <string name="remove_all_from_library">Kendu dena liburutegitik</string>
+    <string name="action_download">Deskargatu</string>
+    <string name="downloading">Deskargatzen</string>
+    <string name="saving">Gordetzen</string>
+    <string name="saved">Gordeta</string>
+    <string name="remove_download">Kendu deskarga</string>
+    <string name="import_playlist">Inportatu erreprodukzio-zerrenda</string>
+    <string name="add_to_playlist">Gehitu erreprodukzio-zerrendara</string>
+    <string name="start_an_radio">Irratia</string>
+    <string name="add_to_an_playlist">Gehitu</string>
+    <string name="view_artist">Ikusi artista</string>
+    <string name="view_album">Ikusi albuma</string>
+    <string name="refetch">Berriro eskuratu</string>
+    <string name="share">Partekatu</string>
+    <string name="more_options">Aukera gehiago</string>
+    <string name="more_label">Gehiago</string>
+    <string name="releases_for_you">Zuretzako argitalpenak</string>
+    <string name="delete">Ezabatu</string>
+    <string name="remove_from_history">Kendu historiatik</string>
+    <string name="remove_from_playlist">Kendu erreprodukzio-zerrendatik</string>
+    <string name="remove_from_queue">Kendu ilaratik</string>
+    <string name="search_online">Bilatu sarean</string>
+    <string name="action_sync">Sinkronizatu</string>
+    <string name="advanced">Aurreratua</string>
+    <string name="tempo_and_pitch">Tempoa eta tonua</string>
+
+    <!-- Sort menu -->
+    <string name="client_probe">Jario-bezeroen proba</string>
+    <string name="client_probe_desc">Probatu zein YouTube bezerok itzul dezakeen oraindik erreproduzi daitekeen jario bat</string>
+    <string name="client_probe_running">Bezeroak banan-banan probatzen. Une bat behar du.</string>
+    <string name="sort_by">Ordenatu</string>
+    <string name="sort_descending">Beheranzkoa</string>
+    <string name="sort_by_create_date">Gehitze-data</string>
+    <string name="sort_by_name">Izena</string>
+    <string name="sort_by_artist">Artista</string>
+    <string name="sort_by_year">Urtea</string>
+    <string name="sort_by_song_count">Abesti kopurua</string>
+    <string name="sort_by_length">Iraupena</string>
+    <string name="sort_by_play_time">Entzunaldi-denbora</string>
+    <string name="sort_by_custom">Ordena pertsonalizatua</string>
+
+    <!-- Dialog -->
+    <string name="media_id">Media IDa</string>
+    <string name="mime_type">MIME mota</string>
+    <string name="codecs">Kodekak</string>
+    <string name="bitrate">Bit-tasa</string>
+    <string name="sample_rate">Lagin-maiztasuna</string>
+    <string name="loudness">Ozentasuna</string>
+    <string name="volume">Bolumena</string>
+    <string name="file_size">Fitxategiaren tamaina</string>
+    <string name="unknown">Ezezaguna</string>
+    <string name="copied">Arbelean kopiatuta</string>
+
+    <string name="edit_lyrics">Editatu letrak</string>
+    <string name="search_lyrics">Bilatu letrak</string>
+    <string name="lyrics_swipe_to_change_song">Irristatu abestia aldatzeko</string>
+    <string name="lyrics_swipe_to_change_song_desc">Pantaila osoko letretan, irristatu ezkerrera edo eskuinera artistaren eta abestiaren izenaren atalean abestia aldatzeko</string>
+    <string name="lyrics_thumbnail_play_pause">Erakutsi erreproduzitu/pausatu miniaturan</string>
+    <string name="lyrics_thumbnail_play_pause_desc">Erakutsi erreproduzitu/pausatu botoia abestiaren miniaturaren gainean pantaila osoko letretan</string>
+    <string name="one_tap_fullscreen_lyrics">Pantaila osoko letrak sakatze bakarrean</string>
+    <string name="one_tap_fullscreen_lyrics_desc">Letren botoiak pantaila osoko letrak zuzenean irekitzen eta ixten ditu sakatze bakarrean. Desgaituta, ohiko bi sakatzeko fluxua erabiltzen da (ireki letrak, eta gero sakatu berriro pantaila osora pasatzeko)</string>
+    <string name="fullscreen_lyrics_collapse_top">Tolestu kontrolak gorantz</string>
+    <string name="fullscreen_lyrics_collapse_top_desc">Pantaila osoko letretan sartzean, erreproduzigailuaren kontrolak goialdera tolesten dira. Desgaitu behealdera tolesteko</string>
+
+    <string name="edit_song">Editatu abestia</string>
+    <string name="song_title">Abestiaren izenburua</string>
+    <string name="song_artists">Abestiaren artistak</string>
+    <string name="error_song_title_empty">Abestiaren izenburua ezin da hutsik egon.</string>
+    <string name="error_song_artist_empty">Abestiaren artista ezin da hutsik egon.</string>
+    <string name="save">Gorde</string>
+
+    <string name="choose_playlist">Aukeratu erreprodukzio-zerrenda</string>
+    <string name="edit_playlist">Editatu erreprodukzio-zerrenda</string>
+    <string name="create_playlist">Sortu erreprodukzio-zerrenda</string>
+    <string name="playlist_name">Erreprodukzio-zerrendaren izena</string>
+    <string name="error_playlist_name_empty">Erreprodukzio-zerrendaren izena ezin da hutsik egon.</string>
+
+    <string name="edit_artist">Editatu artista</string>
+    <string name="artist_name">Artistaren izena</string>
+    <string name="error_artist_name_empty">Artistaren izena ezin da hutsik egon.</string>
+
+    <string name="duplicates">Bikoiztuak</string>
+    <string name="skip_duplicates">Saltatu bikoiztuak</string>
+    <string name="add_anyway">Gehitu hala ere</string>
+    <string name="duplicates_description_single">Abestia zure erreprodukzio-zerrendan dago jada</string>
+    <string name="duplicates_description_multiple">%d abesti zure erreprodukzio-zerrendan daude jada</string>
+
+    <!-- Noun -->
+    <plurals name="n_song">
+        <item quantity="one">%d abesti</item>
+        <item quantity="other">%d abesti</item>
+    </plurals>
+    <plurals name="n_artist">
+        <item quantity="one">%d artista</item>
+        <item quantity="other">%d artista</item>
+    </plurals>
+    <plurals name="n_album">
+        <item quantity="one">%d album</item>
+        <item quantity="other">%d album</item>
+    </plurals>
+    <plurals name="n_playlist">
+        <item quantity="one">%d erreprodukzio-zerrenda</item>
+        <item quantity="other">%d erreprodukzio-zerrenda</item>
+    </plurals>
+    <plurals name="n_week">
+        <item quantity="one">%d aste</item>
+        <item quantity="other">%d aste</item>
+    </plurals>
+    <plurals name="n_month">
+        <item quantity="one">%d hilabete</item>
+        <item quantity="other">%d hilabete</item>
+    </plurals>
+    <plurals name="n_year">
+        <item quantity="one">%d urte</item>
+        <item quantity="other">%d urte</item>
+    </plurals>
+    <plurals name="n_apk_found">
+        <item quantity="zero">Ez da APKrik aurkitu</item>
+        <item quantity="one">%d APK aurkitu da</item>
+        <item quantity="other">%d APK aurkitu dira</item>
+    </plurals>
+
+    <!-- Snackbar -->
+    <string name="playlist_imported">Erreprodukzio-zerrenda inportatuta</string>
+    <string name="removed_song_from_playlist">\"%s\" erreprodukzio-zerrendatik kenduta</string>
+    <string name="playlist_synced">Erreprodukzio-zerrenda sinkronizatuta</string>
+    <string name="undo">Desegin</string>
+
+    <!-- Player -->
+    <string name="lyrics_not_found">Ez da letrarik aurkitu</string>
+    <string name="sleep_timer">Lo egiteko tenporizadorea</string>
+    <string name="end_of_song">Abestiaren amaiera</string>
+    <plurals name="minute">
+        <item quantity="one">minutu 1</item>
+        <item quantity="other">%d minutu</item>
+    </plurals>
+    <string name="error_no_stream">Ez dago jariorik erabilgarri</string>
+    <string name="error_no_internet">Ez dago sare-konexiorik</string>
+    <string name="error_timeout">Denbora-muga gainditu da</string>
+    <string name="error_unknown">Errore ezezaguna</string>
+    <string name="lossless_fallback_to_standard_audio">Galerarik gabeko audioa ez dago erabilgarri; audio estandarrera aldatu da</string>
+
+    <!-- Player action -->
+    <string name="action_like">Gogoko</string>
+    <string name="action_like_all">Denak gogoko</string>
+    <string name="action_remove_like">Kendu gogokoa</string>
+    <string name="action_remove_like_all">Kendu gogoko guztiak</string>
+    <string name="action_shuffle_on">Ausazkoa aktibatuta</string>
+    <string name="action_shuffle_off">Ausazkoa desaktibatuta</string>
+    <string name="repeat_mode_off">Errepikapena desaktibatuta</string>
+    <string name="repeat_mode_one">Errepikatu uneko abestia</string>
+    <string name="repeat_mode_all">Errepikatu ilara</string>
+
+    <!-- Queue Title -->
+    <string name="queue_all_songs">Abesti guztiak</string>
+    <string name="queue_searched_songs">Bilatutako abestiak</string>
+
+    <!-- Notification name -->
+    <string name="music_player">Musika-erreproduzigailua</string>
+
+    <!-- Settings -->
+    <string name="settings">Ezarpenak</string>
+    <string name="change_card_image">Aldatu irudia</string>
+    <string name="use_custom_image">Erabili irudi pertsonalizatua</string>
+    <string name="use_first_song_image">Erabili lehen abestiaren irudia</string>
+    <string name="appearance">Itxura</string>
+    <string name="theme">Gaia</string>
+    <string name="theme_desc">Pertsonalizatu aplikazioaren gaia</string>
+    <string name="apple_music_ui">Apple Music interfazea</string>
+    <string name="apple_music_ui_desc">iOS 26ko beira likidoaren estiloa: nabigazio-barra eta fitxa-ikono flotatzaileak</string>
+    <string name="theme_colors">Gaia eta koloreak</string>
+    <string name="theme_mode">Gai modua</string>
+    <string name="color_palette">Kolore-paleta</string>
+    <string name="theme_custom_color">Pertsonalizatua</string>
+    <string name="use_system_colors">Erabili sistemaren koloreak</string>
+    <string name="enable_dynamic_theme">Gaitu gai dinamikoa</string>
+    <string name="dark_theme">Gai iluna</string>
+    <string name="dark_theme_on">Aktibatuta</string>
+    <string name="dark_theme_off">Desaktibatuta</string>
+    <string name="dark_theme_follow_system">Sistemari jarraitu</string>
+    <string name="pure_black">Beltz hutsa</string>
+    <string name="customize_navigation_tabs">Pertsonalizatu nabigazio-fitxak</string>
+    <string name="player">Erreproduzigailua</string>
+    <string name="player_text_alignment">Erreproduzigailuaren testu-lerrokatzea</string>
+    <string name="lyrics_text_position">Letren testuaren kokapena</string>
+    <string name="sided">Alboan</string>
+    <string name="left">Ezkerrean</string>
+    <string name="center">Erdian</string>
+    <string name="right">Eskuinean</string>
+    <string name="player_slider_style">Erreproduzigailuaren graduatzailearen estiloa</string>
+    <string name="default_">Lehenetsia</string>
+    <string name="apple_music">Apple Music</string>
+    <string name="squiggly">Uhintsua</string>
+    <string name="misc">Askotarikoak</string>
+    <string name="default_open_tab">Irekitzean erakutsiko den fitxa</string>
+    <string name="grid_cell_size">Sareta-gelaxken tamaina</string>
+    <string name="small">Txikia</string>
+    <string name="big">Handia</string>
+    <string name="grid_and_cards">Sareta eta txartelak</string>
+    <string name="grid_columns">Saretaren zutabeak</string>
+    <string name="grid_columns_desc">Liburutegiko, bilaketako eta arakatzeko saretetako zutabe kopurua</string>
+    <string name="grid_card_height">Txartelen altuera</string>
+    <string name="grid_spacing">Saretaren tartea</string>
+    <string name="speed_dial_columns">Sarbide azkarreko zutabeak</string>
+    <string name="home_hero_card_height">Txartel nagusiaren altuera</string>
+    <string name="home_hero_card">Txartel nagusia</string>
+    <string name="home_hero_card_desc">Erakutsi txartel nabarmendu handia Hasieraren goialdean</string>
+    <string name="home_grid_columns">Hasierako saretaren zutabeak</string>
+    <string name="speed_dial_card_height">Sarbide azkarreko txartelen altuera</string>
+    <string name="home_card_corner_radius">Hasierako txartelen ertz-erradioa</string>
+    <string name="auto">Automatikoa</string>
+    <string name="pure_black_hero_background">Atzeko plano beltz hutsak</string>
+    <string name="pure_black_hero_background_desc">Beltz laua, artelan lausotuaren ordez, Artista, Album, Erreprodukzio-zerrenda eta Bilaketa pantailetan</string>
+    <string name="theme_packs">Gai-paketeak</string>
+    <string name="theme_pack_save_current">Gorde unekoa gai berri gisa</string>
+    <string name="theme_pack_import">Inportatu gaia fitxategitik</string>
+    <string name="theme_pack_apply_hint">Sakatu aplikatzeko · esportatu edo ezabatu eskuinean</string>
+    <string name="theme_pack_name">Gaiaren izena</string>
+    <string name="theme_pack_imported">Gaia inportatuta</string>
+    <string name="theme_pack_import_failed">Ezin izan da gai-fitxategi hori irakurri</string>
+    <string name="theme_pack_apply_title">Aplikatu gaia</string>
+    <string name="theme_pack_apply_desc">Aukeratu pakete honetatik zer ekarri</string>
+    <string name="theme_pack_apply_button">Aplikatu</string>
+    <string name="theme_category_colors">Koloreak (nabarmentzeko kolorea + gai dinamikoa)</string>
+    <string name="theme_category_pure_black">Atzeko plano beltz hutsa</string>
+    <string name="theme_category_grid_sizing">Saretaren eta txartelen tamaina</string>
+    <string name="theme_category_font">Letra-tipoa</string>
+    <string name="theme_category_library_background">Liburutegiaren atzeko planoaren estiloa</string>
+    <string name="theme_category_home_background">Hasierako atzeko planoa (irudia, lausotzea, iluntzea)</string>
+    <string name="home_background_video_set">Bideoa ezarrita</string>
+    <string name="home_background_video_warning">Bideozko atzeko planoek fotograma guztiak deskodetzen dituzte, irudi finko batek ez bezala. Horrek bateria gehiago kontsumi dezake eta maila apaleko gailuetan etenak egon daitezke. Jarraitu?</string>
+    <string name="home_background_video_confirm">Erabili bideo hau</string>
+    <string name="home_background_too_large">Fitxategi hori handiegia da (gehienez %1$s). Aukeratu txikiago bat.</string>
+
+    <string name="content">Edukia</string>
+    <string name="action_logout">Amaitu saioa</string>
+    <string name="action_login">Hasi saioa</string>
+    <string name="login">Saio-hasiera</string>
+    <string name="switch_channel_title">Sakatu zure profileko argazkia eta aukeratu kanal bat</string>
+    <string name="switch_channel_switched_title">Aldatuta. Orain itzul zaitezke</string>
+    <string name="switch_channel_success">Kanala aldatuta</string>
+    <string name="switch_channel_action">Aldatu YouTube kanala</string>
+    <string name="switch_channel_action_desc">Erabili zure Google kontuko beste kanal bat liburutegi, gogoko eta erreprodukzio-zerrendetarako</string>
+    <string name="choose_channel_title">Aukeratu kanal bat</string>
+    <string name="choose_channel_subtitle">Google kontu honek YouTube kanal bat baino gehiago ditu</string>
+    <string name="saved_accounts_title">Kontuak</string>
+    <string name="saved_accounts_desc">Sakatu aldatzeko. Ez da berriro saioa hasi behar</string>
+    <string name="show_audio_quality_badge">Erakutsi audio-kalitatearen ikurra</string>
+    <string name="mini_player_waveform">Uhin-formako aurrerapen-barra mini-erreproduzigailuan</string>
+    <string name="mini_bar_tab_style">Ikono anitzeko mini-barra</string>
+    <string name="mini_bar_tab_style_desc">Erakutsi kontrol-lerro osoa (ausaz, aurrekoa, erreproduzitu, hurrengoa, errepikatu, letrak, ilara), miniatura/aurrerapen-barra/erreproduzitu/aurrera itxura sinplearen ordez</string>
+    <string name="not_logged_in">Saioa hasi gabe</string>
+    <string name="login_failed">Ezin izan da saioa hasi</string>
+
+    <string name="content_language">Edukiaren hizkuntza lehenetsia</string>
+    <string name="content_country">Edukiaren herrialde lehenetsia</string>
+    <string name="system_default">Sistemaren lehenetsia</string>
+    <string name="enable_proxy">Gaitu proxya</string>
+    <string name="proxy_type">Proxy mota</string>
+    <string name="proxy_url">Proxyaren URLa</string>
+    <string name="restart_to_take_effect">Berrabiarazi aldaketak aplikatzeko</string>
+
+    <string name="player_and_audio">Erreproduzigailua eta audioa</string>
+    <string name="audio_quality">Audio-kalitatea</string>
+    <string name="network_ip_version">Sareko IP bertsioa</string>
+    <string name="ip_version_auto">Automatikoa</string>
+    <string name="ip_version_ipv4">IPv4 behartua</string>
+    <string name="ip_version_ipv6">IPv6 behartua</string>
+    <string name="audio_quality_auto">Automatikoa</string>
+    <string name="audio_quality_high">Altua</string>
+    <string name="audio_quality_low">Baxua</string>
+    <string name="audio_quality_lossless">Galerarik gabea</string>
+    <string name="queue">Ilara</string>
+    <string name="persistent_queue">Ilara iraunkorra</string>
+    <string name="persistent_queue_desc">Berreskuratu azken ilara aplikazioa abiaraztean</string>
+    <string name="auto_load_more">Kargatu abesti gehiago automatikoki</string>
+    <string name="auto_load_more_desc">Gehitu abesti gehiago automatikoki ilararen amaierara iristean, ahal bada</string>
+    <string name="skip_silence">Saltatu isiluneak</string>
+    <string name="audio_normalization">Audioaren normalizazioa</string>
+    <string name="auto_skip_next_on_error">Pasatu hurrengo abestira automatikoki errore bat gertatzean</string>
+    <string name="auto_skip_next_on_error_desc">Bermatu erreprodukzioa etenik gabe</string>
+    <string name="stop_music_on_task_clear">Gelditu musika ataza ixtean</string>
+    <string name="equalizer">Ekualizadorea</string>
+
+    <string name="storage">Biltegiratzea</string>
+    <string name="cache">Cachea</string>
+    <string name="image_cache">Irudien cachea</string>
+    <string name="song_cache">Abestien cachea</string>
+    <string name="max_cache_size">Cachearen gehieneko tamaina</string>
+    <string name="unlimited">Mugagabea</string>
+    <string name="clear_all_downloads">Garbitu deskarga guztiak</string>
+    <string name="max_image_cache_size">Irudien cachearen gehieneko tamaina</string>
+    <string name="clear_image_cache">Garbitu irudien cachea</string>
+    <string name="max_song_cache_size">Abestien cachearen gehieneko tamaina</string>
+    <string name="clear_song_cache">Garbitu abestien cachea</string>
+    <string name="size_used">%s erabilita</string>
+
+    <string name="clear_downloaded_updates">Garbitu deskargatutako eguneratzeak</string>
+    <string name="clear_downloaded_updates_desc">Kendu deskargatutako APK fitxategiak lekua askatzeko</string>
+
+    <string name="privacy">Pribatutasuna</string>
+    <string name="listen_history">Entzute-historia</string>
+    <string name="pause_listen_history">Pausatu entzute-historia</string>
+    <string name="clear_listen_history">Garbitu entzute-historia</string>
+    <string name="clear_listen_history_confirm">Ziur entzute-historia osoa garbitu nahi duzula?</string>
+    <string name="search_history">Bilaketa-historia</string>
+    <string name="pause_search_history">Pausatu bilaketa-historia</string>
+    <string name="clear_search_history">Garbitu bilaketa-historia</string>
+    <string name="clear_search_history_confirm">Ziur bilaketa-historia osoa garbitu nahi duzula?</string>
+    <string name="use_login_for_browse">Erabili saioa edukia arakatzeko</string>
+    <string name="use_login_for_browse_desc">Honek ikusten duzun edukian eragin dezake; adibidez, Premium soilik diren albumak erakusten ditu Premium kontu batekin saioa hasita baduzu</string>
+    <string name="disable_screenshot">Desgaitu pantaila-argazkiak</string>
+    <string name="disable_screenshot_desc">Aukera hau aktibatuta dagoenean, pantaila-argazkiak eta aplikazioaren ikuspegia Azken aplikazioetan desgaituta daude.</string>
+    <string name="enable_lrclib">Gaitu LrcLib letra-hornitzailea</string>
+    <string name="enable_kugou">Gaitu KuGou letra-hornitzailea</string>
+    <string name="hide_explicit">Ezkutatu eduki esplizitua</string>
+
+    <string name="backup_restore">Babeskopia eta leheneratzea</string>
+    <string name="action_backup">Egin babeskopia</string>
+    <string name="action_restore">Leheneratu</string>
+    <string name="imported_playlist">Inportatutako erreprodukzio-zerrenda</string>
+    <string name="backup_create_success">Babeskopia ondo sortu da</string>
+    <string name="backup_create_failed">Ezin izan da babeskopia sortu</string>
+    <string name="restore_failed">Ezin izan da babeskopia leheneratu</string>
+
+    <string name="discord_integration">Discord integrazioa</string>
+    <string name="discord_information">BeatWave-k KizzyRPC liburutegia erabiltzen du zure Discord kontuaren egoera ezartzeko. Horretarako Discord Gateway konexioa erabiltzen da, eta hori Discorden zerbitzu-baldintzen urraketatzat jo daiteke. Hala ere, ez da ezagutzen arrazoi horregatik kontu bat etenda izan den kasurik. Erabili zure ardurapean.\n\nBeatWave-k zure tokena soilik aterako du, eta gainerako guztia gailuan gordetzen da.</string>
+    <string name="dismiss">Baztertu</string>
+    <string name="options">Aukerak</string>
+    <string name="preview">Aurrebista</string>
+    <string name="enable_discord_rpc">Gaitu Rich Presence</string>
+
+    <string name="about">Honi buruz</string>
+    <string name="app_version">Aplikazioaren bertsioa</string>
+
+    <string name="new_version_available">Bertsio berria erabilgarri</string>
+    <string name="translation_models">Itzulpen-ereduak</string>
+    <string name="clear_translation_models">Garbitu itzulpen-ereduak</string>
+    <string name="bluetooth_permission_required">Bluetooth baimena behar da audio-gailuak aurkitzeko.</string>
+    <string name="streaming_to">Hona transmititzen:</string>
+    <string name="this_phone">Telefono hau</string>
+    <string name="wired_headphones">Kabledun entzungailuak</string>
+    <string name="hdmi">HDMI</string>
+    <string name="phone_speaker">Telefonoaren bozgorailua</string>
+    <string name="audio_quality_title">Audio-kalitatea</string>
+    <string name="battery_content_desc">Bateria-maila</string>
+    <string name="done">Eginda</string>
+    <string name="audio_devices">Audio-gailuak</string>
+    <string name="bluetooth_headphones">Bluetooth entzungailuak</string>
+    <string name="license">GNU General Public License v3.0</string>
+    <string name="standard_lyrics_blur">Letren lausotze estandarra</string>
+    <string name="listen_together_smart_resync">Sareko birsinkronizazio adimenduna</string>
+    <string name="listen_together_smart_resync_desc">Harrapatu ostalaria automatikoki konexioa eten ondoren</string>
+    <string name="listen_together_host_controls">Saio honetan ostalariak kontrolatzen du erreprodukzioa</string>
+    <string name="listen_together_locked">Ostalariak kontrolatzen du erreprodukzioa</string>
+
+    <!-- JioSaavn Streaming -->
+    <string name="enable_saavn_streaming">Gaitu JioSaavn transmisioa</string>
+    <string name="enable_saavn_streaming_desc">Transmititu audioa JioSaavn-etik YouTube Music-en ordez (YouTubera itzultzen da erabilgarri ez badago)</string>
+    <string name="saavn_audio_quality">JioSaavn audio-kalitatea</string>
+    <string name="retry_stream">Saiatu berriro jarioa</string>
+    <string name="retry_stream_desc_saavn">Eskuratu berriro JioSaavn-etik 320 kbps-tan</string>
+    <string name="retry_stream_desc_yt">Eskuratu berriro YouTube Music-etik</string>
+
+    <!-- Dynamic Search Prompts -->
+    <string name="search_prompt_whats_on_mind">Zer duzu buruan?</string>
+    <string name="search_prompt_todays_pick">Zein da gaurko aukera?</string>
+    <string name="search_prompt_trending">Bilatu arrakastarik handienak…</string>
+    <string name="search_prompt_vibe">Zortea probatu? Bilatu giro bat…</string>
+    <string name="search_prompt_songs_artists">Bilatu abestiak, artistak, albumak…</string>
+    <string name="search_prompt_template_song">Bilatu \"%s\"…</string>
+    <string name="search_prompt_template_song_try">Saiatu \"%s\" bilatzen…</string>
+    <string name="search_prompt_template_artist">Bilatu \"%s\" artista…</string>
+    <string name="enable_settings_popup">Gaitu ezarpenen leiho gainerakorra</string>
+    <string name="enable_settings_popup_desc">Erakutsi ezarpen azkarren leihoa ezarpenen botoia sakatzean, ezarpenak zuzenean ireki ordez</string>
+    <string name="liquid_glass_highlight_color">Distira-kolorea</string>
+    <string name="liquid_glass_highlight_color_desc">Beira-gainazalen ertzetako distiraren kolorea</string>
+    <string name="liquid_glass_highlight_opacity">Distiraren opakutasuna</string>
+    <string name="liquid_glass_highlight_opacity_desc">Ertzeko distira zenbateko argitasunez agertzen den</string>
+    <string name="liquid_glass_style">Beiraren estiloa</string>
+    <string name="liquid_glass_style_liquid">Likidoa</string>
+    <string name="liquid_glass_style_liquid_desc">Lausotzea, errefrakzioa eta ertz argiztatua. Efektu osoa, eta garestiena.</string>
+    <string name="liquid_glass_style_blur">Lausoa</string>
+    <string name="liquid_glass_style_blur_desc">Lausotze izoztua, errefrakziorik eta ertz argiztaturik gabe. Merkeagoa.</string>
+    <string name="liquid_glass_style_transparent">Gardena</string>
+    <string name="liquid_glass_style_transparent_desc">Kolore zeharrargi soila. Ez da ezer harrapatzen ez lausotzen, beraz ia ez du ezer kostatzen.</string>
+    <string name="liquid_glass_puck_color">Hautapen-pilularen kolorea</string>
+    <string name="liquid_glass_puck_color_desc">Hautatutako fitxaren pilularen gainean margotutako kolorea. Berrezartzean gaiari jarraitzen dio.</string>
+    <string name="liquid_glass_puck_opacity">Hautapen-pilularen opakutasuna</string>
+    <string name="liquid_glass_puck_opacity_desc">Kolore horren indarra atsedenean. Sakatzean desagertzen da.</string>
+
+    <!-- App icon -->
+    <string name="app_icon">Aplikazioaren ikonoa</string>
+    <string name="app_icon_desc">Aukeratu BeatWave-k hasierako pantailan erakusten duen ikonoa</string>
+    <string name="app_icon_change_warning">Ikonoa eguneratzeko segundo batzuk behar izan daitezke, eta abiarazle batzuek lasterbidea kentzen dute hasierako pantailatik berriro gehitu arte.</string>
+    <string name="app_icon_og">JATORRIZKOA</string>
+    <string name="app_icon_best">Onena</string>
+    <string name="app_icon_glass">Beira likidoa</string>
+
+    <!-- Presets / DIY -->
+    <string name="presets">Aurrezarpenak</string>
+    <string name="presets_desc">Gorde, aplikatu eta partekatu itxura osoak</string>
+    <string name="preset_save_current">Gorde uneko itxura</string>
+    <string name="preset_name">Aurrezarpenaren izena</string>
+    <string name="preset_apply">Aplikatu</string>
+    <string name="preset_apply_desc">Aukeratu aurrezarpen honen zein zati aplikatu. Markatu gabe uzten duzuna dagoen bezala geratuko da.</string>
+    <string name="preset_applied">Aurrezarpena aplikatuta</string>
+    <string name="preset_rename">Aldatu izena</string>
+    <string name="preset_share">Partekatu aurrezarpena</string>
+    <string name="preset_delete">Ezabatu</string>
+    <string name="preset_empty">Oraindik ez dago aurrezarpenik. Gorde uneko itxura bat sortzeko.</string>
+    <string name="preset_imported">Aurrezarpena inportatuta</string>
+    <string name="preset_import_failed">Fitxategi hori ez da baliozko aurrezarpen bat.</string>
+    <string name="preset_import_too_large">Aurrezarpen hori handiegia da inportatzeko.</string>
+    <string name="preset_import_newer_version">Aurrezarpen hori BeatWave-ren bertsio berriago batekin egin zen.</string>
+    <string name="preset_category_colors">Koloreak</string>
+    <string name="preset_category_layout">Diseinua eta tamainak</string>
+    <string name="preset_category_font">Letra-tipoak</string>
+    <string name="preset_category_player">Erreproduzigailuaren itxura</string>
+    <string name="preset_category_lyrics">Letren estiloa</string>
+    <string name="preset_category_glass">Beira likidoa</string>
+    <string name="preset_category_background">Horma-paperak</string>
+    <string name="preset_category_player_icons">Erreproduzigailuaren ikono pertsonalizatuak</string>
+    <string name="preset_category_diy">Zeuk egindako eranskailuak</string>
+
+    <string name="diy">Zeuk egina</string>
+    <string name="diy_desc">Jarri eranskailuak, irudiak eta emojiak erreproduzigailuaren gainean</string>
+    <string name="diy_portrait">Bertikala</string>
+    <string name="diy_landscape">Horizontala</string>
+    <string name="diy_add_image">Gehitu irudia</string>
+    <string name="diy_add_emoji">Gehitu emojia</string>
+    <string name="diy_opacity">Opakutasuna</string>
+    <string name="diy_corner_radius">Ertz-erradioa</string>
+    <string name="diy_flip">Irauli horizontalki</string>
+    <string name="diy_shadow">Itzala</string>
+    <string name="diy_bring_forward">Aurrera</string>
+    <string name="diy_send_backward">Atzera</string>
+    <string name="diy_delete">Ezabatu</string>
+    <string name="diy_behind_artwork">Artelanaren atzean</string>
+    <string name="diy_above_artwork">Artelanaren aurrean</string>
+    <string name="diy_low_resolution">Irudi hau bere bereizmenetik harago eskalatzen ari da, eta lausoa ikus daiteke.</string>
+    <string name="diy_limit_reached">Gehienez %1$d eranskailu jar ditzakezu.</string>
+    <string name="diy_budget_reached">Eranskailuen biltegia beteta dago. Kendu eranskailu bat beste bat gehitzeko.</string>
+    <string name="diy_cannot_add">Ezin da hori gehitu</string>
+    <string name="diy_saved">Diseinua gordeta</string>
+    <string name="diy_mock_title">Abestiaren izenburua</string>
+    <string name="diy_mock_artist">Artistaren izena</string>
+
+    <string name="player_icons">Erreproduzigailuaren ikono pertsonalizatuak</string>
+    <string name="player_icons_desc">Ordeztu erreproduzigailuaren edozein kontrol zure irudi batekin. PNG, JPEG, WebP edo SVG.</string>
+    <string name="player_icon_default">Integratua</string>
+    <string name="player_icon_custom">Irudi pertsonalizatua</string>
+    <string name="player_icon_tint">Tindua</string>
+    <string name="player_icon_play">Erreproduzitu</string>
+    <string name="player_icon_pause">Pausatu</string>
+    <string name="player_icon_previous">Aurrekoa</string>
+    <string name="player_icon_next">Hurrengoa</string>
+    <string name="player_icon_replay">Berriro erreproduzitu</string>
+    <string name="player_icon_like">Gogoko</string>
+    <string name="player_icon_liked">Gogokoa</string>
+    <string name="player_icon_more">Gehiago</string>
+    <string name="player_icon_seek_thumb">Aurrerapen-barraren heldulekua</string>
+
+    <string name="media_import_too_large">Fitxategi hori handiegia da.</string>
+    <string name="media_import_unsupported">PNG, JPEG, WebP eta SVG irudiak soilik onartzen dira.</string>
+    <string name="media_import_unsafe_svg">SVG horrek BeatWave-k errendatuko ez dituen ezaugarriak erabiltzen ditu.</string>
+    <string name="media_import_corrupt">Ezin izan da irudi hori irakurri.</string>
+    <string name="media_import_too_many_pixels">Irudi hori handiegia da modu seguruan deskodetzeko.</string>
+    <string name="media_import_io">Ezin izan da fitxategi hori irakurri.</string>
+    <string name="preset_thumbnail_failed">Ezin izan da aurrebista-irudia atera. Aurrezarpena gorde egingo da hala ere.</string>
+    <string name="diy_edit">Editatu</string>
+    <string name="diy_done">Eginda</string>
+    <string name="diy_undo">Desegin</string>
+    <string name="diy_redo">Berregin</string>
+    <string name="diy_rotation">Biraketa</string>
+    <string name="diy_size">Tamaina</string>
+    <string name="recommended_because_listened">Hau entzun duzulako:</string>
+    <string name="beatwave_sync">BeatWave Sync</string>
+    <string name="beatwave_sync_desc">Zuzeneko gela kolaboratiboak, zerrenda partekatuak eta lagunekin denbora errealeko txata</string>
+    <string name="share_sync_link">Partekatu Sync esteka</string>
+    <string name="save_as_playlist">Gorde erreprodukzio-zerrenda gisa</string>
+    <string name="saved_to_playlists">Erreprodukzio-zerrendetan gordeta</string>
+    <string name="chat">Txata</string>
+    <string name="send_message_hint">Idatzi mezu bat...</string>
+    <string name="theme_presets">Gai-aurrezarpenak</string>
+    <string name="theme_preset_oled">Gauerdi sakona OLED</string>
+    <string name="theme_preset_cyberpunk">Cyberpunk neoia</string>
+    <string name="theme_preset_emerald">Esmeralda beira izoztua</string>
+    <string name="theme_preset_rose_gold">Urre arrosa</string>
+    <string name="theme_preset_sunset_amber">Ilunabar anbarra</string>
+    <string name="theme_preset_nordic_slate">Arbel nordikoa</string>
+    <string name="theme_preset_kyoto_matcha">Kyoto matcha</string>
+    <string name="theme_preset_royal_amethyst">Ametista erreala</string>
+    <string name="theme_preset_mocha_espresso">Moka espresso</string>
+    <string name="theme_preset_pacific_abyss">Pazifikoko leizea</string>
+    <string name="theme_preset_bordeaux_crimson">Bordeleko gorria</string>
+    <string name="theme_preset_tokyo_monolith">Tokioko monolitoa</string>
+    <string name="theme_preset_material_you">Material You dinamikoa</string>
+    <string name="export_audio">Esportatu audio-fitxategia</string>
+    <string name="export_audio_in_progress">Esportatzen…</string>
+    <string name="export_audio_saved">Gordeta. Cacheko abestiak datuak erabili gabe esportatzen dira.</string>
+    <string name="export_audio_failed">Esportazioak huts egin du: %1$s</string>
+    <string name="export_audio_desc">Gorde abesti hau gailuaren biltegian</string>
+    <string name="eight_d_audio">8D audioa</string>
+    <string name="eight_d_audio_desc">Biratu soinua zure inguruan</string>
+    <string name="eight_d_audio_on">Aktibatuta. Sakatu abiadura doitzeko</string>
+    <string name="eight_d_audio_long_desc">Abestia zure buruaren inguruan biribilean mugitzen du benetako kokapen estereoa erabiliz, ez bolumenaren panoramika soilik.</string>
+    <string name="eight_d_rotation_speed">Biraketa-abiadura: %1$d s bueltako</string>
+    <string name="eight_d_headphones_hint">Entzungailuekin hobe: efektuak belarri bakoitzak zerbait apur bat desberdina entzutea behar du.</string>
+    <string name="eight_d_presets">Aurrezarpenak</string>
+    <string name="eight_d_preset_subtle">Leuna</string>
+    <string name="eight_d_preset_classic">Klasikoa</string>
+    <string name="eight_d_preset_intense">Bizia</string>
+    <string name="eight_d_width">Zabalera: %%%1$d</string>
+</resources>

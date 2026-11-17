@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="explore">Arakatu</string>
+    <string name="tab_explore">Arakatu</string>
+    <string name="tab_Suggestions">Iradokizunak</string>
+    <string name="tab_album">Albuma</string>
+
+    <string name="local_history">Lokala</string>
+    <string name="remote_history">Urrutiko Historia</string>
+
     <string name="charts">Arrakasta Zerrendak</string>
     <string name="back_button_desc">Atzera</string>
     <string name="no_title">Izenbururik gabe</string>
@@ -11,50 +18,140 @@
     <string name="album_cover_desc">Albumaren azala</string>
     <string name="top_music_videos">Musika bideo onenak</string>
     <string name="trending">Joera</string>
+    <string name="trending_billboard">Billboard Hot 100</string>
+    <string name="top_artists">Artista nagusiak</string>
+    <string name="page_indicator">%1$d / %2$d</string>
+    <string name="top_result">Emaitza nagusia</string>
+    <string name="other_results">Besteak</string>
+    <string name="parsed_from_link">Estekatik</string>
+    <string name="album_text">Albuma</string>
+	<string name="by_text">Egilea:</string>
+	<string name="artist">Artista</string>
+	<string name="explicit">Esplizitua</string>
+	
     <string name="weeks">Asteak</string>
     <string name="months">Hilabeteak</string>
     <string name="years">Urteak</string>
     <string name="continuous">Etengabe</string>
+
     <string name="liked">Gustoko</string>
     <string name="offline">Jaiskia</string>
+    <string name="local">Tokiko musika</string>
+    <string name="local_songs">Tokiko abestiak</string>
+    <string name="downloaded">Deskargatuak</string>
+    <string name="no_songs">Ez dago abestirik</string>
     <string name="my_top">Nire onenak</string>
     <string name="cached_playlist">Cachean gordeta</string>
+    <string name="uploaded_playlist">Igoak</string>
+    <string name="filter_uploaded">Igoak</string>
+    <string name="filter_local">Tokikoak</string>
+    <string name="scan_local_files">Eskaneatu tokiko fitxategiak</string>
+    <string name="scan_local_files_desc">Eskaneatu gailua musika-fitxategien bila eta kudeatu emaitzak</string>
+    <string name="scanning_local_files">Tokiko fitxategiak eskaneatzen…</string>
+    <string name="no_local_files">Ez da tokiko fitxategirik aurkitu. Sakatu eskaneatu gailuko audioa bilatzeko.</string>
+    <string name="local_files_found">%1$d tokiko audio-fitxategi aurkitu dira</string>
+    <string name="local_audio_permission_needed">Biltegiratze-baimena behar da tokiko audio-fitxategiak atzitzeko</string>
+    <string name="local_only_mode">Tokiko modua soilik (Beta)</string>
+    <string name="local_only_mode_desc">Hasierak, Liburutegiak eta Bilaketak gailu honetan gordetako musika soilik erakusten dute</string>
+    <string name="folders">Karpetak</string>
+    <string name="excluded_folders">Baztertutako karpetak</string>
+    <string name="excluded_folders_desc">Aukeratu tokiko moduak gailuko zein karpeta eskaneatzen dituen</string>
+    <string name="excluded_folders_empty">Oraindik ez da musikadun karpetarik aurkitu. Sakatu Eskaneatu gailua berriro bilatzeko.</string>
+    <string name="excluded_folders_permission">BeatWave-k gailu honetako audioa irakurtzeko baimena behar du zure karpetak zerrendatu aurretik.</string>
+    <string name="excluded_folders_custom">Eskuz baztertuak</string>
+    <string name="exclude_folder_add">Gehitu karpeta</string>
+    <string name="excluded_folders_song_count">%1$d abesti</string>
+    <string name="excluded_folders_song_count_one">Abesti 1</string>
     <string name="sync_playlist">Zerrenda sinkronizatu</string>
+    <string name="syncing_progress">%2$d abestitik %1$d sinkronizatzen</string>
+    <string name="playlist_uploaded">Erreprodukzio-zerrenda ondo igo da</string>
+    <string name="sync_completed_success">%1$d abesti ondo sinkronizatu dira</string>
+    <string name="sync_completed_partial">%2$d abestitik %1$d sinkronizatu dira</string>
     <string name="sync_disabled">Sinkronizazioa itzalita</string>
     <string name="elements_selected">%1$d hautatutako elementuak</string>
     <string name="allows_for_sync_witch_youtube">Oharra: Honek YouTube Music-ekin sinkronizatzea ahalbidetzen du. Ondoren ezin izango da aldatu.</string>
     <string name="generating_image">Irudia sortzen</string>
     <string name="please_wait">Itxaron, mesedez</string>
     <string name="cancel">Utzi</string>
-    <string name="local_history">Lokala</string>
-    <string name="remote_history">Urrutiko Historia</string>
+    <string name="enable">Gaitu</string>
     <string name="share_lyrics">Letrak partekatu</string>
     <string name="share_as_text">Testu moduan partekatu</string>
     <string name="share_as_image">Irudi moduan partekatu</string>
     <string name="max_selection_limit">Gehienezko hautaketa</string>
     <string name="share_selected">Hautatuak partekatu</string>
     <string name="customize_colors">Koloreak aldatu</string>
-    <string name="more_options">Aukera gehiago</string>
     <string name="text_color">Testu kolorea</string>
     <string name="secondary_text_color">Bigarren testu kolorea</string>
     <string name="background_color">Atzealde kolorea</string>
+    <string name="app_background_text_color">Atzeko planoa eta testuaren kolorea</string>
+    <string name="app_background_text_color_desc">Hasierako atzeko planoari (irudi pertsonalizaturik ez dagoenean) eta aplikazioaren azalari aplikatzen zaie, Beira likidoa desgaituta dagoenean</string>
+
     <string name="added_to_play_next">Hurrengoan jotzeko gehitu da</string>
     <string name="added_to_queue">Ilarara gehitu da</string>
     <string name="remove_from_cache">\"Cache\"tik ezabatu</string>
+    <string name="save_album">Gorde</string>
+    <!-- Artist about section -->
+    <string name="about_artist">Honi buruz</string>
+    <string name="about_album">Honi buruz</string>
+    <string name="about_playlist">Honi buruz</string>
+    <string name="show_more">Gehiago</string>
+    <string name="show_less">Gutxiago</string>
+    <string name="artist_page_settings">Artistaren orria</string>
+    <string name="show_artist_description">Erakutsi artistaren deskribapena</string>
+    <string name="show_artist_subscriber_count">Erakutsi harpidedun kopurua</string>
+    <string name="show_artist_monthly_listeners">Erakutsi hileko entzuleak</string>
+    <string name="show_artist_video">Erakutsi artistaren canvas bideoa</string>
+    <string name="show_artist_video_desc">Erakutsi begizta-bideo bat artistaren izenaren ondoan artistaren orrian</string>
+    <string name="show_artist_background_video">Erakutsi artistaren atzeko planoko bideoa</string>
+    <string name="show_artist_background_video_desc">Erakutsi mugimenduzko arte-bideo bat begiztan artistaren irudiaren atzean</string>
+
+    <!-- Menu descriptions -->
+    <string name="download_playlist_desc">Deskargatu abesti guztiak konexiorik gabe entzuteko</string>
+    <string name="remove_download_playlist_desc">Kendu erreprodukzio-zerrenda honetako deskargatutako abesti guztiak</string>
+    <string name="download_in_progress_desc">Deskarga abian da</string>
+    <string name="share_playlist_desc">Partekatu erreprodukzio-zerrenda hau besteekin</string>
+    <string name="delete_playlist_desc">Ezabatu erreprodukzio-zerrenda hau betiko</string>
+    <string name="sync_playlist_desc">Sinkronizatu erreprodukzio-zerrenda YouTube Music-ekin</string>
     <string name="copy_link">Link-a kopiatu</string>
     <string name="select">Hautatu dena</string>
     <string name="like_all">Dena gustoko</string>
+    <string name="dislike_all">Ez gustoko denak</string>
     <string name="sort_by_last_updated">Eguneratze data</string>
     <string name="link_copied">Link-a arbelera kopiatuta</string>
     <string name="starting_radio">Irratia pizten</string>
     <string name="now_playing">Orain jotzen</string>
+
     <string name="lyrics">Letrak</string>
     <string name="close">Itxi</string>
     <string name="minimum_volume">Gutxieneko bolumena</string>
     <string name="maximum_volume">Gehieneko bolumena</string>
     <string name="hide_player_thumbnail">Miniatura ezkutatu</string>
     <string name="hide_player_thumbnail_desc">Album irudia aplikazio logoarekin aldatu</string>
+    <string name="thumbnail_corner_radius">Miniaturaren ertz-erradioa</string>
+    <string name="thumbnail_corner_radius_desc">Aldatu albumaren azalaren miniaturaren ertz-erradioa</string>
+    <string name="crop_album_art">Moztu albumaren azala</string>
+    <string name="crop_album_art_desc">Behartu aspektu-erlazio karratua bideo-miniaturak moztuz</string>
+    <string name="vivimusic_canvas">Canvas</string>
+    <string name="use_canvas">Erabili canvas</string>
+    <string name="vivimusic_canvas_desc">Erreproduzigailuko albumaren azal finkoa begizta-bideo animatu batekin ordezten du, uneko abestirako bat dagoenean</string>
+    <string name="canvas_source">Canvas iturria</string>
+    <string name="canvas_source_auto">Automatikoa</string>
+    <string name="canvas_source_auto_desc">Lehenik Echo Music probatzen du, eta gero Apple Music, BeatWave eta Tidal. Uneko abestirako egokiena automatikoki aukeratzen du</string>
+    <string name="canvas_source_echo_music">Echo Music</string>
+    <string name="canvas_source_echo_music_desc">Komunitateak kudeatzen duen Echo Music canvas datu-basea soilik erabiltzen du. Erreproduzitzen ari den abestirako bat ekarri bada soilik erakusten du canvas bat</string>
+    <string name="canvas_source_apple_music">Apple Music</string>
+    <string name="canvas_source_apple_music_desc">Apple Music-en ikusizko animazioak soilik erabiltzen ditu. Apple Music-ek erreproduzitzen ari den abestirako bat badu soilik erakusten du canvas bat</string>
+    <string name="canvas_source_vivimusic">BeatWave</string>
+    <string name="canvas_source_vivimusic_desc">BeatWave-k hautatutako canvas liburutegia soilik erabiltzen du. Erreproduzitzen ari den abestirako bat gehitu bada soilik erakusten du canvas bat</string>
+    <string name="canvas_source_tidal">Tidal</string>
+    <string name="canvas_source_tidal_desc">Tidal-en ikusizko animazioak soilik erabiltzen ditu. Tidal-ek erreproduzitzen ari den abestirako bat badu soilik erakusten du canvas bat</string>
+    <string name="show_album_canvas">Erakutsi albumaren canvas-a</string>
+    <string name="show_album_canvas_desc">Erakutsi canvas animatua albumean</string>
+    <string name="rotating_thumbnail">Miniatura biraka</string>
+    <string name="rotating_thumbnail_desc">Gaitu miniatura biratzeko animazio-efektua</string>
+
     <string name="already_in_playlist">Erreprodukzio listan:</string>
+
     <plurals name="n_element">
         <item quantity="one">%d elementua</item>
         <item quantity="other">%d elementuak</item>
@@ -63,36 +160,117 @@
         <item quantity="one">Aldi %d</item>
         <item quantity="other">%d aldi</item>
     </plurals>
+
     <string name="seek_backward">5 segundu atzera</string>
     <string name="seek_forward">5 segundu aurrera</string>
     <string name="seek_forward_dynamic">%1$d segundu aurrera</string>
     <string name="seek_backward_dynamic">-%1$d segundu atzera</string>
     <string name="seek_seconds_addup">Bilaketa progresiboa</string>
     <string name="seek_seconds_addup_description">Gaituta badago, bilaketa-jauzi bakoitzean 5 segundo extra gehitu</string>
+
+    <string name="continue_playing_next_in_queue">Jarraitu ilarako hurrengoa erreproduzitzen</string>
+    <string name="next_in_queue">Ilaran hurrengoa</string>
+    <string name="upcoming_recommendations">Datozen gomendioak</string>
+    <string name="continue_playing">Jarraitu erreproduzitzen</string>
     <string name="similar_content">Antzeko edukia</string>
+
     <string name="login_settings">Sartzeko aukerak</string>
     <string name="general_settings">Aukera orokorrak</string>
-    <string name="dislike_all">Ez gustoko denak</string>
+
     <string name="player_background_style">Erreproduzitzaile atzeko estiloa</string>
+    <string name="apple_music_player_v17">Apple Music V17 erreproduzigailua (Beta)</string>
+    <string name="apple_music_player_v17_description">Apple Music estiloko pantaila osoko erreproduzigailu-diseinu alternatiboa. Hau aktibatuta dagoen bitartean ez dira zeuk egindako eranskailuak erakusten.</string>
+    <string name="apple_music_player_v17_options">Apple Music V17 erreproduzigailuaren aukerak</string>
+    <string name="show_up_next">Erakutsi hurrengoa</string>
+    <string name="show_up_next_desc">Erakutsi hurrengo abestia uneko abestiaren informazioaren azpian</string>
+    <string name="up_next">Hurrengoa</string>
+    <string name="v2_player_icons">V2 erreproduzigailuaren ikonoak</string>
+    <string name="v2_player_icons_desc">Pertsonalizatu Apple Music V17 erreproduzigailuaren ikonoak</string>
+    <string name="v2_player_icon_play">V2 Erreproduzitu</string>
+    <string name="v2_player_icon_pause">V2 Pausatu</string>
+    <string name="v2_player_icon_previous">V2 Aurrekoa</string>
+    <string name="v2_player_icon_next">V2 Hurrengoa</string>
+    <string name="v2_player_icon_like">V2 Gogoko</string>
+    <string name="v2_player_icon_liked">V2 Gogokoa</string>
+    <string name="v2_player_icon_more">V2 Gehiago</string>
+    <string name="v2_player_icon_lyrics">V2 Letrak</string>
+    <string name="v2_player_icon_queue">V2 Ilara</string>
+    <string name="v2_player_icon_volume">V2 Bolumena</string>
+    <string name="player_thumbnail_shadow">Miniaturaren itzala</string>
+    <string name="player_thumbnail_shadow_elevation">Itzalaren altuera</string>
+    <string name="player_background_solid">Solidoa</string>
     <string name="follow_theme">Jarraitu gaia</string>
     <string name="gradient">Gradientea</string>
+    <string name="glow_animated">Distira animatua</string>
+    <string name="live_mesh">Sare bizia</string>
     <string name="new_player_design">Erreproduzitzaile diseinu berria</string>
     <string name="new_mini_player_design">Mini-erreproduzitzaile diseinu berria</string>
     <string name="player_background_blur">Lauso-efektua</string>
     <string name="player_buttons_style">Erreproduzitzaile botoi kolorea</string>
     <string name="default_style">Lehenetsia</string>
+    <string name="primary_color_style">Kolore nagusia</string>
+    <string name="tertiary_color_style">Hirugarren mailako kolorea</string>
     <string name="secondary_color_style">Bigarren mailako</string>
+    <string name="display_density">Pantailaren dentsitatea</string>
+    <string name="restart">Berrabiarazi</string>
+    <string name="restart_required">Berrabiarazi behar da</string>
+    <string name="density_restart_message">Pantailaren dentsitatearen aldaketa aplikazioa berrabiarazi ondoren aplikatuko da. Orain berrabiarazi nahi duzu?</string>
+    <string name="enable_wavy_slider">Gaitu graduatzaile uhintsua</string>
+    <string name="wavy">Uhintsua</string>
     <string name="enable_swipe_thumbnail">Irristatu abestia aldatzeko gaitu</string>
     <string name="swipe_song_to_add">Abestia ezkerretara irristatu ilara gehitzeko, edo eskuinera hurrengoan jotzeko</string>
+    <string name="swipe_song_to_remove">Irristatu abestia erreprodukzio-zerrendatik kentzeko</string>
     <string name="lyrics_click_change">Klik egitean letrak aldatu</string>
     <string name="lyrics_auto_scroll">Letren mugimendu automatikoa</string>
+    <string name="lyrics_glow_effect">Gaitu letren distira-efektua</string>
+    <string name="lyrics_glow_effect_desc">Gehitu distira-animazioa eta errebote-efektua letra aktiboei</string>
+    <string name="enable_better_lyrics">Gaitu Better Lyrics</string>
+    <string name="enable_better_lyrics_desc">Erabili Better Lyrics hornitzailea hitzez hitz sinkronizatutako letretarako</string>
+    <string name="enable_simpmusic">Gaitu SimpMusic Lyrics</string>
+    <string name="enable_simpmusic_desc">Erabili SimpMusic Lyrics hornitzailea letra sinkronizatuetarako</string>
+    <string name="auto_scroll">Birsinkronizatu</string>
     <string name="slim">Argala</string>
+    <string name="waveform">Uhin-forma</string>
+    <string name="brand_font">Bistaratze-letra</string>
+    <string name="brand_font_desc">Erabili Chillax BEATWAVE logotipoan eta artistaren orriko izenburuan</string>
+    <string name="custom_font">Letra-tipo pertsonalizatua</string>
+    <string name="custom_font_none">Sakatu .ttf edo .otf letra-tipo bat instalatzeko, aplikazio osoan aplikatzen dena</string>
+    <string name="custom_font_set">Letra-tipo pertsonalizatua instalatuta. Sakatu ordezteko</string>
+    <string name="player_theme">Erreproduzigailuaren gaia</string>
+    <string name="player_theme_desc">Artelanaren forma eta erreproduzigailuaren atzeko planoa</string>
+    <string name="player_theme_artwork">Artelana</string>
+    <string name="player_theme_card">Txartela</string>
+    <string name="player_theme_vinyl">Biniloa</string>
+    <string name="player_theme_clover">Hirusta</string>
+    <string name="player_theme_static">Kolore finkoa</string>
+    <string name="player_theme_custom_gradient">Gradiente pertsonalizatua</string>
+    <string name="player_theme_static_color">Atzeko planoaren kolorea</string>
+    <string name="player_theme_edit_gradient">Editatu gradientea</string>
+    <string name="player_theme_stops">Koloreak</string>
+    <string name="player_theme_remove_stop">Kendu azken kolorea</string>
+    <string name="player_theme_tilt">Inklinazioa · %1$d°</string>
+    <string name="player_theme_tilt_vertical">Bertikala</string>
+    <string name="player_theme_tilt_horizontal">Horizontala</string>
+    <string name="player_theme_tilt_diagonal">Diagonala</string>
+    <string name="player_theme_artwork_locked">Apple Music-ek bere artelana marrazten du; beraz, formak ez daude erabilgarri harekin.</string>
+    <string name="player_theme_artwork_locked_v17">Apple Music V17 erreproduzigailuak bere miniatura-diseinua erabiltzen du; Biniloa eta Hirusta ez daude erabilgarri.</string>
+    <string name="slider_style">Aurrerapen-barra</string>
     <string name="slim_navbar">Nabigazio beheko barra argala</string>
     <string name="auto_playlists">Erreproduzio-zerrenda automatikoa</string>
     <string name="show_liked_playlist">\"Gustokoak\" zerrenda ikusi</string>
-    <string name="show_downloaded_playlist">\"Deskargatuak\" zerrenda ikusk</string>
+    <string name="show_downloaded_playlist">\"Deskargatuak\" zerrenda ikusi</string>
     <string name="show_top_playlist">\"Top\" zerrenda ikusi</string>
     <string name="show_cached_playlist">\"Cache-an\" zerrenda ikusi</string>
+    <string name="show_uploaded_playlist">Erakutsi \"Igoak\" zerrenda</string>
+    <string name="shuffle_playlist_first">Ausaz: lehenik erreprodukzio-zerrenda/albuma</string>
+    <string name="shuffle_playlist_first_desc">Ausaz erreproduzitzean, erreproduzitu lehenik jatorrizko zerrendako/albumeko abesti guztiak, eta gero antzeko edukia</string>
+    <string name="prevent_duplicate_tracks_in_queue">Saihestu abesti bikoiztuak ilaran</string>
+    <string name="prevent_duplicate_tracks_in_queue_desc">Abesti bat ilarara gehitzean, kendu aurreko kokapenetik, lehendik bazegoen</string>
+    <string name="show_wrapped_card">Erakutsi laburpen-txartela (Wrapped)</string>
+    <string name="skip_silence_desc">Aurreratu azkar abestien zati isiletan</string>
+    <string name="skip_silence_instant">Saltatu isiluneak berehala</string>
+    <string name="skip_silence_instant_desc">Egin jauzi isiluneetan, erreprodukzioa azkartu ordez</string>
+
     <string name="google">Google</string>
     <string name="discord">Discord</string>
     <string name="advanced_login">Token-arekin saioa hasi</string>
@@ -102,11 +280,15 @@
     <string name="ytm_sync">Zure YouTube Music kontuarekin automatikoki sinkronizatu</string>
     <string name="yt_sync">Kontuarekin sinkronizazio automatikoa</string>
     <string name="more_content">Eduki gehiago</string>
+    
+    <!-- Playlist cover edit -->
     <string name="edit_playlist_cover">Editatu erreprodukzio-zerrendaren azala</string>
     <string name="edit_playlist_cover_note">Oharra: Zure kontua telefono-zenbaki batekin lotuta egon behar da eta YouTube Music-en egiaztatuta egon behar du erreprodukzio-zerrendaren azala aldatzeko.</string>
     <string name="edit_playlist_cover_note_wait">Irudi bat hautatu ondoren, mesedez itxaron une batez zure erreprodukzio-zerrendan azala agertu dadin.</string>
     <string name="choose_from_library">Liburutegitik hautatu</string>
     <string name="remove_custom_image">Irudi pertzonalizatua kendu</string>
+
+    <!-- General -->
     <string name="general">Orokorra</string>
     <string name="proxy">Proxy</string>
     <string name="default_lib_chips">Liburutegi lehenetsiaren chip-a aldatu</string>
@@ -119,34 +301,56 @@
     <string name="configure_supported_links">Onartutako estekak ezarri</string>
     <string name="intent_supported_links_not_found">Ezin dira onartutako esteken ezarpenak aurkitu, mesedez konfiguratu eskuz</string>
     <string name="set_first_lyrics_provider">Gogoko letra hornitzailea</string>
+    <string name="lyrics_provider_priority">Letra-hornitzaileen lehentasuna</string>
+    <string name="lyrics_provider_priority_desc">Arrastatu zein hornitzaile probatzen den lehenik ordenatzeko</string>
     <string name="config_proxy">Proxy-a ezarri</string>
     <string name="proxy_username">Proxy erabiltzaile izena</string>
     <string name="proxy_password">Proxy pasahitza</string>
     <string name="enable_authentication">Autentikazioa gaitu</string>
+    <string name="discord_use_details">Erabili xehetasunak egoeraren ordez</string>
+    <string name="discord_use_details_description">Erakutsi abestiaren izenburua nabarmen, artisten izenen ordez</string>
+
     <string name="audio_quality_max">Gehiena (beta)</string>
     <string name="enable_similar_content">Antzeko edukia gaitu</string>
     <string name="similar_content_desc">Ilara amaitzerakoan, antzeko abestiak gehitu</string>
+    <string name="persistent_shuffle_title">Ausazko modu iraunkorra</string>
+    <string name="persistent_shuffle_desc">Mantendu ausazko modua abesti edo zerrenda berriak hastean</string>
+    <string name="remember_shuffle_and_repeat">Gogoratu ausazko eta errepikatze moduak</string>
+    <string name="remember_shuffle_and_repeat_desc">Gogoratu ausazko eta errepikatze moduak aplikazioa berrabiaraztean</string>
     <string name="min_playback_duration_title">Gutxieneko erreprodukzio iraupena</string>
     <string name="min_playback_duration_description">Gutxieneko abesti denbora \"jotatzat\" hartzeko</string>
     <string name="percentage_format">%%%d</string>
     <string name="minimum_playback_duration">Gutxieneko erreprodukzio iraupena</string>
+
     <string name="import_online">\"m3u\" zerrenda gehitu</string>
     <string name="import_csv">\"csv\" zerrenda gehitu</string>
     <string name="playlist_add_local_to_synced_note">Oharra: Tokiko abestiak sinkronizatutako / urrutiko erreprodukzio-zerrendetara gehitzea ez da onartzen. Beste edozein konbinazio baliogarria da</string>
+
     <string name="auto_download_on_like">Gustokoak automatikoki deskargatu</string>
     <string name="auto_download_on_like_desc">Gustoko sakatzean abestiak automatikoki deskargatu</string>
+
     <string name="swipe_sensitivity">Mini-erreproduzitzaile irrista-sentikortasuna</string>
     <string name="swipe_sensitivity_desc">Abestiak aldatzeko irrista-sentikortasuna ezarri</string>
     <string name="sensitivity_percentage">%%%1$d</string>
+
     <string name="clear_song_cache_dialog">Ziur zaude \"cache\"-an dauden abesti guztiak ezabatzea?</string>
     <string name="clear_image_cache_dialog">Ziur zaude \"cache\"-an dauden irudi guztiak ezabatzea?</string>
     <string name="clear_downloads_dialog">Ziur zaude deskarga guztiak ezabatu nahi dituzula?</string>
+    <string name="logout_dialog_title">Amaitu saioa</string>
+    <string name="logout_dialog_message">Liburutegia eta gainerako datu guztiak mantendu nahi dituzu?</string>
+    <string name="logout_keep_data">Mantendu datuak</string>
+    <string name="logout_clear_data">Garbitu datuak</string>
+
     <string name="disable">Desgaitu</string>
+
     <string name="pause_remote_listen_history">Gelditu entzute-historia YouTube Music-rekin partekatzea</string>
     <string name="not_logged_in_youtube">YouTube-n saioa ez hasita</string>
+
     <string name="default_links">Ireki onartutako estekak</string>
     <string name="open_app_settings_error">Aplikazio ezarpenak ezin dira ireki</string>
+
     <string name="release_notes">Bertsio oharrak</string>
+
     <string name="all_time">Denbora guztia</string>
     <string name="past_24_hours">Azken 24 orduak</string>
     <string name="past_week">Azken astea</string>
@@ -171,32 +375,929 @@
         <item quantity="one">Segundu %d</item>
         <item quantity="other">%d segundu</item>
     </plurals>
+
+    <!-- Player Settings -->
     <string name="disable_load_more_when_repeat_all">\"Errepikatu guztiak\" moduan gehiago kargatzea desgaitu</string>
     <string name="disable_load_more_when_repeat_all_desc">Ez kargatu automatikoki abesti gehiago eta antzeko edukia ‘Errepikatu guztiak’ modua aktibatuta dagoenean</string>
+    <string name="pause_music_when_media_is_muted">Pausatu musika multimedia isilarazita dagoenean</string>
+    <string name="resume_on_bluetooth_connect">Jarraitu Bluetooth konektatzean</string>
+    <string name="keep_screen_on_when_player_is_expanded">Mantendu pantaila piztuta erreproduzigailua zabalduta dagoenean</string>
+
+    <string name="crossfade">Gurutze-iraungitzea</string>
+    <string name="crossfade_desc">Abestien arteko gurutze-iraungitzea</string>
+    <string name="crossfade_duration">Gurutze-iraungitzearen iraupena</string>
+    <string name="crossfade_gapless">Desgaitu etenik gabeko albumetan</string>
+    <string name="crossfade_gapless_desc">Ez egin gurutze-iraungitzerik albuma etenik gabekoa bada</string>
+    <string name="crossfade_beta_title">Beta ezaugarria</string>
+    <string name="crossfade_beta_message">Gurutze-iraungitzea ezaugarri berria da eta akatsak izan ditzake. Arazoren bat baduzu, jakinarazi, mesedez.\n\nEzaugarri honek audio-offloada desgaitzen du muga teknikoengatik.</string>
+
+    <string name="manual_crossfade">Gurutze-iraungitzea eskuz saltatzean</string>
+    <string name="manual_crossfade_desc">Egin gurutze-iraungitzea hurrengoa/aurrekoa eskuz sakatzean edo abesti berri bat hautatzean</string>
+    <string name="manual_crossfade_duration">Eskuzko gurutze-iraungitzearen iraupena</string>
+    <string name="local_offline_sync">Tokiko sinkronizazioa konexiorik gabe</string>
+    <string name="local_offline_sync_desc">Sinkronizatu erreprodukzioa inguruko lagunekin Internetik gabe</string>
+    <string name="host_local_session">Antolatu tokiko saioa</string>
+    <string name="join_local_session">Batu tokiko saiora</string>
+
+    <!-- Romanization Settings -->
     <string name="lyrics_romanization_cyrillic">Kirilikoa</string>
     <string name="lyrics_romanize_title">Erromanizazio</string>
     <string name="lyrics_romanization">Letren erromanizazioa</string>
     <string name="romanization">Erromanizazioa</string>
     <string name="lyrics_romanize_japanese">Japoniar letrak erromanizatu</string>
     <string name="lyrics_romanize_korean">Korear letrak erromanizatu</string>
+    <string name="lyrics_romanize_chinese">Erromanizatu txinerazko letrak</string>
+    <string name="lyrics_romanize_hindi">Erromanizatu hindierazko letrak</string>
+    <string name="lyrics_romanize_punjabi">Erromanizatu punjabierazko letrak</string>
     <string name="lyrics_romanize_russian">Errusiar letrak erromanizatu</string>
     <string name="lyrics_romanize_ukrainian">Ukraniar letrak erromanizatu</string>
+    <string name="lyrics_romanize_belarusian">Bielorrusiar letrak erromanizatu</string>
     <string name="lyrics_romanize_kyrgyz">Kyrgizar letrak erromanizatu</string>
     <string name="lyrics_romanize_serbian">Serbiar letrak erromanizatu</string>
-    <string name="line_by_line_option_title">EXPERIMENTALA: Lerroz-lerro hizkuntza detektatu</string>
-    <string name="lyrics_romanize_belarusian">Bielorrusiar letrak erromanizatu</string>
     <string name="lyrics_romanize_bulgarian">Bulgariar letrak erromanizatu</string>
+    <string name="line_by_line_option_title">EXPERIMENTALA: Lerroz-lerro hizkuntza detektatu</string>
     <string name="line_by_line_option_desc">Kiriliko hizkuntza lerroz-lerro detektatuko da, abesti osoaren ordez.</string>
     <string name="line_by_line_dialog_title">Ziur zaude?</string>
-    <string name="line_by_line_dialog_desc">Ezaugarri esperimental hau ez da beti fidagarria.\n\nLehenetsita, hizkuntza abesti osoaren arabera zehazten da, baina aukera hau gaituta, lerroka zehaztuko da. Honek hizkuntza anitzeko abestien funtzionamendua ahalbidetuko du, BAINA hizkuntza ez da beti zuzena izango (adibidez, ukrainierazko lerro bat ez badu letra berezirik, errusieraz erromanizatua izan daiteke).\n\nArazoik ez baduzu, gomendagarria da aukera hau desgaituta uztea.</string>
+    <string name="line_by_line_dialog_desc">Ezaugarri esperimental hau ez da beti fidagarria.\n\nLehenetsita, hizkuntza abesti osoaren arabera zehazten da, baina aukera hau gaituta, lerroka zehaztuko da. Honek hizkuntza anitzeko abestien funtzionamendua ahalbidetuko du, BAINA hizkuntza ez da beti zuzena izango (adibidez, ukrainierazko lerro bat ez badu letra berezirik, errusieraz erromanizatua izan daiteke).\n\nArazorik ez baduzu, gomendagarria da aukera hau desgaituta uztea.</string>
     <string name="line_by_line_dialog_enable">Gaitu</string>
     <string name="romanize_current_track">Oraingo abestia erromanizatu</string>
+
+    <!-- Lyrics Offset Settings -->
+    <string name="lyrics_offset">Letren desfasea</string>
+
+    <!-- Material 3 Settings Sections -->
     <string name="settings_section_ui">Interfazea</string>
     <string name="settings_section_privacy">Pribatutasuna eta Segurtasuna</string>
     <string name="settings_section_player">Jotzailea eta Media</string>
     <string name="settings_section_player_content">Jotzailea eta Edukia</string>
     <string name="settings_section_storage">Biltegia eta Datuak</string>
     <string name="settings_section_system">Sistema eta Honi buruz</string>
+
+    <!-- Updater -->
+    <string name="updater">Eguneratzailea</string>
+    <string name="check_for_updates">Bilatu eguneratzeak automatikoki</string>
+    <string name="update_available_title">Eguneratzea erabilgarri</string>
+    <string name="update_channel_name">Aplikazioaren eguneratzeak</string>
+    <string name="update_channel_desc">Bertsio berriei buruzko jakinarazpenak</string>
+
+    <!-- Offload -->
     <string name="audio_offload">Offload desgaitu</string>
     <string name="audio_offload_description">Erabili offload audio-bidea audioa erreproduzitzeko. Hau desgaitzeak energia-kontsumoa handitu dezake, baina erabilgarria izan daiteke audioa erreproduzitzean edo post-prozesamenduan arazoak badituzu</string>
+    <string name="audio_offload_disabled_by_crossfade">Desgaituta, gurutze-iraungitzea aktibo dagoelako</string>
+
+    <!-- Google Cast -->
+    <string name="google_cast">Google Cast</string>
+    <string name="google_cast_description">Gaitu audioa Chromecast-era eta Cast onartzen duten beste gailuetara igortzea</string>
+
+    <string name="lyrics_romanize_macedonian">Erromanizatu mazedonierazko letrak</string>
+    <string name="lyrics_romanize_as_main">Erakutsi letra erromanizatuak nagusi gisa</string>
+
+    <string name="integrations">Integrazioak</string>
+    <string name="username">Erabiltzaile-izena</string>
+    <string name="password">Pasahitza</string>
+
+    <!-- Last.fm -->
+    <string name="lastfm_integration">Last.fm integrazioa</string>
+    <string name="enable_scrobbling">Gaitu scrobbling-a</string>
+    <string name="lastfm_now_playing">Bidali orain entzuten ari zarena</string>
+    <string name="last_fm_send_likes">Bidali gogokoak/ez-gogokoak</string>
+    <string name="last_fm_send_likes_description">Markatu abestiak maite/ez-maite gisa Last.fm-n BeatWave-n gogoko/ez-gogoko gisa markatzean</string>
+    <string name="logging_in">Saioa hasten…</string>
+
+    <string name="scrobbling_configuration">Scrobbling-aren konfigurazioa</string>
+    <string name="scrobble_min_track_duration">Egin scrobble hau baino luzeagoak diren abestiekin</string>
+    <string name="scrobble_delay_percent">Scrobble-atzerapenaren ehunekoa</string>
+    <string name="scrobble_delay_minutes">Scrobble-atzerapenaren minutuak</string>
+    <string name="hide_video_songs">Ezkutatu bideo-abestiak</string>
+    <string name="hide_youtube_shorts">Ezkutatu YouTube Shorts</string>
+    <string name="data_saver_mode">Datu-aurrezte modua (Beta)</string>
+    <string name="data_saver_mode_desc">Ezkutatu bideo soileko abestiak, desgaitu letrak, canvas-a eta artisten atzeko planoko bideoak, eta behartu audio-kalitate baxuagoa datuak aurrezteko.</string>
+
+    <!-- ListenBrainz -->
+    <string name="listenbrainz_scrobbling">ListenBrainz scrobbling-a</string>
+    <string name="listenbrainz_scrobbling_desc">Kudeatu ListenBrainz scrobbling-aren ezarpenak</string>
+    <string name="listenbrainz_scrobbling_description">Bidali entzundako abestiak automatikoki ListenBrainz-era</string>
+    <string name="set_listenbrainz_token">Ezarri ListenBrainz tokena</string>
+    <string name="listenbrainz_token_set">ListenBrainz tokena ezarrita</string>
+
+    <!-- Ringtone -->
+    <string name="set_as_ringtone">Ezarri dei-tonu gisa</string>
+    <string name="trim_ringtone">Moztu dei-tonua</string>
+    <string name="trim_ringtone_desc">Hautatu \"%1$s\" abestiaren zein zati erabili dei-tonu gisa. (Gehienez 30 s gomendatzen da)</string>
+    <string name="selected_duration">Hautatutako iraupena: %1$s</string>
+    <string name="setting_ringtone">Dei-tonua ezartzen...</string>
+    <string name="ringtone_success">Eginda!</string>
+    <string name="ringtone_failed">Huts egin du</string>
+    <string name="open_settings">Ireki ezarpenak</string>
+
+    <!-- Ambient Mode -->
+    <string name="ambient_mode">Giro modua</string>
+
+    <!-- AI Playlist Modify -->
+    <string name="modify_with_ai">Aldatu AArekin</string>
+    <string name="modify_with_ai_desc">Aldatu erreprodukzio-zerrenda AAri jarraibideak emanez</string>
+    <string name="ai_modify_prompt_hint">adib.: kendu abesti tristeak, gehitu 90eko hamarkadako arrakasta batzuk</string>
+
+    <string name="details_desc">Ikusi abestiaren informazioa</string>
+    <string name="edit_desc">Aldatu izenburua edo artista</string>
+    <string name="start_radio_desc">Sortu elementu honetan oinarritutako irrati-kate bat</string>
+    <string name="play_next_desc">Gehitu ilararen hasieran</string>
+    <string name="add_to_queue_desc">Gehitu ilararen amaieran</string>
+    <string name="add_to_library_desc">Gorde zure liburutegian</string>
+    <string name="download_desc">Eskuragarri jarri konexiorik gabe entzuteko</string>
+    <string name="add_to_playlist_desc">Gehitu zure erreprodukzio-zerrendetako batera</string>
+    <string name="refetch_desc">Eskuratu azken metadatuak YouTube Music-etik</string>
+    <string name="share_desc">Partekatu elementu honen esteka</string>
+    <string name="delete_desc">Kendu elementu hau betiko</string>
+    <string name="advanced_desc">Aldatu abestiaren tempoa eta tonua</string>
+    <string name="equalizer_desc">Doitu audio-ekualizadorea</string>
+    <string name="enable_dynamic_icon">Gaitu aplikazioaren ikono dinamikoa</string>
+    <string name="mini_player">Mini-erreproduzigailua</string>
+    <string name="miniplayer_background_style">Mini-erreproduzigailuaren atzeko planoaren estiloa</string>
+    <string name="pure_black_mini_player">Mini-erreproduzigailu beltz hutsa</string>
+    <string name="mini_player_outline">Mini-erreproduzigailuaren ertza</string>
+    <string name="cache_size_warning_title">Itxaron!</string>
+    <string name="cache_size_warning_message">Aplikazioak une honetan erabiltzen duena (%1$s) baino cache-muga txikiagoa aukeratu duzu. Jarraitzen baduzu, aplikazioak cacheko %2$s batzuk ken ditzake muga berrira egokitzeko. Jarraitu hala ere?</string>
+    <string name="cache_size_warning_confirm">Jarraitu</string>
+
+    <!-- Lyrics Animation Styles -->
+    <string name="lyrics_animation_style">Hitzez hitzeko animazioaren estiloa</string>
+    <string name="none">Bat ere ez</string>
+    <string name="fade">Iraungitzea</string>
+    <string name="glow">Distira</string>
+    <string name="slide">Irristatzea</string>
+    <string name="karaoke">Karaokea</string>
+    <string name="apple_music_style">Apple Music</string>
+    <string name="apple_music_style_letter">Apple Music V2 (letraz letra)</string>
+    <string name="vivimusic_1">BeatWave (jariakorra)</string>
+    <string name="apple_music_lyrics_blur">Apple Music letren lausotzea</string>
+    <string name="apple_music_lyrics_blur_desc">Lausotu lerro inaktiboak, letra aktiboan arreta jartzeko</string>
+    <string name="lyrics_v2_fluid">Letrak V2 (jariakorra)</string>
+    <string name="lyrics_animation_metro">MetroLyrics</string>
+    <string name="lyrics_text_size">Letren testu-tamaina</string>
+    <string name="lyrics_line_spacing">Letren lerroartea</string>
+    <string name="album_art_for">%s albumaren azala</string>
+    <string name="wrapped_total_albums_title">Entzun dituzunak:</string>
+    <string name="wrapped_total_albums_subtitle">album desberdin</string>
+    <string name="wrapped_top_album_title">Zure album gogokoena:</string>
+    <string name="wrapped_playlist_ready">Zure erreprodukzio-zerrenda pertsonala prest dago</string>
+    <string name="wrapped_top_5_albums_title">Zure 5 album gogokoenak</string>
+    <string name="wrapped_album_listening_time">Album hau %d minutuz entzun duzu</string>
+    <string name="wrapped_album_listening_time_minutes">%d minutu</string>
+    <string name="wrapped_no_data">Daturik ez</string>
+    <string name="wrapped_top_5_artists_title">Urteko zure\nartista gogokoenak</string>
+    <string name="wrapped_artist_image_content_description">Artistaren irudia</string>
+    <string name="wrapped_artist_listening_time">%d minutu</string>
+    <string name="wrapped_top_5_songs_title">Urteko zure\nabesti gogokoenak</string>
+    <string name="wrapped_top_song_album_art_content_description">Albumaren azala</string>
+    <string name="wrapped_top_artist_title">Urteko zure artista gogokoena:</string>
+    <string name="wrapped_top_artist_image_content_description">Artista gogokoenaren irudia</string>
+    <string name="wrapped_top_artist_listening_time">%d minutuz entzun duzu</string>
+    <string name="wrapped_top_song_title">Gehien entzun duzun abestia:</string>
+    <string name="wrapped_top_song_listening_time">%d minutuz entzun duzu</string>
+    <string name="wrapped_total_artists_title">Entzun dituzunak:</string>
+    <string name="wrapped_total_artists_subtitle">artista desberdin</string>
+    <string name="wrapped_total_songs_title">Entzun dituzunak:</string>
+    <string name="wrapped_total_songs_subtitle">abesti desberdin</string>
+    <string name="wrapped_intro_title">BeatWave</string>
+    <string name="wrapped_intro_subtitle">iritsi da zer entzun duzun ikusteko unea</string>
+    <string name="wrapped_intro_button">goazen!</string>
+    <string name="wrapped_end_thanks">Eskerrik asko BeatWave-rekin entzuteagatik!</string>
+    <string name="wrapped_end_create_playlist">Sortu zure urteko laburpenaren zerrenda</string>
+    <string name="wrapped_end_creating_playlist">Sortzen...</string>
+    <string name="wrapped_end_playlist_saved">Erreprodukzio-zerrenda gordeta</string>
+    <string name="wrapped_logo_content_description">BeatWave logotipoa</string>
+    <string name="wrapped_year">2025</string>
+    <string name="wrapped_ready_title">ZURE URTEKO LABURPENA PREST DAGO!</string>
+    <string name="wrapped_ready_subtitle">Ikus dezagun zer maite izan duzun aurten.</string>
+    <string name="wrapped_thank_you">Eskerrik asko entzuteagatik</string>
+    <string name="wrapped_special_thanks">Esker bereziak Vividh-i, BeatWave oinarritzat duen aplikazioa sortzeagatik</string>
+    <string name="wrapped_close">Itxi laburpena</string>
+    <string name="wrapped_playlist_title">Zure %s laburpena</string>
+    <string name="wrapped_create_playlist">Sortu erreprodukzio-zerrenda</string>
+    <string name="wrapped_playlist_saved">Erreprodukzio-zerrenda gordeta</string>
+
+    <!-- Equalizer UI -->
+    <plurals name="profiles_count">
+        <item quantity="one">Profil %d</item>
+        <item quantity="other">%d profil</item>
+    </plurals>
+    <string name="equalizer_header">Ekualizadorea</string>
+    <string name="no_profiles">Ez dago ekualizadore-profilik</string>
+    <string name="import_profile">Inportatu profila</string>
+    <string name="system_equalizer">Sistemaren ekualizadorea</string>
+    <string name="eq_disabled">Desgaituta</string>
+    <plurals name="band_count">
+        <item quantity="one">Banda %d</item>
+        <item quantity="other">%d banda</item>
+    </plurals>
+    <string name="delete_profile_desc">Ezabatu profila</string>
+    <string name="delete_profile_confirmation">Ziur \"%1$s\" ezabatu nahi duzula? Ekintza hau ezin da desegin.</string>
+    <string name="error_file_read">Ezin izan da fitxategia irakurri</string>
+    <string name="error_file_open">Ezin izan da fitxategia ireki: %1$s</string>
+    <string name="import_error_title">Inportazio-errorea</string>
+    <string name="error_title">Errorea</string>
+    <string name="error_eq_apply_failed">Ezin izan da ekualizadore-profila aplikatu: %1$s</string>
+
+    <!-- ViviEqualizer Strings -->
+    <string name="vivi_equalizer">ViviEqualizer</string>
+    <string name="vivi_equalizer_desc">Maila profesionaleko doikuntza akustikoa eta efektuak</string>
+    <string name="eq_simple">Sinplea</string>
+    <string name="eq_advanced">Aurreratua</string>
+    <string name="eq_label_bass">Baxuak</string>
+    <string name="eq_label_mid">Erdikoak</string>
+    <string name="eq_label_treble">Altuak</string>
+    <string name="eq_preset_flat">Laua</string>
+    <string name="eq_preset_vivi_signature">Vivi Signature</string>
+    <string name="eq_preset_acoustic">Akustikoa</string>
+    <string name="eq_preset_spatial">3D eszenatokia</string>
+    <string name="eq_preset_bass_boost">Baxuen indartzea</string>
+    <string name="eq_preset_pure_clarity">Argitasun hutsa</string>
+    <string name="eq_preset_soft_bass">Baxu leunak</string>
+    <string name="eq_preset_electronic">Elektronikoa</string>
+    <string name="eq_preset_rock">Rocka</string>
+    <string name="eq_preset_pop">Popa</string>
+    <string name="eq_preset_jazz">Jazza</string>
+    <string name="eq_preset_voice">Ahotsa</string>
+    <string name="eq_preset_dolby_open">Dolby Open</string>
+    <string name="eq_preset_dolby_rich">Dolby Rich</string>
+    <string name="eq_preset_dolby_focused">Dolby Focused</string>
+    <string name="eq_preset_dirac_music">Dirac musika</string>
+    <string name="eq_preset_dirac_movie">Dirac filma</string>
+    <string name="eq_preset_dirac_game">Dirac jokoa</string>
+    <string name="eq_enable_title">ViviEqualizer</string>
+    <string name="eq_enable_summary">Aktibatu edo desaktibatu audio-prozesamendu profesionala</string>
+    <string name="eq_label_vivi">Vivi Signature</string>
+    <string name="eq_label_dolby">Dolby Atmos</string>
+    <string name="eq_label_dirac">Dirac Audio</string>
+    <string name="eq_reset">Berrezarri</string>
+    <string name="eq_label_custom">Pertsonalizatua</string>
+    <string name="eq_save">Gorde</string>
+    <string name="eq_save_dialog_title">Gorde aurrezarpena</string>
+    <string name="eq_save_name_hint">Aurrezarpenaren izena</string>
+    <string name="eq_profile_saved">Aurrezarpena gordeta</string>
+    <string name="eq_manage_presets">Kudeatu aurrezarpenak</string>
+    <string name="eq_delete_selected">Ezabatu</string>
+    <string name="eq_no_custom_presets">Ez da aurrezarpen pertsonalizaturik aurkitu</string>
+
+    <!-- Hardcoded strings -->
+    <string name="found_in_settings_content">Hemen aurkituko duzu: Ezarpenak &gt; Edukia</string>
+    <string name="plays">entzunaldi</string>
+    <string name="casting_to">Hona igortzen: %s</string>
+    <string name="progress_percent">Aurrerapena: %%%s</string>
+    <string name="listening_to_vivimusic">BeatWave entzuten</string>
+    <string name="listen_on_youtube_music">Entzun YouTube Music-en</string>
+    <string name="visit_vivimusic">Bisitatu BeatWave</string>
+    <string name="open">Ireki</string>
+    <string name="failed_to_create_image">Ezin izan da irudia sortu: %s</string>
+    <string name="copied_title">Izenburua kopiatuta</string>
+    <string name="copied_artist">Artista kopiatuta</string>
+    <string name="error_playing">Errorea erreproduzitzean</string>
+    <string name="failed_to_parse_proxy">Ezin izan da proxyaren URLa analizatu.</string>
+
+    <!-- Playback errors -->
+    <string name="error_playback_failed">Erreprodukzioak huts egin du</string>
+    <string name="error_copied">Errorearen informazioa arbelean kopiatuta</string>
+    <string name="copy_error">Kopiatu errorea</string>
+    <string name="error_copy_hint">Kopiatu errorearen informazioa garatzaileei arazoa konpontzen laguntzeko</string>
+
+    <!-- Widget strings -->
+    <string name="album_art">Albumaren azala</string>
+    <string name="no_song_playing">Ez dago abestirik erreproduzitzen</string>
+    <string name="tap_to_open">Sakatu BeatWave irekitzeko</string>
+    <string name="previous">Aurrekoa</string>
+    <string name="play_pause">Erreproduzitu/Pausatu</string>
+    <string name="next">Hurrengoa</string>
+    <string name="like">Gogoko</string>
+    <string name="not_playing">Ez dago abestirik erreproduzitzen</string>
+    <string name="tap_to_play">Sakatu BeatWave irekitzeko</string>
+    <string name="widget_description">Erreprodukzio-kontrolak dituen musika-widgeta</string>
+    <string name="queue_widget_description">Ilararen aurrebista duen musika-erreproduzigailua</string>
+    <string name="turntable_widget_description">Musika-widget biribila, erreproduzitzeko eta gogoko egiteko kontrolekin</string>
+    <string name="widget_now_playing_description">Albumaren azalaren koloreko «Orain erreproduzitzen» txartela</string>
+    <string name="widget_now_playing_label">Orain erreproduzitzen</string>
+    <string name="widget_play">Erreproduzitu</string>
+    <string name="widget_pause">Pausatu</string>
+    <string name="widget_music_player">Musika-erreproduzigailua</string>
+    <string name="widget_turntable">Disko-jogailua</string>
+    <string name="widget_now_playing">Orain erreproduzitzen</string>
+    <string name="widget_lyrics">Letrak</string>
+    <string name="widget_lyrics_description">Uneko letra-lerroa erreprodukzio-kontrolekin</string>
+    <string name="widget_cfg_background">Atzeko planoa</string>
+    <string name="widget_cfg_bg_album">Albumaren kolorea</string>
+    <string name="widget_cfg_bg_dark">Iluna</string>
+    <string name="widget_cfg_bg_light">Argia</string>
+    <string name="widget_cfg_bg_image">Irudi pertsonalizatua</string>
+    <string name="widget_cfg_choose_image">Aukeratu irudia</string>
+    <string name="widget_cfg_no_image">Ez da irudirik hautatu</string>
+    <string name="widget_cfg_content">Edukia</string>
+    <string name="widget_cfg_show_artwork">Erakutsi albumaren azala</string>
+    <string name="widget_cfg_show_prev_next">Erakutsi aurrekoa / hurrengoa</string>
+    <string name="widget_cfg_show_like">Erakutsi gogoko botoia</string>
+    <string name="widget_cfg_done">Eginda</string>
+    <string name="widget_no_lyrics">Ez dago letrarik erabilgarri</string>
+
+    <!-- Player Client Settings -->
+    <string name="player_client">Erreprodukzio-bezeroa</string>
+    <string name="player_client_android_vr">Android VR</string>
+    <string name="player_client_android_vr_desc">Aukerarik azkarrena. Jario-URL zuzenak, sinadura deszifratu gabe. Erabiltzaile gehienentzat gomendatua.</string>
+    <string name="player_client_web_remix">Web Remix</string>
+    <string name="player_client_web_remix_desc">Motelagoa, baina premium formatuak onartzen ditu. JavaScript bidezko sinadura-deszifratzea erabiltzen du, eta horrek 5-10 segundo inguru gehitzen dizkio erreprodukzioaren hasierari.</string>
+
+    <!-- Decryption Library Settings -->
+    <string name="decryption_library">Deszifratze-liburutegia</string>
+    <string name="decryption_library_newpipe">NewPipe Extractor (ofiziala)</string>
+    <string name="decryption_library_newpipe_desc">TeamNewPipe-ren liburutegi ofiziala. YouTuberen aldaketekin eguneratuena. Lehenetsi gisa gomendatua. Huts eginez gero, PipePipe APIra pasatzen da automatikoki.</string>
+    <string name="decryption_library_pipepipe_api">PipePipe API</string>
+    <string name="decryption_library_pipepipe_api_desc">MetroExtractor erabiltzen duen APIan oinarritutako deszifratzea. Azkarragoa, baina kanpoko API baten mende dago. Huts eginez gero, NewPipe-ra pasatzen da automatikoki.</string>
+
+    <!-- Listen Together -->
+    <string name="together">Elkarrekin</string>
+    <string name="listen_together">Entzun elkarrekin</string>
+    <string name="listen_together_desc">Entzun musika lagunekin denbora errealean</string>
+    <string name="listen_together_server_url">Zerbitzariaren URLa</string>
+    <string name="listen_together_choose_server">Aukeratu zerbitzaria</string>
+    <string name="listen_together_custom_server">Zerbitzari pertsonalizatua</string>
+    <string name="listen_together_use_custom_server">Erabili zerbitzari pertsonalizatua</string>
+    <string name="listen_together_username">Erabiltzaile-izena</string>
+    <string name="listen_together_connected">Konektatuta</string>
+    <string name="listen_together_reconnecting">Berriro konektatzen…</string>
+    <string name="listen_together_disconnected">Deskonektatuta</string>
+    <string name="listen_together_connecting">Konektatzen…</string>
+    <string name="listen_together_error">Konexio-errorea</string>
+    <string name="listen_together_create_room">Sortu gela</string>
+    <string name="listen_together_create_room_desc">Sortu gela bat eta partekatu kodea lagunekin</string>
+    <string name="listen_together_join_room">Batu gelara</string>
+    <string name="listen_together_room_code">Gelaren kodea</string>
+    <string name="listen_together_leave_room">Utzi gela</string>
+    <string name="listen_together_you_are_host">Ostalaria zara</string>
+    <string name="listen_together_you_are_guest">Gonbidatua zara</string>
+    <string name="mute">Isilarazi</string>
+    <string name="unmute">Ozendu</string>
+    <string name="listen_together_users">%d erabiltzaile gelan</string>
+    <string name="listen_together_join_requests">Batzeko eskaerak</string>
+    <string name="listen_together_view_logs">Ikusi erregistroak</string>
+    <string name="listen_together_view_logs_desc">Arazketa: konexioa eta mezuak</string>
+    <string name="listen_together_logs">Konexio-erregistroak</string>
+    <string name="listen_together_no_logs">Oraindik ez dago erregistrorik</string>
+    <string name="listen_together_auto_approval">Onartu batzeko eskaerak automatikoki</string>
+    <string name="listen_together_auto_approval_desc">Onartu batzeko eskaerak automatikoki, eskuz berrikusi ordez</string>
+    <string name="listen_together_sync_volume">Sinkronizatu ostalariaren bolumena</string>
+    <string name="listen_together_sync_volume_desc">Gonbidatuek ostalariaren bolumen-mailari jarraitzen diote</string>
+    <string name="listen_together_in_top_bar">Entzun elkarrekin goiko barran</string>
+    <string name="listen_together_in_top_bar_desc">Erakutsi Entzun elkarrekin aplikazioaren goiko barran, nabigazio-barran ordez</string>
+    <string name="listen_together_description">Entzun musika lagunekin denbora errealean. Sortu gela bat ostalari izateko, edo batu dagoen gela batera kode baten bidez.</string>
+    <string name="listen_together_background_disconnect_note">Oharra: baliteke deskonektatzea musikarik erreproduzitzen ez dagoen bitartean gela bat sortu eta beste aplikazio batera aldatzen bazara.</string>
+    <string name="listen_together_not_configured">Entzun elkarrekin ez dago konfiguratuta. Ezarri zerbitzariaren URLa Ezarpenak → Integrazioak → Entzun elkarrekin atalean.</string>
+    <string name="listen_together_suggestion_received">%1$s erabiltzaileak %2$s eskatu du</string>
+    <string name="listen_together_suggestion_sent">Iradokizuna ostalariari bidali zaio!</string>
+    <string name="listen_together_auto_add">Ilara kolaboratiboa</string>
+    <string name="listen_together_auto_add_desc">Gelako edonork gehi dezake ilarara zure onarpenaren zain egon gabe</string>
+    <string name="listen_together_auto_added">%1$s erabiltzaileak %2$s gehitu du</string>
+    <string name="listen_together_tap_code_to_copy">Sakatu kodea kopiatzeko</string>
+    <string name="listen_together_in_the_room">Gelan</string>
+    <string name="listen_together_your_name">Zure izena</string>
+    <string name="listen_together_or_join">edo batu gela batera</string>
+    <string name="listen_together_suggested_by">Iradokitzailea: %1$s</string>
+    <string name="listen_together_tap_member_hint">Sakatu norbait kentzeko edo gela emateko</string>
+    <string name="listen_together_wants_to_join">zure gelara batu nahi du</string>
+    <string name="listen_together_added_to_queue">Ilarara gehituta: %1$s</string>
+    <string name="listen_together_added_to_queue_by">%1$s erabiltzaileak %2$s gehitu du ilarara</string>
+    <string name="listen_together_control_mode">Erreprodukzioaren kontrola</string>
+    <string name="listen_together_control_owner">Zuk bakarrik</string>
+    <string name="listen_together_control_everyone">Denek</string>
+    <string name="listen_together_control_owner_desc">Zuk bakarrik erreproduzitu, pausatu eta saltatu dezakezu</string>
+    <string name="listen_together_control_everyone_desc">Gelako edonork erreproduzitu, pausatu eta saltatu dezake</string>
+    <string name="listen_together_session_ends">Saioa %1$s barru amaituko da</string>
+    <string name="listen_together_session_ending_soon">Gela hau %1$s barru itxiko da</string>
+    <string name="listen_together_extend">Luzatu</string>
+    <string name="listen_together_extensions_left">%1$d geratzen dira</string>
+    <string name="listen_together_room_closed">Gela itxita</string>
+    <string name="listen_together_shared_session_note">Gelak aldi baterakoak eta partekatuak dira: hemen dagoen guztiak atzerako kontaketa bera ikusten du.</string>
+    <string name="listen_together_join_request_notification">%1$s gelara batu nahi du</string>
+    <string name="listen_together_notification_channel_name">Entzun elkarrekin</string>
+    <string name="listen_together_notification_channel_desc">Entzun elkarrekin ekitaldien jakinarazpenak</string>
+    <string name="listen_together_room_created">Gela sortuta: %s</string>
+    <string name="listen_together_local_offline_sync">Tokiko sinkronizazioa konexiorik gabe</string>
+    <string name="offline_sync">Konexiorik gabeko sinkronizazioa</string>
+    <string name="listen_together_host_local">Antolatu tokiko sinkronizazioa</string>
+    <string name="listen_together_host_local_desc">Igorri musika-jarioa Wi-Fi / sare-partekatze bidez</string>
+    <string name="listen_together_join_local">Batu tokiko sinkronizaziora</string>
+    <string name="listen_together_join_local_desc">Aurkitu eta batu inguruko tokiko sinkronizazio-jario batera</string>
+    <string name="listen_together_discovering_devices">Inguruko ostalariak bilatzen…</string>
+    <string name="listen_together_no_devices_found">Ez da inguruko ostalaririk aurkitu</string>
+    <string name="listen_together_cannot_edit_username_in_room">Ezin da erabiltzaile-izena editatu gela batean zauden bitartean</string>
+    <string name="waiting_for_approval">Ostalariaren onarpenaren zain</string>
+    <string name="invalid_room_code">Gela-kode baliogabea</string>
+    <string name="join_request_denied">Batzeko eskaera ukatu da</string>
+    <string name="join_existing_room">Batu dagoen gela batera</string>
+    <string name="room_code">Gelaren kodea</string>
+    <string name="leave_room">Utzi gela</string>
+    <string name="join_room">Batu</string>
+    <string name="create_room">Sortu</string>
+    <string name="joining_room">%s gelara batzen…</string>
+    <string name="creating_room">Gela sortzen…</string>
+    <string name="connect">Konektatu</string>
+    <string name="disconnect">Deskonektatu</string>
+    <string name="reconnect">Berriro konektatu</string>
+    <string name="create">Sortu</string>
+    <string name="join">Batu</string>
+    <string name="approve">Onartu</string>
+    <string name="reject">Ukatu</string>
+    <string name="clear">Garbitu</string>
+    <string name="copy">Kopiatu</string>
+    <string name="change">Aldatu</string>
+    <string name="copied_to_clipboard">Arbelean kopiatuta</string>
+    <string name="not_set">Ezarri gabe</string>
+    <string name="hosting_room">Gela antolatzen</string>
+    <string name="in_room">Gelan</string>
+    <string name="pending_requests">Zain dauden eskaerak</string>
+    <string name="pending_suggestions">Zain dauden iradokizunak</string>
+    <string name="suggest_to_host">Iradoki ostalariari</string>
+    <string name="kick_user">Bota</string>
+    <string name="transfer_host">Eman ostalaritza</string>
+    <string name="host_label">Ostalaria</string>
+    <string name="you_label">Zu</string>
+    <string name="connected_users">Konektatutako erabiltzaileak</string>
+    <string name="enter_username">Idatzi erabiltzaile-izena</string>
+    <string name="enter_room_code">Idatzi gelaren kodea</string>
+    <string name="listen_together_settings_desc">Konfiguratu zerbitzaria, erabiltzaile-izena eta gehiago</string>
+    <string name="error_username_empty">Erabiltzaile-izena beharrezkoa da.</string>
+    <string name="resync">Birsinkronizatu</string>
+    <string name="copy_code">Kopiatu kodea</string>
+    <string name="kick_user_desc">Kendu pertsona hau saiotik</string>
+    <string name="permanently_kick_user">Blokeatu betiko</string>
+    <string name="permanently_kick_user_desc">Blokeatu pertsona honen batzeko eskaerak eta ezkutatu bere iradokizunak</string>
+    <string name="transfer_ownership">Eman jabetza</string>
+    <string name="transfer_ownership_desc">Egin pertsona hau gelaren ostalari</string>
+    <string name="manage_user">Kudeatu erabiltzailea</string>
+    <string name="listen_together_blocked_users">Blokeatutako erabiltzaileak</string>
+    <string name="listen_together_blocked_users_count">%d erabiltzaile blokeatuta</string>
+    <string name="listen_together_no_blocked_users">Ez dago blokeatutako erabiltzailerik</string>
+    <string name="unblock">Desblokeatu</string>
+    <string name="user_blocked_by_host">Ostalariak erabiltzailea blokeatu du</string>
+
+    <!-- AI Lyrics Translation -->
+    <string name="ai_lyrics_translation">Letren itzulpena AArekin</string>
+    <string name="ai_translating_lyrics">Letrak itzultzen...</string>
+    <string name="ai_lyrics_translated">Letrak itzulita</string>
+    <string name="ai_provider">Hornitzailea</string>
+    <string name="ai_base_url">Oinarrizko URLa</string>
+    <string name="ai_api_key">API gakoa</string>
+    <string name="ai_model">Eredua</string>
+    <string name="ai_translation_mode">Itzulpen modua</string>
+    <string name="ai_target_language">Helburuko hizkuntza</string>
+    <string name="ai_setup_guide">API kredentzialak</string>
+    <string name="ai_translation_literal">Itzulpena</string>
+    <string name="ai_translation_literal_desc">Itzuli esanahia helburuko hizkuntzara</string>
+    <string name="ai_translation_transcribed">Transkripzioa</string>
+    <string name="ai_translation_transcribed_desc">Bihurtu ahoskera helburuko idazkerara</string>
+    <string name="ai_api_key_required">API gakoa behar da</string>
+    <string name="ai_error_api_key_required">API gakoa beharrezkoa da</string>
+    <string name="ai_error_no_lyrics">Ez dago itzultzeko letrarik</string>
+    <string name="ai_error_lyrics_empty">Letrak hutsik daude</string>
+    <string name="ai_error_language_required">Helburuko hizkuntza beharrezkoa da</string>
+    <string name="ai_error_unexpected">Ustekabeko itzulpen-emaitza</string>
+    <string name="ai_error_unknown">Errore ezezagun bat gertatu da</string>
+    <string name="ai_error_translation_failed">Itzulpenak huts egin du</string>
+    <string name="ai_provider_help">Lortu API gakoak</string>
+    <string name="ai_provider_openrouter_help">Bisitatu openrouter.ai doako eta ordainpeko ereduetarako</string>
+    <string name="ai_provider_mistral_help">Bisitatu console.mistral.ai/api-keys</string>
+    <string name="ai_provider_openai_help">Bisitatu platform.openai.com/api-keys</string>
+    <string name="ai_provider_claude_help">Bisitatu console.anthropic.com/settings/keys</string>
+    <string name="ai_provider_gemini_help">Bisitatu aistudio.google.com/apikey</string>
+    <string name="ai_provider_perplexity_help">Bisitatu perplexity.ai/settings/api</string>
+    <string name="ai_provider_xai_help">Bisitatu console.x.ai</string>
+    <string name="ai_provider_deepl_help">Bisitatu deepl.com/pro-api doako eta ordainpeko gakoetarako</string>
+    <string name="ai_deepl_formality">Formaltasuna</string>
+    <string name="ai_deepl_formality_default">Lehenetsia</string>
+    <string name="ai_deepl_formality_more">Formalagoa</string>
+    <string name="ai_deepl_formality_less">Ez hain formala</string>
+
+    <!-- Crash Handler -->
+    <string name="crash_title">Aplikazioa itxi egin da</string>
+    <string name="crash_description">Ustekabeko errore bat gertatu da. Partekatu hutsegite-txostena arazoa konpontzen laguntzeko.</string>
+    <string name="crash_share_logs">Partekatu erregistroak</string>
+    <string name="copy_logs">Kopiatu erregistroak</string>
+    <string name="crash_share_title">Partekatu hutsegite-txostena</string>
+    <string name="crash_report_subject">BeatWave hutsegite-txostena</string>
+    <string name="crash_close">Itxi</string>
+    <string name="crash_no_log">Ez dago hutsegite-erregistrorik</string>
+
+    <!-- Theme Palette Names -->
+    <string name="palette_dynamic">Dinamikoa</string>
+    <string name="palette_apple_red">Sagar gorria</string>
+    <string name="palette_crimson">Karmesia</string>
+    <string name="palette_rose">Arrosa</string>
+    <string name="palette_purple">Morea</string>
+    <string name="palette_deep_purple">More iluna</string>
+    <string name="palette_indigo">Indigoa</string>
+    <string name="palette_blue">Urdina</string>
+    <string name="palette_sky_blue">Zeru-urdina</string>
+    <string name="palette_cyan">Ziana</string>
+    <string name="palette_teal">Berde-urdina</string>
+    <string name="palette_green">Berdea</string>
+    <string name="palette_light_green">Berde argia</string>
+    <string name="palette_lime">Lima</string>
+    <string name="palette_yellow">Horia</string>
+    <string name="palette_amber">Anbarra</string>
+    <string name="palette_orange">Laranja</string>
+    <string name="palette_deep_orange">Laranja iluna</string>
+    <string name="palette_brown">Marroia</string>
+    <string name="palette_grey">Grisa</string>
+    <string name="palette_blue_grey">Gris urdinxka</string>
+
+    <!-- Theme Content Descriptions -->
+    <string name="cd_back">Atzera</string>
+    <string name="cd_pure_black_mode">Beltz hutsaren modua</string>
+    <string name="cd_light_mode">Modu argia</string>
+    <string name="cd_dark_mode">Modu iluna</string>
+    <string name="cd_system_mode">Sistemaren modua</string>
+    <string name="cd_palette_item">%1$s paleta</string>
+    <string name="play_all">Erreproduzitu dena</string>
+    <string name="see_all">Ikusi dena</string>
+    <string name="enable_high_refresh_rate">Gaitu freskatze-tasa altua</string>
+    <string name="enable_high_refresh_rate_desc">Behartu pantaila onartzen duen freskatze-tasarik altuenean ibiltzera (adib. 120 Hz)</string>
+
+    <!-- Music Recognition -->
+    <string name="recognition">Ezagutzea</string>
+    <string name="recognize_music">Ezagutu musika</string>
+    <string name="tap_to_recognize">Sakatu ezagutzeko</string>
+    <string name="listening">Entzuten…</string>
+    <string name="processing">Prozesatzen…</string>
+    <string name="no_match_found">Ez da bat-etortzerik aurkitu</string>
+    <string name="recognition_error">Ezagutze-errorea</string>
+    <string name="try_again">Saiatu berriro</string>
+    <string name="recognition_history">Ezagutze-historia</string>
+    <string name="clear_recognition_history">Garbitu ezagutze-historia</string>
+    <string name="clear_recognition_history_confirm">Ziur ezagutze-historia osoa garbitu nahi duzula?</string>
+    <string name="delete_from_history">Ezabatu historiatik</string>
+    <string name="re_listen">Entzun berriro</string>
+    <string name="hold_to_recognize">Eduki sakatuta bilaketa-ikonoa musika ezagutzeko</string>
+    <string name="play_on_app">Erreproduzitu BeatWave-n</string>
+    <string name="recognized_track">Ezagututako abestia</string>
+
+    <!-- CSV Import Strings -->
+    <string name="map_csv_columns">Lotu CSV zutabeak</string>
+    <string name="first_row_is_header">Lehen errenkada goiburua da</string>
+    <string name="artist_name_column">Artistaren izenaren zutabea</string>
+    <string name="song_title_column">Abestiaren izenburuaren zutabea</string>
+    <string name="youtube_url_column">YouTube URLaren zutabea (aukerakoa)</string>
+    <string name="continue_action">Jarraitu</string>
+    <string name="importing_csv">CSVa inportatzen</string>
+    <string name="recently_converted">Azkenaldian bihurtuak</string>
+    <string name="column_label">%d. zutabea</string>
+    <string name="csv_import_failed">Ezin izan da CSV fitxategia inportatu</string>
+    <string name="csv_preview_failed">Ezin izan da CSV fitxategiaren aurrebista erakutsi</string>
+
+    <!-- Discord Integration Redesign -->
+    <string name="discord_integration_settings">Discord integrazioa</string>
+    <string name="discord_status">Egoera</string>
+    <string name="discord_status_online">Konektatuta</string>
+    <string name="discord_status_idle">Inaktibo</string>
+    <string name="discord_status_dnd">Ez molestatu</string>
+    <string name="discord_buttons">Botoiak</string>
+    <string name="discord_button_1">1. botoia</string>
+    <string name="discord_button_2">2. botoia</string>
+    <string name="button_text">Botoiaren testua</string>
+    <string name="button_visible">Ikusgai</string>
+    <string name="login_successful">Saioa ondo hasi da!</string>
+    <string name="discord_information_warning">Ezaugarri honek KizzyRPC liburutegia erabiltzen du Discorden Gateway-ra konektatzeko eta zure Rich Presence egoera ezartzeko. Antzeko erabilerengatik ez da kontu-etenik ezagutzen, baina metodo hau ez du Discordek ofizialki onartzen, eta zerbitzu-baldintzen urraketatzat jo daiteke. Zure tokena gailuan bertan ateratzen da eta ez zaie inoiz hirugarrenen zerbitzariei bidaltzen. Jarraitu zure erabakiz.</string>
+    <string name="discord_activity_type">Jarduera mota</string>
+    <string name="discord_activity_playing">Jolasten</string>
+    <string name="discord_activity_listening">Entzuten</string>
+    <string name="discord_activity_watching">Ikusten</string>
+    <string name="discord_activity_competing">Lehiatzen</string>
+    <string name="discord_customization">Pertsonalizazioa</string>
+    <string name="discord_button_text_variables">Aldagaiak: {song_name}, {artist_name}, {album_name}</string>
+    <string name="discord_rpc_preview">Rich Presence aurrebista</string>
+    <string name="discord_presence">Presentzia</string>
+    <string name="discord_connect_description">Hasi saioa Discorden zer entzuten ari zaren partekatzeko</string>
+    <string name="discord_playing_vivimusic">BeatWave-n jolasten</string>
+    <string name="discord_watching_vivimusic">BeatWave ikusten</string>
+    <string name="discord_competing_vivimusic">BeatWave-n lehiatzen</string>
+    <string name="discord_activity_name">Jardueraren izena</string>
+    <string name="discord_activity_name_description">Jardueraren izen pertsonalizatua (utzi hutsik lehenetsia erabiltzeko)</string>
+    <string name="discord_advanced_mode">Modu aurreratua</string>
+    <string name="discord_advanced_mode_description">Erakutsi Rich Presence-rako pertsonalizazio-aukera gehigarriak</string>
+    <string name="speed_dial">Sarbide azkarra</string>
+    <string name="pin_to_speed_dial">Ainguratu sarbide azkarrean</string>
+    <string name="unpin_from_speed_dial">Kendu sarbide azkarretik</string>
+    <string name="randomize_home_order">Hasierako pantailaren ordena ausazkoa</string>
+    <string name="randomize_home_order_desc">Ordenatu ausaz hasierako pantailaren atalak, lehentasun haztatuekin</string>
+    <string name="show_home_fab">Erakutsi soinu-bilaketa eta ausazko botoia</string>
+    <string name="show_home_fab_desc">Mikrofono- eta ausazko botoi flotatzaileak Hasieraren behealdean</string>
+
+    <!-- Daily Discover -->
+    <string name="daily_discover_sounds_like">%1$s bezalako soinua</string>
+    <string name="your_daily_discover">Zure eguneko aurkikuntzak</string>
+    <string name="daily_discover_because_you_listen_to">%1$s entzuten duzulako</string>
+    <string name="daily_discover_similar_to">%1$s(r)en antzekoa</string>
+    <string name="daily_discover_based_on">%1$s oinarritzat hartuta</string>
+    <string name="daily_discover_for_fans_of">%1$s(r)en zaleentzat</string>
+    <string name="from_the_community">Komunitatetik</string>
+    <string name="songs_count">%s abesti</string>
+    <string name="repeat">Errepikatu</string>
+    <string name="monthly_listeners">Hilean</string>
+    <string name="unlock_queue">Desblokeatu ilara</string>
+    <string name="lock_queue">Blokeatu ilara</string>
+<!--    //Members-->
+
+    <!-- ShowMediaInfo -->
+    <string name="song_info">Abestiaren informazioa</string>
+    <string name="song_info_title_label">Izenburua</string>
+    <string name="song_info_format_label">Formatua</string>
+    <string name="song_info_duration_label">Iraupena</string>
+    <string name="song_info_itag_label">Itag</string>
+    <string name="song_info_standard">Estandarra</string>
+    <string name="song_info_views_count">%s ikustaldi</string>
+    <string name="song_info_likes_count">%s atsegite</string>
+    <string name="song_info_no_description">Ez dago deskribapenik</string>
+
+<!--    changelog-->
+    <string name="error_loading_changelog">Errorea aldaketen erregistroa kargatzean</string>
+    <string name="no_old_releases_with_changelog">Ez da aldaketen erregistroa duen bertsio zaharrik aurkitu</string>
+    <string name="failed_to_fetch_changelog">Ezin izan da aldaketen erregistroa eskuratu</string>
+    <string name="changelog_title">Aldaketen erregistroa</string>
+    <string name="loading_changelog">Aldaketen erregistroa kargatzen…</string>
+    <string name="cached">Cachean</string>
+    <string name="current">Unekoa</string>
+    <string name="old_releases">Bertsio zaharrak</string>
+    <string name="changelog_section">Aldaketen erregistroa</string>
+    <string name="version_code">Bertsio-kodea</string>
+    <string name="namespace">Izen-espazioa</string>
+    <string name="telegram_channel">Telegram</string>
+
+    <!-- Onboarding -->
+    <string name="welcome_to">Ongi etorri</string>
+    <string name="welcome_preparing_subtitle">Dena prestatuko dizugu.</string>
+    <string name="get_started">Hasi</string>
+
+    <string name="perm_required">Beharrezko</string>
+    <string name="perm_permissions">baimenak</string>
+    <string name="perm_intro_text">Baimen hauek beharrezkoak dira BeatWave-k ondo funtziona dezan. Eman itzazu jarraitzeko.</string>
+
+    <string name="perm_notif_title">Jakinarazpenak</string>
+    <string name="perm_notif_desc">Jakin berehala musika erreproduzitzen ari denean, eta kontrolatu jakinarazpen-barratik.</string>
+
+    <string name="perm_install_title">Aplikazioak instalatzea</string>
+    <string name="perm_install_desc">Beharrezkoa aplikazioaren eguneratzeak arazorik gabe deskargatu eta instalatzeko.</string>
+
+    <string name="feat_discover">Ezagutu</string>
+    <string name="feat_features">ezaugarriak</string>
+    <string name="feat_intro">Arakatu BeatWave-k zure musika-bidaiarako eskaintzen duen guztia.</string>
+
+    <string name="feat_lyrics_title">Letra adimendunak</string>
+    <string name="feat_lyrics_desc">Gozatu hitzez hitz sinkronizatutako letrez milioika abestitan.</string>
+
+    <string name="feat_download_title">Konexiorik gabeko erreprodukzioa</string>
+    <string name="feat_download_desc">Deskargatu zure abesti gogokoenak eta entzun edonon, edonoiz.</string>
+
+    <string name="feat_quality_title">Premium kalitatea</string>
+    <string name="feat_quality_desc">Transmititu eta deskargatu.</string>
+
+    <string name="feat_glass_title">Beira likidoko interfazea</string>
+    <string name="feat_glass_desc">iOSen inspiratutako beira izoztuko diseinua aplikazio osoan.</string>
+
+    <string name="feat_discord_title">Discord Rich Presence</string>
+    <string name="feat_discord_desc">Erakutsi zer entzuten ari zaren zure Discord profilean bertan.</string>
+
+    <string name="feat_update_title">Eguneratze dinamikoak</string>
+    <string name="feat_update_desc">Egon beti eguneratuta, aplikazioak berak duen eguneratzaileari esker.</string>
+
+    <string name="feat_license_title">Lizentzia</string>
+    <string name="feat_license_desc">General Public License v3.0</string>
+    <string name="feat_github_title">GitHub</string>
+    <string name="feat_github_desc">Kode irekiko proiektua</string>
+
+    <string name="join_telegram">Batu gure Telegram kanalera</string>
+    <string name="welcome_update_check">Egon</string>
+    <string name="welcome_update_status">eguneratuta</string>
+    <string name="welcome_update_intro">Azken ezaugarriak eta segurtasun-hobekuntzak dituzula ziurtatzen.</string>
+    <string name="welcome_checking_updates">Eguneratzeak bilatzen…</string>
+    <string name="welcome_up_to_date">BeatWave eguneratuta dago!</string>
+    <string name="welcome_update_available">Bertsio berria erabilgarri: %s</string>
+    <string name="welcome_everything_ready">Dena eguneratuta dago orain</string>
+    <string name="commits_title">Commit-ak</string>
+    <string name="error_loading_commits">Ezin izan dira commit-ak kargatu</string>
+    <string name="commits">Commit-ak</string>
+    <string name="view_commit_history">Arakatu adar nagusiko azken aldaketak</string>
+    <string name="suggestions">Iradokizunak</string>
+    <string name="comments">Iruzkinak</string>
+    <string name="no_comments">Ez da iruzkinik aurkitu</string>
+    <string name="type_message">Idatzi mezu bat…</string>
+    <string name="send">Bidali</string>
+    <string name="clear_downloaded_updates_auto_info">Egun bat igaro ondoren automatikoki ezabatuko da.</string>
+    <string name="update_info_badge">Informazioa eta aholkuak</string>
+    <string name="update_info_title">Eguneratzeari buruzko informazioa</string>
+    <string name="manual_delete_hint_title">Eskuzko garbiketa</string>
+    <string name="manual_delete_hint_desc">Eskuz ere ezaba dezakezu. APK zaharrak ezabatzeak eguneratzaileari ondo eguneratzen laguntzen dio.</string>
+
+    <!-- Playback Log -->
+    <string name="logs_heading">Erregistroak</string>
+    <string name="playback_logs">Erreprodukzio-erregistroak</string>
+    <string name="playback_logs_desc">Ikusi jarioen ebazpena eta bot-en aurkako neurriak denbora errealean</string>
+    <string name="playback_logs_title">Erreprodukzio-erregistroak</string>
+    <string name="no_playback_logs">Oraindik ez da erreprodukzio-gertaerarik erregistratu</string>
+    <string name="show_comment_button">Erakutsi iruzkinen botoia</string>
+    <string name="show_comment_button_description">Erakutsi erreproduzigailuko ilaran iruzkinak ikusteko botoi bat</string>
+    <string name="show_history_button">Erakutsi historiaren botoia</string>
+    <string name="show_history_button_description">Erakutsi historiaren ikonoa aplikazioaren goiko barran eta alboko barran</string>
+    <string name="show_stats_button">Erakutsi estatistiken botoia</string>
+    <string name="show_stats_button_description">Erakutsi estatistiken ikonoa aplikazioaren goiko barran eta alboko barran</string>
+    <string name="build_stable">EGONKORRA</string>
+    <string name="build_nightly">GAUEKOA</string>
+    <string name="jiosaavn_settings">JioSaavn ezarpenak</string>
+    <string name="jiosaavn_streaming_disabled">Desgaituta</string>
+    <string name="jiosaavn_beta_info">Beta fasean dago oraingoz; ez jakinarazi JioSaavn-ekin lotutako arazorik. JioSaavn gaituta badago eta abesti bat JioSaavn-en ez badago, YouTube Music erabiliko da hurrengo iturri gisa. JioSaavn erabiltzean 320 kbps-tan deskargatzea ere onartzen da.</string>
+
+    <!-- Lossless (TIDAL) streaming -->
+    <string name="lossless_settings">Galerarik gabeko transmisioa</string>
+    <string name="lossless_streaming_enabled">Gaituta (FLAC)</string>
+    <string name="lossless_streaming_disabled">Desgaituta</string>
+    <string name="enable_tidal_streaming">Gaitu galerarik gabeko transmisioa</string>
+    <string name="enable_tidal_streaming_desc">Transmititu 16 biteko FLAC galerarik gabeko zerbitzari publikoetatik YouTuberen ordez. Lehenetsita desgaituta. Abesti batek galerarik gabeko bertsiorik ez badu, erreprodukzioa YouTubera pasatzen da isilean, audioa inoiz eten ez dadin. Zerbitzari publiko hauek komunitateak kudeatzen ditu; ez da erabilgarritasuna bermatzen. Erabili zure erabakiz. Ez da konturik ez kredentzialik gordetzen. Oraingoz transmisioari soilik eragiten dio, ez deskargei.</string>
+    <string name="tidal_instance_url">Zerbitzari pertsonalizatuaren URLa (aukerakoa)</string>
+    <string name="tidal_instance_url_hint">https://your-server.example.com</string>
+    <string name="tidal_beta_info">Beta. Utzi zerbitzariaren URLa hutsik zerbitzari publiko automatikoak erabiltzeko. Zure zerbitzaria erabiltzeko, itsatsi haren oinarrizko URLa goian; hura probatuko da lehenik.</string>
+
+    <!-- Spotify Import -->
+    <string name="spotify">Spotify</string>
+    <string name="import_action">Inportatu</string>
+    <string name="enable_spotify_import">Inportatu Spotify</string>
+    <string name="import_from_spotify">Inportatu Spotify-tik</string>
+    <string name="spotify_connect">Konektatu Spotify-rekin</string>
+    <string name="spotify_not_connected">Ez dago Spotify-rekin konektatuta</string>
+    <string name="spotify_connected_as">%s gisa konektatuta</string>
+    <string name="spotify_account">Spotify kontua</string>
+    <string name="spotify_loading_library">Spotify-ko erreprodukzio-zerrendak kargatzen…</string>
+    <string name="spotify_select_sources">Hautatu inportatzeko erreprodukzio-zerrendak</string>
+    <string name="spotify_no_sources">Ez da erreprodukzio-zerrendarik aurkitu</string>
+    <string name="spotify_available_count">%d erreprodukzio-zerrenda erabilgarri</string>
+    <string name="spotify_import_selected">Inportatu hautatuak</string>
+    <string name="spotify_selected_count">%d erreprodukzio-zerrenda hautatuta</string>
+    <string name="spotify_refresh">Freskatu erreprodukzio-zerrendak</string>
+    <string name="spotify_import_desc">Inportatu erraz zure Spotify-ko erreprodukzio-zerrendak eta gogoko abestiak zure liburutegira. Aplikazioak YouTuben bilatuko ditu automatikoki ondoen datozen abestiak eta tokiko zerrendetan islatuko ditu, zure musika guztia leku bakarrean izan dezazun.</string>
+    <string name="spotify_liked_songs">Gogoko abestiak</string>
+    <string name="spotify_track_count">%d abesti</string>
+    <string name="spotify_login_title">Spotify saio-hasiera</string>
+    <string name="spotify_waiting_for_login">Hasi saioa zure Spotify kontuan beheko nabigatzailean.</string>
+    <string name="spotify_clear_selection">Garbitu</string>
+    <string name="spotify_select_all">Hautatu dena</string>
+    <string name="spotify_liked_songs_desc">Zure Spotify-ko gogoko abestiak</string>
+    <string name="spotify_import_progress_step">%1$s inportatzen (%2$d/%3$d)…</string>
+    <string name="spotify_import_complete">Inportazioa osatuta</string>
+    <string name="spotify_import_finished">Inportazioa amaituta</string>
+    <string name="spotify_importing_songs_count">%2$d abestitik %1$d inportatzen</string>
+    <string name="spotify_imported_songs_count">%2$d abestitik %1$d inportatu dira</string>
+    <string name="spotify_import_summary">%1$d erreprodukzio-zerrenda inportatu dira: %2$d abesti bat etorri dira, %3$d abestik huts egin dute.</string>
+    <string name="spotify_source_summary">\"%1$s\": %3$d abestitik %2$d bat etorri dira</string>
+    <string name="spotify_import_in_progress">Spotify-tik inportatzen</string>
+    <string name="spotify_login_desc">Spotify-rekiko konexioa guztiz lokala da. Zure saioaren kredentzialak zure gailuan soilik gordetzen dira.</string>
+    <string name="liquid_glass">Beira likidoa</string>
+    <string name="share_smart_link">Partekatu esteka adimenduna</string>
+    <string name="playlist_description">Deskribapena</string>
+    <string name="ios_overscroll">Korritze elastikoa</string>
+    <string name="ios_overscroll_desc">iOS estiloko korritze elastikoa zerrendetan</string>
+    <string name="force_tablet_layout">Fitxa-ikuspegia</string>
+    <string name="force_tablet_layout_desc">Pantaila zabalek alboko barra automatikoki erabiltzen dute. Gaitu hau telefonoan ere behartzeko</string>
+    <string name="scan_result_summary">%1$d fitxategi aurkitu dira: %2$d berri, %3$d dagoeneko zure liburutegian</string>
+    <string name="edit_tags">Editatu etiketak</string>
+    <string name="edit_tags_desc">Ireki fitxategi hau etiketa-editore batean</string>
+    <string name="edit_tags_no_app">Ez dago etiketa-editorerik instalatuta</string>
+    <string name="local_albums_by_year">Albumak argitalpen-urteka</string>
+    <string name="local_albums_by_year_desc">Ordenatu tokiko albumen apala urteka, alfabetikoki ordez. Etiketarik gabeko albumak azkenean agertzen dira.</string>
+    <string name="scan_device">Eskaneatu gailua</string>
+    <string name="grant_permission">Eman baimena</string>
+    <string name="home_background">Hasierako atzeko planoa</string>
+    <string name="home_background_desc">Irudi lausotu pertsonalizatua hasierako pantailaren atzean</string>
+    <string name="home_background_enable">Gaitu atzeko plano pertsonalizatua</string>
+    <string name="home_background_image">Aukeratu irudia</string>
+    <string name="home_background_image_none">Ez da irudirik hautatu</string>
+    <string name="home_background_image_set">Irudia hautatuta</string>
+    <string name="home_background_blur">Lausotzea</string>
+    <string name="home_background_dim">Iluntzea</string>
+    <string name="home_background_remove">Kendu irudia</string>
+    <string name="home_background_animate">Lausotu kargatzean</string>
+    <string name="home_background_animate_desc">Hasi zorrotz, eta lausotu poliki irudia kargatu ondoren</string>
+    <string name="home_background_quality">Atzeko planoaren kalitatea</string>
+    <string name="home_background_quality_desc">Hautatutako atzeko plano berria zenbateko zorroztasunarekin gordetzen den, zure pantailaren bereizmenaren aldean</string>
+    <string name="home_background_quality_reapply_hint">Hautatzen duzun hurrengo irudiari edo bideoari aplikatzen zaio. Hautatu berriro uneko atzeko planoa kalitate berria aplikatzeko</string>
+    <string name="library_background">Liburutegiaren atzeko planoa</string>
+    <string name="library_background_plain">Laua</string>
+    <string name="library_background_theme">Gaiari jarraitu</string>
+    <string name="library_background_thumbnail_blur">Miniatura lausotua</string>
+    <string name="player_background_liquid_glass">Beira likidoa</string>
+    <string name="liquid_glass_settings">Beira likidoa</string>
+    <string name="liquid_glass_global_enabled">Gaitu beira likidoa</string>
+    <string name="liquid_glass_effects">Efektuak</string>
+    <string name="liquid_glass_appearance">Itxura</string>
+    <string name="liquid_glass_per_component">Osagaika</string>
+    <string name="liquid_glass_vibrancy">Bizitasuna</string>
+    <string name="liquid_glass_vibrancy_desc">Handitu beiraren atzeko planoaren saturazioa</string>
+    <string name="liquid_glass_blur_radius">Lausotze-erradioa</string>
+    <string name="liquid_glass_blur_radius_desc">Beira-gainazalaren lausotze-maila</string>
+    <string name="liquid_glass_lens_height">Lentearen errefrakzio-altuera</string>
+    <string name="liquid_glass_lens_amount">Lentearen errefrakzio-kopurua</string>
+    <string name="liquid_glass_chromatic_aberration">Aberrazio kromatikoa</string>
+    <string name="liquid_glass_depth_effect">Sakonera-efektua</string>
+    <string name="liquid_glass_surface_opacity">Gainazalaren opakutasuna</string>
+    <string name="liquid_glass_surface_opacity_desc">Beiraren kolore-geruzaren opakutasuna, irakurgarritasunerako</string>
+    <string name="liquid_glass_surface_tint">Gainazalaren tindua</string>
+    <string name="liquid_glass_surface_tint_desc">Beira-gainazalari aplikatutako tinduaren kolorea</string>
+    <string name="error_copy_details">Kopiatu xehetasunak</string>
+    <string name="liquid_glass_adaptive_contrast">Kontraste moldagarria</string>
+    <string name="liquid_glass_adaptive_contrast_desc">Aukeratu testuaren eta ikonoen koloreak beiraren azpian dagoenaren arabera, interfazea edozein tindurekin irakurgarri egon dadin</string>
+    <string name="liquid_glass_text_color">Beiraren testu-kolorea</string>
+    <string name="liquid_glass_text_color_desc">Beira-gainazaletan erabilitako testu-kolorea</string>
+    <string name="liquid_glass_player">Beirazko erreproduzigailua</string>
+    <string name="liquid_glass_mini_player">Beirazko mini-erreproduzigailua</string>
+    <string name="liquid_glass_nav_bar">Beirazko nabigazio-barra</string>
+    <string name="liquid_glass_side_panel">Beirazko alboko panela</string>
+    <string name="liquid_glass_side_panel_desc">Tabletaren alboko paneleko beira, telefonoaren nabigazio-barratik bereizita ezarria</string>
+    <string name="liquid_glass_side_panel_overrides">Alboko panelaren efektua (goikoak gainidazten ditu)</string>
+    <string name="liquid_glass_side_panel_surface_tint_desc">Tabletaren alboko panelerako soilik den tindu-kolorea, goiko gainazal-tindu nagusitik bereizia</string>
+    <string name="liquid_glass_side_panel_text_color_desc">Tabletaren alboko panelerako soilik den testu-kolorea, goiko beiraren testu-kolore nagusitik bereizia</string>
+    <string name="collapse_side_panel">Tolestu alboko panela</string>
+    <string name="expand_side_panel">Zabaldu alboko panela</string>
+    <string name="player_theme_layout">Diseinua</string>
+    <string name="player_theme_layout_desc">Arrastatu ordena aldatzeko; aktibatu edo desaktibatu erakusteko edo ezkutatzeko. Kontrolak ezin dira ezkutatu.</string>
+    <string name="player_slot_album_art">Albumaren azala</string>
+    <string name="player_slot_track_info">Izenburua eta artista</string>
+    <string name="player_slot_seek_bar">Aurrerapen-barra</string>
+    <string name="player_slot_controls">Erreprodukzio-kontrolak</string>
+    <string name="player_slot_action_row">Ekintza-lerroa</string>
+    <string name="auto_dj_mixing">DJ nahasketa automatikoa (Beta)</string>
+    <string name="auto_dj_mixing_desc">Hurrengo abestiaren erritmoa unekoarekin bat egiten du: taupada-sareak lerrokatzen ditu, tempoa finkatzen du, baxuak trukatzen ditu eta esaldi baten amaieran nahasten du. Abestiak bat ez badatoz, gurutze-iraungitze arrunta egiten du</string>
+    <string name="auto_dj_mixing_needs_crossfade">Gaitu lehenik goiko gurutze-iraungitzea</string>
+    <string name="creative_transitions">Trantsizio sortzaileak</string>
+    <string name="creative_transitions_desc">Etenik gabe egin ezin diren trantsizioetan, estali lotura DJ batek egingo lukeen bezala: oihartzun-buztan batekin edo disko-jogailuaren balazta batekin, bi abestiei egokituta. Ondo datozen abestiak ikusezin nahasten dira oraindik ere</string>
+    <string name="creative_transitions_needs_dj">Gaitu lehenik goiko DJ nahasketa automatikoa</string>
+    <string name="feature_needs_more_work">Lan gehiago behar du; aldi baterako desgaituta</string>
+    <string name="compact_player_tab_view">Erreproduzigailu trinkoa fitxa-ikuspegian</string>
+    <string name="compact_player_tab_view_desc">Alboko barra duen tableta edo pantaila zabal batean, erreproduzigailu zabaldua telefono baten zabalerara mugatzen da eta erdian kokatzen da, zabalera osoa hartu ordez. Mini-erreproduzigailuari ez dio eragiten.</string>
+    <string name="hide_home_favorite_icon">Ezkutatu gogokoen ikonoa Hasieran</string>
+    <string name="hide_home_favorite_icon_desc">Hasierako errenkadetan gogoko abesti eta albumen bihotz-ikurra ezkutatzen du. Liburutegiari, bilaketari eta erreprodukzio-zerrendei ez die eragiten.</string>
+    <string name="saavn_fallback_to_youtube">Saiatu YouTuben Saavn-ek huts egiten badu</string>
+    <string name="saavn_fallback_to_youtube_desc">Aktibatuta: JioSaavn-en bat datorren abestirik edo jariorik aurkitzen ez bada, YouTubetik erreproduzitzen da. Desaktibatuta: erreprodukzioak huts egiten du, YouTubeko audiora isilean aldatu ordez.</string>
+    <string name="force_selected_quality">Behartu kalitate hau</string>
+    <string name="force_selected_quality_desc">Aktibatuta: erabili beti goian hautatutako kalitatea, nahiz eta galerarik gabeko modulu batek edo Tidal-ek FLACera igoko lukeen.</string>
+    <string name="login_validation_failed_retrying">Ezin izan da saio-hasiera berretsi; berriro saiatzen…</string>
+    <string name="login_validation_failed_final">Saio-hasierak huts egin du. Itzuli atzera eta saiatu berriro.</string>
+    <string name="support_section">Laguntza</string>
+    <string name="support_upi">UPI</string>
+    <string name="donation_prompt_title">Gustatzen zaizu BeatWave?</string>
+    <string name="donation_prompt_message">BeatWave erabilgarria izan bazaizu, pentsatu ekarpen txiki bat egitea proiektuak aurrera jarrai dezan. Guztiz aukerakoa, inoiz ez derrigorrezkoa.</string>
+    <string name="donation_prompt_upi">Lagundu UPI bidez</string>
+    <string name="donation_prompt_later">Agian geroago</string>
+    <string name="donation_prompt_dont_ask">Ez galdetu berriro</string>
+    <string name="dj_readout_analyzing">DJ automatikoa · aztertzen…</string>
+    <string name="hide_volume_bar">Ezkutatu bolumen-barra</string>
+    <string name="hide_volume_bar_desc">Ezkutatu bolumenaren graduatzailea erreproduzigailuaren menuan</string>
+    <string name="nav_bar_style">Nabigazio-barraren estiloa</string>
+    <string name="floating_nav_bar">Nabigazio-barra flotatzailea</string>
+    <string name="floating_nav_bar_desc">iOS estiloko fitxa-barra flotatzailea, korritzean txikitzen dena</string>
+    <string name="liquid_glass_performance_warning">Beira likidoa errendatzeak errendimendu handia eskatzen du, eta gailu batzuetan arintasuna eta bateriaren iraupena murriztu ditzake</string>
+    <string name="liquid_glass_requires_floating_nav_bar">Nabigazio-barra flotatzailea gaituta egotea eskatzen du</string>
+    <string name="color_picker_hex">Hex</string>
+    <string name="color_white">Zuria</string>
+    <string name="color_light_gray">Gris argia</string>
+    <string name="color_black">Beltza</string>
+
+    <!-- 8spine Modules -->
+    <string name="modules">Moduluak</string>
+    <string name="module_sources">Moduluen iturriak</string>
+    <string name="add_source">Gehitu iturria</string>
+    <string name="add_module_source">Gehitu modulu-iturria</string>
+    <string name="add_module_source_desc">Idatzi 8spine modulu-aurkibide JSON baten URLa, iturri horretako moduluak arakatu eta instalatzeko.</string>
+    <string name="source_url">Iturriaren URLa</string>
+    <string name="fetch_modules">Eskuratu moduluak</string>
+    <string name="no_modules_found">Ez da modulurik aurkitu gehitutako iturrietan.</string>
+    <string name="module_detail">Moduluaren xehetasunak</string>
+    <string name="enable_module">Gaitu modulua</string>
+    <string name="module_info">Moduluaren informazioa</string>
+    <string name="module_id">Moduluaren IDa</string>
+    <string name="module_status">Egoera</string>
+    <string name="module_description">Deskribapena</string>
+    <string name="enabled">Gaituta</string>
+    <string name="disabled">Desgaituta</string>
+    <string name="remove">Kendu</string>
+    <string name="library_icons_only">Liburutegian ikonoak soilik</string>
+    <string name="library_icons_only_desc">Erakutsi ikono sinpleak liburutegian, artelanen miniaturen ordez</string>
+
+    <string name="app_font">Aplikazioaren letra-tipoa</string>
+    <string name="font_selection">Letra-tipoaren hautaketa</string>
+    <string name="font_additional">Letra-tipo gehigarriak</string>
+    <string name="font_system">Sistemaren lehenetsia</string>
+    <string name="font_google_sans">Google Sans</string>
+    <string name="font_sans_flex">Sans Flex</string>
+    <string name="font_outfit">Outfit</string>
+    <string name="font_plus_jakarta_sans">Plus Jakarta Sans</string>
+    <string name="typography_preview">Tipografiaren aurrebista</string>
+    <string name="preview_text_quote">«Hitzak isiltzen direnean, musikak hitz egiten du.»</string>
+    <string name="font_system_desc">Erabili sistemaren letra-tipo lehenetsia.</string>
+    <string name="font_google_sans_desc">Googleren sans-serif geometriko bereizgarria.</string>
+    <string name="font_sans_flex_desc">Sans-serif moderno, polifazetiko eta malgua.</string>
+    <string name="font_outfit_desc">Sans-serif geometriko garbi eta modernoa.</string>
+    <string name="font_plus_jakarta_sans_desc">Sans-serif geometriko bero eta dotorea.</string>
 </resources>
