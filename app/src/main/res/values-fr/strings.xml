@@ -436,6 +436,12 @@
     <string name="disable_screenshot_desc">Lorsque cette option est activée, les captures d&#39;écran et l&#39;aperçu de l&#39;application dans les applications récentes sont désactivés.</string>
     <string name="enable_lrclib">Activer le fournisseur de paroles LrcLib</string>
     <string name="enable_kugou">Activer le fournisseur de paroles KuGou</string>
+    <string name="android_auto_lyrics">Paroles sur Android Auto</string>
+    <string name="android_auto_lyrics_desc">Afficher la ligne actuelle sur l\'écran de la voiture et ajouter un onglet Paroles. Touchez une ligne pour y accéder</string>
+    <string name="android_auto_lyrics_no_song">Aucune lecture en cours</string>
+    <string name="android_auto_lyrics_not_synced">Aucune parole synchronisée pour ce morceau</string>
+    <string name="android_auto_lyrics_show">Afficher les paroles</string>
+    <string name="android_auto_lyrics_hide">Masquer les paroles</string>
     <string name="hide_explicit">Masquer le contenu explicite</string>
 
     <string name="backup_restore">Sauvegarde et restauration</string>
