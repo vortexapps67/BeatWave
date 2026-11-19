@@ -102,7 +102,7 @@
     <string name="delete_playlist_confirm">Voulez-vous vraiment supprimer la playlist « %s » ?</string>
     <string name="you_might_also_like">Playlist similaire</string>
 
-        <!-- Button -->
+    <!-- Button -->
     <string name="retry">Réessayer</string>
     <string name="radio">Radio</string>
     <string name="shuffle">Lecture aléatoire</string>
@@ -208,7 +208,7 @@
     <string name="duplicates_description_single">Le titre est déjà dans votre playlist</string>
     <string name="duplicates_description_multiple">%d titres sont déjà dans votre playlist</string>
 
-        <!-- Noun -->
+    <!-- Noun -->
     <plurals name="n_song">
         <item quantity="one">%d titre</item>
         <item quantity="other">%d titres</item>
@@ -281,7 +281,7 @@
     <!-- Notification name -->
     <string name="music_player">Lecteur de musique</string>
 
-        <!-- Settings -->
+    <!-- Settings -->
     <string name="settings">Paramètres</string>
     <string name="change_card_image">Modifier l&#39;image</string>
     <string name="use_custom_image">Utiliser une image personnalisée</string>
@@ -383,7 +383,7 @@
     <string name="proxy_url">URL du proxy</string>
     <string name="restart_to_take_effect">Redémarrer pour appliquer les modifications</string>
 
-        <string name="player_and_audio">Lecteur et audio</string>
+    <string name="player_and_audio">Lecteur et audio</string>
     <string name="audio_quality">Qualité audio</string>
     <string name="network_ip_version">Version IP réseau</string>
     <string name="ip_version_auto">Automatique</string>
@@ -436,6 +436,12 @@
     <string name="disable_screenshot_desc">Lorsque cette option est activée, les captures d&#39;écran et l&#39;aperçu de l&#39;application dans les applications récentes sont désactivés.</string>
     <string name="enable_lrclib">Activer le fournisseur de paroles LrcLib</string>
     <string name="enable_kugou">Activer le fournisseur de paroles KuGou</string>
+    <string name="android_auto_lyrics">Paroles sur Android Auto</string>
+    <string name="android_auto_lyrics_desc">Afficher la ligne actuelle sur l\'écran de la voiture et ajouter un onglet Paroles. Touchez une ligne pour y accéder</string>
+    <string name="android_auto_lyrics_no_song">Aucune lecture en cours</string>
+    <string name="android_auto_lyrics_not_synced">Aucune parole synchronisée pour ce morceau</string>
+    <string name="android_auto_lyrics_show">Afficher les paroles</string>
+    <string name="android_auto_lyrics_hide">Masquer les paroles</string>
     <string name="hide_explicit">Masquer le contenu explicite</string>
 
     <string name="backup_restore">Sauvegarde et restauration</string>
@@ -477,7 +483,7 @@
     <string name="listen_together_host_controls">L&#39;hôte contrôle la lecture dans cette session</string>
     <string name="listen_together_locked">L&#39;hôte contrôle la lecture</string>
 
-        <!-- JioSaavn Streaming -->
+    <!-- JioSaavn Streaming -->
     <string name="enable_saavn_streaming">Activer le streaming JioSaavn</string>
     <string name="enable_saavn_streaming_desc">Diffuser l&#39;audio depuis JioSaavn au lieu de YouTube Music (bascule sur YT si indisponible)</string>
     <string name="saavn_audio_quality">Qualité audio JioSaavn</string>
@@ -569,7 +575,7 @@
     <string name="diy_mock_title">Titre du morceau</string>
     <string name="diy_mock_artist">Nom de l&#39;artiste</string>
 
-        <string name="player_icons">Icônes personnalisées du lecteur</string>
+    <string name="player_icons">Icônes personnalisées du lecteur</string>
     <string name="player_icons_desc">Remplacer n&#39;importe quel contrôle du lecteur par votre propre image. PNG, JPEG, WebP ou SVG.</string>
     <string name="player_icon_default">Intégré</string>
     <string name="player_icon_custom">Image personnalisée</string>
