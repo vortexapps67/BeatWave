@@ -24,23 +24,37 @@ interface Queue {
         val mediaItemIndex: Int,
         val position: Long = 0L,
     ) {
-        fun filterExplicit(enabled: Boolean = true) =
-            if (enabled) {
-                copy(
-                    items = items.filterExplicit(),
-                )
+        fun filterExplicit(enabled: Boolean = true): Status {
+            if (!enabled) return this
+            val currentItem = items.getOrNull(mediaItemIndex)
+            val filteredItems = items.filterExplicit(true)
+            val newIndex = if (currentItem != null) {
+                val index = filteredItems.indexOfFirst { it.mediaId == currentItem.mediaId }
+                if (index != -1) index else mediaItemIndex.coerceIn(0, (filteredItems.size - 1).coerceAtLeast(0))
             } else {
-                this
+                mediaItemIndex.coerceIn(0, (filteredItems.size - 1).coerceAtLeast(0))
             }
+            return copy(
+                items = filteredItems,
+                mediaItemIndex = newIndex,
+            )
+        }
 
-        fun filterVideoSongs(disableVideos: Boolean = false) =
-            if (disableVideos) {
-                copy(
-                    items = items.filterVideoSongs(true),
-                )
+        fun filterVideoSongs(disableVideos: Boolean = false): Status {
+            if (!disableVideos) return this
+            val currentItem = items.getOrNull(mediaItemIndex)
+            val filteredItems = items.filterVideoSongs(true)
+            val newIndex = if (currentItem != null) {
+                val index = filteredItems.indexOfFirst { it.mediaId == currentItem.mediaId }
+                if (index != -1) index else mediaItemIndex.coerceIn(0, (filteredItems.size - 1).coerceAtLeast(0))
             } else {
-                this
+                mediaItemIndex.coerceIn(0, (filteredItems.size - 1).coerceAtLeast(0))
             }
+            return copy(
+                items = filteredItems,
+                mediaItemIndex = newIndex,
+            )
+        }
     }
 }
 

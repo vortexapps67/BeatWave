@@ -5,6 +5,7 @@
 
 package com.beatwave.music.ui.component
 
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,19 +24,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.ui.unit.em
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -44,7 +44,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import android.os.Build
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -53,20 +54,19 @@ import com.beatwave.music.constants.HomeCardCornerRadiusOverrideKey
 import com.beatwave.music.constants.HomeHeroCardHeightOverrideKey
 import com.beatwave.music.ui.component.shapes.ContinuousRoundedRectangle
 import com.beatwave.music.ui.theme.AppleTokens
+import com.beatwave.music.ui.theme.rememberArtworkTint
 import com.beatwave.music.ui.utils.bounceClick
 import com.beatwave.music.utils.rememberPreference
 
 /**
  * The "star of the day" card that opens Home.
  *
- * The lower band is the artwork itself, blurred and darkened, rather than a flat black
- * scrim — the same frosted treatment [SpotlightCard] uses, so the title sits in the
- * cover's own colour instead of under a grey wash.
- *
- * Still cheap: the blurred band is a second draw of the image Coil already decoded for
- * the sharp one, so there is no extra decode and no backdrop sampling. Home's frame cost
- * is dominated by how many rich rows compose at once, so the hero has to earn its place
- * by replacing several rows of tiles, not by adding to them.
+ * Elevated with BeatWave's Liquid Glass aesthetics:
+ * - Ambient gradient accent glow sampling dominant artwork colors
+ * - Dynamic specular border gradient reflecting album tones
+ * - Fluid glass badge pill with refined typography
+ * - High-contrast clean typography hierarchy
+ * - Refined Play and Shuffle buttons with frosted liquid glass backdrops
  */
 @Composable
 fun HomeHeroCard(
@@ -77,183 +77,258 @@ fun HomeHeroCard(
     onShuffle: () -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    badgeText: String = "QUICK PICK",
 ) {
     val (heightOverride) = rememberPreference(HomeHeroCardHeightOverrideKey, 0)
     val (cornerOverride) = rememberPreference(HomeCardCornerRadiusOverrideKey, 0)
     val cornerRadius = if (cornerOverride > 0) cornerOverride.dp else AppleTokens.CardCornerLarge
+    val cardShape = ContinuousRoundedRectangle(cornerRadius)
+
+    val artworkColors = rememberArtworkTint(thumbnailUrl)
+    val dominantColor = artworkColors.firstOrNull() ?: MaterialTheme.colorScheme.primary
+    val secondaryColor = artworkColors.getOrNull(1) ?: MaterialTheme.colorScheme.tertiary
+
+    val borderBrush = remember(dominantColor, secondaryColor) {
+        Brush.sweepGradient(
+            listOf(
+                dominantColor.copy(alpha = 0.60f),
+                Color.White.copy(alpha = 0.50f),
+                secondaryColor.copy(alpha = 0.40f),
+                Color.White.copy(alpha = 0.15f),
+                dominantColor.copy(alpha = 0.60f),
+            )
+        )
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .then(
                 if (heightOverride > 0) Modifier.height(heightOverride.dp) else Modifier.aspectRatio(4f / 3f)
-            )
-            .clip(ContinuousRoundedRectangle(cornerRadius))
-            // Under the artwork, not decoration: a song whose thumbnailUrl is null or
-            // fails to load left the card fully transparent, so the section read as
-            // "the hero card never rendered" rather than as a card with no cover.
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-            .bounceClick(onClick = onClick),
+            ),
+        contentAlignment = Alignment.Center,
     ) {
-        // Bound the decode to the card's real on-screen pixels and skip the crossfade:
-        // the hero is a full-bleed artwork card, so a full-size decode + fade costs GPU
-        // time for zero visual gain on every scroll frame where the card re-enters view.
-        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-            val context = LocalContext.current
-            val density = LocalDensity.current
-            // LocalContext/LocalDensity are composable reads, so they can't live inside
-            // remember's calculation lambda — read them here, capture into the key set.
-            val request = remember(thumbnailUrl, maxWidth, maxHeight, context, density) {
-                with(density) {
-                    ImageRequest.Builder(context)
-                        .data(thumbnailUrl)
-                        .size(maxWidth.roundToPx(), maxHeight.roundToPx())
-                        .crossfade(false)
-                        .build()
-                }
-            }
-            AsyncImage(
-                model = request,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize(),
-            )
-
-            // Frosted band over the lower portion: the cover again, blurred, revealed by
-            // an alpha ramp so it fades in rather than starting at a hard edge. Offscreen
-            // compositing is required, not cosmetic — the ramp is applied with DstIn,
-            // which needs its own layer to blend against or it would punch through the
-            // sharp artwork underneath as well.
-            //
-            // Inside this BoxWithConstraints so it can share `request` directly. Hoisting
-            // the request out through a state write would be a write during composition,
-            // which is how you get a recomposition loop.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
-                        .drawWithContent {
-                            drawContent()
-                            drawRect(
-                                brush = Brush.verticalGradient(
-                                    0.3f to Color.Transparent,
-                                    0.55f to Color.White.copy(alpha = 0.65f),
-                                    0.75f to Color.White,
-                                ),
-                                blendMode = BlendMode.DstIn,
+        // Subtle ambient radiant glow behind the card sampling artwork colors
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+                    .graphicsLayer { alpha = 0.45f }
+                    .blur(32.dp)
+                    .background(
+                        Brush.radialGradient(
+                            listOf(
+                                dominantColor.copy(alpha = 0.70f),
+                                secondaryColor.copy(alpha = 0.35f),
+                                Color.Transparent,
                             )
-                        },
-                ) {
-                    AsyncImage(
-                        model = request,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
+                        ),
+                        shape = cardShape,
+                    )
+            )
+        }
+
+        // Main Hero Card surface
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(cardShape)
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .bounceClick(onClick = onClick),
+        ) {
+            // Bound the decode to the card's real on-screen pixels and skip the crossfade
+            BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+                val context = LocalContext.current
+                val density = LocalDensity.current
+                val request = remember(thumbnailUrl, maxWidth, maxHeight, context, density) {
+                    with(density) {
+                        ImageRequest.Builder(context)
+                            .data(thumbnailUrl)
+                            .size(maxWidth.roundToPx(), maxHeight.roundToPx())
+                            .crossfade(false)
+                            .build()
+                    }
+                }
+                AsyncImage(
+                    model = request,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+
+                // Frosted band over the lower portion: blurred cover with alpha ramp
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .blur(HeroFrostBlurRadius),
+                            .graphicsLayer { compositingStrategy = CompositingStrategy.Offscreen }
+                            .drawWithContent {
+                                drawContent()
+                                drawRect(
+                                    brush = Brush.verticalGradient(
+                                        0.3f to Color.Transparent,
+                                        0.55f to Color.White.copy(alpha = 0.65f),
+                                        0.75f to Color.White,
+                                    ),
+                                    blendMode = BlendMode.DstIn,
+                                )
+                            },
+                    ) {
+                        AsyncImage(
+                            model = request,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .blur(HeroFrostBlurRadius),
+                        )
+                    }
+                }
+            }
+
+            // Darkening gradient pass ensuring legibility on bright covers
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            0.30f to Color.Transparent,
+                            0.70f to Color.Black.copy(alpha = 0.40f),
+                            1.0f to Color.Black.copy(alpha = 0.72f),
+                        )
+                    ),
+            )
+
+            // Artwork color wash over lower frosted band to infuse track's own vibrancy
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            0.45f to Color.Transparent,
+                            0.75f to dominantColor.copy(alpha = 0.20f),
+                            1.0f to Color.Transparent,
+                        )
+                    ),
+            )
+
+            // Specular top rim sheen
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            0.0f to Color.White.copy(alpha = 0.14f),
+                            0.12f to Color.Transparent,
+                        )
+                    ),
+            )
+
+            // Liquid glass specular border outline sampling artwork colors
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .border(
+                        width = 1.2.dp,
+                        brush = borderBrush,
+                        shape = cardShape,
+                    )
+            )
+
+            // Top Fluid Badge Pill with glass effect
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(AppleTokens.Gutter)
+                    .clip(CircleShape)
+                    .background(Color.Black.copy(alpha = 0.42f))
+                    .border(
+                        width = 1.dp,
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                Color.White.copy(alpha = 0.45f),
+                                Color.White.copy(alpha = 0.12f),
+                            )
+                        ),
+                        shape = CircleShape,
+                    )
+                    .padding(horizontal = 11.dp, vertical = 5.dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.sparks),
+                        contentDescription = null,
+                        tint = dominantColor,
+                        modifier = Modifier.size(13.dp),
+                    )
+                    Text(
+                        text = badgeText.uppercase(),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        letterSpacing = 0.09.em,
+                        color = Color.White.copy(alpha = 0.95f),
                     )
                 }
             }
-        }
 
-        // Darkening pass, kept separate from the frost so the text keeps its contrast on
-        // a bright cover, and so pre-API-31 (where Modifier.blur no-ops) still gets a
-        // legible title from the gradient alone.
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        0.35f to Color.Transparent,
-                        1f to Color.Black.copy(alpha = 0.62f),
-                    )
-                ),
-        )
-
-        // Glass border outline
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .border(
-                    width = 1.dp,
-                    brush = Brush.verticalGradient(
-                        listOf(
-                            Color.White.copy(alpha = 0.35f),
-                            Color.White.copy(alpha = 0.08f),
-                        )
-                    ),
-                    shape = ContinuousRoundedRectangle(cornerRadius)
-                )
-        )
-
-        // Top tag pill
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(AppleTokens.Gutter)
-                .clip(CircleShape)
-                .background(Color.Black.copy(alpha = 0.45f))
-                .border(1.dp, Color.White.copy(alpha = 0.25f), CircleShape)
-                .padding(horizontal = 10.dp, vertical = 4.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            // Bottom Content Column with enhanced typography hierarchy
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .padding(AppleTokens.Gutter),
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(6.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary)
-                )
                 Text(
-                    text = "FEATURED",
-                    style = MaterialTheme.typography.labelSmall,
+                    text = title,
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontSize = 22.sp,
+                        lineHeight = 28.sp,
+                        letterSpacing = (-0.02).em,
+                    ),
                     fontWeight = FontWeight.ExtraBold,
-                    letterSpacing = 0.08.em,
-                    color = Color.White.copy(alpha = 0.95f),
+                    color = Color.White,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
-            }
-        }
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = 14.sp,
+                        lineHeight = 18.sp,
+                    ),
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White.copy(alpha = 0.82f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
 
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(AppleTokens.Gutter),
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.White.copy(alpha = 0.75f),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+                Spacer(modifier = Modifier.height(14.dp))
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(AppleTokens.ItemGap),
-                modifier = Modifier.padding(top = AppleTokens.ItemGap),
-            ) {
-                HeroPill(
-                    iconRes = R.drawable.play,
-                    label = stringResource(R.string.play),
-                    isPrimary = true,
-                    onClick = onPlay,
-                )
-                HeroPill(
-                    iconRes = R.drawable.shuffle,
-                    label = stringResource(R.string.shuffle),
-                    isPrimary = false,
-                    onClick = onShuffle,
-                )
+                // Refined Play and Shuffle buttons with Liquid Glass backdrop
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    HeroPill(
+                        iconRes = R.drawable.play,
+                        label = stringResource(R.string.play),
+                        isPrimary = true,
+                        accentColor = dominantColor,
+                        onClick = onPlay,
+                    )
+                    HeroPill(
+                        iconRes = R.drawable.shuffle,
+                        label = stringResource(R.string.shuffle),
+                        isPrimary = false,
+                        accentColor = dominantColor,
+                        onClick = onShuffle,
+                    )
+                }
             }
         }
     }
@@ -264,33 +339,55 @@ private fun HeroPill(
     iconRes: Int,
     label: String,
     isPrimary: Boolean = false,
+    accentColor: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit,
 ) {
-    val bg = if (isPrimary) {
-        MaterialTheme.colorScheme.primary
+    val shape = CircleShape
+    val contentColor = Color.White
+
+    val bgModifier = if (isPrimary) {
+        Modifier
+            .background(
+                Brush.horizontalGradient(
+                    listOf(
+                        accentColor,
+                        accentColor.copy(alpha = 0.88f),
+                    )
+                )
+            )
+            .border(
+                width = 1.dp,
+                brush = Brush.verticalGradient(
+                    listOf(
+                        Color.White.copy(alpha = 0.60f),
+                        Color.White.copy(alpha = 0.20f),
+                    )
+                ),
+                shape = shape,
+            )
     } else {
-        Color.White.copy(alpha = 0.2f)
+        Modifier
+            .background(Color.White.copy(alpha = 0.16f))
+            .border(
+                width = 1.dp,
+                brush = Brush.verticalGradient(
+                    listOf(
+                        Color.White.copy(alpha = 0.45f),
+                        Color.White.copy(alpha = 0.12f),
+                    )
+                ),
+                shape = shape,
+            )
     }
-    val contentColor = if (isPrimary) {
-        MaterialTheme.colorScheme.onPrimary
-    } else {
-        Color.White
-    }
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(7.dp),
         modifier = Modifier
-            .clip(CircleShape)
-            .background(bg)
-            .then(
-                if (!isPrimary) {
-                    Modifier.border(1.dp, Color.White.copy(alpha = 0.35f), CircleShape)
-                } else {
-                    Modifier
-                }
-            )
+            .clip(shape)
+            .then(bgModifier)
             .bounceClick(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 18.dp, vertical = 9.dp),
     ) {
         Icon(
             painter = painterResource(iconRes),
@@ -301,7 +398,7 @@ private fun HeroPill(
         Text(
             text = label,
             style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
             color = contentColor,
             maxLines = 1,
         )

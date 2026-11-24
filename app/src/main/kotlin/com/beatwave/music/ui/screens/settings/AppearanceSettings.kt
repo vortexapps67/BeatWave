@@ -436,6 +436,7 @@ fun AppearanceSettings(
                     LyricsAnimationStyle.VIVIMUSIC_1 -> stringResource(R.string.vivimusic_1)
                     LyricsAnimationStyle.LYRICS_V2 -> stringResource(R.string.lyrics_v2_fluid)
                     LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_animation_metro)
+                    LyricsAnimationStyle.FISHEYE -> stringResource(R.string.lyrics_animation_fisheye)
                 }
             }
         )
@@ -940,6 +941,7 @@ fun AppearanceSettings(
                                 LyricsAnimationStyle.APPLE_V2 -> stringResource(R.string.apple_music_style_letter)
                                 LyricsAnimationStyle.LYRICS_V2 -> stringResource(R.string.lyrics_v2_fluid)
                                 LyricsAnimationStyle.METRO_LYRICS -> stringResource(R.string.lyrics_animation_metro)
+                                LyricsAnimationStyle.FISHEYE -> stringResource(R.string.lyrics_animation_fisheye)
                             }
                         )
                     },
@@ -966,7 +968,7 @@ fun AppearanceSettings(
                     },
                     onClick = { onLyricsGlowEffectChange(!lyricsGlowEffect) }
                 ),
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && (lyricsAnimationStyle == LyricsAnimationStyle.VIVIMUSIC_1 || lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE)) {
                     Material3SettingsItem(
                         icon = painterResource(R.drawable.lyrics),
                         title = { Text(stringResource(R.string.apple_music_lyrics_blur)) },

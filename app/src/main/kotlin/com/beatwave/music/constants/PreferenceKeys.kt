@@ -792,6 +792,7 @@ enum class LyricsAnimationStyle {
     VIVIMUSIC_1,
     LYRICS_V2,
     METRO_LYRICS,
+    FISHEYE,
 }
 
 val LyricsTextSizeKey = floatPreferencesKey("lyricsTextSize")

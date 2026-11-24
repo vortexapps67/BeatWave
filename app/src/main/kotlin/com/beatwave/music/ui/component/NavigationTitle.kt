@@ -6,6 +6,7 @@
 package com.beatwave.music.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,6 +38,8 @@ import com.beatwave.music.R
 import androidx.compose.material3.LocalContentColor
 import com.beatwave.music.ui.theme.AppleTokens
 import com.beatwave.music.ui.theme.LocalAccentTextColor
+import com.beatwave.music.ui.utils.bounceClick
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 @Composable
@@ -109,16 +113,26 @@ fun NavigationTitle(
         if (action != null) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(5.dp),
                 modifier = Modifier
-                    .clip(androidx.compose.foundation.shape.CircleShape)
-                    .background(contentColor.copy(alpha = 0.08f))
-                    .clickable(onClick = action)
+                    .clip(CircleShape)
+                    .background(contentColor.copy(alpha = 0.10f))
+                    .border(
+                        width = 1.dp,
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                contentColor.copy(alpha = 0.28f),
+                                contentColor.copy(alpha = 0.08f),
+                            )
+                        ),
+                        shape = CircleShape,
+                    )
+                    .bounceClick(onClick = action)
                     .padding(horizontal = 12.dp, vertical = 6.dp)
             ) {
                 if (onPlayAllClick != null) {
-                    androidx.compose.material3.Icon(
-                        painter = androidx.compose.ui.res.painterResource(R.drawable.play),
+                    Icon(
+                        painter = painterResource(R.drawable.play),
                         contentDescription = null,
                         tint = contentColor,
                         modifier = Modifier.size(12.dp)

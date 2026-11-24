@@ -634,4 +634,5 @@
     <string name="eight_d_preset_classic">Classic</string>
     <string name="eight_d_preset_intense">Intense</string>
     <string name="eight_d_width">Width: %1$d%%</string>
+    <string name="lyrics_animation_fisheye">Fisheye Lens</string>
 </resources>

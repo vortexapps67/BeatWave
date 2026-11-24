@@ -1364,9 +1364,8 @@ fun HomeScreen(
             LazyColumn(
                 state = lazylistState,
                 modifier = Modifier,
-                // Sections had nothing but NavigationTitle's own 12dp padding
-                // between them — ran into each other, felt cramped.
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                // Refined breathing room between sections for an airy, premium Liquid Glass aesthetic
+                verticalArrangement = Arrangement.spacedBy(14.dp),
                 contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues(),
             ) {
                 // Screen title, scrolled with the content rather than pinned in the
@@ -1665,7 +1664,7 @@ fun HomeScreen(
                 }
 
                 item(key = "bottom_spacer", contentType = "spacer") {
-                    Spacer(modifier = Modifier.height(30.dp))
+                    Spacer(modifier = Modifier.height(48.dp))
                 }
             }
 
@@ -2103,6 +2102,7 @@ private fun LazyListScope.heroSection(
                 title = top.song.title,
                 subtitle = heroSubtitle,
                 thumbnailUrl = top.song.thumbnailUrl,
+                badgeText = "QUICK PICK",
                 onPlay = {
                     deps.playerConnection.playQueue(
                         ListQueue(
@@ -2144,6 +2144,7 @@ private fun LazyListScope.heroSection(
                 },
                 modifier = Modifier
                     .padding(horizontal = AppleTokens.Gutter)
+                    .padding(top = 4.dp, bottom = 6.dp)
                     .animateItem(),
             )
         }

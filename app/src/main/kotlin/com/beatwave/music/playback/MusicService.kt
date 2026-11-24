@@ -1745,6 +1745,7 @@ class MusicService :
                         .filterExplicit(dataStore.get(HideExplicitKey, false))
                         .filterVideoSongs(dataStore.get(HideVideoSongsKey, false) || dataStore.get(DataSaverEnabledKey, false))
                 }
+            if (currentQueue != queue) return@launch
             if (queue.preloadItem != null && player.playbackState == STATE_IDLE) return@launch
             if (initialStatus.title != null) {
                 queueTitle = initialStatus.title
@@ -1752,32 +1753,32 @@ class MusicService :
             if (initialStatus.items.isEmpty()) return@launch
             // Track original queue size for shuffle playlist first feature
             originalQueueSize = initialStatus.items.size
-            if (queue.preloadItem != null) {
-                player.addMediaItems(
-                    0,
-                    initialStatus.items.subList(0, initialStatus.mediaItemIndex)
-                )
-                player.addMediaItems(
-                    initialStatus.items.subList(
-                        initialStatus.mediaItemIndex + 1,
-                        initialStatus.items.size
-                    )
-                )
+
+            val targetMediaId = queue.preloadItem?.id
+            val actualIndex = if (targetMediaId != null) {
+                val index = initialStatus.items.indexOfFirst { it.mediaId == targetMediaId }
+                if (index != -1) {
+                    index
+                } else {
+                    initialStatus.mediaItemIndex.coerceIn(0, (initialStatus.items.size - 1).coerceAtLeast(0))
+                }
             } else {
-                player.setMediaItems(
-                    initialStatus.items,
-                    if (initialStatus.mediaItemIndex >
-                        0
-                    ) {
-                        initialStatus.mediaItemIndex
-                    } else {
-                        0
-                    },
-                    initialStatus.position,
-                )
-                player.prepare()
-                player.playWhenReady = playWhenReady
+                initialStatus.mediaItemIndex.coerceIn(0, (initialStatus.items.size - 1).coerceAtLeast(0))
             }
+
+            val position = if (queue.preloadItem != null && player.currentMediaItem?.mediaId == targetMediaId) {
+                if (initialStatus.position > 0) initialStatus.position else player.currentPosition
+            } else {
+                initialStatus.position
+            }
+
+            player.setMediaItems(
+                initialStatus.items,
+                actualIndex,
+                position,
+            )
+            player.prepare()
+            player.playWhenReady = playWhenReady
 
             // Rebuild shuffle order if shuffle is enabled
             if (player.shuffleModeEnabled) {
