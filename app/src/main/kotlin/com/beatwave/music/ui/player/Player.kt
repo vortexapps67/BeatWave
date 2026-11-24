@@ -71,6 +71,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularWavyProgressIndicator
@@ -3297,6 +3298,16 @@ fun BottomSheetPlayer(
                         .padding(bottom = bottomPadding)
                         .animateContentSize(),
                 ) {
+                    // Sleek top drag handle indicator pill from reference video
+                    Box(
+                        modifier = Modifier
+                            .padding(top = 10.dp, bottom = 8.dp)
+                            .width(38.dp)
+                            .height(4.5.dp)
+                            .clip(CircleShape)
+                            .background(Color.White.copy(alpha = 0.35f))
+                    )
+
                     // Controls normally render below the lyrics/thumbnail area.
                     // While fullscreen lyrics are showing with the "collapse
                     // top" setting on, they move above it instead of hiding.
