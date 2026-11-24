@@ -11,18 +11,24 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -43,14 +49,18 @@ import com.beatwave.music.constants.AppleMusicLyricsBlurKey
 import com.beatwave.music.lyrics.LyricsEntry
 import com.beatwave.music.ui.screens.settings.LyricsPosition
 import com.beatwave.music.utils.rememberPreference
+import kotlin.math.PI
 import kotlin.math.abs
+import kotlin.math.sin
 
 /**
  * Fisheye Lyrics style featuring a kinetic 3D barrel / convex lens perspective wrap:
  * - Centered active line: Enormous, heavy bold typography (uppercase/chunky), fully opaque white with subtle glow, crisp focus.
+ * - Floating wave motion: Gentle sinusoidal floating wave physics giving words a dynamic breathing/floating effect.
+ * - Kinetic spring pop & bloom: Words scale up dynamically on beat and burst with luminous white and accent glow.
+ * - Chromatic aberration: Subtle RGB shift (cyan / red) behind the active line for an authentic distressed stencil glitch aesthetic.
  * - Inactive lines: Perspective wrap around a 3D cylinder or convex lens (negative rotationX above, positive rotationX below),
- *   smooth scale drop-off, subtle horizontal scale squeeze for barrel distortion, progressive blur and alpha falloff.
- * - Kinetic word-by-word active glow / highlight interpolation.
+ *   tight tucking around the center line, subtle horizontal scale squeeze for barrel distortion, progressive blur and alpha falloff.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -78,17 +88,29 @@ fun FisheyeLyricsLine(
     val (appleMusicLyricsBlur) = rememberPreference(AppleMusicLyricsBlurKey, true)
     val absDistance = abs(distanceFromCurrent)
 
+    // Continuous frame clock for organic floating wave motion on the active line
+    var wallTime by remember { mutableLongStateOf(0L) }
+    LaunchedEffect(isActive) {
+        if (isActive) {
+            while (isActive) {
+                withFrameMillis { frameTime ->
+                    wallTime = frameTime
+                }
+            }
+        }
+    }
+
     // 1. Perspective 3D rotationX around cylinder:
     // Lines above current active line tilt backward (negative rotationX)
     // Lines below current active line tilt forward/downward (positive rotationX)
     val targetRotationX = when {
         !isSynced || isSelectionModeActive || isActive -> 0f
-        distanceFromCurrent == -1 -> -18f
-        distanceFromCurrent == -2 -> -30f
-        distanceFromCurrent <= -3 -> -40f
-        distanceFromCurrent == 1 -> 18f
-        distanceFromCurrent == 2 -> 30f
-        distanceFromCurrent >= 3 -> 40f
+        distanceFromCurrent == -1 -> -16f
+        distanceFromCurrent == -2 -> -28f
+        distanceFromCurrent <= -3 -> -38f
+        distanceFromCurrent == 1 -> 16f
+        distanceFromCurrent == 2 -> 28f
+        distanceFromCurrent >= 3 -> 38f
         else -> 0f
     }
 
@@ -134,10 +156,10 @@ fun FisheyeLyricsLine(
         0f
     } else {
         when (absDistance) {
-            1 -> 1.5f
-            2 -> 4f
-            3 -> 7f
-            else -> 10f
+            1 -> 1.2f
+            2 -> 3.5f
+            3 -> 6.0f
+            else -> 8.5f
         }
     }
 
@@ -151,8 +173,8 @@ fun FisheyeLyricsLine(
     val targetAlpha = when {
         !isSynced || (isSelectionModeActive && isSelected) -> 1f
         isActive -> 1f
-        absDistance == 1 -> 0.60f
-        absDistance == 2 -> 0.35f
+        absDistance == 1 -> 0.62f
+        absDistance == 2 -> 0.36f
         absDistance == 3 -> 0.18f
         else -> 0.08f
     }
@@ -202,6 +224,15 @@ fun FisheyeLyricsLine(
     }
 
     val density = LocalDensity.current.density
+
+    // Inactive lines tuck tightly around the active line without huge empty gaps
+    val lineVerticalPadding = when {
+        isActive -> (3.5f * lineSpacing.coerceAtMost(1.2f)).dp
+        absDistance == 1 -> (1.5f * lineSpacing.coerceAtMost(1.2f)).dp
+        absDistance == 2 -> (1.0f * lineSpacing.coerceAtMost(1.2f)).dp
+        else -> (0.6f * lineSpacing.coerceAtMost(1.2f)).dp
+    }
+
     val itemModifier = modifier
         .fillMaxWidth()
         .graphicsLayer {
@@ -212,7 +243,7 @@ fun FisheyeLyricsLine(
             this.alpha = animatedAlpha
             this.transformOrigin = TransformOrigin.Center
         }
-        .clip(RoundedCornerShape(16.dp))
+        .clip(RoundedCornerShape(14.dp))
         .combinedClickable(
             enabled = true,
             onClick = onClick,
@@ -223,7 +254,7 @@ fun FisheyeLyricsLine(
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             else Color.Transparent
         )
-        .padding(horizontal = 20.dp, vertical = (6 * lineSpacing).dp)
+        .padding(horizontal = 16.dp, vertical = lineVerticalPadding)
         .blur(animatedBlur.dp)
 
     // Fisheye projection is centered around the convex apex
@@ -246,7 +277,7 @@ fun FisheyeLyricsLine(
     }
 
     val baseFontSize = (textSize * 1.25f).sp
-    val baseLineHeight = (textSize * 1.35f * lineSpacing.coerceAtMost(1.3f)).sp
+    val baseLineHeight = (textSize * 1.30f * lineSpacing.coerceAtMost(1.2f)).sp
 
     Column(
         modifier = itemModifier,
@@ -260,7 +291,7 @@ fun FisheyeLyricsLine(
                 else -> Arrangement.Center
             },
             verticalArrangement = Arrangement.spacedBy(
-                with(LocalDensity.current) { (textSize * (lineSpacing.coerceAtMost(1.3f) - 1f)).sp.toDp() }
+                with(LocalDensity.current) { (textSize * 0.15f).sp.toDp() }
             )
         ) {
             wordData.forEachIndexed { index, (wordText, startRelative, endRelative) ->
@@ -282,6 +313,18 @@ fun FisheyeLyricsLine(
                 val chunkyWord = remember(wordText) { wordText.uppercase() }
                 val fontWeight = if (isActive) FontWeight.Black else FontWeight.Bold
 
+                // Floating wave motion: gentle sinusoidal wave gives words a breathing / floating kinetic float
+                val waveSpeed = 0.0032f
+                val waveHeight = 3.2f // dp height
+                val phaseOffset = index * 0.42f
+                val waveY = if (isActive && wallTime > 0L) {
+                    sin((wallTime * waveSpeed).toDouble() + phaseOffset).toFloat() * waveHeight
+                } else 0f
+
+                // Kinetic spring pop on singing beat
+                val sungBounce = if (progress in 0.01f..0.99f) (sin(progress * PI.toFloat()) * 0.12f) else 0f
+                val wordScale = 1f + sungBounce
+
                 // Word-by-word active glow / highlight
                 val wordBrush = if (isActive && isSynced) {
                     when {
@@ -300,33 +343,95 @@ fun FisheyeLyricsLine(
                     Brush.horizontalGradient(listOf(textColor, textColor))
                 }
 
+                // Luminous bloom glow
                 val wordShadow = when {
                     !isActive || !isSynced -> null
                     progress in 0.01f..0.99f -> Shadow(
                         color = Color.White.copy(alpha = 0.95f),
                         offset = Offset.Zero,
-                        blurRadius = 20f
+                        blurRadius = 24f
                     )
                     progress >= 1f -> Shadow(
-                        color = Color.White.copy(alpha = 0.35f),
+                        color = Color.White.copy(alpha = 0.40f),
                         offset = Offset.Zero,
                         blurRadius = 8f
                     )
                     else -> null
                 }
 
-                Text(
-                    text = chunkyWord,
-                    fontSize = baseFontSize,
-                    style = TextStyle(
-                        brush = wordBrush,
-                        fontWeight = fontWeight,
-                        letterSpacing = 0.5.sp,
-                        lineHeight = baseLineHeight,
-                        textAlign = agentTextAlign,
-                        shadow = wordShadow
+                // Chromatic aberration dynamic shift & alpha
+                val isAberrationActive = isActive && isSynced
+                val aberrationOffset = if (progress in 0.01f..0.99f) 1.8f else 1.1f
+                val aberrationAlpha = if (progress in 0.01f..0.99f) 0.65f else 0.35f
+
+                Box(
+                    modifier = Modifier
+                        .graphicsLayer {
+                            this.translationY = waveY * density
+                            this.scaleX = wordScale
+                            this.scaleY = wordScale
+                            this.transformOrigin = TransformOrigin.Center
+                        }
+                ) {
+                    // Subtle chromatic aberration / RGB shift for raw stencil glitch aesthetic
+                    if (isAberrationActive) {
+                        // Red / Magenta shift (offset to left)
+                        Text(
+                            text = chunkyWord,
+                            fontSize = baseFontSize,
+                            style = TextStyle(
+                                color = Color(0xFFFF2A55).copy(alpha = aberrationAlpha),
+                                fontWeight = fontWeight,
+                                letterSpacing = 0.5.sp,
+                                lineHeight = baseLineHeight,
+                                textAlign = agentTextAlign,
+                                shadow = if (progress in 0.01f..0.99f) {
+                                    Shadow(
+                                        color = expressiveAccent.copy(alpha = 0.7f),
+                                        offset = Offset.Zero,
+                                        blurRadius = 14f
+                                    )
+                                } else null
+                            ),
+                            modifier = Modifier.offset(x = (-aberrationOffset).dp, y = (-0.3).dp)
+                        )
+
+                        // Cyan / Electric Blue shift (offset to right)
+                        Text(
+                            text = chunkyWord,
+                            fontSize = baseFontSize,
+                            style = TextStyle(
+                                color = Color(0xFF00E5FF).copy(alpha = aberrationAlpha),
+                                fontWeight = fontWeight,
+                                letterSpacing = 0.5.sp,
+                                lineHeight = baseLineHeight,
+                                textAlign = agentTextAlign,
+                                shadow = if (progress in 0.01f..0.99f) {
+                                    Shadow(
+                                        color = Color(0xFF00E5FF).copy(alpha = 0.7f),
+                                        offset = Offset.Zero,
+                                        blurRadius = 14f
+                                    )
+                                } else null
+                            ),
+                            modifier = Modifier.offset(x = aberrationOffset.dp, y = (0.3).dp)
+                        )
+                    }
+
+                    // Main Foreground Layer: Pure White, heavy bold, with crisp focus & luminous bloom
+                    Text(
+                        text = chunkyWord,
+                        fontSize = baseFontSize,
+                        style = TextStyle(
+                            brush = wordBrush,
+                            fontWeight = fontWeight,
+                            letterSpacing = 0.5.sp,
+                            lineHeight = baseLineHeight,
+                            textAlign = agentTextAlign,
+                            shadow = wordShadow
+                        )
                     )
-                )
+                }
 
                 if (index != wordData.lastIndex) {
                     Text(
@@ -336,6 +441,9 @@ fun FisheyeLyricsLine(
                             if (lineRelTime >= endRelative) Color.White else Color.White.copy(alpha = 0.40f)
                         } else textColor,
                         lineHeight = baseLineHeight,
+                        modifier = Modifier.graphicsLayer {
+                            this.translationY = waveY * density
+                        },
                         style = TextStyle(
                             shadow = if (isActive && isSynced && lineRelTime >= endRelative) {
                                 Shadow(
@@ -361,8 +469,8 @@ fun FisheyeLyricsLine(
                     textAlign = agentTextAlign,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.5.sp,
-                    modifier = Modifier.padding(top = 4.dp).fillMaxWidth(),
-                    lineHeight = (baseFontSize.value * 0.55f * lineSpacing.coerceAtMost(1.3f)).sp
+                    modifier = Modifier.padding(top = 2.dp).fillMaxWidth(),
+                    lineHeight = (baseFontSize.value * 0.55f * lineSpacing.coerceAtMost(1.2f)).sp
                 )
             }
         }
@@ -377,8 +485,8 @@ fun FisheyeLyricsLine(
                     color = expressiveAccent.copy(alpha = if (isActive) 0.90f else 0.50f),
                     textAlign = agentTextAlign,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(top = 4.dp).fillMaxWidth(),
-                    lineHeight = (baseFontSize.value * 0.60f * lineSpacing.coerceAtMost(1.3f)).sp
+                    modifier = Modifier.padding(top = 2.dp).fillMaxWidth(),
+                    lineHeight = (baseFontSize.value * 0.60f * lineSpacing.coerceAtMost(1.2f)).sp
                 )
             }
         }

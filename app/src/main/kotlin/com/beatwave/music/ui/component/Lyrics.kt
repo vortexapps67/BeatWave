@@ -35,6 +35,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -837,10 +838,17 @@ fun Lyrics(
         } else {
             LazyColumn(
             state = lazyListState,
-            contentPadding = WindowInsets.systemBars
-                .only(WindowInsetsSides.Top)
-                .add(WindowInsets(top = maxHeight / 3, bottom = maxHeight / 2))
-                .asPaddingValues(),
+            contentPadding = if (lyricsAnimationStyle == LyricsAnimationStyle.FISHEYE) {
+                PaddingValues(
+                    top = maxHeight * 0.42f,
+                    bottom = maxHeight * 0.42f
+                )
+            } else {
+                WindowInsets.systemBars
+                    .only(WindowInsetsSides.Top)
+                    .add(WindowInsets(top = maxHeight / 3, bottom = maxHeight / 2))
+                    .asPaddingValues()
+            },
             modifier = Modifier
                 .fadingEdge(vertical = 64.dp)
                 .nestedScroll(remember {
