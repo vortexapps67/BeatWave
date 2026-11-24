@@ -6,7 +6,9 @@
 package com.beatwave.music.ui.component
 
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
@@ -21,23 +23,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -48,20 +43,27 @@ import com.beatwave.music.constants.AppleMusicLyricsBlurKey
 import com.beatwave.music.lyrics.LyricsEntry
 import com.beatwave.music.ui.screens.settings.LyricsPosition
 import com.beatwave.music.utils.rememberPreference
-import kotlin.math.PI
 import kotlin.math.abs
-import kotlin.math.sin
 
 /**
- * Fisheye Lyrics style featuring a refined, subtle cylindrical perspective wrap
- * and signature white capsule pill word highlight:
- * - Subtle cylindrical curvature: Gentle rotationX (-12f..+12f max), smooth natural scaling,
- *   subtle progressive blur and alpha falloff.
- * - Signature White Capsule Pill Highlight: As words are sung, they smoothly transition into
- *   a clean rounded white capsule pill with crisp dark text (#161616) inside, while unsung words
- *   remain smooth translucent white.
- * - Gentle floating wave motion: Subtle sinusoidal breathing drift (1.5dp) for an organic kinetic feel.
- * - Soft luminous bloom: Pure white and accent glow on singing words without harsh chromatic splits.
+ * Fisheye Lyrics — clean cylindrical perspective with word-level pill highlights.
+ *
+ * Visual language (matches the reference video exactly):
+ * ─────────────────────────────────────────────────────
+ * 1. CLEAN CYLINDRICAL CURVATURE  — Gentle rotationX (max ±10°), smooth scale/alpha falloff.
+ *    No glitch, no chromatic aberration, no noise.  Pure optical-lens feel.
+ *
+ * 2. WORD-LEVEL PILL HIGHLIGHTS   — Each word transitions through three visual states:
+ *    • UPCOMING   → plain text, slightly faded, no pill
+ *    • ACTIVE     → bright WHITE pill, DARK text inside (#111111), slightly scaled up
+ *    • SUNG       → frosted semi-transparent pill (white @ 25%), white text
+ *
+ * 3. LINE PROGRESSION             — The currently-singing line is centered and largest.
+ *    Already-sung lines above keep their frosted pills. Future lines below are plain text.
+ *    Scale decreases symmetrically as distance from active grows.
+ *
+ * 4. ROUNDED SOFT FONT            — Bold weight, generous letter spacing, fully-rounded pill
+ *    corners (RoundedCornerShape(50%)) for the capsule shape.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -88,95 +90,56 @@ fun FisheyeLyricsLine(
 ) {
     val (appleMusicLyricsBlur) = rememberPreference(AppleMusicLyricsBlurKey, true)
     val absDistance = abs(distanceFromCurrent)
+    val density = LocalDensity.current.density
+    val isPastLine = distanceFromCurrent < 0 // already-sung line (above active)
 
-    // Continuous frame clock for gentle, calm floating wave drift on the active line
-    var wallTime by remember { mutableLongStateOf(0L) }
-    LaunchedEffect(isActive) {
-        if (isActive) {
-            while (isActive) {
-                withFrameMillis { frameTime ->
-                    wallTime = frameTime
-                }
-            }
-        }
-    }
-
-    // 1. Subtle, gentle cylindrical rotationX:
-    // Gentle tilt without violent distortion (-12f..+12f max)
+    // ─── 1. Cylindrical rotationX ───────────────────────────────────────────
+    // Gentle tilt: lines above tilt backward, lines below tilt forward.
     val targetRotationX = when {
         !isSynced || isSelectionModeActive || isActive -> 0f
-        distanceFromCurrent == -1 -> -4f
-        distanceFromCurrent == -2 -> -8f
-        distanceFromCurrent <= -3 -> -12f
-        distanceFromCurrent == 1 -> 4f
-        distanceFromCurrent == 2 -> 8f
-        distanceFromCurrent >= 3 -> 12f
+        distanceFromCurrent == -1 -> -3f
+        distanceFromCurrent == -2 -> -6f
+        distanceFromCurrent <= -3 -> -10f
+        distanceFromCurrent == 1 -> 3f
+        distanceFromCurrent == 2 -> 6f
+        distanceFromCurrent >= 3 -> 10f
         else -> 0f
     }
 
     val animatedRotationX by animateFloatAsState(
         targetValue = targetRotationX,
-        animationSpec = tween(durationMillis = 350),
-        label = "fisheyeRotationX"
+        animationSpec = tween(durationMillis = 400, easing = LinearEasing),
+        label = "fisheyeRotX"
     )
 
-    // 2. Smooth, natural scale progression
-    val targetScaleY = when {
+    // ─── 2. Scale progression ───────────────────────────────────────────────
+    // Active line is largest. Scale decreases with distance.
+    val targetScale = when {
         !isSynced || isSelectionModeActive -> 1f
-        isActive -> 1.06f
-        absDistance == 1 -> 0.94f
-        absDistance == 2 -> 0.85f
-        absDistance == 3 -> 0.76f
-        else -> 0.68f
+        isActive -> 1.0f
+        absDistance == 1 -> 0.82f
+        absDistance == 2 -> 0.70f
+        absDistance == 3 -> 0.60f
+        else -> 0.52f
     }
 
-    val targetScaleX = when {
-        !isSynced || isSelectionModeActive -> 1f
-        isActive -> 1.06f
-        absDistance == 1 -> 0.91f // subtle natural barrel squeeze
-        absDistance == 2 -> 0.81f
-        absDistance == 3 -> 0.71f
-        else -> 0.62f
-    }
-
-    val animatedScaleX by animateFloatAsState(
-        targetValue = targetScaleX,
-        animationSpec = tween(durationMillis = 350),
-        label = "fisheyeScaleX"
+    val animatedScale by animateFloatAsState(
+        targetValue = targetScale,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioLowBouncy,
+            stiffness = Spring.StiffnessLow
+        ),
+        label = "fisheyeScale"
     )
 
-    val animatedScaleY by animateFloatAsState(
-        targetValue = targetScaleY,
-        animationSpec = tween(durationMillis = 350),
-        label = "fisheyeScaleY"
-    )
-
-    // 3. Subtle progressive blur falloff (crisp focus on active line, gentle depth on distant lines)
-    val targetBlur = if (!appleMusicLyricsBlur || !isAutoScrollActive || isActive || !isSynced || isSelectionModeActive) {
-        0f
-    } else {
-        when (absDistance) {
-            1 -> 0.8f
-            2 -> 1.6f
-            3 -> 2.5f
-            else -> 3.5f
-        }
-    }
-
-    val animatedBlur by animateFloatAsState(
-        targetValue = targetBlur,
-        animationSpec = tween(durationMillis = 350),
-        label = "fisheyeBlur"
-    )
-
-    // 4. Smooth alpha falloff
+    // ─── 3. Alpha falloff ───────────────────────────────────────────────────
     val targetAlpha = when {
         !isSynced || (isSelectionModeActive && isSelected) -> 1f
         isActive -> 1f
-        absDistance == 1 -> 0.65f
-        absDistance == 2 -> 0.42f
-        absDistance == 3 -> 0.24f
-        else -> 0.12f
+        absDistance == 1 -> 0.72f
+        absDistance == 2 -> 0.50f
+        absDistance == 3 -> 0.32f
+        else -> 0.18f
     }
 
     val animatedAlpha by animateFloatAsState(
@@ -185,6 +148,25 @@ fun FisheyeLyricsLine(
         label = "fisheyeAlpha"
     )
 
+    // ─── 4. Subtle progressive blur ─────────────────────────────────────────
+    val targetBlur = if (!appleMusicLyricsBlur || !isAutoScrollActive || isActive || !isSynced || isSelectionModeActive) {
+        0f
+    } else {
+        when (absDistance) {
+            1 -> 0.5f
+            2 -> 1.2f
+            3 -> 2.0f
+            else -> 3.0f
+        }
+    }
+
+    val animatedBlur by animateFloatAsState(
+        targetValue = targetBlur,
+        animationSpec = tween(durationMillis = 400),
+        label = "fisheyeBlur"
+    )
+
+    // ─── Timing data ────────────────────────────────────────────────────────
     val duration = remember(entry.time, nextEntryTime) {
         if (nextEntryTime != null) nextEntryTime - entry.time else 4000L
     }
@@ -223,23 +205,22 @@ fun FisheyeLyricsLine(
         }
     }
 
-    val density = LocalDensity.current.density
-
-    // Inactive lines tuck tightly and naturally around the central active line
+    // ─── Vertical spacing ───────────────────────────────────────────────────
     val lineVerticalPadding = when {
-        isActive -> (3.5f * lineSpacing.coerceAtMost(1.15f)).dp
-        absDistance == 1 -> (1.6f * lineSpacing.coerceAtMost(1.15f)).dp
-        absDistance == 2 -> (1.0f * lineSpacing.coerceAtMost(1.15f)).dp
-        else -> (0.6f * lineSpacing.coerceAtMost(1.15f)).dp
+        isActive -> (5f * lineSpacing.coerceAtMost(1.15f)).dp
+        absDistance == 1 -> (3f * lineSpacing.coerceAtMost(1.15f)).dp
+        absDistance == 2 -> (2f * lineSpacing.coerceAtMost(1.15f)).dp
+        else -> (1.5f * lineSpacing.coerceAtMost(1.15f)).dp
     }
 
+    // ─── Item modifier (cylindrical transform) ──────────────────────────────
     val itemModifier = modifier
         .fillMaxWidth()
         .graphicsLayer {
-            this.cameraDistance = 16f * density
+            this.cameraDistance = 14f * density
             this.rotationX = animatedRotationX
-            this.scaleX = animatedScaleX
-            this.scaleY = animatedScaleY
+            this.scaleX = animatedScale
+            this.scaleY = animatedScale
             this.alpha = animatedAlpha
             this.transformOrigin = TransformOrigin.Center
         }
@@ -254,10 +235,10 @@ fun FisheyeLyricsLine(
                 MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             else Color.Transparent
         )
-        .padding(horizontal = 14.dp, vertical = lineVerticalPadding)
+        .padding(horizontal = 16.dp, vertical = lineVerticalPadding)
         .blur(animatedBlur.dp)
 
-    // Center alignment matching convex lens apex
+    // ─── Text alignment ─────────────────────────────────────────────────────
     val agentAlignment = when {
         entry.isBackground -> Alignment.CenterHorizontally
         entry.agent == "v1" -> Alignment.Start
@@ -276,8 +257,17 @@ fun FisheyeLyricsLine(
         else -> TextAlign.Center
     }
 
-    val baseFontSize = (textSize * 1.16f).sp
-    val baseLineHeight = (textSize * 1.32f * lineSpacing.coerceAtMost(1.2f)).sp
+    // ─── Font sizing ────────────────────────────────────────────────────────
+    // Active line uses a bolder, larger font; inactive uses slightly smaller
+    val baseFontSize = (textSize * 1.18f).sp
+    val baseLineHeight = (textSize * 1.38f * lineSpacing.coerceAtMost(1.2f)).sp
+
+    // ─── Pill color palette ─────────────────────────────────────────────────
+    val activePillBg = Color.White                     // solid white pill for active word
+    val activePillText = Color(0xFF111111)              // near-black text inside active pill
+    val sungPillBg = Color.White.copy(alpha = 0.22f)   // frosted glass pill for already-sung words
+    val sungPillText = Color.White                      // white text inside frosted pill
+    val upcomingText = Color.White.copy(alpha = 0.55f)  // faded text for upcoming words
 
     Column(
         modifier = itemModifier,
@@ -286,7 +276,7 @@ fun FisheyeLyricsLine(
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(
-                space = 5.dp,
+                space = 6.dp,
                 alignment = when (agentTextAlign) {
                     TextAlign.Center -> Alignment.CenterHorizontally
                     TextAlign.Right -> Alignment.End
@@ -294,83 +284,95 @@ fun FisheyeLyricsLine(
                 }
             ),
             verticalArrangement = Arrangement.spacedBy(
-                with(LocalDensity.current) { (textSize * 0.16f).sp.toDp() }
+                with(LocalDensity.current) { (textSize * 0.22f).sp.toDp() }
             )
         ) {
-            wordData.forEachIndexed { index, (wordText, startRelative, endRelative) ->
+            wordData.forEachIndexed { _, (wordText, startRelative, endRelative) ->
                 val lineRelTime = (effectivePlaybackPosition - entry.time).coerceAtLeast(0L)
-                val wordDuration = (endRelative - startRelative).coerceAtLeast(1L)
 
+                // Word state: 0 = upcoming, 0→1 = currently singing, 1 = sung
                 val progress by animateFloatAsState(
                     targetValue = when {
-                        !isSynced || !isActive -> if (isActive) 1f else 0f
+                        !isSynced || !isActive -> if (isPastLine && isSynced) 1f else 0f
                         lineRelTime >= endRelative -> 1f
                         lineRelTime < startRelative -> 0f
-                        else -> (lineRelTime - startRelative).toFloat() / wordDuration
+                        else -> ((lineRelTime - startRelative).toFloat() / (endRelative - startRelative).coerceAtLeast(1L)).coerceIn(0f, 1f)
                     },
-                    animationSpec = tween(durationMillis = 150, easing = LinearEasing),
-                    label = "fisheyeWordProgress"
+                    animationSpec = tween(durationMillis = 120, easing = LinearEasing),
+                    label = "wordProg"
                 )
 
-                // Calm floating wave drift (1.5dp height)
-                val waveSpeed = 0.002f
-                val waveHeight = 1.5f // subtle dp height
-                val phaseOffset = index * 0.35f
-                val waveY = if (isActive && wallTime > 0L) {
-                    sin((wallTime * waveSpeed).toDouble() + phaseOffset).toFloat() * waveHeight
-                } else 0f
+                val isSung = progress >= 0.95f
+                val isSinging = progress in 0.05f..0.94f
+                val isUpcoming = progress < 0.05f
 
-                // Word is sung or currently singing
-                val isSung = progress >= 0.05f
-                val isSinging = progress in 0.05f..0.99f
-
-                // Smooth animated pill transition
-                val animatedPillAlpha by animateFloatAsState(
-                    targetValue = if (isActive && isSynced && isSung) 1f else 0f,
-                    animationSpec = tween(durationMillis = 200),
-                    label = "pillAlpha"
+                // ── Pill background alpha ──
+                val pillBgAlpha by animateFloatAsState(
+                    targetValue = when {
+                        !isSynced -> 0f
+                        // On the active line
+                        isActive && isSinging -> 1f      // solid white during singing
+                        isActive && isSung -> 0.22f      // frosted after sung
+                        isActive && isUpcoming -> 0f     // no pill before singing
+                        // On past lines (already sung) — keep frosted pills
+                        isPastLine && isSynced -> 0.22f
+                        else -> 0f
+                    },
+                    animationSpec = tween(durationMillis = 180),
+                    label = "pillBg"
                 )
 
-                // Subtle calm bounce (4% pop)
-                val pillBounce = if (isSinging) (sin(progress * PI.toFloat()) * 0.04f) else 0f
-                val wordScale = 1f + pillBounce
-
-                // Smooth color transition from translucent white to dark text inside the white pill
-                val wordTextColor = if (isActive && isSynced) {
-                    lerp(
-                        start = Color.White.copy(alpha = 0.70f),
-                        stop = Color(0xFF161616),
-                        fraction = animatedPillAlpha
-                    )
-                } else if (isActive) {
-                    Color.White
-                } else {
-                    Color.White.copy(alpha = 0.65f)
+                // ── Text color ──
+                val wordTextColor = when {
+                    !isSynced -> Color.White
+                    isActive && isSinging -> {
+                        // Lerp from upcoming → active pill text
+                        androidx.compose.ui.graphics.lerp(
+                            start = upcomingText,
+                            stop = activePillText,
+                            fraction = progress.coerceIn(0f, 1f)
+                        )
+                    }
+                    isActive && isSung -> sungPillText
+                    isActive && isUpcoming -> upcomingText
+                    isPastLine && isSynced -> Color.White.copy(alpha = 0.85f)
+                    else -> upcomingText
                 }
 
-                // Soft luminous bloom glow during active singing
-                val pillShadow = if (isSinging) {
-                    Shadow(
-                        color = Color.White.copy(alpha = 0.45f),
-                        offset = Offset.Zero,
-                        blurRadius = 12f
-                    )
-                } else null
+                // ── Word scale: subtle pop when actively singing ──
+                val wordScaleTarget = when {
+                    isActive && isSinging -> 1.04f
+                    else -> 1f
+                }
+                val wordScale by animateFloatAsState(
+                    targetValue = wordScaleTarget,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    ),
+                    label = "wordScale"
+                )
 
-                // White Capsule Pill Container for sung word
+                // ── Pill background color ──
+                val pillColor = if (pillBgAlpha > 0.01f) {
+                    Color.White.copy(alpha = pillBgAlpha)
+                } else {
+                    Color.Transparent
+                }
+
+                // ── Render word ──
                 Box(
                     modifier = Modifier
                         .graphicsLayer {
-                            this.translationY = waveY * density
                             this.scaleX = wordScale
                             this.scaleY = wordScale
                             this.transformOrigin = TransformOrigin.Center
                         }
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = animatedPillAlpha))
+                        .clip(RoundedCornerShape(50)) // fully rounded capsule
+                        .background(pillColor)
                         .padding(
-                            horizontal = if (animatedPillAlpha > 0.1f) 7.dp else 2.dp,
-                            vertical = if (animatedPillAlpha > 0.1f) 2.dp else 1.dp
+                            horizontal = if (pillBgAlpha > 0.05f) 10.dp else 3.dp,
+                            vertical = if (pillBgAlpha > 0.05f) 3.dp else 1.dp
                         )
                 ) {
                     Text(
@@ -378,46 +380,45 @@ fun FisheyeLyricsLine(
                         fontSize = baseFontSize,
                         style = TextStyle(
                             color = wordTextColor,
-                            fontWeight = if (isSung) FontWeight.Bold else FontWeight.SemiBold,
-                            letterSpacing = 0.3.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            letterSpacing = 0.2.sp,
                             lineHeight = baseLineHeight,
-                            textAlign = agentTextAlign,
-                            shadow = pillShadow
+                            textAlign = agentTextAlign
                         )
                     )
                 }
             }
         }
 
-        // Romanized text support
+        // ─── Romanized text ─────────────────────────────────────────────────
         if (showRomanized) {
             val romanizedText by entry.romanizedTextFlow.collectAsState()
             romanizedText?.let { romanized ->
                 Text(
                     text = romanized,
-                    fontSize = (baseFontSize.value * 0.58f).sp,
-                    color = Color.White.copy(alpha = if (isActive) 0.85f else 0.45f),
+                    fontSize = (baseFontSize.value * 0.55f).sp,
+                    color = Color.White.copy(alpha = if (isActive) 0.80f else 0.40f),
                     textAlign = agentTextAlign,
                     fontWeight = FontWeight.Medium,
-                    letterSpacing = 0.3.sp,
-                    modifier = Modifier.padding(top = 2.dp).fillMaxWidth(),
-                    lineHeight = (baseFontSize.value * 0.58f * lineSpacing.coerceAtMost(1.2f)).sp
+                    letterSpacing = 0.2.sp,
+                    modifier = Modifier.padding(top = 3.dp).fillMaxWidth(),
+                    lineHeight = (baseFontSize.value * 0.55f * lineSpacing.coerceAtMost(1.2f)).sp
                 )
             }
         }
 
-        // Translated text support
+        // ─── Translated text ────────────────────────────────────────────────
         if (showTranslated) {
             val translatedText by entry.translatedTextFlow.collectAsState()
             translatedText?.let { translated ->
                 Text(
                     text = translated,
-                    fontSize = (baseFontSize.value * 0.62f).sp,
-                    color = expressiveAccent.copy(alpha = if (isActive) 0.90f else 0.50f),
+                    fontSize = (baseFontSize.value * 0.60f).sp,
+                    color = expressiveAccent.copy(alpha = if (isActive) 0.85f else 0.45f),
                     textAlign = agentTextAlign,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(top = 2.dp).fillMaxWidth(),
-                    lineHeight = (baseFontSize.value * 0.62f * lineSpacing.coerceAtMost(1.2f)).sp
+                    modifier = Modifier.padding(top = 3.dp).fillMaxWidth(),
+                    lineHeight = (baseFontSize.value * 0.60f * lineSpacing.coerceAtMost(1.2f)).sp
                 )
             }
         }
