@@ -1,212 +1,142 @@
 <div align="center">
-  <h1>BEATWAVE</h1>
-  <h3>BeatWave is an open-source, Liquid Glass music player for Android</h3>
 
-  <p>
-    <a href="https://github.com/beatlabs790/BeatWave/releases/tag/v5.0.0">
-      <img src="https://img.shields.io/badge/%E2%AC%87%EF%B8%8F%20DOWNLOAD%20BEATWAVE%201.5.2-4CAF50?style=for-the-badge&logo=android&logoColor=white" alt="Download BeatWave v5.1.2">
-    </a>
-  </p>
-  <p>
-    <b><a href="https://github.com/beatlabs790/BeatWave/releases/tag/latest">⬇️ DOWNLOAD Latest Build.</a></b>
-    — Latest release. Works on Android 8.0+.
-  </p>
-  <p>
-    <a href="https://github.com/beatlabs790/BeatWave/releases">
-      <img src="https://img.shields.io/github/downloads/beatlabs790/BeatWave/total?style=for-the-badge&color=blue" alt="Downloads">
-    </a>
-    <a href="LICENSE">
-      <img src="https://img.shields.io/github/license/beatlabs790/BeatWave?style=for-the-badge" alt="License">
-    </a>
-    <a href="https://discord.gg/spbuDTePSR">
-      <img src="https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord">
-    <a href="https://support-akshansh.vercel.app">
-      <img src="https://img.shields.io/badge/BeatWave-Website-8A2BE2?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Visit BeatWave Website">
-    </a>
-  </p>
-  <p>
-    💸 <b>UPI:</b> <code>akshanshsinha67@axl</code> &nbsp;•&nbsp;
-    🌐 <b>Website:</b> <a href="https://support-akshansh.vercel.app">support-akshansh.vercel.app</a>
-  </p>
+<img src="https://private-user-images.githubusercontent.com/267700146/677091356-94db79e3-95bf-4a47-8133-ef2e785227fb.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTU2Mzc1ODIsIm5iZiI6MTc5NTYzNzI4MiwicGF0aCI6Ii8yNjc3MDAxNDYvNjc3MDkxMzU2LTk0ZGI3OWUzLTk1YmYtNGE0Ny04MTMzLWVmMmU3ODUyMjdmYi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMTI1JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTEyNVQyMDA4MDJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05YTdlN2I3MzcyMDNlZmE3YjlhMTFjZDdiODM5ODRkZGI3MDFiYWQ0MTIxNzM1ZWI2ZWE3NzQxODU0ZjY1M2FmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.mHDiQYqUGV_eoO-Qg8Cjzpf-ihndio5M_MWUFQGiBd8" alt="Logo BeatWave" width="132" />
+
+# BEATWAVE
+
+**Lecteur musical open-source au design Liquid Glass pour Android**
+
+[![Download Latest Release](https://img.shields.io/badge/⬇️%20DOWNLOAD%20Latest%20Build-4CAF50?style=for-the-badge&logo=android&logoColor=white)](https://github.com/beatlabs790/BeatWave/releases/latest)
+[![Previous Tag v5.0.0](https://img.shields.io/badge/Tag-v6.1.1-388E3C?style=for-the-badge)](https://github.com/beatlabs790/BeatWave/releases/latest)
+
+[![Downloads](https://img.shields.io/github/downloads/beatlabs790/BeatWave/total?style=for-the-badge&color=blue)](https://github.com/beatlabs790/BeatWave/releases)
+[![License](https://img.shields.io/github/license/beatlabs790/BeatWave?style=for-the-badge)](LICENSE)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/spbuDTePSR)
+[![Website](https://img.shields.io/badge/BeatWave-Website-8A2BE2?style=for-the-badge&logo=googlechrome&logoColor=white)](https://support-akshansh.vercel.app)
+
+> **Android 8.0+** requis • **UPI :** `akshanshsinha67@axl` • **Site :** [support-akshansh.vercel.app](https://support-akshansh.vercel.app)
+
 </div>
 
-<hr>
+---
 
-<h2>🎵 About BeatWave</h2>
+## 🎵 À propos de BeatWave
 
-<p><b>BeatWave</b> is a free, open-source music player for Android that streams from YouTube Music, built with <b>Jetpack Compose</b> on a <b>Media3</b> ExoPlayer core. The UI is a custom <b>Liquid Glass</b> design system — frosted, refractive surfaces, iOS-style bouncy scrolling, and progressive blur chrome — instead of stock Material widgets.</p>
+**BeatWave** est un lecteur musical open-source gratuit pour Android permettant de diffuser de la musique depuis YouTube Music, conçu avec **Jetpack Compose** et un moteur **Media3** ExoPlayer. Son interface repose sur un système **Liquid Glass** personnalisé — surfaces givrées et réfractives, défilement élastique façon iOS et flou progressif — en alternative aux composants Material standards.
 
-<p>BeatWave started as a fork of <a href="https://github.com/cosmictaserdev-creator/Convx">CONVX</a>; see <a href="#-credits">Credits</a> below.</p>
+Le projet a débuté comme un fork de [CONVX](https://github.com/cosmictaserdev-creator/Convx) et s'appuie également sur des composants issus de [vivi-music](https://github.com/vivizzz007/vivi-music) (voir la section [Crédits](#-crédits)).
 
-<hr>
+---
 
-<h2>✨ Features</h2>
+## ✨ Fonctionnalités
 
-<table align="center" width="100%">
-  <tr valign="top">
-    <td width="50%">
-      <h3>🧊 Liquid Glass UI</h3>
-      <ul>
-        <li><b>Real backdrop blur:</b> frosted glass chrome (nav bar, floating buttons, sheets) that actually samples and refracts the content behind it, not a flat translucent color.</li>
-        <li><b>iOS-style motion:</b> bouncy rubber-band overscroll, blurred page transitions, springy nav puck.</li>
-        <li><b>Material You:</b> adaptive colors pulled from the currently playing artwork.</li>
-      </ul>
-    </td>
-    <td width="50%">
-      <h3>🎵 Streaming</h3>
-      <ul>
-        <li><b>Full YT Music catalog:</b> ad-free streaming and background playback with full notification/lock-screen controls.</li>
-        <li><b>Offline downloads:</b> cache tracks locally with smart storage management.</li>
-        <li><b>Lossless/high-quality audio</b> and a built-in equalizer.</li>
-      </ul>
-    </td>
-  </tr>
-  <tr valign="top">
-    <td width="50%">
-      <h3>📝 Lyrics & Social</h3>
-      <ul>
-        <li><b>Synced, karaoke-style lyrics</b> with word-by-word highlighting.</li>
-        <li><b>Discord Rich Presence:</b> show what you're listening to on your profile.</li>
-        <li><b>Listen Together:</b> sync playback with friends in real time.</li>
-      </ul>
-    </td>
-    <td width="50%">
-      <h3>🛡️ Privacy & Updates</h3>
-      <ul>
-        <li><b>Zero telemetry:</b> no trackers, no analytics, fully local library and preferences.</li>
-        <li><b>Built-in updater:</b> in-app update checks and changelogs, no third-party store required.</li>
-      </ul>
-    </td>
-  </tr>
-</table>
+### Interface Liquid Glass
+* **Flou d'arrière-plan réel :** éléments vitrés (barre de navigation, boutons flottants, feuilles modales) échantillonnant et réfractant le contenu situé derrière eux plutôt qu'une simple transparence unie.
+* **Animations fluides :** effet de rebond en fin de défilement, transitions floutées et indicateur de navigation élastique.
+* **Material You :** palette de couleurs adaptative générée à partir de la pochette en cours de lecture.
 
-<hr>
+### Lecture et streaming
+* **Catalogue YouTube Music :** lecture sans publicité et lecture en arrière-plan avec contrôles complets dans les notifications et sur l'écran de verrouillage.
+* **Téléchargements hors ligne :** mise en cache locale des morceaux avec gestion du stockage.
+* **Qualité audio :** prise en charge audio haute qualité / sans perte et égaliseur intégré.
 
-<h2>🏗️ Architecture</h2>
+### Paroles et fonctions sociales
+* **Paroles synchronisées :** affichage type karaoké avec mise en évidence mot par mot.
+* **Discord Rich Presence :** affichage du titre en cours d'écoute sur votre profil Discord.
+* **Listen Together :** synchronisation de la lecture en temps réel avec d'autres auditeurs.
 
-<p>Quick map for contributors — see <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for the full guide.</p>
+### Confidentialité et mises à jour
+* **Aucune télémétrie :** pas de pisteurs ni d'analytique ; bibliothèque locale et préférences conservées sur l'appareil.
+* **Mise à jour intégrée :** vérification des nouvelles versions et notes de changements directement dans l'application, sans dépendre d'un store tiers.
 
-<ul>
-  <li><b>UI:</b> Jetpack Compose, MVVM (<code>ui/screens</code> + <code>viewmodels</code>), navigated via <code>ui/screens/NavigationBuilder.kt</code>.</li>
-  <li><b>Liquid Glass:</b> <code>ui/component/GlassEffect.kt</code> exposes <code>Modifier.liquidGlass(...)</code>, built on a vendored, source-included copy of <a href="https://github.com/Kyant0/backdrop">Kyant0/backdrop</a> under <code>ui/component/backdrop/</code>. A <code>Backdrop</code> (usually a <code>rememberLayerBackdrop()</code> attached via <code>Modifier.layerBackdrop(...)</code> to some subtree) captures real pixels; any surface holding a reference to that same backdrop can sample, blur, and refract it through <code>drawBackdrop(...)</code>. The floating nav bar, circular back/share buttons, and sheets are all just glass surfaces sampling a nearby backdrop this way.</li>
-  <li><b>Playback:</b> Media3 <code>ExoPlayer</code> service in <code>playback/MusicService.kt</code>.</li>
-  <li><b>Data:</b> Room database (<code>db/</code>) for the local library, DataStore for preferences (<code>utils/DataStore.kt</code>, <code>constants/PreferenceKeys.kt</code>).</li>
-  <li><b>YouTube Music access:</b> the <code>innertube</code> module — an unofficial InnerTube API client, kept separate from the app module.</li>
-  <li><b>Updater:</b> <code>vivimusic/updater/</code> checks GitHub Releases for new versions and handles in-app APK download/install (FOSS/GMS build flavors behave slightly differently — see <code>BuildConfig.CAST_AVAILABLE</code>).</li>
-</ul>
+---
 
-<hr>
+## 🚗 Configuration Android Auto
 
-<h2>🚗 Android Auto Setup</h2>
+Si **BeatWave** n'apparaît pas dans Android Auto :
 
-<p>If BeatWave doesn't appear in Android Auto:</p>
+1. Ouvrez **Android Auto** sur votre téléphone.
+2. Appuyez sur le **menu burger** (trois lignes) puis allez dans **Paramètres**.
+3. Faites défiler jusqu'en bas et appuyez plusieurs fois sur le **numéro de version** pour activer les paramètres développeur.
+4. Appuyez sur le **menu à trois points** (`⋮`) en haut à droite.
+5. Sélectionnez **Paramètres développeur**.
+6. Activez **Sources inconnues**.
+7. Redémarrez Android Auto puis connectez votre téléphone au véhicule.
 
-<ol>
-  <li>Open <strong>Android Auto</strong> on your phone</li>
-  <li>Tap the <strong>hamburger menu</strong> (three lines) and go to <strong>Settings</strong></li>
-  <li>Scroll to the bottom and tap the <strong>version number</strong> multiple times to enable Developer Settings</li>
-  <li>Tap the <strong>three dots menu</strong> (⋮) at the top-right</li>
-  <li>Select <strong>Developer settings</strong></li>
-  <li>Enable <strong>Unknown sources</strong></li>
-  <li>Restart Android Auto and connect to your car</li>
-</ol>
+---
 
-<hr>
+## 🏗️ Architecture
 
-<h2>🤝 Contributing</h2>
+Repères rapides pour les contributeurs (consultez [CONTRIBUTING.md](CONTRIBUTING.md) pour le guide complet) :
 
-<p>Contributions are welcome — bug reports, feature requests, and code. Start with <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for the project layout, build setup, and PR checklist. Short version:</p>
+* **Interface :** Jetpack Compose, MVVM (`ui/screens` et `viewmodels`), navigation via `ui/screens/NavigationBuilder.kt`.
+* **Liquid Glass :** `ui/component/GlassEffect.kt` expose `Modifier.liquidGlass(...)` à partir d'une copie intégrée de [Kyant0/backdrop](https://github.com/Kyant0/backdrop) sous `ui/component/backdrop/`. Un `Backdrop` (généralement un `rememberLayerBackdrop()` rattaché via `Modifier.layerBackdrop(...)` à un sous-arbre) capture les pixels réels, permettant aux surfaces vitrées d'échantillonner, flouter et réfracter l'arrière-plan via `drawBackdrop(...)`.
+* **Lecture audio :** service ExoPlayer basé sur Media3 dans `playback/MusicService.kt`.
+* **Données :** base Room (`db/`) pour la bibliothèque locale et DataStore pour les préférences (`utils/DataStore.kt`, `constants/PreferenceKeys.kt`).
+* **Accès YouTube Music :** module `innertube` (client API InnerTube non officiel), séparé du module principal de l'application.
+* **Mises à jour :** `vivimusic/updater/` interroge les releases GitHub et gère le téléchargement et l'installation de l'APK dans l'application (avec de légères différences selon les variantes FOSS/GMS, visibles via `BuildConfig.CAST_AVAILABLE`).
 
-<ol>
-  <li>Fork the repository</li>
-  <li>Create your feature branch (<code>git checkout -b feature/AmazingFeature</code>)</li>
-  <li>Commit your changes (<code>git commit -m 'Add some AmazingFeature'</code>)</li>
-  <li>Push to the branch (<code>git push origin feature/AmazingFeature</code>)</li>
-  <li>Open a Pull Request</li>
-</ol>
+---
 
-<hr>
+## 🤝 Contribuer
 
-<h2>🛡️ Privacy & Data Collection</h2>
+Les contributions sont les bienvenues : signalements de bugs, suggestions de fonctionnalités, traductions et code. Consultez [CONTRIBUTING.md](CONTRIBUTING.md) pour découvrir l'organisation du dépôt, la compilation et la liste de vérification des Pull Requests.
 
-<p>At <strong>BeatWave</strong>, your privacy is our top priority. We believe that your music and data belong exclusively to you.</p>
+1. Forkez le dépôt.
+2. Créez une branche dédiée (`git checkout -b feature/AmazingFeature`).
+3. Validez vos modifications (`git commit -m 'Add some AmazingFeature'`).
+4. Envoyez la branche sur votre fork (`git push origin feature/AmazingFeature`).
+5. Ouvrez une Pull Request.
 
-<ul>
-  <li><strong>Zero Data Collection:</strong> we do <strong>not</strong> collect, store, or share any of your personal information, usage habits, or listening history.</li>
-  <li><strong>100% Local:</strong> all your settings, downloaded tracks, and offline caches are stored securely on your device.</li>
-  <li><strong>No Tracking:</strong> no hidden trackers, analytics, or background services monitoring your activity.</li>
-</ul>
+---
 
-<hr>
+## 🛡️ Confidentialité et données
 
-<h2>📜 Disclaimer</h2>
+Chez **BeatWave**, votre musique et vos données restent les vôtres :
 
-<p>This project and its contents are <strong>not affiliated with, funded, authorized, endorsed by, or in any way associated with</strong> YouTube, Google LLC, or any of their affiliates and subsidiaries.</p>
+* **Aucune collecte de données :** aucune donnée personnelle, habitude d'utilisation ou historique d'écoute n'est collecté, stocké ou partagé.
+* **100 % local :** paramètres, morceaux téléchargés et caches hors ligne restent enregistrés localement sur l'appareil.
+* **Aucun suivi :** pas de traceurs cachés, d'outils d'analyse ou de services d'arrière-plan dédiés au suivi.
 
-<p>Any trademark, service mark, trade name, or other intellectual property rights used in this project are owned by their respective owners.</p>
+---
 
-<p><strong>BeatWave</strong> is an independent project created for educational and personal use purposes.</p>
+## 📜 Avertissement et licence
 
-<hr>
+Ce projet n'est **ni affilié, ni financé, ni autorisé, ni approuvé, ni associé de quelque manière que ce soit** à YouTube, Google LLC ou leurs filiales. Les marques, noms commerciaux et droits de propriété intellectuelle cités appartiennent à leurs détenteurs respectifs. **BeatWave** est un projet indépendant conçu à des fins personnelles et éducatives.
 
-<h2>📄 License</h2>
-<p>This project is licensed under the terms specified in the <a href="LICENSE">LICENSE</a> file (GPL-3.0).</p>
+Ce projet est distribué sous licence **GPL-3.0** (voir le fichier [LICENSE](LICENSE)).
 
-<hr>
+---
 
-<div align="center">
-  <table border="0" cellpadding="15" cellspacing="0" width="85%">
-    <tr>
-      <td align="center">
-        <h3>💬 Community & Support</h3>
-        <p>Connect with other listeners, suggest features, report bugs, and stay updated on releases.</p>
-        <br>
-        <a href="https://discord.gg/spbuDTePSR">
-          <img src="https://img.shields.io/badge/Discord-Join%20Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join Discord">
-        </a>
-        <br><br>
-        <sub>
-          <a href="https://github.com/beatlabs790/BeatWave/issues">🐞 Report Bugs</a> &nbsp;•&nbsp;
-          <a href="https://github.com/beatlabs790/BeatWave/discussions">💬 Discussions</a> &nbsp;•&nbsp;
-          <a href="https://github.com/beatlabs790/BeatWave/releases">🚀 Releases</a>
-        </sub>
-      </td>
-    </tr>
-  </table>
-</div>
+## 💬 Communauté et support
 
-<hr>
+Échangez avec d'autres utilisateurs, proposez des améliorations, signalez des problèmes et suivez les sorties :
+
+* **Discord :** [Rejoindre la communauté](https://discord.gg/spbuDTePSR)
+* **Suivi et échanges :** [Signaler un bug](https://github.com/beatlabs790/BeatWave/issues) • [Discussions](https://github.com/beatlabs790/BeatWave/discussions) • [Releases](https://github.com/beatlabs790/BeatWave/releases)
+
+---
+
+## 🙏 Crédits
+
+**BeatWave** est développé et maintenu par [Vortex Apps](https://github.com/vortexapps67) ([support-akshansh.vercel.app](https://support-akshansh.vercel.app)).
+
+### Base du projet
+* **[vivi-music](https://github.com/vivizzz007/vivi-music)** par **Vividh P Ashokan** : projet d'origine dont BeatWave est issu.
+* **Style lecteur Apple Music V17** (`Paramètres → Thème du lecteur`) : adapté depuis l'interface lecteur Apple Music de [vivi-music](https://github.com/vivizzz007/vivi-music) (GPL-3.0).
+
+### Projets et bibliothèques clés
+* **[Kyant0/backdrop](https://github.com/Kyant0/backdrop)** : bibliothèque de flou et de réfraction d'arrière-plan en temps réel utilisée pour Liquid Glass.
+* **[Better Lyrics](https://github.com/better-lyrics/better-lyrics)** et **[SimpMusic](https://github.com/maxrave-dev/SimpMusic)** : paroles synchronisées.
+* **[YouLyPlus](https://github.com/ibratabian17/YouLyPlus)** : mise en forme des paroles dans l'application.
+* **[Monochrome](https://github.com/monochrome-music/monochrome)** : visualiseur animé.
 
 <div align="center">
 
-  <h2>🙏 Credits</h2>
+Merci à la communauté open-source pour les outils, bibliothèques et API qui rendent ce projet possible.
 
-  <p>BeatWave is developed and maintained by <a href="https://github.com/vortexapps67">Vortex Apps</a>. See <a href="https://support-akshansh.vercel.app">support-akshansh.vercel.app</a> for support.</p>
+**Conçu avec ❤️ pour les amateurs de musique**
 
-  <table border="0" cellpadding="10" cellspacing="0" width="90%">
-    <tr valign="top">
-      <td width="40%" align="left">
-        <b>💡 Built On</b>
-        <ul>
-          <li><strong><a href="https://github.com/vivizzz007/vivi-music">vivi-music</a></strong> by <strong>Vividh P Ashokan</strong> — the project BeatWave was forked from.</li>
-          <li>The <strong>Apple Music Player V17</strong> full-screen player style (Settings → Player Theme) is ported from <a href="https://github.com/vivizzz007/vivi-music">vivi-music</a>'s Apple Music player UI, GPL-3.0.</li>
-        </ul>
-      </td>
-      <td width="60%" align="left">
-        <b>🎖️ Foundational Projects</b>
-        <ul>
-          <li><strong><a href="https://github.com/Kyant0/backdrop">Kyant0/backdrop</a></strong> — the real-time backdrop blur/refraction library the Liquid Glass UI is built on.</li>
-          <li><strong><a href="https://github.com/better-lyrics/better-lyrics">Better Lyrics</a></strong> and <strong><a href="https://github.com/maxrave-dev/SimpMusic">SimpMusic</a></strong> — synced lyrics.</li>
-          <li><strong><a href="https://github.com/ibratabian17/YouLyPlus">YouLyPlus</a></strong> — in-app lyrics styling.</li>
-          <li><strong><a href="https://github.com/monochrome-music/monochrome">Monochrome</a></strong> — the animated visualizer canvas.</li>
-        </ul>
-      </td>
-    </tr>
-  </table>
+⭐ *Pensez à ajouter une étoile au dépôt si BeatWave vous plaît !*
 
-  <br>
-  <p align="center">The open-source community for tools, libraries, and APIs that make this project possible.</p>
-  <hr width="60%">
-  <p align="center"><strong>Made with ❤️ for music lovers everywhere</strong></p>
-  <p align="center">⭐ Star this repo if you enjoy BeatWave!</p>
 </div>
